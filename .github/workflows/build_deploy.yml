@@ -58,7 +58,7 @@ jobs:
       - name: Deploy document
         run: |
           
-          cp Kappa.nocontrib.pdf Kappa.nocontrib.pdf
+          cp Kappa.nocontrib.pdf /Kappa.nocontrib.pdf
           cp Kappa.contrib.pdf /Kappa.pdf
 
           cd /
