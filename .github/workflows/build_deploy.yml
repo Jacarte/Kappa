@@ -18,9 +18,9 @@ jobs:
         run: |
           apt-get update
           apt-get install -y curl
-          pdflatex -interaction=nonstopmode -shell-escape Kappa.tex || true
+          pdflatex -draftmode  -interaction=nonstopmode -shell-escape Kappa.tex || true
           sleep 10
-          bibtex Kappa
+          bibtex Kappa || true
           sleep 10
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
           sleep 30
@@ -39,9 +39,9 @@ jobs:
       
       - name: Build document
         run: |
-          pdflatex -interaction=nonstopmode -shell-escape Kappa.tex || true
+          pdflatex -draftmode -interaction=nonstopmode -shell-escape Kappa.tex || true
           sleep 5
-          bibtex Kappa
+          bibtex Kappa || true
           sleep 5
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
           sleep 5

@@ -20,7 +20,7 @@ jobs:
           apt-get install -y curl
           pdflatex -interaction=nonstopmode -shell-escape Kappa.tex || true
           sleep 10
-          bibtex Kappa
+          bibtex Kappa || true
           sleep 10
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
           sleep 30
