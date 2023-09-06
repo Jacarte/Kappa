@@ -333,44 +333,9 @@
 \end{abstract}
 \selectlanguage{english}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% List of papers %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{List of Papers}
-
-\let\thefootnote\relax\footnote{Paper I and III are published under license in \textit{Journal of X}}
-\begin{enumerate}[I]
-	\item \textbf{\textit{Title of paper}} \\
-		\textbf{First author}, Second author \\
-		\textit{Journal (year)}
-\end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%% Papers NOT included in THESIS
-Other contributions by the author not included in the thesis.
-\begin{enumerate}[I]
-	\setcounter{enumi}{1}
-	\item \textbf{\textit{Title of paper}} \\
-		\textbf{First author}, Second author \\
-		\textit{Journal (year)}
-\end{enumerate}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%% ACKNOWLEDGMENT %%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Acknowledgement}
-\noindent \lipsum[1]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%% ACRONYMS %%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Acronyms}
-List of commonly used acronyms: \\
-
-\begin{tabular}{llll}
-\textbf{AE}		&	Acronym examples \\
-
-\end{tabular}
-
-%\input{Content/Dedication}\clearpage
+\input{ListOfPapers}
+\input{ack}
+\input{acronyms}
 
 \mainmatter % Pages 1, 2, 3...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -378,85 +343,12 @@ List of commonly used acronyms: \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tableofcontents
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%% CHAPTER 1: INTRODUCTION %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Energy needs - an introduction}
-\label{Intro}
-Here is an example for referencing figure \ref{EnergySources}. Example of citing \cite{BP2019} and \cite{Chen2016}.
-%%%%%%%%%%%%%% Figure: Energy sources
-\begin{figure}[h]
-	\centering
-	% \includegraphics[scale=0.6]{Figs/Ch1_EnergySources.png}
-	\caption{The world's energy consumption by fuel in 2017. }
-	\label{EnergySources}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Section}
-Example of a table
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Table: Tokamaks
-\begin{table}[t!]
-	\centering
-	\caption{List of experimental tokamaks worldwide. Note: ITER is currently under construction and the first plasma is predicted for 2025-2028.}
-		\begin{tabular}{ccccc}
-			\hline
-			\textbf{Name} & \textbf{Location} & \textbf{B-field} & \textbf{Major/minor radius}  \\
-			\hline
-			JET     & England      & 4.0 T & 3.0 m / 1.3 m \\
-			ITER    & France       & 5.3 T & 6.2 m / 2.0 m \\
-			AUG		& Germany      & 3.1 T & 1.7 m / 0.7 m \\
-			WEST	& France	   & 3.7 T & 2.5 m / 0.5 m \\
-			TCV     & Switzerland  & 1.5 T & 0.9 m / 0.3 m \\
-			DIII-D  & USA          & 2.2 T & 1.7 m / 0.7 m \\
-			TFTR 	& USA          & 6.0 T & 2.5 m / 0.9 m \\
-			JT-60   & Japan        & 4.0 T & 3.4 m / 1.0 m \\
-			K-STAR  & South Korea  & 3.5 T & 1.8 m / 0.5 m \\
-			EAST    & China        & 3.5 T & 1.9 m / 0.5 m \\
-			\hline
-		\end{tabular}
-	\label{TokamakTable}
-\end{table}
-
-
-\chapter{Chapter 2}
-\label{Ch2label}
-\noindent \lipsum[1]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%% CHAPTER 6: Summary of the publications %%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Summary of the included papers}
-\label{Summary}
-\noindent \lipsum[1]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Paper I - ...}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%% CHAPTER 7: Conclusions %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Conclusions}
-\label{Conclusions}
-\noindent \lipsum[1]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusions}
-\noindent \lipsum[1]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%% CHAPTER 8: Personal reflections %%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Personal reflections}
-\label{PersonalReflections}
-\noindent \lipsum[1]
+\input{chapters/Chapter1}
+\input{chapters/Chapter2}
+\input{chapters/Chapter3}
+\input{chapters/Chapter4}
+\input{chapters/Chapter5}
+\input{chapters/Chapter6}
 
 %------------------------------------------------
 % CREATING THE BIBLIOGRAPHY

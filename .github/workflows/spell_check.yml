@@ -54,6 +54,8 @@ jobs:
           git rm -rf . && git checkout -b gh-pages
           git add rois index.html report.json && git commit -m 'Spell check report' 
           git push origin gh-pages --force
+        env:
+          REPO_KEY: '${{ secrets.REPO_KEY2 }}'
 
 
       - name: Send notification
