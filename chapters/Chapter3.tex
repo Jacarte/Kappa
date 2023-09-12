@@ -8,6 +8,13 @@ In the following text we detail each one of these contributions.
 
 \msection{Generating Software Diversification for WebAssembly}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/landscape.pdf}
+	\caption{Approach landscape.}
+	\label{fig:approach_landscape}
+\end{figure}
+
 \Wasm programs are obtained ahead of time.
 This means that the source code is compiled to \wasm binaries before they come to host engines to be compiled to machine code and then executed.
 The process of obtaining a \Wasm program can be roughly separated in three high-level components: source code, compiler and the generated \Wasm program.
@@ -31,14 +38,11 @@ The diversifier generates LLVM IR variants from the output of the frontend.
 The diversifier and the custom Wasm LLVM backend compose CROW, which creates \wasm program variants out of a source code program. 
 In addition, an orthogonal tool comes from the generation of LLVM IR variants, MEWE \cite{MEWE}, which merges and creates multivariant binaries to provide Multivariant Execution for \wasm.  
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1.0\textwidth]{figures/landscape.pdf}
-	\caption{Approach landscape.}
-	\label{fig:approach_landscape}
-\end{figure}
-
-
+On the other hand, our binary-based approach is highlighted in \autoref{fig:approach_landscape} as the blue squared tooling.
+Given the evolving landscape of tools generating \Wasm programs, we provide a binary-based approach to diversify any \Wasm program in the wild.
+We propose, wasm-mutate \cite{wasm-mutate}, that takes a \Wasm program as input and generates a pool of \Wasm program variants. 
+The heart of wasm-mutate is based on rewriting rules, grouped inside an e-graph \cite{e-graph}.
+Such strategy allows us to generate \Wasm program variants without the need of tunning a compiler.
 
 % Move the following
 %Other solutions would have been to diversify at the source-code level or the \wasm\ binary level. However, these facts would limit the applicability of our work.
@@ -359,7 +363,8 @@ It wraps the dispatcher for the entrypoint variants as a new function for the fi
 
 \msection{Discussion}
 
-\todo{Comparison of the approaches}
+\todo{Comparison of the approaches.}
+\todo{Add the cool table.}
 
 
 %\subsection{CROW}
