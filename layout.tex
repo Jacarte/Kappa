@@ -31,15 +31,9 @@
   {\large}{\MySecSquare}{1em}{#1}
 
 \titleformat{name=\subsection,numberless}
-  {\large}{\MySecSquare\hspace{0.45em}\thesubsection}{1em}{#1}
+  {\large}{\hspace{0.25em}\MySecSquare\hspace{0.45em}\thesubsection}{1em}{#1}
 
 
-\titlecontents{subsection}
-[10.0em]
-{\addvspace{3pt}}
-{\normalsize\contentslabel{3.3em}}
-{\hspace*{-2.3em}}
-{\titlerule*[1pc]{.}\contentspage}
 
 % formatting for chapter entries in ToC  
 %\titlecontents{chapter}
@@ -48,21 +42,25 @@
 %  {\hspace*{-2.3em}}
 %  {\hfill\contentspage}
   
-\titlecontents{chapter}[0pc]
-  {\addvspace{12pt}}%
-  {\large\bfseries}
-  {\large\bfseries}
-  {\bfseries\hfill\large\contentspage}%
 
 % formatting for section entries in ToC  
 \titlecontents{section}
-  [7.0em]
+  [3.0em]
   {\addvspace{3pt}}%
   {\normalsize\contentslabel{2.3em}}
-  {\hspace*{-2.3em}}
+  {}
   {\titlerule*[1pc]{.}\contentspage}
 
 
+%\titlecontents{subsection}
+%  [10.0em]
+%  {\addvspace{3pt}}
+%  {\normalsize\contentslabel{2.3em}}
+%  {\hspace*{-2.3em}}
+%  {\titlerule*[1pc]{.}\contentspage}
+
+
+  
 % Square to be used in itemize
 \newcommand\MySquare{%
   \leavevmode\hbox to 1.2ex{\hss\vrule height .9ex width .7ex depth -.2ex\hss}}
@@ -73,3 +71,22 @@
 
 % First level of itemize uses a square
 \renewcommand\labelitemi{\MySquare}
+
+%\setcounter{tocdepth}{2}
+%\setcounter{secnumdepth}{4}
+
+%%% This is a patch for the correct numbering
+\newcounter{patchino}
+
+
+\newcommand{\msubsection}[1]{
+  \stepcounter{patchino}
+  \setcounter{subsection}{\thepatchino}
+  \subsection{#1}
+}
+
+
+\newcommand{\msection}[1]{
+  \setcounter{patchino}{0}
+  \section{#1}
+}
