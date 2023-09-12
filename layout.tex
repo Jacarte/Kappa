@@ -2,6 +2,7 @@
 
 % 0.16, 0.42, 0.705  107/255
 
+
 % chapter tiltes formatting
 \titleformat{\chapter}[display]
   {\LARGE}
@@ -21,15 +22,24 @@
 % section tiltes formatting
 \titleformat{\section}
   {\Large}{\MySecSquare\ \thesection}{1em}{#1}
+
 \titleformat{name=\section,numberless}
   {\Large}{\MySecSquare}{1em}{#1}
 
 % subsection tiltes formatting
 \titleformat{\subsection}
-  {\Large}{\MySecSquare\ \thesubsection}{1em}{#1}
-\titleformat{name=\subsection,numberless}
-  {\Large}{\MySecSquare}{1em}{#1}
+  {\large}{\MySecSquare}{1em}{#1}
 
+\titleformat{name=\subsection,numberless}
+  {\large}{\MySecSquare\hspace{0.45em}\thesubsection}{1em}{#1}
+
+
+\titlecontents{subsection}
+[10.0em]
+{\addvspace{3pt}}
+{\normalsize\contentslabel{3.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[1pc]{.}\contentspage}
 
 % formatting for chapter entries in ToC  
 %\titlecontents{chapter}
@@ -52,11 +62,7 @@
   {\hspace*{-2.3em}}
   {\titlerule*[1pc]{.}\contentspage}
 
-\titlecontents{subsection}
-  [10.0em]{\addvspace{3pt}}
-  {\normalsize\contentslabel{3.3em}}
-  {\hspace*{-2.3em}}
-  {\titlerule*[1pc]{.}\contentspage}
+
 % Square to be used in itemize
 \newcommand\MySquare{%
   \leavevmode\hbox to 1.2ex{\hss\vrule height .9ex width .7ex depth -.2ex\hss}}
