@@ -60,7 +60,7 @@ jobs:
 
       - name: Send notification
         run: |
-          T="Spell checking at http://www.jacarte.me/KTH-Licentiate-Thesis/"
+          T="Spell checking at http://www.jacarte.me/Kappa/"
           curl --data parse_mode=HTML --data chat_id="665043934" --data "text=$T" "https://api.telegram.org/bot${{secrets.BOT_API_TOKEN}}/sendMessage"
         env:
           BOT_API_TOKEN: '${{secrets.BOT_API_TOKEN}}'
