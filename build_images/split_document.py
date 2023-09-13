@@ -9,12 +9,24 @@ ranges = []
 pages = []
 num = "intro"
 COUNTER = 1
+
+NAMES = [
+    "intro",
+    "introduction",
+    "background",
+    "automatic software diversification",
+    "exploiting software diversi",
+    "conclusions",
+    "references"
+]
+
 for i in range(inputpdf.numPages):
     output = PdfFileWriter()
     print(i)
     content = inputpdf.getPage(i).extractText() + "\n"
+    content = content.lower()
     
-    if content.startswith("Chapter"):
+    if any(content.startswith(n) for n in NAMES):
         with open("%s/chapter%s.pdf" % (OUT, num), "wb") as outputStream:
             for p in pages:
                 output.addPage(p)
