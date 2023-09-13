@@ -4,4 +4,4 @@ echo "Compiling"
 # export ADDCONTRIB=True
 pdflatex -draftmode -interaction=nonstopmode -shell-escape Kappa.tex || true
 bibtex Kappa || true
-pdflatex -interaction=nonstopmode -shell-escape Kappa.tex || true
+pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex || true
