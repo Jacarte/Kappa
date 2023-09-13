@@ -1,7 +1,28 @@
 
 \msection{Discussion}
 
-\msubsection{Accomanying artifacts}
+In this section we discuss the main differences between CROW, MEWE and wasm-mutate.
+Besides, we provide insights on the provided artifacts for each one of the tools and main implementation details.
+
+\msubsection{CROW and MEWE vs wasm-mutate}
+% make this page vertical
+\begin{table}
+    \centering
+    \begin{tabular}{p{3cm} | p{4cm} | p{3cm}}
+        & CROW \& MEWE & wasm-mutate \\
+        \hline
+        
+    \end{tabular}
+\end{table}
+
+
+
+% - SMT and egraphs are complete different things. Therefore, we need to evaluate the soundness of the egraphs generated programs modulo Input => CROW
+ 
+% - wasm-mutate only applies egraphs if the CFG of the peephole is complete/deterministic.
+
+
+\msubsection{Accompanying artifacts}
 %\msubsection{Implementation}
 
 \tool is implemented in Rust, comprising approximately, 10 thousands lines of Rust code. 
