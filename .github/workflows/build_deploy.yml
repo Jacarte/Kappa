@@ -36,7 +36,7 @@ jobs:
       - name: Split by chapter
         run: |
           mkdir -p kappa_chapters
-          python3 build_images/split_by_chapter.py Kappa.nocontrib.pdf kappa_chapters
+          python3 build_images/split_document.py Kappa.nocontrib.pdf kappa_chapters
       
       - name: Build document
         run: |
