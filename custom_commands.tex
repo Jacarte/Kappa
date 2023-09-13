@@ -39,3 +39,10 @@
 \newcommand{\getenv}[2][]{%
   \CatchFileEdef{\temp}{"|kpsewhich --var-value #2"}{\endlinechar=-1}%
   \if\relax\detokenize{#1}\relax\temp\else\let#1\temp\fi}
+
+
+
+
+\newcommand{\wrule}[1]{
+  \vspace{3mm}\noindent\textbf{#1}
+}
