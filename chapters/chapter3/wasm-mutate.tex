@@ -1,30 +1,24 @@
-% : Fast and Effective Binary for WebAssembly
-\msection{Wasm-mutate}
-\renewcommand{\tool}{wasm-mutate\xspace}
+\renewcommand{\tool}{WASM-MUTATE\xspace}
+\msection{\tool: Fast and Effective Binary for WebAssembly}
 
-In this section we present \tool, a tool to diversify
-WebAssembly binaries and produce semantically equivalent variants.
-\tool is highlighted as the blue squared tooling in \autoref{fig:approach_landscape}.
-The primary objective of \tool is to generate semantically equivalent variants from a given WebAssembly binary input. 
-\tool's central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules. 
-It leverages a comprehensive set of rewrite rules, boosted by a diversification space traversals using e-graphs \cite{egraph}.
+In this section we present \tool, a tool to diversify that takes a WebAssembly program as input and produces functionally equivalent variants.
+\tool is highlighted as the blue squared tooling in \autoref{fig:approach_landscape}, its central approach involves synthesizing program variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs \cite{egraph}.
 
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=0.9\linewidth]{diagrams/wasm_mutate.workflow.pdf}
     \caption{ \tool high level architecture.  It generates semantically equivalent variants from a given WebAssembly binary input. 
-    Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by a diversification space traversals using e-graphs(refer to \autoref{alg}).}
+    Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by a diversification space traversals using e-graphs.}
   \label{fig:wasm-mutate}
 \end{figure*}
 
 
 \autoref{fig:wasm-mutate} illustrates the workflow of \tool, which initiates with a WebAssembly binary as its input. 
-The first step involves parsing this binary to create suitable abstractions, e.g., data flow graphs.
+The first step involves parsing this binary to create suitable abstractions, e.g. an intermediate representation.
 Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
-This stage exploits an essential e-graph property: each path traversed within the e-graph yields semantically equivalent code.
-Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains semantic equivalence to the original binary. 
+Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
 This assurance of semantic preservation is rooted in the inherent properties of the individual rewrite rules employed.
-Notice that, the output of \tool can be used back as an input, facilitating the stacking of multiple transformations through repeated \tool iterations.
+%Notice that, the output of \tool can be used back as an input, facilitating the stacking of multiple transformations through repeated \tool iterations.
 
 
 %% Move this to the new in practice section
@@ -42,234 +36,190 @@ Notice that, the output of \tool can be used back as an input, facilitating the 
 
 \msubsection{WebAssembly Rewriting Rules}
 \tool incorporates a total of 135 rewriting rules, organized into categories referred to as meta-rules. 
-A significant portion of these, 125 to be exact, fall under a peephole meta-rule.
 The rewriting rules are conceived based on the seminal work of Sasnauskas et al. \cite{2017arXiv171104422S}, extended to include a predicate to enforce the conditions for replacement. 
-Each rule is articulated as a tuple, represented as \texttt{(LHS, RHS, Cond)}, where: \texttt{LHS} identifies the segment of code targeted for replacement, \texttt{RHS} outlines the functionally equivalent substitute, and \texttt{Cond} defines the circumstances permitting the substitution.
-For example, in the case of \Wasm binaries, the \texttt{Cond} predicate ensures that the replacement does not violate the type constraints of the \texttt{part}. 
+Each rule is articulated as a tuple, represented as \texttt{(LHS, RHS, Cond)}, where: \texttt{LHS} identifies the segment of code targeted for replacement, \texttt{RHS} outlines the functionally equivalent substitute, and \texttt{Cond} defines the circumstances permitting the replacements.
+For example, in the case of \Wasm binaries, the \texttt{Cond} predicate ensures that the replacement does not violate the type constraints. 
 The following text details seven prominent meta-rules utilized in \tool.
-
-%% Move to Discussion
-
-%We make emphasis on crafting rules that ensure functional equivalence, meaning the programs variants, generated by \too, maintain the same input-output relationship.
-%
 
 
 \wrule{Add type:}
-%% This will come in the Background section
-%In WebAssembly, the type section wraps definitions of signatures for the binary functions.
 \tool implements two rewrite rules for the Type Section of input \Wasm programs, one of which is illustrated in the following rewriting rule. 
 
 \input{snippets/snippets-wasm-mutate/structure_transform/add_type}
 
-This transformation generates random function signatures with a random number of parameters and results count.
-This rewriting rule does not affect the runtime behavior of the  variant.
-It also guarantees that the index of the already defined types is consistent after the addition of a new type. 
-%% This will come in the background section
-% This is because Wasm programs cannot access or use a type definition during runtime, they are only used to validate the signature of a function during compilation and validation from the host engine.
-%% This is for the evaluation part
-%From the security perspective, this transformation prevents against static binary analysis. 
-%For example, to avoid malware detection based on signature set \cite{CABRERAARTEAGA2023103296}.
+This transformation creates random function signatures, varying both, the number of parameters and the count of results. 
+It ensures the consistency of the index of already defined types, even after the introduction of a new type.
 
-\wrule{Add function:} The function and code sections of a Wasm binary contain function  declarations and the code body of the declared functions, respectively.
-\tool add new functions, through mutations in the two mentioned sections.
-To add a new function, \tool creates a random type signature.
-Then, the random function body is created.
-The body of the function consists of returning the default value of the result type.
-\tool never adds a call instruction to this function.
-So in practice, the new function is never executed.
-The following example illustrates this rewriting rule.
+\wrule{Add function:} 
+%In a \wasm binary, the function and code sections contain the function declarations and their respective code bodies. 
+\tool adds new random functions by mutating the code, section and function sections. 
+This process begins with the creation of a random type signature, followed by the formulation of a random function body that simply returns the default value corresponding to the result type. 
+An illustration of this rewriting rule is provided in the subsequent example.
 
 \input{snippets/snippets-wasm-mutate/structure_transform/new_function}
 
-%% This is for the discussion section. Where we compare the type of transformations, the tools, and the security impact.
-%Therefore, executing both, the original binary and the mutated one with the same input, lead to the same final state.
-%This strategy follows the work of Cohen, advocating the insertion of harmless `garbage' code into a program. 
-%These transformations do not impact the program's functionality; its increases its static complexity.
+\wrule{Remove dead code:} \tool randomly eliminates dead code, targeting specific elements such as \emph{functions, types, custom sections, imports, tables, memories, globals, data segments, and elements} that are verifiably unused. 
+For instance, the removal of a memory declaration needs the absence of any memory access operations within the binary code. 
+\tool incorporates distinct mutators for each element type to facilitate this process.
+The following example showcases a function removal using this meta-rule.
 
-\wrule{Remove dead code:} \tool can randomly remove dead code.
-In particular \tool removes: \emph{functions, types, custom sections, imports, tables, memories, globals, data segments and elements} that can be validated as dead code.
-For instance, to delete a memory declaration, the binary code must not contain a memory access operation. 
-Separate mutators are included within \tool for each of the aforementioned elements.
-For a more concrete example, the following listing illustrates the case of a function removal.
+
 
 \input{snippets/snippets-wasm-mutate/structure_transform/remove_function}
 
-When removing a function, \tool ensures that the resulting binary remains valid and semantically identical to the original binary: it checks  that the deleted function was neither called within the binary code nor exported in the binary external interface. 
-As exemplified above, \tool might also eliminate a function import while removing the function. 
 
-%% This comes for the discussion part
-%Eliminating dead code serves a dual purpose: it minimizes the attack surface available to potential malicious actors \cite{236200} and strengthens the resilience of security protocols. 
-%For instance, it can obstruct signature-based identification \cite{CABRERAARTEAGA2023103296}.
-%With Narayan and colleagues having demonstrated the feasibility of Return-Oriented Programming (ROP) attacks \cite{Swivel}, the removal of dead code is able to stop jumps to harmful behaviors within the binary. 
-%On the other hand, the act of removing dead code  reduces the binary's size, improving its non-functional properties, in particular bandwidth constraints. 
-
-
-\wrule{Edit custom sections:}
-The custom section in WebAssembly is used to store metadata, such as the name of the compiler that produces the binary or the symbol information for debugging.
-%% Move to discussion table
-%Thus, this section does not affect the execution of the Wasm program.
-\tool includes one mutator to edit custom sections. 
-This is exemplified in the following rewriting rule. 
+\wrule{Edit custom sections:} \Wasm's custom sections serve to save metadata, including details such as the compiler name responsible for generating the binary and symbol information pertinent to debugging. 
+\tool alters custom sections. 
+Through the \emph{Edit Custom Section} transformation, it can randomly change either the content or the name of the custom section, a process illustrated in the subsequent rewriting rule example.
 
 \input{snippets/snippets-wasm-mutate/structure_transform/custom_section_edit}
 
-The \emph{Edit Custom Section} transformation operates by randomly modifying either the content or the name of the custom section. 
 
-%% This goes to the discussion part
-%As illustrated by Cabrera-Arteaga et al. \cite{CABRERAARTEAGA2023103296}, such a rewriting strategy also acts as a potent deterrent against compiler identification techniques.
-% Furthermore, it can also be employed in an innovative manner to emulate the characteristics of a different compiler, \emph{masquerading} as another compilation source. 
-% This strategy ultimately aids in shrinking the identification and fingerprinting surface accessible to potential adversaries, hence enhancing overall system security, or to make it a moving target.
-
+\wrule{If swapping:} In \Wasm, the if-construction is compound of two paths: the consequence and the alternative. 
+The determination of which pathway to follow depends on the branching condition evaluated just before the \texttt{if} instruction. 
+Specifically, a value greater than \texttt{0} at the top of the execution stack triggers the execution of the consequence code, while any other outcome initiates the alternative code.
+The \emph{if swapping} rewriting rule interchanges the consequence and alternative codes within the if-construction, effectively reversing the original paths defined by the condition.
 
 
-\wrule{If swapping:} In WebAssembly, an if-construction consists of a consequence and an alternative. The branching condition is executed right before the \texttt{if} instruction; if the value at the top of the execution stack is greater than \texttt{0}, then the consequence-code is executed, otherwise the alternative-code is run.
-The \emph{if swapping} rewriting swaps the consequence and alternative codes of an if-construction.
 
-%% For the discussion part
-% This strategy has been employed in other software stacks as well.
-% This strategy increases the difficulty for an attacker to predict the program's control-flow, making it more challenging to exploit vulnerabilities.
-
-% https://ieeexplore.ieee.org/document/6915508
-% Protecting JavaScript Apps from Code Analysis
-% Composite Software Diversification
-
-To swap an if-construction in WebAssembly, \tool inserts a negation of the value at the top of the stack right before the \texttt{if} instruction.
-In the following rewriting rule we show how \tool performs this rewriting.
+To facilitate the swapping of an if-construction in \Wasm, \tool introduces a negation of the value situated at the top of the stack immediately preceding the \texttt{if} instruction. 
+The methodology behind this rewriting is demonstrated in the following rewriting rule example.
 
 \input{snippets/snippets-wasm-mutate/code_motion/if_swap}
 
-\todo{Define if constructions in the Background section.}
 
-The consequence and alternative codes are annotated with the letters \texttt{A} and \texttt{B}, respectively.
-The condition of the if-construction is denoted as \texttt{C}.
-The negation of the condition is achieved by adding the \texttt{i32.eqz} instruction in the RHS part of the rewriting rule.
-The \texttt{i32.eqz} instruction compares the top value of the stack with zero, pushing the value \texttt{1} if the comparison is true.
-Some if-constructions may not have either a consequence or an alternative code.
-In such cases, \tool replaces the missing code block with a single \texttt{nop} instruction.
-%% Move to discussion
-
-% In the context of ROP \cite{Swivel}, this transformation can protect a victim binary to be exploited. 
+In this context, the consequence and alternative codes are labeled with the letters \texttt{A} and \texttt{B}, respectively, while the if-construction's condition is represented as \texttt{C}. 
+To negate this condition, the \texttt{i32.eqz} instruction is incorporated into the RHS segment of the rewriting rule, functioning to compare the stack's top value with zero and, if true, pushing the value \texttt{1} onto the stack.
+In addition, \tool introduces a \texttt{nop} instruction to substitute for the absent code block, ensuring a seamless rewriting process.
 
 
+\wrule{Loop Unrolling:} \tool randomly unrolls loops.
+Upon selecting a loop for unrolling, \tool segments its instructions using first-order breaks, i.e., jumps that lead back to the loop's beginning. 
+This strategy maintains the integrity of branching instructions overseeing the loop body, accounting for the need for label index adjustments during the unrolling phase. 
+This principle applies equally to instructions guiding the transition to subsequent loop iterations.
 
-\wrule{Loop Unrolling:} 
-Loop unrolling is a technique employed to enhance the performance of programs by reducing loop control overhead \cite{dongarra1979unrolling}. 
-%Although the original functionality of the program remains unchanged, its static structure and performed operations are altered.
-\tool incorporates a loop unrolling transformation and utilizes the Abstract Syntax Tree (AST) of the original Wasm binary to identify loop constructions. 
+\todo{Define first order breaks in the Background section.}
 
-When \tool selects a loop for unrolling, its instructions are divided by first-order breaks, which are jumps to the loop's start. 
-This separation ensures that branching instructions controlling the loop body do not require label index adjustments during unrolling. 
-The same holds true for instructions continuing to the next loop iteration.
-As the loop unrolling process unfolds, a new Wasm block is created to encompass both the duplicated loop body and the original loop. 
-Within this newly established block, the previously separated groups of instructions are copied. 
-These replicated groups of instructions mirror the original ones, except for branching instructions jumping outside the loop body, which need their jumping indices increased by one. 
-This modification is required due to the introduction of a new \texttt{block ... end} scope around the loop body, which affects the scope levels of the branching instructions.
-In the following text we illustrate the rewriting rule for a function that contains a loop. 
+As unrolling progresses, a fresh \wasm block emerges to contain both the replicated loop body and its original counterpart. 
+Within this block, the divided groups of instructions find a new block, mirroring their original state but with a pivotal alteration: branching instructions exiting the loop body have their jump indices incremented by one. 
+This adjustment is needed by the newly introduced \texttt{block ... end} scope wrapping the loop body, influencing the scope levels of the branching directives.
+The following example illustrates the unrolling process for a loop containing a single first-order break.
 
 \input{snippets/snippets-wasm-mutate/code_motion/loop_unroll}
 
-The loop in the LHS part features a single first-order break, indicating that its execution will cause the program to continue iterating through the loop. 
-The loop body concludes right before the \texttt{end} instruction, which highlights the point at which the original loop breaks and resumes program execution.
-Upon selecting the loop for unrolling, its instructions are divided into two groups, labeled \texttt{A} and \texttt{B}. 
-As illustrated in the RHS part, the unrolling process entails creating two new Wasm blocks. 
-The outer block encompasses both the original loop structure and the duplicated loop body, while the inner blocks, denoted as \texttt{A'} and \texttt{B'}, represent modifications of the jump instructions in groups \texttt{A} and \texttt{B}, respectively.
-Notice that, any jump instructions within \texttt{A'} and \texttt{B'} that originally leaped outside the loop must have their jump indices incremented by one. 
-This adjustment accounts for the new block scope introduced around the loop body during the unrolling process. 
-Furthermore, an unconditional branch is placed at the end of the unrolled loop iteration's body. 
-This ensures that if the loop body does not continue, the tool breaks out of the scope instead of proceeding to the non-unrolled loop.
+In the LHS part of the rewriting rule, the loop showcases a solitary first-order break, signaling that its activation prompts continuous loop iterations. 
+The loop's operational span concludes just before the \texttt{end} instruction, delineating the juncture where the original loop ceases and the broader program execution resumes.
+When this loop is chosen for unrolling, it undergoes a bifurcation of its instructions into two distinct groups, termed \texttt{A} and \texttt{B}. 
+The RHS part of the illustration brings to light the creation of two fresh Wasm blocks during the unrolling procedure. 
+Here, the outer block is a repository for both the original and the duplicated loop bodies, while the inner entities, labeled \texttt{A'} and \texttt{B'}, embody alterations to the jump directives originally found in groups \texttt{A} and \texttt{B}.
 
-%% For the discussion part
-%Loop unrolling enhances resistance to static analysis while maintaining the original performance \cite{10.1145/3453483.3454035}. 
-%In particular, Crane et al. \cite{10.1145/2810103.2813682} have validated the effectiveness of adding and modifying jump instructions against Function-Reuse attacks.
-%Our rewriting rule has the same advantages, it unrolls loops while 1) incorporating new jumps and 2) editing existing jumps, as it can be observed with the addition of the \texttt{br\_if}, \texttt{end}, and \texttt{br} instructions. 
+Any jump directives within \texttt{A'} and \texttt{B'} that initially direct flow outside the loop need an increment of one in their jump indices. 
+This modification is a response to the newly instituted block scope encircling the loop body in the course of unrolling. 
+Moreover, the conclusion of the unrolled loop iteration's body is marked by the insertion of an unconditional branch. 
+This strategic placement guarantees that, in the absence of a continuation in the loop body, the operation exits the scope.
 
+%\todo{Stress that this modifies the unmmanaged data of the Wasm program.}
 
 
 \wrule{Peephole:} 
-This transformation category is about rewriting instruction sequences within function bodies, signifying the most granular level of rewriting. 
-We implement 125 rewriting rules for this group in \tool. 
-We include rewriting rules that affects the memory of the binary.
-For example, we include rewriting rules that creates random assignments to newly created global variables.
-For these rules, we incorporate several conditions, denoted by \texttt{Cond}, to ensure successful replacement. 
-These conditions can be utilized interchangeably and combined to constrain transformations (see \autoref{alg}).
+This meta-rule  focuses on the rewriting of instruction sequences found within function bodies, representing the lowest level of rewriting. 
+In \tool, we have devised 125 rewriting rules specifically for this category.
+% This was already mentioned before when deininig the rewriting rules.
+%To facilitate successful replacements, we employ a series of conditions, labeled as \texttt{Cond}, which can be used both interchangeably and in conjunction to limit transformations, as detailed in \autoref{alg}.
+\tool is structured to ensure the determinism of the instructions selected for replacement.
+Therefore, any rewriting rule inside the Peephole meta-rule avoids instructions that might induce undefined behavior, e.g., function calls.
+Consequently, the scope of this meta-rule is confined to modifications in stack and memory operations, preserving the integrity of the control frame labels.
 
-For instance, \tool is designed to guarantee that instructions marked for replacement are deterministic. 
-We specifically exclude instructions that could potentially cause undefined behavior, such as function calls, from being mutated. 
-For this rewriting type, \tool only alters stack and memory operations, leaving the control frame labels unaffected.
+The peephole category rewriting rules are meticulously designed and manually verified. 
+An instance of a rewriting rule in this category can be appreciated below:
+
+\input{snippets/snippets-wasm-mutate/peephole/peep.tex}
+
+The previous rewriting rule example implies that the \texttt{LHS} 'x' is to be replaced by an idempotent bitwise \texttt{i32.or} operation with itself,  as soon as x, which can be any subexpression, leaves a value of type i32 in the exeution stack.
+
+\msubsection{Extending peephole meta-rules with custom operators}
+\label{custom}
+
+As illustrated in \autoref{fig:wasm-mutate}, the initial step in the process involves parsing an input \Wasm program, generating an intermediate representation. 
+This step facilitates the transition of the \Wasm program to the next stages of \tool. 
+This representation extends the textual Wat format.
+We augment it with custom operator instructions to enhance the transformation capabilities of \tool \cite{wat}.
+Custom operator instructions form part of the lowest level of transformation we provide in \tool, the Peephole meta-rule.
+
+These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques. 
+For example, we add a \texttt{container} operator instruction, which acts as a holder for multiple instructions, enabling transformations without altering the program's semantics. 
+Below, we demonstrate a rewriting rule that leverages it to insert \texttt{nop} instructions into the any \Wasm program place:
+
+\input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
+
+The instruction \texttt{x}, can potentially be substituted with \texttt{container (x nop)}. 
+When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
+Concretely, the \texttt{container} custom operator is removed, the \texttt{nop} instruction is replaced with the \texttt{nop} opcode, and \texttt{x}, which denotes a single instruction, is encoded with the appropriate opcode.
+
+The \texttt{container} is one of four custom operator instructions introduced in the \tool intermediate representation. 
+Specifically, we have added:
+\mrule{UseGlobals:} this operator substitutes its operand with the setting and retrieval actions involving a newly created global variable.
+\mrule{Constant unfolding:} this operator, working with a constant numeric operand, statically generates two numbers whose sum equals the constant, followed by the addition of operations for these numbers.
+\mrule{Rand:} this operator injects random constant numbers into the program.
+Significantly, this adaptability enables \tool to embrace a wide array of code diversification techniques at instruction level.
 
 
-% The peephole category rewriting rules are meticulously designed and manually verified. 
-
-%% Move to discussion
-%An instance of such streamlined transformation can is illustrated in \autoref{rewriting}, \texttt{(\ x\ i32.or\ x, x, \{\})} implies that the \texttt{LHS} 'x' is to be replaced by an idempotent bitwise \texttt{i32.or} operation with itself, in the absence of any specific conditions.
-%Therefore, this category continues to uphold the benefits previously discussed under the \emph{Remove Dead Code} category.
-
-%\todo{J: Maybe add here somekind of conclusion about how all RR aim for: security, obfuscation, testing and anti-debugging. WDYT?}
-
-%\msubsection{E-graphs for WebAssembly}
-\msubsection{E-graphs traversal for variant generation}
+\msubsection{E-graphs}
 \label{alg}
 
-\todo{TBD maybe is good to move this to the background.}
+We developed \tool leveraging e-graphs, a specific graph data structure for representing rewriting rules \cite{10.1145/3571207}. 
+Within an e-graph, there exist two distinct node types: e-nodes and e-classes. 
+The former encapsulates either an operator or an operand present in the rewriting rule, while the latter groups e-nodes into equivalence classes, essentially serving as a composite virtual node that contains a collection of e-nodes. 
+Consequently, each e-class contains at least one e-node, with edges delineating the operator-operand equivalence relations between e-nodes and e-classes.
 
-We build \tool on top of e-graphs \cite{10.1145/3571207}.
-% Introduce concepts of node, eclass
-An e-graph is a graph data structure utilized for representing rewriting rules. 
-In an e-graph, there are two types of nodes: e-nodes and e-classes. 
-An e-node represents either an operator or an operand involved in the rewriting rule, while an e-class denotes the equivalence classes among e-nodes by grouping them, i.e., an e-class is a virtual node compound of a collection of e-nodes. 
-Thus, e-classes contain at least one e-node.
-Edges within the graph establish operator-operand equivalence relations between e-nodes and e-classes.
+\todo{This is cryptic}
+In the context of \tool, the e-graph is constructed from a WebAssembly program, drawing upon the analysis of its expressions and operations as depicted in data flow graphs. 
+This entails the transformation of each distinct expression, operator, and operand into e-nodes. 
+Next steps involve identifying equivalent expressions based on the corpus of rewriting rules, thereby clustering analogous e-nodes into e-classes. 
+This phase might also witness the introduction of new operators to the graph as e-nodes.
 
-In \tool, the e-graph is automatically built from a WebAssembly program by analyzing its expressions and operations through its data flow graph.
-Then, each unique expression, operator, and operand are transformed into e-nodes.
-Based on the input rewriting rules, the equivalent expressions are detected, grouping equivalent e-nodes into e-classes.
-During the detection of equivalent expressions, new operators could be added to the graph as e-nodes.
-Finally, e-nodes within an e-class are connected with edges to represent their equivalence relationships.
-This process is carried out while the e-graph changes with the inclusion of new rewriting rules, i.e., until the equality saturation is meet \cite{equality-saturation}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{figures/egraph1.pdf}
-    \caption{e-graph for idempotent bitwise-or rewriting rule. Solid lines represent operand-operator relations, and dashed lines represent equivalent class inclusion. }
-  \label{e-graph}
-\end{figure}
-
-\todo{Expand on e-graphs.}
+As the final step, e-nodes in e-classes are interlinked through edges to illustrate their equivalence relationships, a dynamic process that evolves with the integration of new rewriting rules until reaching a point of equality saturation \cite{equality-saturation}.
 
 % How to construct
-%% Remove from here
-% For example, let us consider one program with a single instruction that returns an integer constant, \texttt{i64.const 0}. Let us also assume a single rewriting rule, \texttt{(x,\ x\ i64.or\ x, x instanceof i64)}. 
-% In this example, the program's control flow graph contains just one node, representing the unique instruction.
-%The rewriting rule represents the equivalence for performing an \texttt{or} operation with two equal operands.
-%\autoref{e-graph} displays the final e-graph data structure constructed out of this single program and rewriting rule. 
-%We start by adding the unique program instruction \texttt{i64.const 0} as an en e-node (depicted by the leftmost solid rectangle node in the figure). 
-%Next, we generate e-nodes from the rewriting rule (the rightmost solid rectangle) by introducing a new e-node, \texttt{i64.or}, and creating edges to the \texttt{x} e-node.
-%Following this, we establish equivalence. 
-%The rewriting rule combines the two e-nodes into a single e-class %(indicated by the dashed rectangle node in the figure). 
-%As a result, we update the edges to point to the \texttt{x} symbol e-class.
+Let us illustrate the e-graph construction with a program that consists of a single instruction which returns an integer constant, denoted as \texttt{i64.const 0}. 
+Besides, assume a single rewriting rule defined as \texttt{(x, x i64.or x, x returns type i64)}.
+In this scenario, the control flow graph of the program is quite straightforward, containing only a single node that stands for the lone instruction present. 
+This rewriting rule is designed to express the equivalence of conducting an \texttt{or} operation where both operands are identical.
 
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/egraph1.pdf}
+  \caption{e-graph for idempotent bitwise-or rewriting rule. Solid lines represent operand-operator relations, and dashed lines represent equivalent class inclusion. }
+\label{e-graph}
+\end{figure}
+
+
+In \autoref{e-graph} we visualize how the e-graph data structure out of the program and rewriting rule.
+The process begins with the incorporation of the solitary program instruction, \texttt{i64.const 0}, as an e-node, which is represented by the leftmost solid rectangle node in the diagram.
+Then, we derive additional e-nodes from the rewriting rule, which is depicted by the rightmost solid rectangle in the figure. 
+This involves introducing a fresh e-node labeled \texttt{i64.or} and establishing edges leading to the \texttt{x} e-node.
+Next, the equivalence by merging the two e-nodes is affirmed, thus forming a unified e-class. 
+This step needs the redirection of the existing edges to target the newly formed e-class associated with the \texttt{x} symbol.
+Finally, we successfully construct an e-graph that encapsulates the relationships and equivalences dictated by the initial program and the rewriting rule, setting the stage for further analyses and transformations based on this structured representation.
+
+\msubsection{Random e-graph traversal for variants generation}
+\label{traversal}
 
 % General use of case
-Willsey et al. illustrate that the extraction of code fragments from e-graphs can achieve a high level of flexibility, especially when the extraction process is recursively defined through a cost function applied to e-nodes and their operands. 
-This approach guarantees the semantic equivalence of the extracted code \cite{10.1145/3434304}. 
-For example, to obtain the smallest code from an e-graph, one could initiate the extraction process at an e-node and then choose the AST with the smallest size from among the operands of its associated e-class \cite{10.1145/3385412.3386012}.
+Willsey et al. demonstrated the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
+This methodology ensures the semantic equivalence of the derived code \cite{10.1145/3434304}. 
+For instance, to extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands \cite{10.1145/3385412.3386012}.
+In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a semantically equivalent code variant}. 
 
-When the cost function is omitted from the extraction methodology, the following property emerges:
-\emph{Any path traversed through the e-graph will result in a semantically equivalent code variant}. 
-This concept is illustrated in \autoref{e-graph}, where it is possible to construct an infinite sequence of "or" operations.
-We leverage this inherent flexibility to generate mutated variants of an original program. 
-% How to use it for mutation
-The e-graph offers the option for random traversal, allowing for the random selection of an e-node within each e-class visited, thereby yielding an equivalent expression.
-%We can extract an infinite number of semantically equivalent expressions from the e-graph, as shown in previous research \cite{10.1145/3571207, 10.1145/3434304}.
-
-%It selects a random instruction within the binary functions and applies one or more of the 125 rewrite rules.
-%Finally, it re-encodes the WebAssembly module with the new, rewritten expression to produce a binary variant. 
-
-
-%\todo{can we make a strong claim here? does everybody maximize simplification with equality saturation? are we the first to do random path in e-grahs?}
-We propose and implement an algorithm to randomly traverse an e-graph and generate  semantically equivalent program variants, see \autoref{peephole:mutator}.
-It receives an e-graph, an e-class node (initially the root's e-class), and the maximum depth of expression to extract. The depth parameter ensures that the algorithm is not stuck in an infinite recursion. We select a random e-node from the e-class (lines 5 and 6), and the process recursively continues with the children of the selected e-node (line 8) with a decreasing depth. As soon as the depth becomes zero, the algorithm returns the smallest expression out of the current e-class (line 3). The subexpressions are composed together (line 10) for each child, and then the entire expression is returned (line 11). 
-To the best of our knowledge, \tool, is the first practical implementation of random e-graph traversal for \Wasm.
+The previous mentioned property is exploited in \autoref{e-graph}, showcasing the feasibility of crafting an endless series of "or" operations. 
+We exploit such property to generate diverse \Wasm variants.
+We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield semantically equivalent program variants, as detailed in \autoref{peephole:mutator}. 
+This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
+Within the algorithm, a random e-node is chosen from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
+Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line 3). 
+Following this, the subexpressions are built (line 10) for each child node, culminating in the return of the complete expression (line 11).
 
 
 \algnewcommand\algorithmicforeach{\textbf{for each}}
@@ -279,7 +229,6 @@ To the best of our knowledge, \tool, is the first practical implementation of ra
 	\begin{algorithmic}[1]
 	%	\Procedure{MyProcedure}{}
       \Procedure{traverse}{$egraph$, $eclass$, $depth$}
-      \\
         \If{depth = 0}
           \State  \Return \textbf{smallest\_tree\_from}(egraph,\ eclass)
         \Else
@@ -300,42 +249,48 @@ To the best of our knowledge, \tool, is the first practical implementation of ra
 
 \msubsection{\tool instantiation}
 
+\todo{FIX cross refs}
+
 % Example of a random e-graph traversal 
-Let us demonstrate how the proposed traversal algorithm can generate program variants with an example. 
-We will illustrate Algorithm \ref{peephole:mutator} using a maximum depth of 1. 
-\autoref{example:peeporig} presents a hypothetical original Wasm binary to mutate. 
-In this example, the developer has established two rewriting rules: \texttt{(x, x i32.or x, x instanceof i32)} and \texttt{(x, x i32.add 0, x instanceof i32)}. The first rewriting rule represents the equivalence of performing an \texttt{or} operation with two equal operands, while the second rule signifies the equivalence of adding 0 to any numeric value.
-By employing the code and the rewriting rules, we can construct the e-graph depicted in \autoref{e-graph3}. The figure demonstrates the operator-operand relationship using arrows between the corresponding nodes.
+Let us illustrate how \too generates variant programs by using the before enunciated algorithm.
+Here, we use Algorithm \ref{peephole:mutator} with maximum depth of 1.
+In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
+In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
+The initial rule, which has been previously elaborated upon in \autoref{custom}, grants the ability to append a \texttt{nop} instruction to any subexpression within the program. 
+Conversely, the latter rule articulates the equivalence of augmenting any numeric value by zero.
+Both rules preserve the semantic of the original program when applied.
+
+Leveraging the code presented in \autoref{example:peeporig} alongside the defined rewriting rules, we build the e-graph.
+The resulting e-graph can be found in \autoref{e-graph3}. 
+This graphical representation illustrates the relationships between operators and operands, delineated through arrows connecting the respective nodes.
+The e-graph illustration highlights the potential pathways for rewriting according to the established rules.
 
 \input{snippets/snippets-wasm-mutate/peephole/peep_example}
 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\linewidth]{figures/egraph3.pdf}
+    \includegraphics[width=1.0\linewidth]{figures/e-graph-traversal2.pdf}
     \caption{e-graph built for rewriting the first instruction of \autoref{example:peeporig}. }
   \label{e-graph3}
 \end{figure}
 
 
 
-In \autoref{e-graph3}, we annotate the various steps of Algorithm \ref{peephole:mutator} 
-for the scenario  described above. Algorithm \ref{peephole:mutator} begins at the e-class containing the single instruction \texttt{i64.const 1} from \autoref{example:peeporig}. 
-It then selects an equivalent node in the e-class \step{2}, in this case, the \texttt{i64.or} node, resulting in:
-{\texttt{expr = i64.or l r}}.
-The traversal proceeds with the left operand of the selected node \step{3}, choosing the \texttt{i64.add} node within the e-class: 
-{\texttt{expr = i64.or (i64.add l r)} \texttt{r}}.
-The left operand of the \texttt{i64.add} node is the original node \step{5}: 
-{\texttt{expr = i64.or (i64.add i64.const 1 r)} \texttt{r}}.
-The right operand of the \texttt{i64.add} node belongs to another e-class, where the node \texttt{i64.const 0} is selected \step{6}\step{7}:
-{\texttt{expr = i64.or (i64.add i64.const 1 i64.const 0)} \texttt{r}}.
-In the final step \step{8}, the right operand of the \texttt{i64.or} is selected, corresponding to the initial instruction e-node, returning:
-{\texttt{expr = i64.or (i64.add i64.const 1 i64.const 0)\ i64.const 1}}
-The traversal result applied to the original Wasm code can observed in \autoref{example:peepapplied}. 
+In \autoref{e-graph3}, we highlight various stages of Algorithm \ref{peephole:mutator} in the context of the scenario previously described. 
+The algorithm initiates its journey at the e-class with the singular instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
+At \step{2}, it randomly selects an equivalent node within the e-class, in this instance selecting the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
 
+As the traversal advances to \step{3}, it focuses on the left operand of the previously chosen node, settling on the \texttt{i64.const 0} node within the same e-class.
+The process continues in \step{4}, where the right operand of the \texttt{i64.add} node is choosen, selecting the \texttt{container} operator yielding:
+{\texttt{expr = i64.or (i64.const 0 container ( r nop ))}}.
 
-\msubsection{\tool's versatility}
+At \step{5}, the algorithm chooses the right operand of the \texttt{container}, which correlates to the initial instruction e-node highlighted in \step{6}, culminating in the final expression:
+{\texttt{expr = i64.or (i64.const 0 container( i64.const 1 nop))\ i64.const 1}}.
 
-\todo{Custom and abstract rules.}
+As we proceed to the subsequent encoding phases, the \texttt{container} operator is ignored as a real Wasm instruction, finally resulting the program in \autoref{example:peepapplied}.
 
-\todo{Add here other rules. For example global usage}
+Notice that, within the e-graph showcased in \autoref{e-graph3}, the container node maintains a presence across all e-classes. 
+Consequently, increasing the depth parameter in \autoref{peephole:mutator} would potentially escalate the number of viable variants infinitely.
+
+\todo{Augment this last paragraph.}

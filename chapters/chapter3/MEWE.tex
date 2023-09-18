@@ -8,7 +8,7 @@ This section describes MEWE \cite{MEWE}.
 \tool synthesizes diversified function variants by using CROW.
 It then provides execution-path randomization in a Multivariant Execution (MVE).
 The tool generates application-level multivariant binaries without changing the operating system or \wasm\ runtime.
-MEWE creates an MVE by intermixing functions for which CROW generates variants, as the green squqred tooling in \autoref{fig:approach_landscape} shows.
+MEWE creates an MVE by intermixing functions for which CROW generates variants, as the green squared tooling in \autoref{fig:approach_landscape} shows.
 \tool inlines function variants when appropriate, resulting in call stack diversification at runtime.
 
 In \autoref{workflow} we zoom MEWE from the blue highlighted square in \autoref{fig:approach_landscape}. 
@@ -28,7 +28,7 @@ Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ eng
 \begin{figure*}
   \centering
   \includegraphics[height=3.2in]{diagrams/MEWE.pdf}
-  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Finally, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. }
+  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Finally, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. Figure taken from \cite{Lic}. }
   \label{workflow}
 \end{figure*}
 
@@ -46,7 +46,7 @@ With the introduction of the dispatcher function,  \tool turns the original call
 \begin{figure}
     \centering
   \includegraphics[width=.8\linewidth]{diagrams/CFG.png}
-  \caption{Example of two static call graphs. At the top, the original call graph, at the bottom, the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow).
+  \caption{Example of two static call graphs. At the top, the original call graph, at the bottom, the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow). Figure taken from \cite{Lic}.
 }
   \label{multivariant}
 \end{figure}
@@ -69,6 +69,8 @@ This also allows \tool to inline function variants inside the dispatcher instead
 % Here we trade security over performance since dispatcher functions that perform indirect calls, instead of a switch-case,  could improve the performance of the dispatchers as indirect calls have constant time.
 %It should be noted that the dispatcher function is constructed using the same signature as the original function. 
 
+
+\todo{Mention that MEWE inheretelly harden the analysis of the binary. WASMixer case.}
 
 \lstset{
     language=llvm,

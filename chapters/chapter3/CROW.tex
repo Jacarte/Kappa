@@ -3,12 +3,14 @@
 \label{section:crow}
 \renewcommand{\tool}{CROW\xspace}
 
+\todo{Turn into a SMT based...not a superdiversifier.}
+
 %LLVM is a compound of three main components \cite{llvmofficialweb}. 
 %First, the frontend (compilers such as clang and rustc) converts the program source code to LLVM intermediate representation (LLVM IR). 
 %Second, optimization and transformation processes improve the LLVM IR. 
 %Third and final, the backend component is in charge of generating the target Instruction Set.
 This section details CROW \cite{CROW}, represented as the red squared tooling in \autoref{fig:approach_landscape}. 
-CROW is designed to produce semantically equivalent \wasm variants from the output of an LLVM front-end, utilizing a custom Wasm LLVM backend to craft Wasm binary variants.
+CROW is designed to produce semantically equivalent \wasm variants from the output of an LLVM front-end, utilizing a custom Wasm LLVM backend.
 
 \autoref{diagrams:crow} illustrates CROW's workflow in generating program variants, a process compound of two core stages: \textit{exploration} and \textit{combining}. 
 During the \textit{exploration} stage, CROW processes every instruction within each function of the LLVM input, creating a set of functionally equivalent code variants. 
@@ -21,7 +23,7 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 
 \begin{figure*}[h]
     \includegraphics[width=\linewidth]{diagrams/generation/crow.drawio.pdf}
-    \caption{CROW components following the diagram in \autoref{fig:approach_landscape}. CROW takes LLVM IR to generate functionally equivalent code replacements. Then, CROW assembles program variants by combining them.}
+    \caption{CROW components following the diagram in \autoref{fig:approach_landscape}. CROW takes LLVM IR to generate functionally equivalent code replacements. Then, CROW assembles program variants by combining them. Figure taken from \cite{Lic}.}
     \label{diagrams:crow}
 \end{figure*}
 
@@ -33,7 +35,7 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 %\emph{Exploration}
 \msubsection{Variants' generation}
 
-The primary component of CROW's exploration process is its code replacements generation strategy. The diversifier implemented in CROW is based on the proposed superdiversifier of Jacob \etal \cite{jacob2008superdiversifier}.
+The primary component of CROW's exploration process is its code replacements generation strategy. The diversifier implemented in CROW is based on the proposed superdiversifier methodology of Jacob \etal \cite{jacob2008superdiversifier}.
 A superoptimizer focuses on \emph{searching} for a new program that is faster or smaller than the original code while preserving its functionality.
 The concept of superoptimizing a program dates back to 1987, with the seminal work of Massalin \cite{Massalin1987} which proposes an exhaustive exploration of the solution space. The search space is defined by choosing a subset of the machine's instruction set and generating combinations of optimized programs, sorted by code size in ascending order. If any of these programs is found to perform the same function as the source program, the search halts. On the contrary, a superdiversifier keeps all intermediate search results despite their performance. 
 
