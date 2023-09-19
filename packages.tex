@@ -5,7 +5,6 @@
 \usepackage{lmodern}
 \usepackage[latin1,utf8]{inputenc}
 \usepackage[swedish, english]{babel}
-\usepackage{tocloft}
 \usepackage{multirow}
 \usepackage{adjustbox}
 \usepackage{graphicx,booktabs}
@@ -56,8 +55,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{xifthen}% provides \isempty test
 \usepackage{xcolor}
-\usepackage[explicit]{titlesec}
-\usepackage{titletoc}
 \usepackage{pdfpages}
 \usepackage{comment}
 \usepackage[
@@ -68,7 +65,35 @@
 ]{dirtytalk}
 \usepackage[noend]{algpseudocode} 
 \usepackage{algorithm} 
-\usepackage[margin=1in]{geometry}
 \usepackage{pdflscape}
 % Layout
+
+% For correct numering
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+
+\usepackage{tocloft}
+
+
+%%% This is a patch for the correct numbering
+\newcounter{patchino}
+
+
+\newcommand{\msubsection}[1]{
+  \stepcounter{patchino}
+  \setcounter{subsection}{\thepatchino}
+  \subsection{#1}
+}
+
+
+\newcommand{\msection}[1]{
+  \setcounter{patchino}{0}
+  \section{#1}
+}
+
+
+\usepackage[explicit]{titlesec}
+\usepackage{titletoc}
+
 \input{layout.tex}

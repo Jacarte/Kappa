@@ -28,36 +28,19 @@
 
 % subsection tiltes formatting
 \titleformat{\subsection}
-  {\large}{\MySecSquare \thesubsection}{1em}{#1}
-
-\titleformat{name=\subsection,numberless}
-  {\large}{\hspace{0.25em}\MySecSquare\hspace{0.45em}\thesubsection}{1em}{#1}
-
-
-
-% formatting for chapter entries in ToC  
-%\titlecontents{chapter}
-%  [1em]{}
-%  {\tiny\thecontentslabel{2.3em}}
-%  {\hspace*{-2.3em}}
-%  {\hfill\contentspage}
+  {\large}{\MySecSquare}{1em}{\thesubsection\ #1}
   
+\titleformat{name=\subsection,numberless}
+  {\large}{\hspace{0.25em}\MySecSquare}{1em}{\thesubsection\ #1}
 
 % formatting for section entries in ToC  
 \titlecontents{section}
   [3.0em]
-  {\addvspace{3pt}}%
+  {\addvspace{3.5pt}}%
   {\normalsize\contentslabel{2.3em}}
   {}
   {\titlerule*[1pc]{.}\contentspage}
 
-
-%\titlecontents{subsection}
-%  [10.0em]
-%  {\addvspace{3pt}}
-%  {\normalsize\contentslabel{2.3em}}
-%  {\hspace*{-2.3em}}
-%  {\titlerule*[1pc]{.}\contentspage}
 
 
   
@@ -74,19 +57,3 @@
 
 %\setcounter{tocdepth}{2}
 %\setcounter{secnumdepth}{4}
-
-%%% This is a patch for the correct numbering
-\newcounter{patchino}
-
-
-\newcommand{\msubsection}[1]{
-  \stepcounter{patchino}
-  \setcounter{subsection}{\thepatchino}
-  \subsection{#1}
-}
-
-
-\newcommand{\msection}[1]{
-  \setcounter{patchino}{0}
-  \section{#1}
-}
