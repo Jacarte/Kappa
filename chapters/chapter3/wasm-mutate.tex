@@ -40,11 +40,12 @@ This assurance of semantic preservation is rooted in the inherent properties of 
 The rewriting rules are conceived based on the seminal work of Sasnauskas et al. \cite{2017arXiv171104422S}, extended to include a predicate to enforce the conditions for replacement. 
 Each rule is articulated as a tuple, represented as \texttt{(LHS, RHS, Cond)}, where: \texttt{LHS} identifies the segment of code targeted for replacement, \texttt{RHS} outlines the functionally equivalent substitute, and \texttt{Cond} defines the circumstances permitting the replacements.
 For example, in the case of \Wasm binaries, the \texttt{Cond} predicate ensures that the replacement does not violate the type constraints. 
-The following text details seven prominent meta-rules utilized in \tool.
+The following text details the seven meta-rules utilized in \tool.
 
 
 \wrule{Add type:}
-\tool implements two rewrite rules for the Type Section of input \Wasm programs, one of which is illustrated in the following rewriting rule. 
+\tool implements two rewrite rules for the Type Section of the input \Wasm program.
+The following rewriting rule illustrated how WASM-MUTATE adds a new type definition. 
 
 \input{snippets/snippets-wasm-mutate/structure_transform/add_type}
 
@@ -53,7 +54,7 @@ It ensures the consistency of the index of already defined types, even after the
 
 \wrule{Add function:} 
 %In a \wasm binary, the function and code sections contain the function declarations and their respective code bodies. 
-\tool adds new random functions by mutating the code, section and function sections. 
+\tool adds new random functions by mutating the code, section and function sections . 
 This process begins with the creation of a random type signature, followed by the formulation of a random function body that simply returns the default value corresponding to the result type. 
 An illustration of this rewriting rule is provided in the subsequent example.
 
@@ -77,7 +78,7 @@ Through the \emph{Edit Custom Section} transformation, it can randomly change ei
 
 
 \wrule{If swapping:} In \Wasm, the if-construction is compound of two paths: the consequence and the alternative. 
-The determination of which pathway to follow depends on the branching condition evaluated just before the \texttt{if} instruction. 
+The determination of which execution path to follow depends on the branching condition evaluated just before the \texttt{if} instruction. 
 Specifically, a value greater than \texttt{0} at the top of the execution stack triggers the execution of the consequence code, while any other outcome initiates the alternative code.
 The \emph{if swapping} rewriting rule interchanges the consequence and alternative codes within the if-construction, effectively reversing the original paths defined by the condition.
 
@@ -95,22 +96,23 @@ In addition, \tool introduces a \texttt{nop} instruction to substitute for the a
 
 
 \wrule{Loop Unrolling:} \tool randomly unrolls loops.
-Upon selecting a loop for unrolling, \tool segments its instructions using first-order breaks, i.e., jumps that lead back to the loop's beginning (See section \autoref{background:wasm}). 
-This strategy maintains the integrity of branching instructions overseeing the loop body, accounting for the need for label index adjustments during the unrolling phase. 
-This principle applies equally to instructions guiding the transition to subsequent loop iterations.
+To unroll a loop WASM-MUTATE first creates a new \wasm block, which contains a copy of its body (unrolling) followed by the original loop.
+The copy of the loop body is itself a \wasm block.
+To maintain the original control flow functionality, the instructions inside the loop and their copied body need to be adjusted.
+To adjust the loop, \tool modifies the loop instructions that are first-order breaks, i.e., jumps that lead back to the loop's beginning and end (see section \autoref{background:wasm:execution}). 
 
-%\todo{Define first order breaks in the Background section.}
-
-As unrolling progresses, a fresh \wasm block emerges to contain both the replicated loop body and its original counterpart. 
-Within this block, the divided groups of instructions find a new block, mirroring their original state but with a pivotal alteration: branching instructions exiting the loop body have their jump indices incremented by one. 
-This adjustment is needed by the newly introduced \texttt{block ... end} scope wrapping the loop body, influencing the scope levels of the branching directives.
-The following example illustrates the unrolling process for a loop containing a single first-order break.
+Inside the loop body there can be two types of first order breaks: the first type which lead back to the loop's beginning, and the second type jumps, which lead to the loop's end.
+The second type is irrelevant for the unrolling process, since the loop's end is not modified.
+To adjust first order breaks, in the case of the copied body, they need to break the \wasm block that contains the loop body copy, making the execution of the program to continue with the loop's original construction appended after it.
+In the case of the original loop, the first order breaks need to interrupt the block that contains the loop body, making the execution of the program to continue as originally as the loop finishes.
+In concrete, their jumping indexes need to be incremented by 1, going outside the loop-unrolling outer \wasm block.
+In the following example we illustrate the unrolling of a loop.
 
 \input{snippets/snippets-wasm-mutate/code_motion/loop_unroll}
 
 In the LHS part of the rewriting rule, the loop showcases a solitary first-order break, signaling that its activation prompts continuous loop iterations. 
 The loop's operational span concludes just before the \texttt{end} instruction, delineating the juncture where the original loop ceases and the broader program execution resumes.
-When this loop is chosen for unrolling, it undergoes a bifurcation of its instructions into two distinct groups, termed \texttt{A} and \texttt{B}. 
+When this loop is chosen for unrolling, it undergoes a bifurcation of its instructions into two distinct groups, \texttt{A} and \texttt{B}. 
 The RHS part of the illustration brings to light the creation of two fresh Wasm blocks during the unrolling procedure. 
 Here, the outer block is a repository for both the original and the duplicated loop bodies, while the inner entities, labeled \texttt{A'} and \texttt{B'}, embody alterations to the jump directives originally found in groups \texttt{A} and \texttt{B}.
 
@@ -129,7 +131,7 @@ In \tool, we have devised 125 rewriting rules specifically for this category.
 %To facilitate successful replacements, we employ a series of conditions, labeled as \texttt{Cond}, which can be used both interchangeably and in conjunction to limit transformations, as detailed in \autoref{alg}.
 \tool is structured to ensure the determinism of the instructions selected for replacement.
 Therefore, any rewriting rule inside the Peephole meta-rule avoids instructions that might induce undefined behavior, e.g., function calls.
-Consequently, the scope of this meta-rule is confined to modifications in stack and memory operations, preserving the integrity of the control frame labels.
+Consequently, the scope of this meta-rule is confined to modifications in stack and memory operations, preserving the original functionality of the control frame labels.
 
 The peephole category rewriting rules are meticulously designed and manually verified. 
 An instance of a rewriting rule in this category can be appreciated below:
@@ -146,9 +148,11 @@ This step facilitates the transition of the \Wasm program to the next stages of 
 This representation extends the textual Wat format.
 We augment it with custom operator instructions to enhance the transformation capabilities of \tool \cite{webassembly_runtime}.
 Custom operator instructions form part of the lowest level of transformation we provide in \tool, the Peephole meta-rule.
+These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques, e.g. inserting \texttt{nop} instructions \cite{NOP}.
 
-These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques. 
-For example, we add a \texttt{container} operator instruction, which acts as a holder for multiple instructions, enabling transformations without altering the program's semantics. 
+
+Let us illustrate how we include the previously mentioned specific diversification strategy by supporting custom operator instructions.
+In \tool, we add a \texttt{container} operator instruction, which acts as a holder for multiple instructions, enabling transformations without altering the program's semantics. 
 Below, we demonstrate a rewriting rule that leverages it to insert \texttt{nop} instructions into the any \Wasm program place:
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
@@ -157,13 +161,14 @@ The instruction \texttt{x}, can potentially be substituted with \texttt{containe
 When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
 Concretely, the \texttt{container} custom operator is removed, the \texttt{nop} instruction is replaced with the \texttt{nop} opcode, and \texttt{x}, which denotes a single instruction, is encoded with the appropriate opcode.
 
-The \texttt{container} is one of four custom operator instructions introduced in the \tool intermediate representation. 
+The \texttt{container} operator is one of four custom operator instructions introduced in the \tool intermediate representation. 
 Specifically, we have added:
 \mrule{UseGlobals:} this operator substitutes its operand with the setting and retrieval actions involving a newly created global variable.
 \mrule{Constant unfolding:} this operator, working with a constant numeric operand, statically generates two numbers whose sum equals the constant, followed by the addition of operations for these numbers.
 \mrule{Rand:} this operator injects random constant numbers into the program.
 Significantly, this adaptability enables \tool to embrace a wide array of code diversification techniques at instruction level.
 
+\todo{Here we use each one of this custom operators in the next chapter.}
 
 \msubsection{E-graphs}
 \label{alg}
@@ -253,18 +258,18 @@ Following this, the subexpressions are built (line 10) for each child node, culm
 % \todo{FIX cross refs}
 
 % Example of a random e-graph traversal 
-Let us illustrate how \too generates variant programs by using the before enunciated algorithm.
+Let us illustrate how \tool generates variant programs by using the before enunciated algorithm.
 Here, we use Algorithm \ref{peephole:mutator} with maximum depth of 1.
 In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
 In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
-The initial rule, which has been previously elaborated upon in \autoref{custom}, grants the ability to append a \texttt{nop} instruction to any subexpression within the program. 
+The initial rule, which has been previously discussed in \autoref{custom}, grants the ability to append a \texttt{nop} instruction to any subexpression within the program. 
 Conversely, the latter rule articulates the equivalence of augmenting any numeric value by zero.
 Both rules preserve the semantic of the original program when applied.
 
 Leveraging the code presented in \autoref{example:peeporig} alongside the defined rewriting rules, we build the e-graph.
 The resulting e-graph can be found in \autoref{e-graph3}. 
 This graphical representation illustrates the relationships between operators and operands, delineated through arrows connecting the respective nodes.
-The e-graph illustration highlights the potential pathways for rewriting according to the established rules.
+The e-graph illustration highlights the potential execution paths for rewriting according to the established rules.
 
 \input{snippets/snippets-wasm-mutate/peephole/peep_example}
 
@@ -279,10 +284,10 @@ The e-graph illustration highlights the potential pathways for rewriting accordi
 
 
 In \autoref{e-graph3}, we highlight various stages of Algorithm \ref{peephole:mutator} in the context of the scenario previously described. 
-The algorithm initiates its journey at the e-class with the singular instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
-At \step{2}, it randomly selects an equivalent node within the e-class, in this instance selecting the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
+The algorithm initiates at the e-class with the instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
+At \step{2}, it randomly selects an equivalent node within the e-class, in this instance taking the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
 
-As the traversal advances to \step{3}, it focuses on the left operand of the previously chosen node, settling on the \texttt{i64.const 0} node within the same e-class.
+As the traversal advances to \step{3}, it follows on the left operand of the previously chosen node, settling on the \texttt{i64.const 0} node within the same e-class.
 The process continues in \step{4}, where the right operand of the \texttt{i64.add} node is choosen, selecting the \texttt{container} operator yielding:
 {\texttt{expr = i64.or (i64.const 0 container ( r nop ))}}.
 

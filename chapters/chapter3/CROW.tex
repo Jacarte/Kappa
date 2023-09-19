@@ -60,7 +60,7 @@ For it, we have the premise of removing all built-in optimizations in the LLVM b
 We disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
 
 \msubsection{Constant inferring}
-
+\label{CROW:constant_inferring}
 CROW, through using Souper adds a new transformation strategy, \emph{constant inferring}.
 This means that Souper infers pieces of code as a single constant assignment. 
 In particular, Souper focuses on variables that are used to control branches.
