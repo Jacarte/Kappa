@@ -1,8 +1,9 @@
 \renewcommand{\tool}{WASM-MUTATE\xspace}
 \msection{\tool: Fast and Effective Binary for WebAssembly}
 
-In this section we present \tool, a tool to diversify that takes a WebAssembly program as input and produces functionally equivalent variants.
-\tool is highlighted as the blue squared tooling in \autoref{fig:approach_landscape}, its central approach involves synthesizing program variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs \cite{egraph}.
+In this section we present our third technical contribution, \tool \cite{wasmmutate}.
+It takes a WebAssembly program as input and produces functionally equivalent variants.
+\tool is highlighted as the blue squared tooling in \autoref{fig:approach_landscape}, its central approach involves synthesizing program variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs \cite{e-graph}.
 
 \begin{figure*}[h!]
     \centering
@@ -94,11 +95,11 @@ In addition, \tool introduces a \texttt{nop} instruction to substitute for the a
 
 
 \wrule{Loop Unrolling:} \tool randomly unrolls loops.
-Upon selecting a loop for unrolling, \tool segments its instructions using first-order breaks, i.e., jumps that lead back to the loop's beginning. 
+Upon selecting a loop for unrolling, \tool segments its instructions using first-order breaks, i.e., jumps that lead back to the loop's beginning (See section \autoref{background:wasm}). 
 This strategy maintains the integrity of branching instructions overseeing the loop body, accounting for the need for label index adjustments during the unrolling phase. 
 This principle applies equally to instructions guiding the transition to subsequent loop iterations.
 
-\todo{Define first order breaks in the Background section.}
+%\todo{Define first order breaks in the Background section.}
 
 As unrolling progresses, a fresh \wasm block emerges to contain both the replicated loop body and its original counterpart. 
 Within this block, the divided groups of instructions find a new block, mirroring their original state but with a pivotal alteration: branching instructions exiting the loop body have their jump indices incremented by one. 
@@ -143,7 +144,7 @@ The previous rewriting rule example implies that the \texttt{LHS} 'x' is to be r
 As illustrated in \autoref{fig:wasm-mutate}, the initial step in the process involves parsing an input \Wasm program, generating an intermediate representation. 
 This step facilitates the transition of the \Wasm program to the next stages of \tool. 
 This representation extends the textual Wat format.
-We augment it with custom operator instructions to enhance the transformation capabilities of \tool \cite{wat}.
+We augment it with custom operator instructions to enhance the transformation capabilities of \tool \cite{webassembly_runtime}.
 Custom operator instructions form part of the lowest level of transformation we provide in \tool, the Peephole meta-rule.
 
 These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques. 
@@ -172,13 +173,13 @@ Within an e-graph, there exist two distinct node types: e-nodes and e-classes.
 The former encapsulates either an operator or an operand present in the rewriting rule, while the latter groups e-nodes into equivalence classes, essentially serving as a composite virtual node that contains a collection of e-nodes. 
 Consequently, each e-class contains at least one e-node, with edges delineating the operator-operand equivalence relations between e-nodes and e-classes.
 
-\todo{This is cryptic}
+%\todo{This is cryptic}
 In the context of \tool, the e-graph is constructed from a WebAssembly program, drawing upon the analysis of its expressions and operations as depicted in data flow graphs. 
 This entails the transformation of each distinct expression, operator, and operand into e-nodes. 
 Next steps involve identifying equivalent expressions based on the corpus of rewriting rules, thereby clustering analogous e-nodes into e-classes. 
 This phase might also witness the introduction of new operators to the graph as e-nodes.
 
-As the final step, e-nodes in e-classes are interlinked through edges to illustrate their equivalence relationships, a dynamic process that evolves with the integration of new rewriting rules until reaching a point of equality saturation \cite{equality-saturation}.
+As the final step, e-nodes in e-classes are interlinked through edges to illustrate their equivalence relationships, a dynamic process that evolves with the integration of new rewriting rules until reaching a point of equality saturation \cite{10.1145/1480881.1480915}.
 
 % How to construct
 Let us illustrate the e-graph construction with a program that consists of a single instruction which returns an integer constant, denoted as \texttt{i64.const 0}. 
@@ -209,8 +210,8 @@ Finally, we successfully construct an e-graph that encapsulates the relationship
 
 % General use of case
 Willsey et al. demonstrated the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
-This methodology ensures the semantic equivalence of the derived code \cite{10.1145/3434304}. 
-For instance, to extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands \cite{10.1145/3385412.3386012}.
+This methodology ensures the semantic equivalence of the derived code \cite{e-graph}. 
+For instance, to extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
 In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a semantically equivalent code variant}. 
 
 The previous mentioned property is exploited in \autoref{e-graph}, showcasing the feasibility of crafting an endless series of "or" operations. 
@@ -249,7 +250,7 @@ Following this, the subexpressions are built (line 10) for each child node, culm
 
 \msubsection{\tool instantiation}
 
-\todo{FIX cross refs}
+% \todo{FIX cross refs}
 
 % Example of a random e-graph traversal 
 Let us illustrate how \too generates variant programs by using the before enunciated algorithm.
@@ -293,4 +294,4 @@ As we proceed to the subsequent encoding phases, the \texttt{container} operator
 Notice that, within the e-graph showcased in \autoref{e-graph3}, the container node maintains a presence across all e-classes. 
 Consequently, increasing the depth parameter in \autoref{peephole:mutator} would potentially escalate the number of viable variants infinitely.
 
-\todo{Augment this last paragraph.}
+%s\todo{Augment this last paragraph.}

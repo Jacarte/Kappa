@@ -1682,3 +1682,90 @@
    ISBN = {978-91-8040-327-6},
    year = {2022}
 }
+
+
+@ARTICLE{wasmmutate,
+       author = {{Cabrera-Arteaga}, Javier and {Fitzgerald}, Nicholas and {Monperrus}, Martin and {Baudry}, Benoit},
+        title = "{WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly}",
+      journal = {arXiv e-prints},
+     keywords = {Computer Science - Software Engineering},
+         year = 2023,
+        month = sep,
+          eid = {arXiv:2309.07638},
+        pages = {arXiv:2309.07638},
+          doi = {10.48550/arXiv.2309.07638},
+archivePrefix = {arXiv},
+       eprint = {2309.07638},
+ primaryClass = {cs.SE},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230907638C},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@article{e-graph,
+author = {Willsey, Max and Nandi, Chandrakana and Wang, Yisu Remy and Flatt, Oliver and Tatlock, Zachary and Panchekha, Pavel},
+title = {Egg: Fast and Extensible Equality Saturation},
+year = {2021},
+issue_date = {January 2021},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {5},
+number = {POPL},
+url = {https://doi.org/10.1145/3434304},
+doi = {10.1145/3434304},
+abstract = {An e-graph efficiently represents a congruence relation over many expressions. Although they were originally developed in the late 1970s for use in automated theorem provers, a more recent technique known as equality saturation repurposes e-graphs to implement state-of-the-art, rewrite-driven compiler optimizations and program synthesizers. However, e-graphs remain unspecialized for this newer use case. Equality saturation workloads exhibit distinct characteristics and often require ad-hoc e-graph extensions to incorporate transformations beyond purely syntactic rewrites. This work contributes two techniques that make e-graphs fast and extensible, specializing them to equality saturation. A new amortized invariant restoration technique called rebuilding takes advantage of equality saturation's distinct workload, providing asymptotic speedups over current techniques in practice. A general mechanism called e-class analyses integrates domain-specific analyses into the e-graph, reducing the need for ad hoc manipulation. We implemented these techniques in a new open-source library called egg. Our case studies on three previously published applications of equality saturation highlight how egg's performance and flexibility enable state-of-the-art results across diverse domains.},
+journal = {Proc. ACM Program. Lang.},
+month = {jan},
+articleno = {23},
+numpages = {29},
+keywords = {e-graphs, equality saturation}
+}
+
+
+@ARTICLE{2017arXiv171104422S,
+       author = {{Sasnauskas}, Raimondas and {Chen}, Yang and {Collingbourne}, Peter and {Ketema}, Jeroen and {Lup}, Gratian and {Taneja}, Jubi and {Regehr}, John},
+        title = "{Souper: A Synthesizing Superoptimizer}",
+      journal = {arXiv e-prints},
+     keywords = {Computer Science - Programming Languages},
+         year = 2017,
+        month = nov,
+          eid = {arXiv:1711.04422},
+        pages = {arXiv:1711.04422},
+          doi = {10.48550/arXiv.1711.04422},
+archivePrefix = {arXiv},
+       eprint = {1711.04422},
+ primaryClass = {cs.PL},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2017arXiv171104422S},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+
+}
+
+
+@misc{webassembly_runtime,
+  title = {WebAssembly Specification: WebAssembly Runtime},
+  author = {WebAssembly Community Group},
+  year = {2021},
+  note = {Version 1.0},
+  url = {https://webassembly.github.io/spec/core/exec/runtime.html},
+  howpublished = {\url{https://webassembly.github.io/spec/core/exec/runtime.html}}
+}
+
+
+@article{10.1145/3571207,
+author = {Cao, David and Kunkel, Rose and Nandi, Chandrakana and Willsey, Max and Tatlock, Zachary and Polikarpova, Nadia},
+title = {Babble: Learning Better Abstractions with E-Graphs and Anti-Unification},
+year = {2023},
+issue_date = {January 2023},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {7},
+number = {POPL},
+url = {https://doi.org/10.1145/3571207},
+doi = {10.1145/3571207},
+abstract = {Library learning compresses a given corpus of programs by extracting common structure from the corpus into reusable library functions. Prior work on library learning suffers from two limitations that prevent it from scaling to larger, more complex inputs. First, it explores too many candidate library functions that are not useful for compression. Second, it is not robust to syntactic variation in the input. We propose library learning modulo theory (LLMT), a new library learning algorithm that additionally takes as input an equational theory for a given problem domain. LLMT uses e-graphs and equality saturation to compactly represent the space of programs equivalent modulo the theory, and uses a novel e-graph anti-unification technique to find common patterns in the corpus more directly and efficiently. We implemented LLMT in a tool named babble. Our evaluation shows that babble achieves better compression orders of magnitude faster than the state of the art. We also provide a qualitative evaluation showing that babble learns reusable functions on inputs previously out of reach for library learning.},
+journal = {Proc. ACM Program. Lang.},
+month = {jan},
+articleno = {14},
+numpages = {29},
+keywords = {anti-unification, e-graphs, library learning}
+}

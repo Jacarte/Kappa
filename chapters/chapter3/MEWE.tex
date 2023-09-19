@@ -69,9 +69,6 @@ This also allows \tool to inline function variants inside the dispatcher instead
 % Here we trade security over performance since dispatcher functions that perform indirect calls, instead of a switch-case,  could improve the performance of the dispatchers as indirect calls have constant time.
 %It should be noted that the dispatcher function is constructed using the same signature as the original function. 
 
-
-\todo{Mention that MEWE inheretelly harden the analysis of the binary. WASMixer case.}
-
 \lstset{
     language=llvm,
     %style=nccode,
@@ -115,7 +112,7 @@ define internal i32 @foo(i32 %0) {
 
 \msubsection{MEWE's Mixer}
 
-\todo{Augment the description of the MIXER.}
+%\todo{Augment the description of the MIXER.}
 
 MEWE has four specific objectives: link the LLVM multivariant binary, inject a random generator, tamper the application's entrypoint, and merge all these components into a multivariant \wasm\ binary.
 We use the Rustc compiler\footnote{\url{https://doc.rust-lang.org/rustc/what-is-rustc.html}} to orchestrate the mixing.
@@ -125,4 +122,4 @@ The Mixer creates a new entrypoint for the binary called \emph{entrypoint tamper
 It wraps the dispatcher for the entrypoint variants as a new function for the final Wasm binary and is declared as the application entrypoint. 
 
 
-\todo{Blend this to the need of wasm-mutate}
+%\todo{Blend this to the need of wasm-mutate}

@@ -38,3 +38,38 @@
     Besides, CROW always generates equivalent programs because it is based on a solver to check for equivalence. 
     Second, there is a battle-tested superoptimizer for LLVM, Souper \cite. 
     This latter makes it feasible the construction of a generic LLVM superdiversifier. 
+
+
+\begin{table}
+    \centering
+    \begin{tabular}[pos]{l|l|l|l|l}
+         & Runtime & Managed memory & Unmanaged memory &   \\
+        \hline
+        CROW & No & Yes & Yes & No  \\
+        MEWE & No & Yes & Yes & No \\
+        WASM-MUTATE & Yes & Yes & Yes & Yes \\
+    \end{tabular}
+\end{table}
+
+
+\begin{table}
+    \centering
+    \begin{tabular}[pos]{l|l|l|l|l}
+         & Reversible & < Runtime & > Runtime & Fast gen. \\
+        \hline
+        CROW & No & Yes & Yes & No  \\
+        MEWE & No & Yes & Yes & No \\
+        WASM-MUTATE & Yes & Yes & Yes & Yes \\
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}[pos]{l|l|l|l|l}
+         & Core & Automatic & In. & Out \\
+        \hline
+        CROW & SMT & 1 & LLVM & \wasm \\
+        MEWE & CROW & 1 & LLVM & MVE \wasm \\
+        WASM-MUTATE & e-graph & 0.5 & \wasm & \wasm \\
+    \end{tabular}
+\end{table}

@@ -3,8 +3,6 @@
 \label{section:crow}
 \renewcommand{\tool}{CROW\xspace}
 
-\todo{Turn into a SMT based...not a superdiversifier.}
-
 %LLVM is a compound of three main components \cite{llvmofficialweb}. 
 %First, the frontend (compilers such as clang and rustc) converts the program source code to LLVM intermediate representation (LLVM IR). 
 %Second, optimization and transformation processes improve the LLVM IR. 
@@ -17,6 +15,7 @@ During the \textit{exploration} stage, CROW processes every instruction within e
 This process ensures a rich pool of options for the subsequent stage.
 In the \textit{combining} stage, these alternatives are assembled to form diverse LLVM IR variants, a task achieved through the exhaustive traversal of the power set of all potential combinations of code replacements. 
 The final step involves the custom Wasm LLVM backend, which compiles the crafted LLVM IR variants into \wasm binaries. 
+
 
 %All our implementation choices are based on one premise: \emph{each design decision should increase the number of \wasm\ variants that CROW creates.}
 %\subsection*{Overview}
@@ -55,11 +54,20 @@ Moreover, we disable the majority of the pruning strategies of Souper for the sa
 For example, Souper prevents the generation of the commutative operations during the searching.
 On the contrary, CROW still uses such transformation as a strategy to generate program variants. 
 
+
+The last stage involves the custom Wasm LLVM backend, which is in charge of generating the \wasm programs.
+For it, we have the premise of removing all built-in optimizations in the LLVM backend that could reverse Wasm variants.
+We disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
+
 \msubsection{Constant inferring}
 
-One of the code transformation strategies of Souper does \emph{constant inferring}. This means that Souper infers pieces of code as a single constant assignment. In particular, Souper focuses on variables that are used to control branches.
+CROW, through using Souper adds a new transformation strategy, \emph{constant inferring}.
+This means that Souper infers pieces of code as a single constant assignment. 
+In particular, Souper focuses on variables that are used to control branches.
 % By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 
 After a \emph{constant inferring}, the generated program is considerably different from the original program, being suitable for diversification.
+
+
 Let us illustrate the case with an example.
 The Babbage problem code in \autoref{babbage} is composed of a loop that stops when it discovers the smaller number that fits with the Babbage condition in Line 4.
 
@@ -125,19 +133,16 @@ In theory, this value can also be inferred by unrolling the loop the correct num
 However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.
 % Souper
 The original Souper deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached. Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
-The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR. Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}.
+The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}
+%  Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}
 
 
+\begin{comment}
 
-
-%\subsection{Removing subsequent optimizations for LLVM}
-
+\todo{This seems to be out of place :)}
 During the implementation of CROW, we have the premise of removing all built-in optimizations in the LLVM backend that could reverse Wasm variants.
 Therefore, we modify the \wasm\ backend.
 We disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
-In the following enumeration, we list three concrete optimizations that we remove from the \wasm~backend.\footnote{
-We only illustrate three of the removed optimization for the sake of simplicity.}
-
 \begin{itemize}
     \item Constant folding: this optimization calculates the operation over two (or more) constants in compiling time, and replaces the original expression by its constant result. For example, let us suppose \texttt{$a = 10 + 12$} a subexpression to be compiled, with the original optimization, the \wasm~ backend replaces it by \texttt{$a = 22$}.
     
@@ -145,6 +150,17 @@ We only illustrate three of the removed optimization for the sake of simplicity.
     
     \item Redundant operation removal: expressions such as the multiplication of variables by \texttt{$a = b2^n$} are replaced by shift left operations \texttt{$a = b << n$}.  
 \end{itemize}
+\end{comment}
+
+
+\msubsection{Combining replacements}
+
+When we retarget Souper, to create variants, we recombine all code replacements, including those for which a constant inferring was performed.
+This allows us to create variants that are also better than the original program in terms of size and performance. Most of the Artificial Software Diversification  works generate variants that are as performant or iller than the original program. By using a superdiversifier, we could be able to generate variants that are better, in terms of performance, than the original program. This will give the option to developers to decide between performance and diversification without sacrificing the former. 
+
+On the other hand, when Souper finds a replacement, it is applied to all equal instructions in the original LLVM binary. In our implementation, we apply the transformations one by one. 
+For example, if we find a replacement that is suitable for $N$ difference places in the original program, we generate $N$ different programs by applying the transformation in only one place at a time. Notice that this strategy provides a combinatorial explosion of program variants as soon as the number of replacements increases.
+
 
 
 \msubsection{CROW instantiation}
@@ -165,12 +181,4 @@ In the example, the power set is the cartesian product of the found candidate co
 \input{snippets/wasm_codes.tex}
 
 One might think that a reasonable heuristic could be implemented to avoid such overlapping cases. Instead, we have found it easier and faster to generate the variants with the combination of the replacement and check their uniqueness after the program variant is compiled. This prevents us from having an expensive checking for overlapping inside the CROW code. Still, this phenomenon calls for later optimizations in future works.
-
-
-\msubsection{Combining replacements}
-
-When we retarget Souper, to create variants, we recombine all code replacements, including those for which a constant inferring was performed.
-This allows us to create variants that are also better than the original program in terms of size and performance. Most of the Artificial Software Diversification  works generate variants that are as performant or iller than the original program. By using a superdiversifier, we could be able to generate variants that are better, in terms of performance, than the original program. This will give the option to developers to decide between performance and diversification without sacrificing the former. 
-
-On the other hand, when Souper finds a replacement, it is applied to all equal instructions in the original LLVM binary. In our implementation, we apply the transformation only to the instruction for which it was found in the first place. For example, if we find a replacement that is suitable for $N$ difference places in the original program, we generate $N$ different programs by applying the transformation in only one place at a time. Notice that this strategy provides a combinatorial explosion of program variants as soon as the number of replacements increases.
 
