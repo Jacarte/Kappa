@@ -38,7 +38,7 @@ Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ eng
 \msubsection{Multivariant generation}
 
 
-The key component of \tool consists in combining the variants into a single binary.
+The key component of \tool consists of combining the variants into a single binary.
 The goal is to support execution-path randomization at runtime.
 The core idea is to introduce one dispatcher function per original function with variants.
 A dispatcher function is a synthetic function in charge of choosing a variant at random when the original function is called.
@@ -48,7 +48,7 @@ With the introduction of the dispatcher function,  \tool turns the original call
 \begin{figure}
     \centering
   \includegraphics[width=.8\linewidth]{diagrams/CFG.png}
-  \caption{Example of two static call graphs. At the top, the original call graph, at the bottom, the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow). Figure taken from \cite{Lic}.
+  \caption{Example of two static call graphs. At the top, is the original call graph, and at the bottom, is the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow). Figure taken from \cite{Lic}.
 }
   \label{multivariant}
 \end{figure}

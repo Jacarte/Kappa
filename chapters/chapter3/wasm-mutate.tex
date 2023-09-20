@@ -9,7 +9,7 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
     \centering
     \includegraphics[width=0.9\linewidth]{diagrams/wasm_mutate.workflow.pdf}
     \caption{ \tool high level architecture.  It generates semantically equivalent variants from a given WebAssembly binary input. 
-    Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by a diversification space traversals using e-graphs.}
+    Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs.}
   \label{fig:wasm-mutate}
 \end{figure*}
 
@@ -45,15 +45,15 @@ The following text details the seven meta-rules utilized in \tool.
 
 \wrule{Add type:}
 \tool implements two rewrite rules for the Type Section of the input \Wasm program.
-These rewriting rules creates random function signatures, varying both, the number of parameters and the count of results. 
+These rewriting rules create random function signatures, varying both, the number of parameters and the count of results. 
 It ensures the consistency of the index of already defined types, even after the introduction of a new type.
-The following listing illustrated how WASM-MUTATE adds a new type definition based on this meta-rule. 
+The following listing illustrates how WASM-MUTATE adds a new type definition based on this meta-rule. 
 
 \input{snippets/snippets-wasm-mutate/structure_transform/add_type}
 
 \wrule{Add function:} 
 %In a \wasm binary, the function and code sections contain the function declarations and their respective code bodies. 
-\tool adds new random functions by mutating the code, type and function sections. 
+\tool adds new random functions by mutating the code, type, and function sections. 
 This process begins with the creation of a random type signature, followed by the formulation of a random function body that simply returns the default value corresponding to the result type. 
 An illustration of this transformation is provided in the subsequent example.
 
