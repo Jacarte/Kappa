@@ -75,19 +75,6 @@ It also adds rewriting rules to transform managed memory instructions, e.g. the 
 Memory alterations, either to the unmanaged or managed memories, have substantial implications for security. 
 For instance, they can counteract attacks by eliminating potential jump points that facilitate malicious activities within the binary, a preventive measure highlighted by Narayan et al. \cite{Swivel}.
 
-\msection{Accompanying artifacts}
-
-This thesis is accompanied by the source code of the three contributions, CROW, MEWE and WASM-MUTATE. 
-The source code is accessible through the links:
-\begin{enumerate}
-    \item CROW: \url{https://github.com/ASSERT-KTH/slumps}
-    %\item Customized LLVM backend: \url{https://github.com/Jacarte/llvm-project}
-    \item MEWE: \url{https://github.com/ASSERT-KTH/MEWE}
-    \item WASM-MUTATE: \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate}
-\end{enumerate}
-
-Our software artifacts are licensed under the MIT License. The dependent source codes, such as LLVM, are licensed under their original conditions.
-
 \msection{Conclusions}
 
 In this chapter we discuss the technical specifics underlying our primary technical contributions.
