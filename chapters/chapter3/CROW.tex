@@ -75,7 +75,7 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
 {
 
 
-\begin{minipage}[t]{0.45\linewidth}
+\begin{minipage}[t]{0.42\linewidth}
         \lstset{
         language=C,
         style=CStyle,
@@ -86,6 +86,8 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
         columns=fullflexible,
         breaklines=true, 
         caption={Babbage problem.},
+        frame=b,
+        captionpos=b,
         label=babbage,
         postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
     } 
@@ -101,7 +103,7 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
     }
     \end{lstlisting}
 \end{minipage}
-\begin{minipage}[t]{0.45\linewidth}
+\begin{minipage}[t]{0.48\linewidth}
         \lstset{
         language=C,
         style=CStyle,
@@ -111,6 +113,8 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
         abovecaptionskip=1pt,
         columns=fullflexible,
         breaklines=true, 
+        frame=b,
+        captionpos=b,
         caption={Constant inferring transformation over the original Babbage problem in \autoref{babbage}.},
         label=inferring,
         postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
@@ -120,6 +124,8 @@ int babbage() {
     @int current = 25264;@
     
     
+
+
 
 
     printf ("The number is %d\n", current);

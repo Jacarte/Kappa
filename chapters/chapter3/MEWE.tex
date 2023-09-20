@@ -59,16 +59,6 @@ The original program includes three functions. \tool generates 43 variants for t
 \tool introduces two dispatcher nodes for the first and third functions. Each dispatcher is connected to the corresponding function variants to invoke one variant randomly at runtime.
 
 
-% exaplanation of dispatcher
-In  \autoref{listing:multivariant_template}, we illustrate the LLVM construction for the function dispatcher corresponding to the right most green node of \autoref{multivariant}.
-It first calls the random generator, which returns a value used to invoke a specific function variant. 
-We implement the dispatchers with a switch-case structure to avoid indirect calls that can be susceptible to speculative execution-based attacks \cite{Narayan2021Swivel}. 
-The choice of a switch-case also avoids having multiple function definitions with the same signature, which could increase the attack surface in case the function signature is vulnerable \cite{johnson2021}.
-This also allows \tool to inline function variants inside the dispatcher instead of defining them again.
-% Move the following to the Evaluation of MEWE part
-% Here we trade security over performance since dispatcher functions that perform indirect calls, instead of a switch-case,  could improve the performance of the dispatchers as indirect calls have constant time.
-%It should be noted that the dispatcher function is constructed using the same signature as the original function. 
-
 \lstset{
     language=llvm,
     %style=nccode,
@@ -80,8 +70,9 @@ This also allows \tool to inline function variants inside the dispatcher instead
     float
 }
 
-\begin{code}
+\begin{minipage}[t]{0.9\linewidth}
 \scriptsize
+\centering
 \noindent\begin{minipage}[b]{\linewidth}
     \begin{minipage}[t]{1\linewidth}
         \begin{lstlisting}[escapeinside={(*}{*)}]
@@ -108,7 +99,18 @@ define internal i32 @foo(i32 %0) {
     \noindent\rule{\linewidth}{0.4pt}
     \captionof{lstlisting}{Dispatcher function embedded in the multivariant binary of the original function in the rightmost green node in \autoref{multivariant}.}\label{listing:multivariant_template}
 \end{minipage}
-\end{code}
+\end{minipage}
+
+% exaplanation of dispatcher
+In  \autoref{listing:multivariant_template}, we illustrate the LLVM construction for the function dispatcher corresponding to the right most green node of \autoref{multivariant}.
+It first calls the random generator, which returns a value used to invoke a specific function variant. 
+We implement the dispatchers with a switch-case structure to avoid indirect calls that can be susceptible to speculative execution-based attacks \cite{Narayan2021Swivel}. 
+The choice of a switch-case also avoids having multiple function definitions with the same signature, which could increase the attack surface in case the function signature is vulnerable \cite{johnson2021}.
+This also allows \tool to inline function variants inside the dispatcher instead of defining them again.
+% Move the following to the Evaluation of MEWE part
+% Here we trade security over performance since dispatcher functions that perform indirect calls, instead of a switch-case,  could improve the performance of the dispatchers as indirect calls have constant time.
+%It should be noted that the dispatcher function is constructed using the same signature as the original function. 
+
 
 \msubsection{MEWE's Mixer}
 

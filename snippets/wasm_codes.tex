@@ -21,9 +21,7 @@
 }
 
 
-\begin{code}
-    \centering
-    \captionof{lstlisting}{Wasm  program variants generated from program \autoref{CExample}.}\label{example:crow:variants:wasm}
+\begin{minipage}[t]{0.9\linewidth}
     \lstset{numbers=none}
     \noindent\begin{minipage}[t]{.45\linewidth}
     \begin{lstlisting}[xleftmargin=1em,escapechar=?]
@@ -61,8 +59,13 @@ func $f (param i32) (result i32)
     !i32.const 3!
     !i32.mul!
 
-            \end{lstlisting}
-        \end{minipage}
-\end{code}
+        \end{lstlisting}
+    \end{minipage}
+
+    \centering
+    \hrule
+    \vspace{2mm}
+    \captionof{lstlisting}{Wasm  program variants generated from program \autoref{CExample}.}\label{example:crow:variants:wasm}
+\end{minipage}
 
 

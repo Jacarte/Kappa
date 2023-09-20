@@ -55,7 +55,7 @@ Concretely, different control flows through a random discriminator, which expone
 
 
 
-An advantege of WASM-MUTATE, compared to CROW and MEWE, is its capacity to transform non-code sections without impacting the runtime behavior of the original variant, a strategy that effectively shields against static binary analysis, including malware detection based on signature sets \cite{EVASION}.
+An advantage of WASM-MUTATE, compared to CROW and MEWE, is its capacity to transform non-code sections without impacting the runtime behavior of the original variant, a strategy that effectively shields against static binary analysis, including malware detection based on signature sets \cite{EVASION}.
 For instance, it can modify the type section of a \Wasm program, a section typically utilized only for function signature validation during compilation and validation processes by the host engine. 
 This thwarts compiler identification techniques, such as fingerprinting.
 Besides, it can be used for masquerading as a different compilation source.

@@ -1,13 +1,16 @@
-\begin{code}
-    \lstset{language=C,
-    basicstyle=\small\ttfamily,caption={C function that calculates the quantity $2x + x$},label=CExample}
+\begin{minipage}[t]{.9\linewidth}
+%\begin{code}
+    \lstset{
+        language=C,
+        basicstyle=\small\ttfamily,captionpos=b,caption={C function that calculates the quantity $2x + x$.},label=CExample, frame=b}
+    
     \begin{lstlisting}[style=CStyle]
 int f(int x) { 
     return 2 * x + x; 
 }    
     \end{lstlisting}
-    
-\end{code}
+%\end{code}
+\end{minipage}
 
 \lstdefinelanguage{LLVM}
     {morekeywords={i32,mul,align,nsw,add,load,store,define,br, ret, shl, ret},
@@ -34,27 +37,23 @@ int f(int x) {
     breaklines=true
 }
 
-
-\begin{code}
-    \centering
-    \captionof{lstlisting}{LLVM's intermediate representation program, its extracted instructions and replacement candidates. Gray highlighted lines represent original code, green for code replacements. }\label{example:crow:original:llvm}
+\begin{minipage}[t]{0.9\linewidth}
+    
     \lstset{numbers=none}
-    \noindent\begin{minipage}[t]{.33\linewidth}
+    \noindent\begin{minipage}[t]{.34\linewidth}
     \centering
     \begin{lstlisting}[xleftmargin=1em,escapechar=?]
     define i32 @f(i32) {
 
-    ?\tikzmarkWS{2}{code 2}{11.5}{10}{3.5cm}?
-    ?\tikzmarkWS{1}{code 1}{11.5}{3.5}{3.0cm}?
-    %2 = mul nsw i32 %0,2
-    %3 = add nsw i32 %0,%2 
+      %2 = mul nsw i32 %0,2
+      %3 = add nsw i32 %0,%2 
 
-    ret i32 %3
+      ret i32 %3
     }
     
     define i32 @main() {
-    %1 = tail call i32 @f(i32 10)
-    ret i32 %1
+      %1 = tail call i32 @f(i32 10)
+      ret i32 %1
     }
     \end{lstlisting}
     \end{minipage}%\hfill%
@@ -94,16 +93,13 @@ int f(int x) {
 !%3 = mul nsw %0, 3:i32!
         \end{lstlisting}
     \end{minipage}
-    
-\end{code}
-
-
-
-
-
-\begin{code}
     \centering
-    \captionof{lstlisting}{Candidate code replacements combination. Orange highlighted code illustrate replacement candidate overlapping.}\label{example:crow:original:combination}
+    \hrule
+    \vspace{2mm}
+    \captionof{lstlisting}{LLVM's intermediate representation program, its extracted instructions and replacement candidates. Gray highlighted lines represent original code, green for code replacements. }\label{example:crow:original:llvm}
+\end{minipage}
+
+\begin{minipage}[t]{.9\linewidth}
     \lstset{numbers=none}
     \noindent\begin{minipage}[t]{.5\linewidth}
     \begin{lstlisting}[xleftmargin=1em,escapechar=?]
@@ -148,30 +144,9 @@ int f(int x) {
 
     \end{lstlisting}
     \end{minipage}
-\end{code}
-
-
-\begin{tikzpicture}[remember picture,overlay]
-%\path (2.north) edge[<-, bend left] (1.north);
-%\path[draw, ->] (3.west) edge[<-, bend left] (2.west);
-%\path (4.west) edge[<-, bend left] (3.west);
-%\path (1.south) edge[<-, bend left] (4.south);
-
-%\path (2.east) edge[<-, bend left, blue] (5.north);
-%\path (3.east) edge[<-, bend right, olive] (2.east);
-%\path (1.east) edge[<-, bend left, black] (replall1.west);
-%\path (2.east) edge[<-, bend left, black] (replall2.west);
-%\path (rep11.east) edge[<-, bend left, black] (6.east);
-%\path (9.east) edge[<-, bend right, black] (4.east);
-%\path (7.east) edge[<-, bend right, black] (8.east);
-%\path (5.south) edge[<-, bend right, blue] (4.east);
-%\path (9.north) edge[<-] (8.south);
-%\path (5.south) edge[<-, bend left] (9.south);
-
-
-%\path (10.north) edge[<-, bend left] (11.north);
-%\path (11.south) edge[<-, bend left] (10.south);
-%\path (7) edge[<-, bend right] (6.east);
-%\path (8) edge[<-, bend right] (7.east);
-\end{tikzpicture}
+    \centering
+    \hrule
+    \vspace{2mm}
+    \captionof{lstlisting}{Candidate code replacements combination. Orange highlighted code illustrate replacement candidate overlapping.}\label{example:crow:original:combination}
+\end{minipage}
 
