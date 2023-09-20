@@ -12,14 +12,13 @@ COUNTER = 1
 
 NAMES = [
     "intro",
-    "introduction",
-    "background",
-    "automatic software diversification",
-    "exploiting software diversi",
-    "conclusions",
+    "01introduction",
+    "02 background",
+    "03 automatic software",
+    "04exploiting software",
+    "05conclusions",
     "references"
 ]
-
 for i in range(inputpdf.numPages):
     output = PdfFileWriter()
     print(i)

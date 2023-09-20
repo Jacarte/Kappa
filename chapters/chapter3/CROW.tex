@@ -42,7 +42,8 @@ The concept of superoptimizing a program dates back to 1987, with the seminal wo
 % This paragraph is hard to read
 % How Souper works and why we can modify if
 % Souper works as follows.
-We modify Souper \cite{Sasnauskas2017Souper:Superoptimizer} to keep all possible solutions in their searching algorithm.
+We build CROW upon an already existing superoptimizer for LLVM called Souper \cite{Sasnauskas2017Souper:Superoptimizer}.
+Yet, we modify it  to keep all possible solutions in their searching algorithm.
 Souper builds a Data Flow Graph for each LLVM integer-returning instruction. 
 Then, for each Data Flow Graph, Souper exhaustively builds all possible expressions from a subset of the LLVM IR language.
 Each syntactically correct expression in the search space is semantically checked versus the original with a theorem solver. Souper synthesizes the replacements in increasing size. Thus, the first found equivalent transformation is the optimal replacement result of the searching. 
@@ -61,7 +62,7 @@ We disable all optimizations in the \wasm\ backend that could reverse the CROW t
 
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
-CROW, through using Souper adds a new transformation strategy, \emph{constant inferring}.
+CROW, through using Souper adds a new transformation strategy that lead to more \wasm program variants, \emph{constant inferring}.
 This means that Souper infers pieces of code as a single constant assignment. 
 In particular, Souper focuses on variables that are used to control branches.
 % By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 

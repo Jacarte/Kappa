@@ -19,13 +19,12 @@ Therefore, this thesis focuses to the exploration of diversification strategies 
 \end{figure}
 
 % Compiler based approaches
-Our compiler-based strategies are depicted in red and green in \autoref{fig:approach_landscape}. 
+Our compiler-based strategies are highlighted in red and green in \autoref{fig:approach_landscape}. 
 This approach introduces a diversifier component in the LLVM pipeline, generating LLVM IR variants and producing artificial software diversity for \wasm. 
-This strategy encompasses two tools: CROW \cite{CROW}, which creates \wasm program variants, and MEWE \cite{MEWE}, which merges these variants to foster multivariant execution for \wasm.
+This strategy encompasses two tools: CROW \cite{CROW}, which creates \wasm program variants, and MEWE \cite{MEWE}, which merges these variants to provide multivariant execution for \wasm.
 In contrast, the binary-based strategy, illustrated in blue in \autoref{fig:approach_landscape}, offers diversification for any \Wasm program, removing the need for compiler tuning. 
 WASM-MUTATE \cite{wasmmutate} generates a pool of \Wasm program variants through rewriting rules upon an e-graph \cite{e-graph} data structure.
 
 
 This dissertation contributes to the field of Software Diversification for \Wasm, presenting three main technical contributions: CROW, MEWE, and WASM-MUTATE, which will be elaborated upon in the subsequent sections.
-Besides, we compare our three technical contributions between them.
 
