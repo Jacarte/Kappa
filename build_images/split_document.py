@@ -27,6 +27,7 @@ for i in range(inputpdf.numPages):
     content = content.replace(" ", "")
     
     if any(content.startswith(n) for n in NAMES):
+        print("Split at", i)
         with open("%s/chapter%s.pdf" % (OUT, num), "wb") as outputStream:
             for p in pages:
                 output.addPage(p)
