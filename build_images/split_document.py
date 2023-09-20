@@ -13,9 +13,9 @@ COUNTER = 1
 NAMES = [
     "intro",
     "01introduction",
-    "02 background",
-    "03 automatic software",
-    "04exploiting software",
+    "02background",
+    "03automaticsoftware",
+    "04exploitingsoftware",
     "05conclusions",
     "references"
 ]
@@ -24,6 +24,7 @@ for i in range(inputpdf.numPages):
     print(i)
     content = inputpdf.getPage(i).extractText() + "\n"
     content = content.lower()
+    content = content.replace(" ", "")
     
     if any(content.startswith(n) for n in NAMES):
         with open("%s/chapter%s.pdf" % (OUT, num), "wb") as outputStream:
