@@ -27,8 +27,8 @@ While CROW and MEWE do not require any extra input but the program to diversify,
 Besides, their variants generation capabilities are limited by the \emph{overlapping} phenomenon discussed in \autoref{section:crow:example}.
 
 On the other hand, WASM-MUTATE adopts a semi-automatic approach, requiring users to set the rewriting rules. Thus, the responsibility of ensuring functional equivalence is transferred to the rule creation process.
-This tool offers a significant advantage over CROW and MEWE by allowing transformations to any section of a \wasm program, being not limited to the code section. 
-Moreover, it benefits from a virtually cost-free e-graph traversal process and avoids the \emph{overlapping}  issue seen in CROW and MEWE, as detailed in \autoref{section:crow:example}. 
+This tool offers a significant advantage over CROW and MEWE as it permits transformations in any section of a \wasm program, not just the code section.
+Moreover, it leverages a virtually cost-free e-graph traversal process, avoiding, as a direct consequence, the \emph{overlapping} issue seen in CROW and MEWE, as detailed in \autoref{section:crow:example}. 
 In addition, since WASM-MUTATE operates at the binary level, it can modify functions incorporated by the \Wasm producer itself.
 For example, this is the case of the \emph{wasm32-wasi} architecture.
 While the original program might have a few lines of code, the underlying compiler might inject more functions to support the \emph{wasm32-wasi} architecture.
@@ -66,7 +66,7 @@ CROW, MEWE, and WASM-MUTATE all have the capability to alter the original progra
 From a static perspective, such alterations serve to reduce potential attack surfaces, thereby impeding signature-based identification.
 Yet, modifying the layout of a \Wasm program inherently affects its unmanaged memory during runtime, a segment not overseen by the \Wasm program itself (see section \autoref{background:wasm:memory} for a detailed discussion on unmanaged memory). 
 This aspect is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
-Remarkably, CROW and MEWE considerably alter the unmanaged memory by modifying the layout of the \Wasm program.
+Significantly, CROW and MEWE considerably alter the unmanaged memory by modifying the layout of the \Wasm program.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
 
 
