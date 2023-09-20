@@ -22,7 +22,7 @@
          
 \vspace{8mm}
         \begin{lstlisting}[]{Name}
-LHS (module (type (func)))
+LHS (module (import "" "" (func ))))
         \end{lstlisting}
 \noindent\hrulefill
     \lstset{
@@ -32,7 +32,7 @@ LHS (module (type (func)))
         columns=fullflexible,
         breaklines=true}
         \begin{lstlisting}[numbers=none]{Name}
-RHS `- (module (import "" "" (func)))`
+RHS (module )
         \end{lstlisting}
 
 \lstset{
@@ -42,7 +42,7 @@ RHS `- (module (import "" "" (func)))`
         columns=fullflexible,
         breaklines=true}
         \begin{lstlisting}[numbers=none]{Name}
-Cond The removed function is not called, it is not exported, and it is not in the binary _table.
+Cond The removed function is not called, it is not exported, and it is not in the binary table.
         \end{lstlisting}
 }
 \end{minipage}
