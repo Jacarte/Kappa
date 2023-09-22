@@ -1,18 +1,14 @@
 
 \msection{\Wasm}
+
+\todo{Intro Wasm...history with JS asm.js and end up with growing edge, standalone ecosystem.}
 %% This will come in the Background section
 %In WebAssembly, the type section wraps definitions of signatures for the binary functions.
+To the best of our knowledge, the most complete survey about Wasm  tooling is presented in the Awesome Wasm  (\url{https://github.com/mbasso/awesome-wasm}) repo. It is a cumulative GitHub repo which includes references to articles, papers, books, demos, compilers and engines related to \wasm. 
 
-\msubsection{WebAssembly ecosystems}
-\label{background:wasm:ecosystems}
 
-The \Wasm's ecosystem can be categorized into two groups: producers and consumers.
-The former ones, such as compilers, are in charge of generating \Wasm binaries out of source code.
-\todo{Do a rephrase here about the producers. what are the most common sources of Wasm etc}
-
-The latter ones, such as browsers, are in charge of compiling, analyzing and executing \Wasm binaries.
-\todo{Here, we discuss what happens after we get  Wasm binary? What to do with it?}
-\todo{Mention, stress the landscape of tools that involve Wasm. Include analysis tools, fuzzers, optimizers and malware detectors.}
+\msubsection{Binary format}
+\label{background:wasm:binary}
 
 
 
@@ -21,8 +17,6 @@ The latter ones, such as browsers, are in charge of compiling, analyzing and exe
 
 \todo{The concept of managed and unmanaged data in Wasm from Lehman.}
 \todo{Define: managed and unmanaged data, sections, execution stack, etc.}
-\msubsection{Binary format}
-\label{background:wasm:binary}
 
 \Wasm's custom sections serve to save metadata, including details such as the compiler name responsible for generating the binary and symbol information pertinent to debugging. 
 \tool alters custom sections. 
@@ -90,6 +84,28 @@ Wasm  also provides global variables in their four primitive types. Global varia
 In Wasm, all instructions are grouped into blocks, where the start of a function is the root block. Two consecutive block declarations can be appreciated in \lineref{block1} and \lineref{block2} of \autoref{WASMExample}. Control flow structures jump between block boundaries and not to any position in the code like regular assembly code. A block may specify the state that the stack must have before its execution and the result stack value coming from its instructions. Inside the Wasm  binary the blocks explicitly define where they start and end (\lineref{end1} and \lineref{end2}). By design, each block executes independently and cannot execute or refer to outer block codes. This is guaranteed by explicitly annotating the state of the stack before and after the block. Three instructions handle the navigation between blocks: unconditional break, conditional break (\lineref{break1} and \lineref{break2}) and table break. Each break instruction can only jump to one of its enclosing blocks. For example, in \autoref{WASMExample}, \lineref{break1} forces the execution to jump to the end of the first block that starts at \lineref{block1} if the value at the top of the stack is greater than zero.
 
 
+
+% We do not enumerate the types, lets try to be as much agnostic to the version of Wasm as possible
+WebAssembly programs operate on a virtual stack that allows primitive data types.
+% These same data types are used to annotate instructions in the WebAssembly code.
+Additionally, a WebAssembly program might include several custom sections.
+For example, binary producers such as compilers use custom sections to store metadata, such as the name of the compiler that generates the Wasm code.
+A WebAssembly program also declares memory sections and globals, which are used to store, manipulate and share data during program execution, e.g. to share data with the host engine of the WebAssembly binary.
+
+WebAssembly is designed with isolation as a primary consideration. For instance, a WebAssembly binary cannot access the memory of other binaries or cannnot interact directly with browser's APIs, such as the DOM or the network. Instead, communication with these features is constrained to functions imported from the host engine, ensuring a secure and safe Wasm environment.
+Moreover, control flow in WebAssembly is managed through explicit labels and well-defined blocks, which means that jumps in the program can only occur inside blocks, unlike regular assembly code \cite{10.1145/3062341.3062363}. 
+%\todo{Change the example to Rust}
+In \autoref{example:cprogram}, we provide an example of a Rust program that contains a function declaration, a loop, a loop conditional, and a memory access. When the Rust code is compiled to WebAssembly, it produces the code shown in \autoref{example:wasmprogram}. The stack operations are folded with parentheses.
+The module in the example contains the components described previously.
+
+% Now we talk a bit about what is the state of a Wasm program.
+%\todo{The following text should be revised. }
+
+The WebAssembly runtime structure is described in the WebAssembly specification and it includes 10 key elements: the Store, Stack, Locals, Module Instances, Function Instances, Table Instances, Memory Instances, Global Instances, Export Instances, and Import Instances. These components interact during the execution of a WebAssembly program, collectively defining the state of a program during its runtime.
+
+Two of these elements, the Stack and Memory instances, are particularly significant in maintaining the state of a WebAssembly program during its execution. The Stack holds both values and control frames, with control frames handling block instructions, loops, and function calls. Meanwhile, Memory Instances represent the linear memory of a WebAssembly program, consisting of a contiguous array of bytes.
+In this paper, we highlight the aforementioned two components to define, compare and validate the state of two Wasm programs during their execution. 
+
 \msubsection{Types}
 \msubsection{Memory model}
 \label{background:wasm:memory}
@@ -100,3 +116,60 @@ In Wasm, all instructions are grouped into blocks, where the start of a function
 \todo{First order breaks}
 
 \todo{Words on version 1.0 and why our tools  have no issues with it.}
+
+
+
+\msubsection{WebAssembly ecosystems}
+\label{background:wasm:ecosystems}
+\Wasm programs are pre-compiled from a variety of source languages for execution in host engines like web browsers. We divide the \Wasm ecosystem into two primary categories: producers and consumers.
+
+\wrule{Producers}, such as compilers, play a pivotal role in transforming source code into \Wasm binaries. 
+For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\footnote{\url{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
+In parallel developments, the KMM framework\cite{kmm} has incorporated \Wasm as a compilation target, and the Javy approach\cite{Javy} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
+This is achieved by porting both the engine and the source code into a secure \Wasm environment. 
+Blazor also enables the compilation of C# code into \Wasm binaries for browser execution\footnote{\url{https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor}}.
+Regardless of the source language or framework, the resulting \Wasm binary functions similar to a traditional shared library, replete with code instructions, symbols, and exported functions.
+%From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
+%It falls upon the producers to specify which functions from the host environment will be imported by the \Wasm application.
+
+\wrule{Consumers} encompass tools that undertake the tasks of validating, analyzing, transpiling to machine code, and executing \Wasm binaries, e.g. browser clients. 
+In the sections that follow, we delve into specific categories of consumer tools and their respective domains of application.
+
+
+\wrule{Static analysis and validation:} The toolkit for analysing \Wasm binaries is rich and varied. 
+Tools such as Wassail\cite{wassail}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} utilize a range of methodologies, including information flow control, code property graphs, and concolic execution, to identify vulnerabilities. 
+Dynamic analysis counterparts like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} serve analogous functions.
+\todo{Add veriwasm}
+
+\wrule{Browsers} Engines like V8\cite{v8}, SpiderMonkey\cite{spidermonkey}, and Chakra\cite{chakra} are at the forefront of executing \Wasm binaries. 
+These engines leverage Just-In-Time (JIT) compilers to convert \Wasm into machine code. 
+This translation is typically a straightforward one-to-one mapping, given that \Wasm is already an optimized format closely aligned with machine code. 
+For example, V8 employs quick, rudimentary optimizations such as constant folding and dead code removal\footnote{This analysis was corroborated through discussions with the V8 development team and through empirical studies in one of our contributions\cite{CROW}}. 
+
+\wrule{Standalone engines} \Wasm's applicability has transcended browser environments, largely due to the WebAssembly System Interface (WASI)\cite{WASI}. 
+WASI aims to standardize the interaction between host environments and \Wasm modules, thereby facilitating portability of both bytecode and binaries across diverse platforms. 
+It outlines a POSIX-like Application Binary Interface (ABI), which includes functionalities for filesystem access, network sockets, clocks, and random number generation, among others. 
+Standalone engines such as WASM3\cite{wasm3}, wasmtime\cite{wasmtime}, and WAVM\cite{WAVM} have emerged to support \Wasm.
+\todo{Disect them into, JIT compilers and interpreters, ending with SWAM.}
+\todo{Add the verifiable standalone engine here}
+
+\wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{minsweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis techniques. 
+Conversely, dynamic analysis is the forte of tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard}.
+
+\wrule{Smart Contract Analysis}: In the burgeoning field of smart contracts, static analysis tools like EvalHunter\cite{evalhunter}, WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm-based contracts. Dynamic analysis tools in this sphere include EOSFuzzer\cite{eosfuzzer} and wasai\cite{wasai}.
+
+While many existing tools  self-rigorous correctness evaluations and extensive test suites, the \Wasm ecosystem is still in its infancy. 
+To put this into perspective, a study by Hilbig et al.\cite{Hilbig2021AnES} found approximately 8,000 unique \Wasm binaries in existence globally in 2021.
+This pales in comparison to more mature ecosystems like JavaScript and Python, which offer 1.5 million and 1.7 million packages on npm\footnote{\url{https://www.npmjs.com/}} and PyPI\footnote{\url{https://pypi.org/}}, respectively. 
+This is especially dangerous for analysis tools relying on machine learning, as they require large datasets to train their models.
+In concrete, one of your contributions for which this dissertation is based, highlights this fact \cite{EVASION}.
+On the other hand, we believe that the potential number of existing \Wasm is a small playground to batle test consumers. 
+Finally,  despite the proven efficacy of Software Diversification as a preemptive security measure, the \Wasm ecosystem currently lacks tools that focus on binary diversification. 
+This dissertation aims to address this void by offering a comprehensive suite of tools designed to bolster the security of \Wasm programs, while also subjecting the ecosystem's producers and consumers to stringent testing.
+
+
+\todo{Add the recent ones.}
+
+\todo{Standalone implementations: WASI, WASM3, WASMtime, WASM3, WAVM, WAM}
+
+\todo{Section on current tools.}
