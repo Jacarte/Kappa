@@ -121,7 +121,9 @@ In this paper, we highlight the aforementioned two components to define, compare
 
 \msubsection{WebAssembly ecosystems}
 \label{background:wasm:ecosystems}
-\Wasm programs are pre-compiled from a variety of source languages for execution in host engines like web browsers. We divide the \Wasm ecosystem into two primary categories: producers and consumers.
+\Wasm programs are pre-compiled from a variety of source languages for execution in host engines like web browsers. 
+We divide the \Wasm ecosystem categories where the most important ones are the producers and consumers.
+
 
 \wrule{Producers}, such as compilers, play a pivotal role in transforming source code into \Wasm binaries. 
 For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\footnote{\url{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
@@ -136,10 +138,11 @@ Regardless of the source language or framework, the resulting \Wasm binary funct
 In the sections that follow, we delve into specific categories of consumer tools and their respective domains of application.
 
 
-\wrule{Static analysis and validation:} The toolkit for analysing \Wasm binaries is rich and varied. 
+\wrule{Static analysis, optimization and validation:} The toolkit for analysing \Wasm binaries is rich and varied. 
 Tools such as Wassail\cite{wassail}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} utilize a range of methodologies, including information flow control, code property graphs, and concolic execution, to identify vulnerabilities. 
 Dynamic analysis counterparts like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} serve analogous functions.
 \todo{Add veriwasm}
+\todo{Binanryen}
 
 \wrule{Browsers} Engines like V8\cite{v8}, SpiderMonkey\cite{spidermonkey}, and Chakra\cite{chakra} are at the forefront of executing \Wasm binaries. 
 These engines leverage Just-In-Time (JIT) compilers to convert \Wasm into machine code. 
@@ -158,18 +161,12 @@ Conversely, dynamic analysis is the forte of tools like SEISMIC\cite{SEISMIC}, R
 
 \wrule{Smart Contract Analysis}: In the burgeoning field of smart contracts, static analysis tools like EvalHunter\cite{evalhunter}, WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm-based contracts. Dynamic analysis tools in this sphere include EOSFuzzer\cite{eosfuzzer} and wasai\cite{wasai}.
 
-While many existing tools  self-rigorous correctness evaluations and extensive test suites, the \Wasm ecosystem is still in its infancy. 
-To put this into perspective, a study by Hilbig et al.\cite{Hilbig2021AnES} found approximately 8,000 unique \Wasm binaries in existence globally in 2021.
-This pales in comparison to more mature ecosystems like JavaScript and Python, which offer 1.5 million and 1.7 million packages on npm\footnote{\url{https://www.npmjs.com/}} and PyPI\footnote{\url{https://pypi.org/}}, respectively. 
-This is especially dangerous for analysis tools relying on machine learning, as they require large datasets to train their models.
-In concrete, one of your contributions for which this dissertation is based, highlights this fact \cite{EVASION}.
-On the other hand, we believe that the potential number of existing \Wasm is a small playground to batle test consumers. 
-Finally,  despite the proven efficacy of Software Diversification as a preemptive security measure, the \Wasm ecosystem currently lacks tools that focus on binary diversification. 
-This dissertation aims to address this void by offering a comprehensive suite of tools designed to bolster the security of \Wasm programs, while also subjecting the ecosystem's producers and consumers to stringent testing.
-
-
-\todo{Add the recent ones.}
-
-\todo{Standalone implementations: WASI, WASM3, WASMtime, WASM3, WAVM, WAM}
-
-\todo{Section on current tools.}
+While many existing tools purport to offer self-correctness evaluations and exhaustive test suites, the \Wasm ecosystem is still in its early stages. 
+To emphasize this, a 2021 study by Hilbig et al.\cite{Hilbig2021AnES} found a mere 8,000 unique \Wasm binaries globally. 
+This pales in comparison to mature ecosystems like JavaScript and Python, which offer 1.5 million and 1.7 million packages on npm\footnote{\url{https://www.npmjs.com/}} and PyPI\footnote{\url{https://pypi.org/}}, respectively.
+This limited pool of \Wasm binaries presents a unique challenge for machine learning-based analysis tools, which require large datasets for effective training. 
+This issue is explicitly addressed in one of the contributions of this dissertation\cite{EVASION}.
+Additionally, the scarcity of \Wasm programs exacerbates the problem of software monoculture, increasing the likelihood of consuming a compromised \Wasm program\cite{YourCitationHere}.
+Besides, the current size of the \Wasm ecosystem offers an inadequate testing environment for rigorously evaluating the capabilities of consumer tools.
+This dissertation aims to address these issues by introducing a comprehensive suite of tools. 
+These tools are crafted to not only bolster the security of \Wasm programs through Software Diversification but also to intensify the testing rigor for both producers and consumers in the ecosystem.
