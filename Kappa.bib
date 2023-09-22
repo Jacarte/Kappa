@@ -1857,3 +1857,148 @@ url = {https://www.usenix.org/conference/usenixsecurity21/presentation/narayan},
 publisher = {USENIX Association},
 month = aug,
 }
+
+%%%%%%% WASM SOTA
+
+@INPROCEEDINGS{WasmA,
+  author={Breitfelder, Florian and Roth, Tobias and Baumgärtner, Lars and Mezini, Mira},
+  booktitle={2023 IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER)}, 
+  title={WasmA: A Static WebAssembly Analysis Framework for Everyone}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={753-757},
+  doi={10.1109/SANER56733.2023.00085}
+}
+
+
+@inproceedings{wassail,
+  title={Wassail: a webassembly static analysis library},
+  author={Sti{\'e}venart, Quentin and De Roover, Coen},
+  booktitle={Fifth International Workshop on Programming Technology for the Future Web},
+  year={2021}
+}
+
+@article{wasmati,
+  title={Wasmati: An efficient static vulnerability scanner for WebAssembly},
+  author={Brito, Tiago and Lopes, Pedro and Santos, Nuno and Santos, Jos{\'e} Fragoso},
+  journal={Computers \& Security},
+  volume={118},
+  pages={102745},
+  year={2022},
+  publisher={Elsevier}
+}
+
+@inproceedings{Wasp,
+  title={Concolic Execution for WebAssembly (Artifact)},
+  author={Marques, Filipe and Fragoso Santos, Jos{\'e} and Santos, Nuno and Ad{\~a}o, Pedro},
+  year={2022},
+  organization={Schloss Dagstuhl-Leibniz-Zentrum f{\"u}r Informatik}
+}
+
+@article{Taintassembly,
+  title={Taintassembly: Taint-based information flow control tracking for webassembly},
+  author={Fu, William and Lin, Raymond and Inge, Daniel},
+  journal={arXiv preprint arXiv:1802.01050},
+  year={2018}
+}
+
+@inproceedings{Wasabi,
+  title={Wasabi: A framework for dynamically analyzing webassembly},
+  author={Lehmann, Daniel and Pradel, Michael},
+  booktitle={Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems},
+  pages={1045--1058},
+  year={2019}
+}
+
+@article{Fuzzm,
+  title={Fuzzm: Finding memory bugs through binary-only instrumentation and fuzzing of webassembly},
+  author={Lehmann, Daniel and Torp, Martin Toldam and Pradel, Michael},
+  journal={arXiv preprint arXiv:2110.15433},
+  year={2021}
+}
+
+@inproceedings{Minesweeper,
+  title={Minesweeper: An in-depth look into drive-by cryptocurrency mining and its defense},
+  author={Konoth, Radhesh Krishnan and Vineti, Emanuele and Moonsamy, Veelasha and Lindorfer, Martina and Kruegel, Christopher and Bos, Herbert and Vigna, Giovanni},
+  booktitle={Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security},
+  pages={1714--1730},
+  year={2018}
+}
+@inproceedings{MineThrottle,
+  author = {Bian, Weikang and Meng, Wei and Zhang, Mingxue},
+  title = {MineThrottle: Defending against Wasm In-Browser Cryptojacking},
+  year = {2020},
+  isbn = {9781450370233},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3366423.3380085},
+  doi = {10.1145/3366423.3380085},
+  abstract = {In-browser cryptojacking is an urgent threat to web users, where an attacker abuses the users’ computing resources without obtaining their consent. In-browser mining programs are usually developed in WebAssembly (Wasm) for its great performance. Several prior works have measured cryptojacking in the wild and proposed detection methods using static features and dynamic features. However, there exists no good defense mechanism within the user’s browser to stop the malicious drive-by mining behavior. In this work, we propose MineThrottle, a browser-based defense mechanism against Wasm cryptojacking. MineThrottle instruments Wasm code on the fly to detect mining behavior using block-level program profiling. It then throttles drive-by mining behavior based on a user-configurable policy. Our evaluation of MineThrottle with the Alexa top 1M websites demonstrates that it can accurately detect and mitigate in-browser cryptojacking with both a low false positive rate and a low false negative rate.},
+  booktitle = {Proceedings of The Web Conference 2020},
+  pages = {3112–3118},
+  numpages = {7},
+  keywords = {Cryptocurrency mining, WebAssembly, Cryptojacking},
+  location = {Taipei, Taiwan},
+  series = {WWW '20}
+}
+
+  
+
+@inproceedings{MINOS,
+  title={MINOS: A Lightweight Real-Time Cryptojacking Detection System.},
+  author={Naseem, Faraz Naseem and Aris, Ahmet and Babun, Leonardo and Tekiner, Ege and Uluagac, A Selcuk},
+  booktitle={NDSS},
+  year={2021}
+}
+
+
+
+@inproceedings{SEISMIC,
+  title={Seismic: Secure in-lined script monitors for interrupting cryptojacks},
+  author={Wang, Wenhao and Ferrell, Benjamin and Xu, Xiaoyang and Hamlen, Kevin W and Hao, Shuang},
+  booktitle={Computer Security: 23rd European Symposium on Research in Computer Security, ESORICS 2018, Barcelona, Spain, September 3-7, 2018, Proceedings, Part II 23},
+  pages={122--142},
+  year={2018},
+  organization={Springer}
+}
+
+@inproceedings{Outguard,
+  title={Outguard: Detecting in-browser covert cryptocurrency mining in the wild},
+  author={Kharraz, Amin and Ma, Zane and Murley, Paul and Lever, Charles and Mason, Joshua and Miller, Andrew and Borisov, Nikita and Antonakakis, Manos and Bailey, Michael},
+  booktitle={The World Wide Web Conference},
+  pages={840--852},
+  year={2019}
+}
+
+@inproceedings{MinerRay,
+  title={Minerray: Semantics-aware analysis for ever-evolving cryptojacking detection},
+  author={Romano, Alan and Zheng, Yunhui and Wang, Weihang},
+  booktitle={Proceedings of the 35th IEEE/ACM International Conference on Automated Software Engineering},
+  pages={1129--1140},
+  year={2020}
+}
+
+@inproceedings{RAPID,
+  title={Rapid: Resource and api-based detection against in-browser miners},
+  author={Rodriguez, Juan D Parra and Posegga, Joachim},
+  booktitle={Proceedings of the 34th Annual Computer Security Applications Conference},
+  pages={313--326},
+  year={2018}
+}
+
+%% Special this comes from Wang
+@article{WANA,
+  title={WANA: Symbolic execution of wasm bytecode for cross-platform smart contract vulnerability detection},
+  author={Wang, Dong and Jiang, Bo and Chan, WK},
+  journal={arXiv preprint arXiv:2007.15510},
+  year={2020}
+}
+
+@inproceedings{WASAI,
+  title={WASAI: uncovering vulnerabilities in Wasm smart contracts},
+  author={Chen, Weimin and Sun, Zihan and Wang, Haoyu and Luo, Xiapu and Cai, Haipeng and Wu, Lei},
+  booktitle={Proceedings of the 31st ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  pages={703--715},
+  year={2022}
+}

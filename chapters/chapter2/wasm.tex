@@ -119,13 +119,17 @@ In this paper, we highlight the aforementioned two components to define, compare
 
 
 
-\msubsection{WebAssembly ecosystems}
+\msubsection{WebAssembly's Ecosystem}
 \label{background:wasm:ecosystems}
-\Wasm programs are pre-compiled from a variety of source languages for execution in host engines like web browsers. 
-We divide the \Wasm ecosystem categories where the most important ones are the producers and consumers.
 
+\todo{Go deep into the details of the tools that are comoing from parts of the jury}
 
-\wrule{Producers}, such as compilers, play a pivotal role in transforming source code into \Wasm binaries. 
+\Wasm programs are pre-compiled from an array of source languages and are designed for execution in host environments such as web browsers.
+Though the execution of a \Wasm program might be considered its final lifecycle stage, the \Wasm ecosystem is far from simplistic.
+It comprises multiple stakeholders and a rich array of tools that cater to various needs.
+In the subsequent text, we describe the \Wasm ecosystem and explore its key stakeholders.
+
+\wrule{Producers}, such as compilers, transform source code into \Wasm binaries. 
 For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\footnote{\url{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 In parallel developments, the KMM framework\cite{kmm} has incorporated \Wasm as a compilation target, and the Javy approach\cite{Javy} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
 This is achieved by porting both the engine and the source code into a secure \Wasm environment. 
@@ -135,10 +139,11 @@ Regardless of the source language or framework, the resulting \Wasm binary funct
 %It falls upon the producers to specify which functions from the host environment will be imported by the \Wasm application.
 
 \wrule{Consumers} encompass tools that undertake the tasks of validating, analyzing, transpiling to machine code, and executing \Wasm binaries, e.g. browser clients. 
-In the sections that follow, we delve into specific categories of consumer tools and their respective domains of application.
+In the text that follows, we dissect them into specific categories and their respective domains of application.
 
+\todo{Locate WasmA} \cite{WasmA}
 
-\wrule{Static analysis, optimization and validation:} The toolkit for analysing \Wasm binaries is rich and varied. 
+\wrule{Static and dynamic analysis, optimization and validation:} The toolkit for analysing \Wasm binaries is rich and varied. 
 Tools such as Wassail\cite{wassail}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} utilize a range of methodologies, including information flow control, code property graphs, and concolic execution, to identify vulnerabilities. 
 Dynamic analysis counterparts like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} serve analogous functions.
 \todo{Add veriwasm}
@@ -156,10 +161,13 @@ Standalone engines such as WASM3\cite{wasm3}, wasmtime\cite{wasmtime}, and WAVM\
 \todo{Disect them into, JIT compilers and interpreters, ending with SWAM.}
 \todo{Add the verifiable standalone engine here}
 
-\wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{minsweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis techniques. 
+\wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis techniques. 
 Conversely, dynamic analysis is the forte of tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard}.
 
-\wrule{Smart Contract Analysis}: In the burgeoning field of smart contracts, static analysis tools like EvalHunter\cite{evalhunter}, WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm-based contracts. Dynamic analysis tools in this sphere include EOSFuzzer\cite{eosfuzzer} and wasai\cite{wasai}.
+\wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like EvalHunter\cite{evalhunter}, WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm-based contracts. Dynamic analysis tools in this sphere include EOSFuzzer\cite{eosfuzzer} and wasai\cite{wasai}.
+
+
+\wrule{Obfuscation, and binary rewriting tools} \todo{WASMixer, Wobfuscator}
 
 While many existing tools purport to offer self-correctness evaluations and exhaustive test suites, the \Wasm ecosystem is still in its early stages. 
 To emphasize this, a 2021 study by Hilbig et al.\cite{Hilbig2021AnES} found a mere 8,000 unique \Wasm binaries globally. 
@@ -167,6 +175,6 @@ This pales in comparison to mature ecosystems like JavaScript and Python, which 
 This limited pool of \Wasm binaries presents a unique challenge for machine learning-based analysis tools, which require large datasets for effective training. 
 This issue is explicitly addressed in one of the contributions of this dissertation\cite{EVASION}.
 Additionally, the scarcity of \Wasm programs exacerbates the problem of software monoculture, increasing the likelihood of consuming a compromised \Wasm program\cite{YourCitationHere}.
-Besides, the current size of the \Wasm ecosystem offers an inadequate testing environment for rigorously evaluating the capabilities of consumer tools.
+Besides, the current size of the \Wasm ecosystem offers a small testing environment for evaluating the capabilities of consumer tools.
 This dissertation aims to address these issues by introducing a comprehensive suite of tools. 
 These tools are crafted to not only bolster the security of \Wasm programs through Software Diversification but also to intensify the testing rigor for both producers and consumers in the ecosystem.
