@@ -144,7 +144,7 @@ Below, we demonstrate a rewriting rule that leverages it to insert \texttt{nop} 
 
 \input{snippets/snippets-wasm-mutate/custom_operators/useglobal.tex}
 
-\noindent This rewriting rule is meant to stress the unmanaged memory through random access to global variables.
+\noindent This rewriting rule is meant to stress the managed memory through random access to global variables.
 
 \wrule{unfold:} this operator, working with a constant numeric operand, statically generates two numbers whose sum equals the constant, followed by the addition of operations for these numbers.
 

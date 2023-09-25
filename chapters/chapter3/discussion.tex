@@ -64,14 +64,14 @@ Thus, reducing the fingerprinting surface available to attackers.
 
 CROW, MEWE, and WASM-MUTATE can alter the original program structure, either by eliminating dead code or by introducing additional elements. 
 From a static perspective, such alterations serve to reduce potential attack surfaces, thereby impeding signature-based identification.
-Yet, modifying the layout of a \Wasm program inherently affects its unmanaged memory during runtime, a segment not overseen by the \Wasm program itself (see section \autoref{background:wasm:memory} for a detailed discussion on unmanaged memory). 
+Yet, modifying the layout of a \Wasm program inherently affects its managed memory during runtime, a segment not overseen by the \Wasm program itself (see section \autoref{background:wasm:memory} for a detailed discussion on unmanaged memory). 
 This aspect is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
-Significantly, CROW and MEWE considerably alter the unmanaged memory by modifying the layout of the \Wasm program.
+Significantly, CROW and MEWE considerably alter the managed memory by modifying the layout of the \Wasm program.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
 
 
-Furthermore, WASM-MUTATE not only affects unmanaged memory through changes in the \Wasm program layout.
-It also adds rewriting rules to transform managed memory instructions, e.g. the rewriting rule involving the \texttt{useglobal} custom operator previously discussed in \autoref{custom}.
+Furthermore, WASM-MUTATE not only affects managed memory through changes in the \Wasm program layout.
+It also adds rewriting rules to transform unmanaged memory instructions, e.g. the rewriting rule involving the \texttt{useglobal} custom operator previously discussed in \autoref{custom}.
 Memory alterations, either to the unmanaged or managed memories, have substantial security implications. 
 For instance, they can counteract attacks by eliminating potential jump points that facilitate malicious activities within the binary, a preventive measure highlighted by Narayan et al. \cite{Swivel}.
 
