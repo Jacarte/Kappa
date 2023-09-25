@@ -1,143 +1,213 @@
 
 \msection{\Wasm}
 
-The Web Consortium (W3C) standardized in 2017 a bytecode for the web environment, the \Wasm language. 
-% Describe WebAssembly
-Wasm is designed to be fast, portable, self-contained, and secure \cite{Haas_2017}.
-All Wasm programs are compiled ahead-of-time from source languages such as C/C++ and Rust.
-All major browser vendors have adopted \Wasm as a standard for web applications.
+Starting with the Web 2.0 paradigm, JavaScript has long been the language for client-side scripting in modern web browsers. 
+However, its complexity, security vulnerabilities, and performance limitations have led to the exploration of various alternatives for client-side scripting over the years \cite{javaapplet,activex,silverlight}. 
+Remarkably, these alternatives largely failed to gain traction, primarily due to security concerns and a lack of consensus among browser vendors.
+
+% asm.js and the demonstration of bad language patterns
+In 2014, Alon Zakai and colleagues proposed Emscripten \cite{emscripten}. 
+Emscripten used a strict subset of JavaScript, asm.js, to allow low-level code such as C to be compiled to JavaScript. 
+This approach came with the benefits of having all the ahead-of-time optimizations from LLVM, gaining in performance on browser clients \cite{asmjs}.
+Asm.js was faster than JavaScript because it limited the language features to those that can be optimized in the LLVM pipeline. 
+Besides, it removed the majority of the dynamic characteristics of the language.
+Since asm.js was a subset of JavaScript it was compatible with all engines at that moment. 
+Asm.js demonstrated that client-code could be improved with the right language design and standardization.
+
+%The work of Van Es \etal \cite{EsAsm.js} proposed to shrink JavaScript to asm.js in a source-to-source strategy, closing the cycle and demystifying the fact that asm.js was mainly a compilation target for C/C++ code. 
+Following the asm.js initiative, the W3C publicly announced the \Wasm\ (Wasm) language in 2017. \wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017. 
+The announcement of \wasm\ marked the first step into the standardization of bytecode in the web environment. 
+Wasm is designed to be fast, portable, self-contained and secure, and it promises to outperform JavaScript execution \cite{Haas_2017}. 
+Since 2017, the adoption of \wasm\ keeps growing. For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}; and the case of Blazor\footnote{\url{https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor}}, a .Net virtual machine implemented in Wasm, able to execute C\# code in the browser.
+
+
 Moreover, WebAssembly has been evolving outside web browsers since its first announcement.
-
-
 Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 Consequently, in 2019, the Bytecode Alliance \cite{bytecodealliance} proposed WebAssembly System Interface (WASI) \cite{WASI}. 
 WASI pionered the execution of \wasm\ with a POSIX system interface protocol, making possible to execute Wasm directly in the operating system. 
-Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, making it suitable for edge-cloud computing platforms \cite{9640153, wen2020wasmachine}
-In the subsequent sections we describe the \wasm\ language, its execution model, and its ecosystem.
+Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, making it suitable for edge-cloud computing platforms \cite{9640153, wen2020wasmachine}.
 
 \msubsection{Binary format}
 \label{background:wasm:binary}
 
+A \Wasm binary usually consists of a single module that serves as the foundational unit for deployment, loading, and compilation. 
+A \Wasm program requires a host environment for execution. 
+This host is tasked with loading the \Wasm binary and allocating the necessary resources for its successful operation. 
+The interaction between the engine and the \Wasm program is fundamentally dictated by the structure of the binary itself.
+In essence, a \Wasm binary serves as a contract between the \Wasm program and the host engine. 
+It comprises a mix of definitions and declarations that establish the rules of engagement. 
+In this context, a declaration refers to a newly specified element, such as the bodies of functions inside the binary, while a definition refers to an element originating from the host, such as imported functions.
+
+A \wasm binary is organized into sections, each with a distinct semantic role and specific placement within the module. 
+This structured organization facilitates further machine code compilation. 
+Table \ref{background:wasm:sections} provides a summary of these sections, detailing their ID, name, and purpose.
+As illustrated in Figure \ref{background:wasm:fig:section}, a \Wasm section is a byte sequence that begins with a 1-byte section ID, followed by an 8-byte section size, and concludes with the section content, which matches the previously indicated size.
+
+
 \begin{table}
     \centering
     \begin{tabular}{r l | p{8cm}}
-        ID & Section Name & Description \\
-        \midrule
-        0 & Custom & It is a compound of two parts, the name of the section followed by arbitrary content. It is mostly used to store metadata of the \wasm program such as the compiler that generates the binary. \\
-        \hline
-        1 & Type & Function signatures of the functions declared or defined inside the binary. \\
-        \hline
-        2 & Import & Imported elements from the host such as: functions, memories, globals and tables. \\
-        \hline
-        3 & Function & Functions defined inside the binary. It is basically a map between the Type section entries and the code entries defined in the Code section.  \\
-        \hline
-        4 & Table & Contains groups of functions that follow the same signature. It is used to control indirect calls. \\
-        \hline
-        5 & Memory & Defines the number of unmanaged linear memories along with its initial size.\\
-        \hline
-        6 & Global & Defines global variables are managed memory to be used and shared between functions in the \wasm binary. \\
-        \hline
-        7 & Export & Declares functions, globals, memories and tables to be accessed by the host engine. For example, the entry point of the \wasm binary is declared as an exported function. \\
-        \hline
-        8 & Start & \Wasm can declare a function to be called as soon as the binary is ready for execution. It serves to initialize the state of the \wasm program previous to the execution of any of its exported functions. \\
-        \hline
-        9 & Element & List of elements to initialize the binary tables \todo{Check this} \\
-        \hline
-        10 & Code & Body of defined functions in the Function section. Each entry is a compound of the used local variables and the function body. The latter one is a list of instructions. \\
-        \hline
-        11 & Data & Data used to initialize the unmanaged linear memory. Each entry contains the offset and the data that should be placed in the linear memory. \\
-        \hline
-        12 & Data Count & It is mostly used to validate the Data Section of the binary. If the number of segments declared in the Data Section does not match with the Data Count section, the binary is malformed.\\
+    ID & Section Name & Description \\
+    \midrule
+    0 & Custom & Comprises two parts: the section name and arbitrary content. Primarily used for storing metadata, such as the compiler used to generate the binary. \\
+    1 & Type & Contains the function signatures for functions declared or defined within the binary. \\
+    2 & Import & Lists elements imported from the host, including functions, memories, globals, and tables. \\
+    3 & Function & Details functions defined within the binary. Essentially maps Type section entries to Code section entries. \\
+    4 & Table & Groups functions with identical signatures to control indirect calls. \\
+    5 & Memory & Specifies the number and initial size of unmanaged linear memories. \\
+    6 & Global & Defines global variables as managed memory for use and sharing between functions in the \Wasm binary. \\
+    7 & Export & Declares elements like functions, globals, memories, and tables for host engine access. The entry point of the \Wasm binary is typically declared here. \\
+    8 & Start & Designates a function to be called upon binary readiness, initializing the \Wasm program state before executing any exported functions. \\
+    9 & Element & Contains elements to initialize the binary tables. \\
+    10 & Code & Contains the body of functions defined in the Function section. Each entry consists of local variables used and a list of instructions. \\
+    11 & Data & Holds data for initializing unmanaged linear memory. Each entry specifies the offset and data to be placed in memory. \\
+    12 & Data Count & Primarily used for validating the Data Section. If the segment count in the Data Section mismatches the Data Count, the binary is considered malformed. \\
     \end{tabular}
-    \caption{Binary section of \Wasm binaries following \wasm 1.0 specification.}
+    \caption{Overview of binary sections in \Wasm binaries, following the \Wasm 1.0 specification.}
     \label{background:wasm:sections}
 \end{table}
-
-
-A Wasm binary has a unique module as its main component, serving as the fundamental unit of deployment, loading and compilation of a \Wasm program.
-A module is composed of sections, corresponding to 13 types\footnote{\url{https://webassembly.github.io/spec/core/binary/modules.html\#sections}}, each of them with an explicit semantic and a specific order inside the module. 
-This makes the compilation to machine code faster. 
-In \autoref{background:wasm:sections} we summarize the sections of a Wasm  binary.
-Each table entry contains: the section ID, the name of the section, and a brief description of its purpose. 
-
-\begin{figure}
+    
+    
+    \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{figures/section.pdf}
-    \caption{Wasm binary section. It starts with the section ID followed by the section size and the section content.}
+    \caption{Memory byte representation of a \Wasm binary section, starting with a 1-byte section ID, followed by an 8-byte section size, and finally the section content.}
     \label{background:wasm:fig:section}
-\end{figure}
-
-\todo{Recheck this}
-In \autoref{background:wasm:fig:section} we illustrate the memory bytes representation of a \wasm section.
-A \wasm section is a collection of bytes that starts with 1 byte annotating the ID of the section. 
-Then 8 bytes follows annotating the size of the section in bytes. 
-Finally, the content of the section follows with exactly the size annotated in the previous step.  
-
-% The order of the sections sometimes does not matter, neither their presence
-Some sections in the binary are optional, such as the Start section, which is not mandatory to be present in the binary.
-The same applies to the Custom sections, which is used to store metadata of the binary, such as the compiler that generates the binary.
-Given the previously mentioned section format inside the binary, it is possible to skip sections by just ignoring the bytes that correspond to the section.
-This makes the processing of \wasm (for example compiling) faster, as the compiler does not need to parse the whole binary to find the section it is looking for.
-On the other hand, the only order constraint is related to a few sections, not all. 
-This means that the order of the sections is not important in some specific cases.
-Moreover, sections could be repeated in the binary, such as the Data section, which can be repeated as many times as the user wants.
-
-\msubsection{Memory model}
-\label{background:wasm:memory}
-\todo{Managed and unmanaged}
+    \end{figure}
+    
 
 
-% Memory, globals and functions
-Wasm  manages the memory in a restricted way. A Wasm  module has a linear memory component that is accessed with \texttt{i32} pointers (integer of 32 bits) and should be isolated from the virtual stack. The declaration of the linear data in the memory is showed in \lineref{data}. The memory access is illustrated in \lineref{load}. This memory is usually bound in browser engines to 4Gb of size, and it is only shareable between the process that instantiate the Wasm  binary and the binary itself (explicitly declared in \lineref{mem1} and \lineref{export2}). This ensures the isolation of the execution of Wasm  code. 
+Some sections, like the Start and Custom sections, are optional, enhancing the binary's flexibility. 
+The Custom section, for instance, can store metadata such as the compiler used. 
+The modular format allows for efficient parsing; a compiler can skip irrelevant sections, speeding up the compilation process. 
+Additionally, only a few sections have order constraints, offering further flexibility. Custom sections can even be repeated multiple times within the binary.
 
-Wasm  also provides global variables in their four primitive types. Global variables (\lineref{global1}) are only accessible by their declaration index, and it is not possible to dynamically address them. For functions, Wasm  follows the same mechanism, either the functions are called by their index (\lineref{call}) or using a static table of function declarations. The latter allows modeling dynamic calls of functions (through pointers) from languages such as C/C++, for which the Wasm's compiler is in charge of populating the static table of functions.
+% Should we discuss the function body here?
 
 
-\msubsection{Execution model}
+\msubsection{\Wasm's Runtime structure}
 \label{background:wasm:execution}
-\todo{Stack, frames and blocks}
-\todo{First order breaks}
 
-Functions, instructions, and variables are statically typed, meaning their types are deter- 
-mined at compile time. There exist only four primitive values types: 32-bit and 64-bit integers 
-(i32/i64) and single-precision and double-precision floating-point numbers (f32/f64). Aggregate 
-types, such as classes, objects, and arrays, are not natively supported. Instead, during compilation, 
-such types are transformed into primitive types and stored in memory.
+\todo{Reorder this text according with the wrules}
+
+The \Wasm runtime structure is described in the WebAssembly specification by enunciating 10 key components: the Store, Stack, Locals, Module Instances, Function Instances, Table Instances, Memory Instances, Global Instances, Export Instances, and Import Instances. 
+These components are particularly significant in maintaining the state of a WebAssembly program during its execution. 
+In the following text, we provide a brief description of each runtime component.
+
+\wrule{Store}: The WebAssembly store represents the global state and is a collection of instances of functions, tables, memories, and globals. Each of these instances is uniquely identified by an address, which is usually represented as an i32 integer.
+
+
+\wrule{Module Instances}: A module instance is a runtime representation of a loaded and initialized WebAssembly module. 
+It contains the runtime representation of all the definitions within a module, including functions, tables, memories, and globals, as well as the module's exports and imports.
+
+
+\wrule{Table instances}: A table instance is a vector of function elements. 
+WebAssembly tables are used to support indirect function calls.
+For example, it allows modeling dynamic calls of functions (through pointers) from languages such as C/C++, for which the Wasm's compiler is in charge of populating the static table of functions.
+
+
+\wrule{Export Instances}: Export instances represent the functions, tables, elements, globals or memories that are exported by a module. 
+
+\wrule{Import Instances}: Import instances represent the functions, tables, elements, globals or memories that are imported into a module from the host. 
+
+\wrule{The Stack} holds typed values and control frames, with control frames handling block instructions, loops, and function calls.
+Values inside the stack can be of the only static types allowed in Wasm 1.0, \texttt{i32} for 32 bits signed integer, \texttt{i64} for 64 bits signed integer, \texttt{f32} for 32 bits float and \texttt{f64} for 64 bits float.
+Therefore, abstract types, such as classes, objects, and arrays, are not natively supported. 
+Instead, during compilation, such types are transformed into primitive types and stored in the linear memory.
+
+\wrule{Memory Instances} represent the unmanaged linear memory of a WebAssembly program, consisting of a contiguous array of bytes.
+Memory instances are accessed with \texttt{i32} pointers (integer of 32 bits). 
+Memory instances are usually bound in browser engines to 4Gb of size, and it is only shareable between the process that instantiates the \Wasm module and the binary itself.
+
+\wrule{Global Instances}: A global instance is a global variable with a value and a mutability flag, indicating whether the global can be modified or is immutable.
+Global variables are part of the managed data, i.e., their allocation and memory placement are managed by the host engine.
+Global variables are only accessible by their declaration index, and it is not possible to dynamically address them. 
+
+
+\wrule{Locals}: Locals are mutable variables that are local to a specific function invocation. As globals, locals are part of the managed data.
+
+\begin{note}\label{managed_unmanaged}
+    Along with this dissertation, as the work of Lehmann \etal \cite{usenixWasm2020}, we refer to managed and unmanaged data to differentiate between the data that is managed by the host engine and the data that is managed by the \Wasm program respectively.
+\end{note}
+
+\wrule{Function Instances}: A function instance is a closure, which is the pairing of a function's code with a module instance. This pairing is required because the function's code might refer to other definitions within the module instance, such as globals, tables, or memories.
+A function instance groups locals and a function body.
+Locals are typed variables that are local to a specific function invocation.
+The function body is a sequence of instructions that are executed when the function is called.
+Each instruction either reads from the stack, writes to the stack, or modifies the control flow of the function.
+
+\msubsection{Control flow}
+
+In \Wasm, functions are organized into blocks, with the function's starting point serving as the root block. 
+Unlike traditional assembly code, control flow structures in Wasm jump between block boundaries rather than arbitrary positions within the code. 
+Each block might specify the required stack state before execution and the resulting stack state after its instructions have run. 
+This stack state is used to validate the binary during compilation and to ensure that the stack is in a valid state before executing the block's instructions.
+Blocks in Wasm are explicit, indicating, with instructions, where they start and end.
+
+By design, each block operates autonomously and cannot reference or execute code from outer blocks. 
+Control flow within a function is managed through three types of break instructions: unconditional break, conditional break, and table break. 
+Importantly, each break instruction is limited to jumping to one of its enclosing blocks.
+
+Loops in Wasm are specialized blocks that can be restarted using a break instruction. Unlike standard blocks, where breaks jump to the end of the block, breaks within a loop block jump to the block's beginning, effectively restarting the loop. 
+To illustrate this, \autoref{background:wasm:block} provides an example comparing a standard block and a loop block in a Wasm function.
+
+\input{snippets/jumps.tex}
+
+Each break instruction includes the depth of the enclosing block as an operand. 
+This depth is used to identify the target block for the break instruction. 
+For example, in the left-most part of the previously discussed listing, a break instruction with a depth of 1 would jump past two enclosing blocks.
+
+
+For the purposes of this dissertation, we introduce a specific term to describe a particular kind of break within loops:
+
+\begin{definition}\label{first_order_jump}
+Break instructions within loops that effectively jump to the loop's beginning are termed \emph{first-order breaks}.
+\end{definition}
+
+
+\msubsection{From Source Code to Wasm }
+
+\todo{Replace by Rust example}
+\todo{Annotate the Wasm code with the sections offset and length}
+\todo{Instantiate each one of the previously mentioned concepts}
 
 % Example and intro to the stack
-In \autoref{CExample} and \autoref{WASMExample} we illustrate a C program and the Wasm program that results from its compilation. The C function contains: heap allocation, external function declaration and the definition of a function with a loop, conditional branching, function calls and memory accesses. The code in \autoref{WASMExample} shows the textual format for the generated Wasm. The module in this case first defines the signature of the functions (\lineref{tpe1}, \lineref{tpe2}  and  \lineref{tpe3})  that help in the validation of the binary defining its parameter and result types. The information exchange between the host and the Wasm  binary might be in two ways, exporting and importing functions, memory and globals to and from the host engine (\lineref{import1}, \lineref{export1} and \lineref{export2}). The definition of the function (\lineref{func1}) and its body follows the last import declaration at \lineref{import1}. 
+In \autoref{CExample1} and \autoref{WASMExample} we illustrate a C program and the Wasm program that results from its compilation. 
+The C function contains: heap allocation, external function declaration and the definition of a function with a loop, conditional branching, function calls and memory accesses. 
+The code in \autoref{WASMExample} shows the textual format for the generated Wasm. 
+The module in this case first defines the signature of the functions (\lineref{tpe1}, \lineref{tpe2}  and  \lineref{tpe3})  that help in the validation of the binary defining its parameter and result types. The information exchange between the host and the Wasm  binary might be in two ways, exporting and importing functions, memory and globals to and from the host engine (\lineref{import1}, \lineref{export1} and \lineref{export2}). The definition of the function (\lineref{func1}) and its body follows the last import declaration at \lineref{import1}. 
 
-
-The WebAssembly runtime structure is described in the WebAssembly specification and it includes 10 key elements: the Store, Stack, Locals, Module Instances, Function Instances, Table Instances, Memory Instances, Global Instances, Export Instances, and Import Instances. These components interact during the execution of a WebAssembly program, collectively defining the state of a program during its runtime.
-
-Two of these elements, the Stack and Memory instances, are particularly significant in maintaining the state of a WebAssembly program during its execution. The Stack holds both values and control frames, with control frames handling block instructions, loops, and function calls. Meanwhile, Memory Instances represent the linear memory of a WebAssembly program, consisting of a contiguous array of bytes.
-In this paper, we highlight the aforementioned two components to define, compare and validate the state of two Wasm programs during their execution. 
 
 % Example
 \begin{code}
-    \begin{minipage}[t]{0.45\linewidth}
+    \begin{minipage}[b]{0.45\linewidth}
         \lstset{language=C,caption={Example C function.},
-        label=CExample,
+        label=CExample1,
         breaklines=true, 
         basicstyle=\small\ttfamily,
+        captionpos=b,
+        frame=b,
+        numbers=none,
         postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
         escapeinside={(*@}{@*)}
         }
-%\input{sota/code/code.c}
+\input{sota/code/code.c}
 \end{minipage}\hspace{10mm}
-\begin{minipage}[t]{0.46\linewidth}
+\begin{minipage}[b]{0.46\linewidth}
 \lstset{
     language=WAT,
-    caption={\wasm\ code  for \autoref{CExample}.},
+    caption={\wasm\ code  for \autoref{CExample1}.},
     style=WATStyle,
     breaklines=true, 
     %stepnumber=0,
+    captionpos=b,
+    frame=b,
     escapeinside={(*@}{@*)},
-    numbers=left,
+    numbers=none,
     postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
     label=WASMExample}
 %
-%\input{sota/code/code.fix.wat}
+\input{sota/code/code.fix.wat}
 %\end{lstlisting}
 \end{minipage}
 
@@ -157,27 +227,8 @@ In this paper, we highlight the aforementioned two components to define, compare
 
 
 % Functions
-The function body is composed of local-variable declarations and typed instructions that are evaluated using a virtual stack (Line 7 to Line 32 in \autoref{WASMExample}). Each instruction reads its operands from the stack and pushes back the result. The result of a function call is the top value of the stack at the end of the execution. In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add} at \lineref{result}. A valid Wasm  binary should have a valid stack structure that is verified during its translation to machine code. The stack validation is carried out using the static types of Wasm, \texttt{i32} for 32 bits signed integer, \texttt{i64} for 64 bits signed integer, \texttt{f32} for 32 bits float and \texttt{f64} for 64 bits float. As the listing shows, instructions are annotated with a numeric type.
-
-In Wasm, all instructions are grouped into blocks, where the start of a function is the root block. Two consecutive block declarations can be appreciated in \lineref{block1} and \lineref{block2} of \autoref{WASMExample}. Control flow structures jump between block boundaries and not to any position in the code like regular assembly code. A block may specify the state that the stack must have before its execution and the result stack value coming from its instructions. Inside the Wasm  binary the blocks explicitly define where they start and end (\lineref{end1} and \lineref{end2}). By design, each block executes independently and cannot execute or refer to outer block codes. This is guaranteed by explicitly annotating the state of the stack before and after the block. Three instructions handle the navigation between blocks: unconditional break, conditional break (\lineref{break1} and \lineref{break2}) and table break. Each break instruction can only jump to one of its enclosing blocks. For example, in \autoref{WASMExample}, \lineref{break1} forces the execution to jump to the end of the first block that starts at \lineref{block1} if the value at the top of the stack is greater than zero.
-
-
-\todo{Words on version 1.0 and why our tools  have no issues with it.}
-
-
-
-% We do not enumerate the types, lets try to be as much agnostic to the version of Wasm as possible
-WebAssembly programs operate on a virtual stack that allows primitive data types.
-% These same data types are used to annotate instructions in the WebAssembly code.
-Additionally, a WebAssembly program might include several custom sections.
-For example, binary producers such as compilers use custom sections to store metadata, such as the name of the compiler that generates the Wasm code.
-A WebAssembly program also declares memory sections and globals, which are used to store, manipulate and share data during program execution, e.g. to share data with the host engine of the WebAssembly binary.
-
-WebAssembly is designed with isolation as a primary consideration. For instance, a WebAssembly binary cannot access the memory of other binaries or cannnot interact directly with browser's APIs, such as the DOM or the network. Instead, communication with these features is constrained to functions imported from the host engine, ensuring a secure and safe Wasm environment.
-Moreover, control flow in WebAssembly is managed through explicit labels and well-defined blocks, which means that jumps in the program can only occur inside blocks, unlike regular assembly code \cite{10.1145/3062341.3062363}. 
-%\todo{Change the example to Rust}
-In \autoref{example:cprogram}, we provide an example of a Rust program that contains a function declaration, a loop, a loop conditional, and a memory access. When the Rust code is compiled to WebAssembly, it produces the code shown in \autoref{example:wasmprogram}. The stack operations are folded with parentheses.
-The module in the example contains the components described previously.
+The function body is composed of local-variable declarations and typed instructions that are evaluated using a virtual stack (Line 7 to Line 32 in \autoref{WASMExample}). Each instruction reads its operands from the stack and pushes back the result. The result of a function call is the top value of the stack at the end of the execution. In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add} at \lineref{result}. 
+As the listing shows, instructions are annotated with a numeric type.
 
 
 \msubsection{WebAssembly's Ecosystem}
@@ -188,7 +239,7 @@ The module in the example contains the components described previously.
 \Wasm programs are pre-compiled from an array of source languages and are designed for execution in host environments such as web browsers.
 Though the execution of a \Wasm program might be considered its final lifecycle stage, the \Wasm ecosystem is far from simplistic.
 It comprises multiple stakeholders and a rich array of tools that cater to various needs.
-In the subsequent text, we describe the \Wasm ecosystem and explore its key stakeholders.
+In the subsequent text, we describe the \Wasm ecosystem by separating it into skateholders categories.
 
 \wrule{Producers}, such as compilers, transform source code into \Wasm binaries. 
 For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\footnote{\url{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
@@ -245,3 +296,19 @@ These tools are crafted to not only bolster the security of \Wasm programs throu
 
 
 To the best of our knowledge, the most complete survey about Wasm  tooling is presented in the Awesome Wasm  (\url{https://github.com/mbasso/awesome-wasm}) repo. It is a cumulative GitHub repo which includes references to articles, papers, books, demos, compilers and engines related to \wasm. 
+
+
+\msubsection{WebAssembly's Security}
+
+\todo{Check the attack primitives defined by Lehmann.}
+
+As we described, \wasm\ is deterministic and well-typed, follows a structured control flow and explicitly separates its linear memory model, global variables and the execution stack. This design is robust \cite{WebAssemblySecurity} and makes it easy for compilers and engines to sandbox the execution of Wasm  binaries. Following the specification of Wasm  for typing, memory, virtual stack and function calling,
+host environments should provide protection against data corruption, code injection, and return-oriented programming (ROP).
+
+However, implementations in both browsers and standalone runtimes~\cite{Narayan2021Swivel} are vulnerable.
+Genkin \etal demonstrated that Wasm  could be used to exfiltrate data using cache timing-side channels \cite{Genkin2018DrivebyKC}.
+Moreover, binaries itself can be vulnerable. The work of Lehmann \etal ~\cite{usenixWasm2020} proved that C/C++ source code vulnerabilities can propagate to Wasm  such as overwriting constant data or manipulating the heap by overflowing the stack. Even though these vulnerabilities need a specific standard library implementation to be exploited, they make a call for better defenses for \wasm. 
+Recently, Stiévenart and colleagues demonstrate that C/C++ source code vulnerabilities can be ported to Wasm \cite{DeRoover2022}.
+% Current proposals
+Several proposals for extending \wasm\ in the current roadmap could address some existing vulnerabilities. For example, having multiple memories\footnote{\url{https://github.com/WebAssembly/multi-memory/blob/main/proposals/multi-memory/Overview.md}} could incorporate more than one memory, stack and global spaces, shrinking the attack surface. However, the implementation, adoption and settlement of the proposals are far from being a reality in all browser vendors\footnote{\url{https://webassembly.org/roadmap/}}. 
+% In fact, according to the work of Hilbig \etal \cite{Hilbig2021AnES}, the artificial variants created with one of our works contribute to the half of executable and available \wasm\ binaries in the wild.

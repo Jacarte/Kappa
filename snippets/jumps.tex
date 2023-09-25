@@ -1,0 +1,65 @@
+
+\begin{minipage}{0.95\linewidth}
+   
+   \begin{minipage}{0.45\linewidth}
+      \lstset{
+      language=WAT,
+      style=WATStyle,
+      breaklines=true, 
+      %stepnumber=0,
+      escapeinside={(*@}{@*)},
+      numbers=none,
+      postbreak=\mbox{\space},
+      label=WASMExample}
+
+   \begin{lstlisting}    
+block
+   block
+      br 1 (*@\tikzmarkMap{2}{}{8.5}{2}{2cm}@*) ; Jump instructions are annotated with the depth of the block they jump to; 
+   end (*@\tikzmarkMap{7}{}{8.5}{0}{2cm}@*)
+end (*@\tikzmarkMap{1}{}{8}{3}{2cm}@*)
+... (*@\tikzmarkMap{9}{}{8.5}{2}{2cm}@*)
+   \end{lstlisting}
+   \end{minipage}\hspace{1mm}
+   \begin{minipage}{0.44\linewidth}
+   \lstset{
+      language=WAT,
+      style=WATStyle,
+      breaklines=true, 
+      %stepnumber=0,
+      escapeinside={(*@}{@*)},
+      numbers=none,
+      postbreak=\mbox{\space},
+      label=WASMExample}
+
+   \begin{lstlisting}    
+loop (*@\tikzmarkMap{6}{}{8.5}{2}{2cm}@*)
+   ...
+   br 0 (*@\tikzmarkMap{5}{}{8.5}{2}{2cm}@*) ;first-order break;
+   ... 
+end (*@\tikzmarkMap{3}{}{8.5}{2}{2cm}@*) ; end instructions break the block and jump to next instruction; 
+... (*@\tikzmarkMap{4}{}{8.5}{-2}{2cm}@*)
+   \end{lstlisting}
+   \end{minipage}
+   \begin{tikzpicture}[remember picture,overlay]
+
+      %\path (2.west) edge[<-, black] (1.west);
+      %\path (3.west) edge[<-,  black] (4.west);
+   
+      \path (1.west) edge[<-, bend right, black] (2.west);
+      %\path (1.west) edge[<-, bend right, gray] (7.west);
+      %\path (9.west) edge[<-, bend right, gray] (1.west);
+   
+      \path (4.west) edge[<-, bend right, gray] (3.west);
+      \path (6.west) edge[<-, bend left, black] (5.west);
+      %\path (9.east) edge[<-, bend right, black] (4.east);
+      %\path (7.east) edge[<-, bend right, black] (8.east);
+   
+      \end{tikzpicture}
+      \centering
+      \hrule
+      \vspace{2mm}
+      \captionof{lstlisting}{Example of breaking a block and a loop in \Wasm.}
+      \label{background:wasm:block}
+\end{minipage}
+% Example
