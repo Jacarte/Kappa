@@ -111,7 +111,7 @@ In addition, some sections are annotated as comments in the Wasm code in \autore
 
 \wrule{Code Section (\texttt{10})}: Contains the body of functions defined in the Function section. Each entry consists of local variables used and a list of instructions. It must occur only once in a binary. It can be empty.
 
-\wrule{Data Section (\texttt{11})}: Holds data for initializing unmanaged linear memory. Each entry specifies the offset and data to be placed in memoryIt must occur only once in a binary. It can be empty.
+\wrule{Data Section (\texttt{11})}: Holds data for initializing unmanaged linear memory. Each entry specifies the offset and data to be placed in memory. It must occur only once in a binary. It can be empty.
 
 \wrule{Data Count Section (\texttt{12})}: Primarily used for validating the Data Section. If the segment count in the Data Section mismatches the Data Count, the binary is considered malformed. It must occur only once in a binary. It can be empty.
 
@@ -286,7 +286,7 @@ Madvex\cite{madvex} focuses on modifying \Wasm binaries to evade malware detecti
 Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by including memory access encryption, control flow flattening, and the insertion of opaque predicates.
 
 
-\msubsection{{\Wasm}s' opportunities}
+\msubsection{{\Wasm} opportunities}
 
 Despite its robust design, the \Wasm's ecosystem is still nascent and faces several security vulnerabilities, both in its implementation and in the binaries it produces. 
 As outlined, \Wasm is deterministic, well-typed, and follows a structured control flow, making it easier for compilers and engines to sandbox its execution\cite{WebAssemblySecurity}. 
