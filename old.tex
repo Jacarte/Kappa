@@ -73,3 +73,41 @@
         WASM-MUTATE & e-graph & 0.5 & \wasm & \wasm \\
     \end{tabular}
 \end{table}
+
+
+%% From Lhemann
+
+{
+    \color{red}
+    Why is program analysis of WebAssembly binaries worthwhile in
+particular? First, WebAssembly’s position as the low-level bytecode for
+the Web makes it highly relevant today and more so in the future. If
+proponents of WebAssembly are to be believed, it has the potential to
+become a universal bytecode for applications outside the browser as
+well. Figure 1.1 shows that WebAssembly is the common interchange
+format between multiple source languages compiling to WebAssem-
+bly and different host environments executing it. Developing program
+analyses for each individual source language, or for each of the differ-
+ent runtimes does not scale. When source code is not available, there
+is also no choice but to analyze the WebAssembly bytecode directly
+
+Second, as a novel code format, analyzing WebAssembly is rife with
+open challenges and opportunities. When statically instrumenting WebAssembly binaries, the rewriting needs to be type-aware, otherwise the
+resulting binaries are no longer valid. Other characteristics of WebAs-
+sembly also need to be taken into account, e.g., structured control-flow
+with relative branch labels. At the same time, WebAssembly is a saner
+format for binary analysis and rewriting than native machine code.
+Static disassembly of WebAssembly is robust, and built-in validation
+helps with the reliability of static rewriting. We will discuss challenges
+and opportunities around WebAssembly in more detail in Section 1.4.
+
+Last but not least, we believe research should yield practical insights,
+datasets, and (prototype) tools that are useful to developers and other
+researchers to build on. Web developers so far are mostly used to high-
+level JavaScript programs. With WebAssembly, e.g., compiled from C
+and C++ code, they require new tooling and guidelines for dealing
+with memory vulnerabilities, or to make sense of a binary without
+source code. We discuss the conceptual contributions of our work in
+Section 1.5 and how the chapters of the dissertation map to publica-
+tions and released artifacts in Section 1.6
+}
