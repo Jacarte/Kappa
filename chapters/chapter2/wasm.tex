@@ -38,11 +38,27 @@ The resulting \wasm program is like a traditional shared library, containing ins
 A host environment is in charge of complementing the Wasm program, such as providing external functions required for execution within the host engine. 
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code. 
 
-\todo{Expand on how we generate it}
 
 In \autoref{CExample1} and \autoref{WASMExample}, we illustrate a C program and its corresponding Wasm binary. 
 The C function includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses. 
 The Wasm code in \autoref{WASMExample} displays the textual format of the generated Wasm (Wat).
+
+
+\begin{minipage}[hbtp]{0.9\textwidth}
+    \begin{minipage}[t]{1.0\linewidth}
+        \lstset{language=C,caption={Example C program which includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses.  },
+        label=CExample1,
+        breaklines=true, 
+        basicstyle=\small\ttfamily,
+        captionpos=b,
+        frame=b,
+        numbers=none,
+        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+        escapeinside={(*@}{@*)}
+        }
+    \input{sota/code/code.c}
+    \end{minipage}
+\end{minipage}
 
 
 \input{chapters/chapter2/wasm_example}
@@ -106,15 +122,14 @@ In addition, some sections are annotated as comments in the Wasm code in \autore
 %Moreover, only a few sections have order constraints, providing additional flexibility. 
 
 
-\msubsection{\Wasm's Runtime structure}
+\msubsection{\Wasm's runtime structure}
 \label{background:wasm:execution}
 
-\todo{Reorder this text according with the wrules}
 
-The \Wasm runtime structure is described in the WebAssembly specification by enunciating 10 key components: the Store, Stack, Locals, Module Instances, Function Instances, Table Instances, Memory Instances, Global Instances, Export Instances, and Import Instances. 
+The \Wasm runtime structure is described in the WebAssembly specification by enunciating 10 key components: the Store, Module Instances,  Table Instances, Export Instances, Import Instances, the Execution Stack, Memory Instances, Global Instances, Function Instances and Locals.  
 These components are particularly significant in maintaining the state of a WebAssembly program during its execution. 
 In the following text, we provide a brief description of each runtime component.
-Notice that, the runtime structure is an abstraction that serves to validate \wasm consumers.
+Notice that, the runtime structure is an abstraction that serves to validate the execution of a \wasm binary.
 
 \wrule{Store}: The WebAssembly store represents the global state and is a collection of instances of functions, tables, memories, and globals. Each of these instances is uniquely identified by an address, which is usually represented as an i32 integer.
 
@@ -128,11 +143,11 @@ WebAssembly tables are used to support indirect function calls.
 For example, it allows modeling dynamic calls of functions (through pointers) from languages such as C/C++, for which the Wasm's compiler is in charge of populating the static table of functions.
 
 
-\wrule{Export Instances}: Export instances represent the functions, tables, elements, globals or memories that are exported by a module. 
+\wrule{Export Instances}: Export instances represent the functions, tables, elements, globals or memories that are exported by a \wasm binary to the host environment. 
 
-\wrule{Import Instances}: Import instances represent the functions, tables, elements, globals or memories that are imported into a module from the host. 
+\wrule{Import Instances}: Import instances represent the functions, tables, elements, globals or memories that are imported into a module from the host environment. 
 
-\wrule{The Stack} holds typed values and control frames, with control frames handling block instructions, loops, and function calls.
+\wrule{The Execution Stack} holds typed values and control frames, with control frames handling block instructions, loops, and function calls.
 Values inside the stack can be of the only static types allowed in Wasm 1.0, \texttt{i32} for 32 bits signed integer, \texttt{i64} for 64 bits signed integer, \texttt{f32} for 32 bits float and \texttt{f64} for 64 bits float.
 Therefore, abstract types, such as classes, objects, and arrays, are not natively supported. 
 Instead, during compilation, such types are transformed into primitive types and stored in the linear memory.
@@ -192,7 +207,7 @@ Break instructions within loops that effectively jump to the loop's beginning ar
 \end{definition}
 
 
-\msubsection{WebAssembly's Ecosystem}
+\msubsection{\Wasm's ecosystem}
 \label{background:wasm:ecosystems}
 
 
@@ -214,11 +229,12 @@ In the subsequent text, we describe the \Wasm ecosystem by separating it into st
 \end{figure}
 
 \wrule{Producers}, such as compilers, transform source code into \Wasm binaries. 
-For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\footnote{\url{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
-In parallel developments, the KMM framework\footnote{\url{https://kotlinlang.org/docs/wasm-overview.html}} has incorporated \Wasm as a compilation target, and the Javy approach\footnote{\url{https://github.com/bytecodealliance/javy}} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
+For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
+In parallel developments, the KMM framework\toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, and the Javy approach\toolcite{https://github.com/bytecodealliance/javy} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
 This is achieved by porting both the engine and the source code into a secure \Wasm environment. 
 Blazor also enables the compilation of C# code into \Wasm binaries for browser execution\footnote{\url{https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor}}.
 Regardless of the source language or framework, the resulting \Wasm binary functions similar to a traditional shared library, replete with code instructions, symbols, and exported functions.
+
 %From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
 %It falls upon the producers to specify which functions from the host environment will be imported by the \Wasm application.
 
@@ -228,67 +244,57 @@ Notice that, while some tools are designed for a specific domain, others are mor
 For example, this is the case of browsers and standalone engines, which in one way or the other perform each one of the previous tasks.
 
 
-\wrule{Browser} engines like V8\cite{v8}, SpiderMonkey\cite{spidermonkey}, and Chakra\cite{chakra} are at the forefront of executing \Wasm binaries in browser clients. 
+\wrule{Browser} engines like V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} are at the forefront of executing \Wasm binaries in browser clients. 
 These engines leverage Just-In-Time (JIT) compilers to convert \Wasm into machine code. 
 This translation is typically a straightforward one-to-one mapping, given that \Wasm is already an optimized format closely aligned with machine code, as previously discussed in \autoref{background:wasm:binary}. 
-For example, V8 employs quick, rudimentary optimizations such as constant folding and dead code removal\footnote{This analysis was corroborated through discussions with the V8 development team and through empirical studies in one of our contributions\cite{CROW}}. 
+For example, V8 just employs quick, rudimentary optimizations, such as constant folding and dead code removal, to guarantee fast readiness for a \wasm binary to execute.\footnote{This analysis was corroborated through discussions with the V8 development team and through empirical studies in one of our contributions\cite{CROW}} 
 
-\wrule{Standalone engines} \Wasm's applicability has transcended browser environments, largely due to the WebAssembly System Interface (WASI)\cite{WASI}. 
-WASI aims to standardize the interaction between host environments and \Wasm modules, thereby facilitating portability of both bytecode and binaries across diverse platforms. 
-It outlines a POSIX-like Application Binary Interface (ABI), which includes functionalities for filesystem access, network sockets, clocks, and random number generation, among others. 
-Standalone engines such as WASM3\cite{wasm3}, wasmtime\cite{wasmtime}, WAVM\cite{WAVM} and Sledge \cite{Sledge} have emerged to support \Wasm and WASI.
-Similarly, Singh and colleagues \cite{WARDuino2019} proposed a virtual machine for Wasm in Arduino based devices.
+\wrule{Standalone engines:}\Wasm has expanded beyond browser environments, largely due to the WASI\cite{WASI}. 
+It standardizes the interactions between host environments and \Wasm modules through a POSIX-like interface.
+A range of standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASI. 
+In a similar vein, Singh et al.\cite{WARDuino2019} introduced a virtual machine for \Wasm tailored for Arduino-based devices. 
+Salim et al.\cite{trufflewasm} proposed TruffleWasm, an implementation of \Wasm hosted on Truffle and GraalVM. 
+Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
+Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verification of the \Wasm-WASI interaction with the underlying operating system.
 
+%% PATCH
+\vspace{10mm}
+\wrule{Static and dynamic analysis, optimization and validation:} 
+As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
+To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
+Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, WasmA\cite{wasma}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution. 
+VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
+In the realm of dynamic analysis, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities. 
+Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
+Binaryen\toolcite{https://github.com/WebAssembly/binaryen} serves as a comprehensive toolkit for \Wasm binary manipulation, including validation, optimization, and compilation to machine code. 
+Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}. 
+Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
 
-\todo{Disect them into, JIT compilers and interpreters, ending with SWAM.}
-\todo{Add the verifiable standalone engine here}
-
-
-\todo{Locate WasmA} \cite{WasmA}
-
-\wrule{Static and dynamic analysis, optimization and validation:} Tools such as Wassail\cite{wassail}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} utilize a range of strategies, including information flow control, code property graphs, and concolic execution, to identify vulnerabilities taking \wasm programs as input. 
-Dynamic analysis counterparts like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} serve analogous functions.
-\todo{Binanryen}
-\todo{\url{https://soft.vub.ac.be/Publications/2023/vub-tr-soft-23-11.pdf}, \url{https://dl.acm.org/doi/abs/10.1145/3510003.3510070?casa_token=hAlPiu9_oioAAAAA:DskwqdqM8c5-4e4W-8uU2CiENeyyOXWoi6BHytTiZUgyxojsYWXBsaS7ERFeqGNKfaYIKIN8pnQ1}}
-\todo{Wafl}
-\todo{Add veriwasm}
-\todo{Wasmfuzzer}
 
 \wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis techniques. 
 Conversely, dynamic analysis is the forte of tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard}.
 
-\wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like EvalHunter\cite{evalhunter}, WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm-based contracts. Dynamic analysis tools in this sphere include EOSFuzzer\cite{eosfuzzer} and wasai\cite{wasai}.
+\wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm smart contracts. 
+Dynamic analysis tools in this sphere include EOSFuzzer\cite{EOSFuzzer} and wasai\cite{wasai}.
+Similarly, Manticore\toolcite{https://github.com/trailofbits/manticore/tree/master/manticore} supports the symbolic execution of \wasm smart contracts. 
 
 
-\wrule{Obfuscation, and binary rewriting tools} \cite{wasmixer} \cite{wobfuscator} \todo{WASMixer, Wobfuscator}
+\wrule{Binary rewriting tools and obfuscators} The landscape for tools that can modify, obfuscate, or enhance \Wasm binaries for various purposes—including has increased. 
+For instance, BREWasm\cite{BREWasm} provides a comprehensive static binary rewriting framework specifically designed for \Wasm. 
+Wobfuscator\cite{wobfuscator} takes a different approach, serving as an opportunistic obfuscator for Wasm-JS programs. 
+Madvex\cite{madvex} focuses on modifying \Wasm binaries to evade malware detection, with its approach being limited to alterations in the code section of a \Wasm binary. 
+Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by including memory access encryption, control flow flattening, and the insertion of opaque predicates.
 
 
-% Open challenges
-% \msubsection{Opportunities}
+\msubsection{{\Wasm}s' opportunities}
 
-While many existing tools purport to offer self-correctness evaluations and exhaustive test suites, the \Wasm ecosystem is still in its early stages. 
-To emphasize this, a 2021 study by Hilbig et al.\cite{Hilbig2021AnES} found a mere 8,000 unique \Wasm binaries globally. 
-This pales in comparison to mature ecosystems like JavaScript and Python, which offer 1.5 million and 1.7 million packages on npm\footnote{\url{https://www.npmjs.com/}} and PyPI\footnote{\url{https://pypi.org/}}, respectively.
-This limited pool of \Wasm binaries presents a unique challenge for machine learning-based analysis tools, which require large datasets for effective training. 
-This issue is explicitly addressed in one of the contributions of this dissertation\cite{EVASION}.
-Additionally, the scarcity of \Wasm programs exacerbates the problem of software monoculture, increasing the likelihood of consuming a compromised \Wasm program\cite{YourCitationHere}.
-Besides, the current size of the \Wasm ecosystem offers a small testing environment for evaluating the capabilities of consumer tools.
-This dissertation aims to address these issues by introducing a comprehensive suite of tools. 
-These tools are crafted to not only bolster the security of \Wasm programs through Software Diversification but also to intensify the testing rigor for both producers and consumers in the ecosystem.
+Despite its robust design, the \Wasm's ecosystem is still nascent and faces several security vulnerabilities, both in its implementation and in the binaries it produces. 
+As outlined, \Wasm is deterministic, well-typed, and follows a structured control flow, making it easier for compilers and engines to sandbox its execution\cite{WebAssemblySecurity}. 
+However, vulnerabilities persist. 
+For instance, Genkin et al. demonstrated that \Wasm could be exploited to exfiltrate data using cache timing-side channels\cite{Genkin2018DrivebyKC}. Lehmann et al. and Stiévenart and colleagues show that vulnerabilities in C/C++ source code could propagate to \Wasm binaries\cite{usenixWasm2020, DeRoover2022}.
 
-
-\msubsection{WebAssembly's Security}
-
-\todo{Check the attack primitives defined by Lehmann.}
-\todo{Extend with more cases !}
-
-As we described, \wasm\ is deterministic and well-typed, follows a structured control flow and explicitly separates its linear memory model, global variables and the execution stack. This design is robust \cite{WebAssemblySecurity} and makes it easy for compilers and engines to sandbox the execution of Wasm  binaries. Following the specification of Wasm  for typing, memory, virtual stack and function calling,
-host environments should provide protection against data corruption, code injection, and return-oriented programming (ROP).
-
-However, implementations in both browsers and standalone runtimes~\cite{Narayan2021Swivel} are vulnerable.
-Genkin \etal demonstrated that Wasm  could be used to exfiltrate data using cache timing-side channels \cite{Genkin2018DrivebyKC}.
-Moreover, binaries itself can be vulnerable. The work of Lehmann \etal ~\cite{usenixWasm2020} proved that C/C++ source code vulnerabilities can propagate to Wasm  such as overwriting constant data or manipulating the heap by overflowing the stack. Even though these vulnerabilities need a specific standard library implementation to be exploited, they make a call for better defenses for \wasm. 
-Recently, Stiévenart and colleagues demonstrate that C/C++ source code vulnerabilities can be ported to Wasm \cite{DeRoover2022}.
-% Current proposals
-Several proposals for extending \wasm\ in the current roadmap could address some existing vulnerabilities. For example, having multiple memories\footnote{\url{https://github.com/WebAssembly/multi-memory/blob/main/proposals/multi-memory/Overview.md}} could incorporate more than one memory, stack and global spaces, shrinking the attack surface. However, the implementation, adoption and settlement of the proposals are far from being a reality in all browser vendors\footnote{\url{https://webassembly.org/roadmap/}}. 
-% In fact, according to the work of Hilbig \etal \cite{Hilbig2021AnES}, the artificial variants created with one of our works contribute to the half of executable and available \wasm\ binaries in the wild.
+Moreover, the \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
+A 2021 study by Hilbig et al. found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
+This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
+The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
+This dissertation aims to mitigate these issues by introducing a comprehensive suite of tools designed to enhance \Wasm security through Software Diversification and to improve testing rigor within the ecosystem.

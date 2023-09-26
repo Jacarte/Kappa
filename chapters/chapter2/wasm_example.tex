@@ -2,24 +2,9 @@
  
 
 \begin{minipage}[hbtp]{0.9\textwidth}
-    
-    
-    \begin{minipage}[b]{1.0\linewidth}
-        \lstset{language=C,caption={Example C program which includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses.  },
-        label=CExample1,
-        breaklines=true, 
-        basicstyle=\small\ttfamily,
-        captionpos=b,
-        frame=b,
-        numbers=none,
-        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-        escapeinside={(*@}{@*)}
-        }
-    \input{sota/code/code.c}
-    \end{minipage}
-    
+  
 
-    \begin{minipage}[b]{1.0\linewidth}
+    \begin{minipage}[t]{1.0\linewidth}
     \lstset{
         language=WAT,
         caption={\wasm\ code  for \autoref{CExample1}. The example Wasm code illustrates the translation from C to \wasm in which several high-level language features are translated into multiple \wasm instructions.},

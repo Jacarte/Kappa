@@ -83,7 +83,7 @@ In addition, \tool introduces a \texttt{nop} instruction to substitute for the a
 To unroll a loop WASM-MUTATE first creates a new \wasm block, which contains a copy of its body (unrolling) followed by the original loop.
 The copy of the loop body is itself a \wasm block.
 To maintain the original control flow functionality, the instructions inside the loop and their copied body need to be adjusted.
-To adjust the loop, \tool modifies the loop instructions that are first-order breaks, i.e., jumps that lead back to the loop's beginning and end (see section \autoref{background:wasm:execution}). 
+To adjust the loop, \tool modifies the loop instructions that are first-order breaks, i.e., jumps that lead back to the loop's beginning and end (see \autoref{first_order_jump}). 
 
 Inside the loop's body, there can be two types of first-order breaks: the first type which leads back to the loop's beginning, and the second type jumps, which leads to the loop's end.
 The second type is irrelevant for the unrolling process since the loop's end is not modified.
@@ -285,5 +285,5 @@ Consequently, increasing the depth parameter in \autoref{peephole:mutator} would
   \tool is fully presented in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
  \url{https://arxiv.org/pdf/2309.07638.pdf}.
   \\\\
-  \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the bytecodealliance organization \cite{bytecode}.
+  \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the bytecodealliance organization \toolcite{https://bytecodealliance.org/}.
 \end{tcolorbox}

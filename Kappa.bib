@@ -2050,3 +2050,182 @@ archivePrefix = {arXiv},
   pages={1101--1116},
   year={2022}
 }
+
+@article{ctwasm,
+  author = {Watt, Conrad and Renner, John and Popescu, Natalie and Cauligi, Sunjay and Stefan, Deian},
+  title = {CT-Wasm: Type-Driven Secure Cryptography for the Web Ecosystem},
+  year = {2019},
+  issue_date = {January 2019},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {3},
+  number = {POPL},
+  url = {https://doi.org/10.1145/3290390},
+  doi = {10.1145/3290390},
+  abstract = {A significant amount of both client and server-side cryptography is implemented in JavaScript. Despite widespread concerns about its security, no other language has been able to match the convenience that comes from its ubiquitous support on the "web ecosystem" - the wide variety of technologies that collectively underpins the modern World Wide Web. With the introduction of the new WebAssembly bytecode language (Wasm) into the web ecosystem, we have a unique opportunity to advance a principled alternative to existing JavaScript cryptography use cases which does not compromise this convenience. We present Constant-Time WebAssembly (CT-Wasm), a type-driven, strict extension to WebAssembly which facilitates the verifiably secure implementation of cryptographic algorithms. CT-Wasm's type system ensures that code written in CT-Wasm is both information flow secure and resistant to timing side channel attacks; like base Wasm, these guarantees are verifiable in linear time. Building on an existing Wasm mechanization, we mechanize the full CT-Wasm specification, prove soundness of the extended type system, implement a verified type checker, and give several proofs of the language's security properties. We provide two implementations of CT-Wasm: an OCaml reference interpreter and a native implementation for Node.js and Chromium that extends Google's V8 engine. We also implement a CT-Wasm to Wasm rewrite tool that allows developers to reap the benefits of CT-Wasm's type system today, while developing cryptographic algorithms for base Wasm environments. We evaluate the language, our implementations, and supporting tools by porting several cryptographic primitives - Salsa20, SHA-256, and TEA - and the full TweetNaCl library. We find that CT-Wasm is fast, expressive, and generates code that we experimentally measure to be constant-time.},
+  journal = {Proc. ACM Program. Lang.},
+  month = {jan},
+  articleno = {77},
+  numpages = {29},
+  keywords = {cryptography, constant-time, information flow control, WebAssembly}
+}
+
+@inproceedings{trufflewasm,
+  author = {Salim, Salim S. and Nisbet, Andy and Luj\'{a}n, Mikel},
+  title = {TruffleWasm: A WebAssembly Interpreter on GraalVM},
+  year = {2020},
+  isbn = {9781450375542},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3381052.3381325},
+  doi = {10.1145/3381052.3381325},
+  abstract = {WebAssembly is a binary format originally designed for web-based deployment and execution combined with JavaScript. WebAssembly can also be used for standalone programs provided a WebAssembly runtime environment is available.This paper describes the design and implementation of TruffleWasm, a guest language implementation of a WebAssembly hosted on Truffle and GraalVM. Truffle is a Java framework capable of constructing and interpreting an Abstract Syntax Tree (AST) representing a program on standard JVMs. GraalVM is a JVM with a JIT compiler which optimises the execution of ASTs from Truffle.Our work is motivated by trying to understand the advantages and disadvantages of using GraalVM, and its support for multiple programming languages, to build a standalone WebAssembly runtime. This contrast with developing a new runtime, as Wasmtime and other projects are undertaking. TruffleWasm can execute standalone WebAssembly modules, while offering also interoperability with other GraalVM hosted languages, such as Java, JavaScript, R, Python and Ruby.The experimental results compare the peak performance of TruffleWasm to the standalone Wasmtime runtime for the Shootout, C benchmarks in JetStream, and the Poly-BenchC benchmarks. The results show the geo-mean peak performance of TruffleWasm is 4\% slower than Wasmtime for Shootout/JetStream, and 4\% faster for PolyBenchC.},
+  booktitle = {Proceedings of the 16th ACM SIGPLAN/SIGOPS International Conference on Virtual Execution Environments},
+  pages = {88–100},
+  numpages = {13},
+  keywords = {Wasm, just in time compilation, JVM, WebAssembly, GraalVM},
+  location = {Lausanne, Switzerland},
+  series = {VEE '20}
+}
+  
+@INPROCEEDINGS{wave,
+
+  author={Johnson, Evan and Laufer, Evan and Zhao, Zijie and Gohman, Dan and Narayan, Shravan and Savage, Stefan and Stefan, Deian and Brown, Fraser},
+
+  booktitle={2023 IEEE Symposium on Security and Privacy (SP)}, 
+
+  title={WaVe: a verifiably secure WebAssembly sandboxing runtime}, 
+
+  year={2023},
+
+  volume={},
+
+  number={},
+
+  pages={2940-2955},
+
+  doi={10.1109/SP46215.2023.10179357}}
+
+
+@INPROCEEDINGS{wasma,
+
+  author={Breitfelder, Florian and Roth, Tobias and Baumgärtner, Lars and Mezini, Mira},
+
+  booktitle={2023 IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER)}, 
+
+  title={WasmA: A Static WebAssembly Analysis Framework for Everyone}, 
+
+  year={2023},
+
+  volume={},
+
+  number={},
+
+  pages={753-757},
+
+  doi={10.1109/SANER56733.2023.00085}}
+
+@inproceedings{slicing,
+  title={Dynamic Slicing of WebAssembly Binaries},
+  author={Sti{\'e}venart, Quentin and Binkley, David and De Roover, Coen},
+  booktitle={39th IEEE International Conference on Software Maintenance and Evolution},
+  year={2023},
+  organization={IEEE}
+}
+
+@inproceedings{slicing2,
+  author = {Sti\'{e}venart, Quentin and Binkley, David W. and De Roover, Coen},
+  title = {Static Stack-Preserving Intra-Procedural Slicing of Webassembly Binaries},
+  year = {2022},
+  isbn = {9781450392211},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3510003.3510070},
+  doi = {10.1145/3510003.3510070},
+  abstract = {The recently introduced WebAssembly standard aims to be a portable compilation target, enabling the cross-platform distribution of programs written in a variety of languages. We propose an approach to slice WebAssembly programs in order to enable applications in reverse engineering, code comprehension, and security among others. Given a program and a location in that program, program slicing produces a minimal version of the program that preserves the behavior at the given location. Specifically, our approach is a static, intra-procedural, backward slicing approach that takes into account WebAssembly-specific dependences to identify the instructions of the slice. To do so it must correctly overcome the considerable challenges of performing dependence analysis at the binary level. Furthermore, for the slice to be executable, the approach needs to ensure that the stack behavior of its output complies with WebAssembly's validation requirements. We implemented and evaluated our approach on a suite of 8 386 real-world WebAssembly binaries, finding that the average size of the 495 204 868 slices computed is 53\% of the original code, an improvement over the 60\% attained by related work slicing ARM binaries. To gain a more qualitative understanding of the slices produced by our approach, we compared them to 1 956 source-level slices of benchmark C programs. This inspection helps to illustrate the slicer's strengths and to uncover potential future improvements.},
+  booktitle = {Proceedings of the 44th International Conference on Software Engineering},
+  pages = {2031–2042},
+  numpages = {12},
+  keywords = {webassembly, binary analysis, static program slicing},
+  location = {Pittsburgh, Pennsylvania},
+  series = {ICSE '22}
+}
+
+@article{veriwasm,
+place = {Country unknown/Code not available}, title = {Доверя́й, но проверя́й: SFI safety for native-compiled Wasm}, url = {https://par.nsf.gov/biblio/10228509}, DOI = {10.14722/ndss.2021.24078}, abstractNote = {WebAssembly (Wasm) is a platform-independent bytecode that offers both good performance and runtime isolation. To implement isolation, the compiler inserts safety checks when it compiles Wasm to native machine code. While this approach is cheap, it also requires trust in the compiler's correctness---trust that the compiler has inserted each necessary check, correctly formed, in each proper place. Unfortunately, subtle bugs in the Wasm compiler can break---and have broken---isolation guarantees. To address this problem, we propose verifying memory isolation of Wasm binaries post-compilation. We implement this approach in VeriWasm, a static offline verifier for native x86-64 binaries compiled from Wasm; we prove the verifier's soundness, and find that it can detect bugs with no false positives. Finally, we describe our deployment of VeriWasm at Fastly.}, journal = {Network and Distributed Systems Security (NDSS) Symposium}, author = {Johnson, Evan and Thien, David and Alhessi, Yousef and Narayan, Shravan and Brown, Fraser and Lerner, Sorin and McMullen, Tyler and Savage, Stefan and Stefan, Deian}, }
+  
+
+@inproceedings{wafl,
+  title={Wafl: Binary-only webassembly fuzzing with fast snapshots},
+  author={Ha{\ss}ler, Keno and Maier, Dominik},
+  booktitle={Reversing and Offensive-oriented Trends Symposium},
+  pages={23--30},
+  year={2021}
+}
+
+@inproceedings{wasmfuzzer,
+  title={Wasmfuzzer: A fuzzer for webassembly virtual machines},
+  author={Jiang, Bo and Li, Zichao and Huang, Yuhe and Zhang, Zhenyu and Chan, W},
+  booktitle={34th International Conference on Software Engineering and Knowledge Engineering, SEKE 2022},
+  pages={537--542},
+  year={2022},
+  organization={KSI Research Inc.}
+}
+
+@InProceedings{secwasm,
+  author="Bastys, Iulia
+  and Algehed, Maximilian
+  and Sj{\"o}sten, Alexander
+  and Sabelfeld, Andrei",
+  editor="Singh, Gagandeep
+  and Urban, Caterina",
+  title="SecWasm: Information Flow Control for WebAssembly",
+  booktitle="Static Analysis",
+  year="2022",
+  publisher="Springer Nature Switzerland",
+  address="Cham",
+  pages="74--103",
+  abstract="We introduce SecWasm, the first general purpose information-flow control system for WebAssembly (Wasm), thus extending the safety guarantees offered by Wasm with guarantees that applications manipulate sensitive data in a secure way. SecWasm is a hybrid system enforcing termination-insensitive noninterference which overcomes the challenges posed by the uncommon characteristics for machine languages of Wasm in an elegant and thorough way.",
+  isbn="978-3-031-22308-2"
+}
+
+@inproceedings{EOSAFE,
+  title={$\{$EOSAFE$\}$: security analysis of $\{$EOSIO$\}$ smart contracts},
+  author={He, Ningyu and Zhang, Ruiyi and Wang, Haoyu and Wu, Lei and Luo, Xiapu and Guo, Yao and Yu, Ting and Jiang, Xuxian},
+  booktitle={30th USENIX Security Symposium (USENIX Security 21)},
+  pages={1271--1288},
+  year={2021}
+}
+
+@inproceedings{EOSFuzzer,
+  title={EOSFuzzer: Fuzzing eosio smart contracts for vulnerability detection},
+  author={Huang, Yuhe and Jiang, Bo and Chan, Wing Kwong},
+  booktitle={Proceedings of the 12th Asia-Pacific Symposium on Internetware},
+  pages={99--109},
+  year={2020}
+}
+
+
+@ARTICLE{madvex,
+       author = {{Loose}, Nils and {M{\"a}chtle}, Felix and {Pott}, Claudius and {Bezsmertnyi}, Volodymyr and {Eisenbarth}, Thomas},
+        title = "{Madvex: Instrumentation-based Adversarial Attacks on Machine Learning Malware Detection}",
+      journal = {arXiv e-prints},
+     keywords = {Computer Science - Cryptography and Security},
+         year = 2023,
+        month = may,
+          eid = {arXiv:2305.02559},
+        pages = {arXiv:2305.02559},
+          doi = {10.48550/arXiv.2305.02559},
+archivePrefix = {arXiv},
+       eprint = {2305.02559},
+ primaryClass = {cs.CR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230502559L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@article{BREWasm,
+  title={A General Static Binary Rewriting Framework for WebAssembly},
+  author={Cao, Shangtong and He, Ningyu and Guo, Yao and Wang, Haoyu},
+  journal={arXiv preprint arXiv:2305.01454},
+  year={2023}
+}
