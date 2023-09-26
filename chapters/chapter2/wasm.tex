@@ -1,5 +1,4 @@
 \msection{\Wasm}
-\label{sota:wasm}
 
 %% For the intro
  % In 2014, Alon Zakai and colleagues proposed Emscripten \cite{emscripten}. 
@@ -39,24 +38,8 @@ The resulting \wasm program is like a traditional shared library, containing ins
 A host environment is in charge of complementing the Wasm program, such as providing external functions required for execution within the host engine. 
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code. 
 
-\begin{minipage}{0.9\textwidth}
-    
-    \begin{minipage}[b]{1.0\linewidth}
-        \lstset{language=C,caption={Example C program which includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses.  },
-        label=CExample1,
-        breaklines=true, 
-        basicstyle=\small\ttfamily,
-        captionpos=b,
-        frame=b,
-        numbers=none,
-        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-        escapeinside={(*@}{@*)}
-        }
-    \input{sota/code/code.c}
-    \end{minipage}
-\end{minipage}
-
 \todo{Expand on how we generate it}
+
 In \autoref{CExample1} and \autoref{WASMExample}, we illustrate a C program and its corresponding Wasm binary. 
 The C function includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses. 
 The Wasm code in \autoref{WASMExample} displays the textual format of the generated Wasm (Wat).
