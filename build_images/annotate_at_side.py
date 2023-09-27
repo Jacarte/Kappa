@@ -7,6 +7,9 @@ from reportlab.graphics.shapes import _baseGFontName, _baseGFontNameBI
 from reportlab.lib.units import inch
 
 import io
+DIRNAME = os.path.dirname(__file__)
+
+print(DIRNAME)
 
 inputpdf = PdfFileReader(open(sys.argv[1], "rb"))
 
@@ -31,7 +34,7 @@ def wrap(t, max=50):
     T.append(buff)
     return T, count
 
-with open("%s/annotated.pdf" % (os.path.dirname(__file__),), "wb") as outputStream:
+with open(f"./{DIRNAME}/annotated.pdf", "wb") as outputStream:
     output = PdfFileWriter()
 
     for i in range(inputpdf.numPages):
