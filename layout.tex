@@ -5,7 +5,8 @@
 
 % chapter tiltes formatting
 \titleformat{\chapter}[display]
-  {\LARGE}
+  % Add the current date, REMOVE THIS in production
+  {\LARGE {\tiny Version \today\ \currenttime\\}}
   {\renewcommand{\thechapter}{{\color{gray}0}\arabic{chapter}\color{gray}\vspace{2.0ex}\titlerule}
   %\colorbox{blacm}
   {{\bfseries\fontsize{40}{50}\selectfont
