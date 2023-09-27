@@ -10,17 +10,16 @@
 % The announcement of \wasm\ marked the first step into the standardization of bytecode in the web environment. 
 
 % History
-The W3C publicly announced the \Wasm language in 2017 as the four scripting language supported in all major web browser vendors.
+The W3C publicly announced the \Wasm(Wasm) language in 2017 as the four scripting language supported in all major web browser vendors.
 \wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017. 
-Wasm is designed to be fast, portable, self-contained and secure, and it promises to outperform JavaScript execution \cite{Haas_2017}. 
-
-% Current state
+Wasm is designed to be fast, portable, self-contained and secure, and it promises to outperform JavaScript execution. 
 Since 2017, the adoption of \wasm\ keeps growing. 
 For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}. 
+
 Moreover, WebAssembly has been evolving outside web browsers since its first announcement.
 Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
-Consequently, in 2019, the Bytecode Alliance \cite{bytecodealliance} proposed WebAssembly System Interface (WASI) \cite{WASI}. 
-WASI pioneered the execution of \wasm\ with a POSIX system interface protocol, making possible to execute Wasm directly in the operating system. 
+Consequently, in 2019, the Bytecodealliance proposed WebAssembly System Interface (WASI) \cite{WASI}. 
+WASI pioneered the execution of \wasm\ with a POSIX system interface protocol, making possible to execute Wasm closer to the underlying operating system. 
 Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, making it suitable standalone and backend execution scenarios \cite{9640153, wen2020wasmachine}.
 
 % How to generate
@@ -31,17 +30,18 @@ Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \ci
 %\todo{Improve some metadata, size of the code, etc}
 %\todo{FIX: linerefs}
 
-\msubsection{\Wasm's generation}
+\msubsection{Generating \Wasm programs}
 
 \Wasm programs are pre-compiled from source languages like C/C++, Rust, or Go, which means that it can benefit from the optimizations of the source language compiler.
 The resulting \wasm program is like a traditional shared library, containing instruction codes, symbols, and exported functions. 
 A host environment is in charge of complementing the Wasm program, such as providing external functions required for execution within the host engine. 
-For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code. 
+For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code in the browser. 
 
 
 In \autoref{CExample1} and \autoref{WASMExample}, we illustrate a C program and its corresponding Wasm binary. 
 The C function includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses. 
-The Wasm code in \autoref{WASMExample} displays the textual format of the generated Wasm (Wat).
+The Wasm code in \autoref{WASMExample} displays the textual format of the generated Wasm (Wat)\footnote{The WAT text format is mostly for human readability and for low-level manual modification.}.
+
 
 
 \begin{minipage}[hbtp]{0.9\textwidth}
@@ -61,19 +61,19 @@ The Wasm code in \autoref{WASMExample} displays the textual format of the genera
 \end{minipage}
 
 
+
 \input{chapters/chapter2/wasm_example}
 
 \msubsection{\Wasm's binary format}
 \label{background:wasm:binary}
 
-The Wasm binary format is close to machine code and already optimized.
-Thus, its consuming process typically involves a straightforward one-to-one mapping.
-For example, a compiler might accelerate the compilation process by parallelizing the parsing process. 
-The main reason behind this claim is that a Wasm binary is organized into a contiguous collection of sections.
+The Wasm binary format is close to machine code and already optimized, being a consecutive collection of sections.
 In \autoref{background:wasm:fig:section} we show the binary format of a Wasm section.
-A Wasm section starts with a 1-byte section ID, followed by an 8-byte section size, and concludes with the section content, which precisely matches the size indicated earlier.
-
-
+A Wasm section starts with a 1-byte section ID, followed by a 4-byte section size, and concludes with the section content, which precisely matches the size indicated earlier.
+A \wasm binary contains sections of 13 types, each with a specific semantic role and placement within the module. 
+Each section is optional, where an omitted section is considered empty.
+In the following text, we summarize each one of the 13 types of \wasm sections, providing their name, ID, and purpose. 
+In addition, some sections are annotated as comments in the Wasm code in \autoref{WASMExample}.
     
 \begin{figure}[h]
     \centering
@@ -82,45 +82,39 @@ A Wasm section starts with a 1-byte section ID, followed by an 8-byte section si
     \label{background:wasm:fig:section}
 \end{figure}
 
-A \wasm binary contains sections of 12 types, each with a specific semantic role and placement within the module. 
-Each section is optional, where an omitted section is considered empty.
-In the following text, we summarize each one of the 12 types of \wasm sections, providing their name, ID, and purpose. 
-In addition, some sections are annotated as comments in the Wasm code in \autoref{WASMExample}.
+\wrule{Custom Section (\texttt{00})}: Comprises two parts: the section name and arbitrary content. Primarily used for storing metadata, such as the compiler used to generate the binary (see lines 9 and 48 of \autoref{WASMExample}). This type of section has no order constraints with other sections and is optional. Compilers usually skip this section when consuming a \Wasm binary. 
 
-\todo{Check if better with examples in each section}
+\wrule{Type Section (\texttt{01})}: Contains the function signatures for functions declared or defined within the binary (see lines 3 to 6 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Custom Section (\texttt{00})}: Comprises two parts: the section name and arbitrary content. Primarily used for storing metadata, such as the compiler used to generate the binary. This type of section has no order constraints with other sections and is optional. Compilers usually skip this section when consuming a \Wasm binary. 
+\wrule{Import Section (\texttt{02})}: Lists elements imported from the host, including functions, memories, globals, and tables (see line 8 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Type Section (\texttt{01})}: Contains the function signatures for functions declared or defined within the binary. It must occur only once in a binary. It can be empty.
+\wrule{Function Section (\texttt{03})}: Details functions defined within the binary. It essentially maps Type section entries to Code section entries. The text format already maps the function index to its name, as shown in lines 12 to 38 of \autoref{WASMExample}. This section must occur only once in a binary and, it can be empty. 
 
-\wrule{Import Section (\texttt{02})}: Lists elements imported from the host, including functions, memories, globals, and tables. It must occur only once in a binary. It can be empty.
+\wrule{Table Section (\texttt{04})}: Groups functions with identical signatures to control indirect calls. It must occur only once in a binary. It can be empty. The example code in \autoref{WASMExample} does not include a Table Section.
 
-\wrule{Function Section (\texttt{03})}: Details functions defined within the binary. It essentially maps Type section entries to Code section entries. It must occur only once in a binary. It can be empty.
+\wrule{Memory Section (\texttt{05})}: Specifies the number and initial size of unmanaged linear memories (see line 40 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty. 
 
-\wrule{Table Section (\texttt{04})}: Groups functions with identical signatures to control indirect calls. It must occur only once in a binary. It can be empty.
+\wrule{Global Section (\texttt{06})}: Defines global variables as managed memory for use and sharing between functions in the \Wasm binary (see line 42 of \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Memory Section (\texttt{05})}: Specifies the number and initial size of unmanaged linear memories. It must occur only once in a binary. It can be empty. 
+\wrule{Export Section (\texttt{07})}: Declares elements like functions, globals, memories, and tables for host engine access (see lines 44 and 45 of \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Global Section (\texttt{06})}: Defines global variables as managed memory for use and sharing between functions in the \Wasm binary. It must occur only once in a binary. It can be empty.
+\wrule{Start Section (\texttt{08})}:  Designates a function to be called upon binary readiness, initializing the \Wasm program state before executing any exported functions. It must occur only once in a binary. It can be empty. The example code in \autoref{WASMExample} does not include a Start Section, i.e. there is no function to call when the binary is initialized.
 
-\wrule{Export Section (\texttt{07})}: Declares elements like functions, globals, memories, and tables for host engine access. The entry point of the \Wasm binary is typically declared here. It must occur only once in a binary. It can be empty.
+\wrule{Element Section (\texttt{09})}: Contains elements to initialize the binary tables. It must occur only once in a binary. It can be empty. The example code in \autoref{WASMExample} does not include an Element Section.
 
-\wrule{Start Section (\texttt{08})}:  Designates a function to be called upon binary readiness, initializing the \Wasm program state before executing any exported functions. It must occur only once in a binary. It can be empty.
+\wrule{Code Section (\texttt{10})}: Contains the body of functions defined in the Function section. Each entry consists of local variables used and a list of instructions (see lines 12 to 38 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Element Section (\texttt{09})}: Contains elements to initialize the binary tables. It must occur only once in a binary. It can be empty.
+\wrule{Data Section (\texttt{11})}: Holds data for initializing unmanaged linear memory. Each entry specifies the offset and data to be placed in memory (see line 47 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
 
-\wrule{Code Section (\texttt{10})}: Contains the body of functions defined in the Function section. Each entry consists of local variables used and a list of instructions. It must occur only once in a binary. It can be empty.
-
-\wrule{Data Section (\texttt{11})}: Holds data for initializing unmanaged linear memory. Each entry specifies the offset and data to be placed in memory. It must occur only once in a binary. It can be empty.
-
-\wrule{Data Count Section (\texttt{12})}: Primarily used for validating the Data Section. If the segment count in the Data Section mismatches the Data Count, the binary is considered malformed. It must occur only once in a binary. It can be empty.
+\wrule{Data Count Section (\texttt{12})}: Primarily used for validating the Data Section. If the segment count in the Data Section mismatches the Data Count, the binary is considered malformed. The example code in \autoref{WASMExample} does not include a Data Count Section.
+It must occur only once in a binary. It can be empty.
 
 
-%Notice that, some sections, like the Start and Custom sections, are optional and without order constraints, offering flexibility w.r.t the \was binary layout. 
-%For instance, the Custom section can store metadata, such as the compiler used to generate the binary.  
-
-%Moreover, only a few sections have order constraints, providing additional flexibility. 
-
+\vspace{2mm}
+Due to its organization into a contiguous array of sections, a \wasm binary can be processed efficiently. 
+For example, this structure allows compilers to speed up the compilation process through parallel parsing or just by ignoring \emph{Custom Sections}.
+Additionally, the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding of instructions of the \emph{Code Section} further compacts the binary. 
+As a result, Wasm binaries are not only fast to process but also quick to transmit over a network.
 
 \msubsection{\Wasm's runtime structure}
 \label{background:wasm:execution}
@@ -161,23 +155,23 @@ Global variables are part of the managed data, i.e., their allocation and memory
 Global variables are only accessible by their declaration index, and it is not possible to dynamically address them. 
 
 
-\wrule{Locals}: Locals are mutable variables that are local to a specific function invocation. As globals, locals are part of the managed data.
+\wrule{Locals}: Locals are mutable variables that are local to a specific function instance, i.e. locals are only accessible through their index related to the executing function instance. As globals, locals are part of the managed data.
 
 \begin{note}\label{managed_unmanaged}
-    Along with this dissertation, as the work of Lehmann \etal \cite{usenixWasm2020}, we refer to managed and unmanaged data to differentiate between the data that is managed by the host engine and the data that is managed by the \Wasm program respectively.
+    Along with this dissertation, as the work of Lehmann \etal \cite{usenixWasm2020}, we refer to managed and unmanaged data to differentiate between the data that is managed by the host engine and the data that is managed by the \Wasm program respectively. 
 \end{note}
 
 \wrule{Function Instances}: 
 A function instance groups locals and a function body.
-Locals are typed variables that are local to a specific function invocation.
+Locals are typed variables that are local to a specific function invocation as previously discussed.
 The function body is a sequence of instructions that are executed when the function is called.
 Each instruction either reads from the stack, writes to the stack, or modifies the control flow of the function.
 Recalling the example \wasm binary previously showed, 
 % Functions
 the local variable declarations and typed instructions that are evaluated using the stack can be appreciated between Line 7 and Line 32 in \autoref{WASMExample}. 
 Each instruction reads its operands from the stack and pushes back the result. 
-In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add} at \lineref{result}. 
-As the listing shows, instructions are annotated with a numeric type.
+In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add}. 
+As the listing also shows, instructions are annotated with a numeric type.
 
 
 \msubsection{\Wasm's control flow}
@@ -219,7 +213,7 @@ It comprises multiple stakeholders and a rich array of tools that cater to vario
 %It is a cumulative GitHub repository which includes references to articles, papers, books, demos, compilers and engines related to \wasm.
 %We have complemented our findings with selecting a subset of the tools mentioned in the Awesome Wasm repository to illustrate the \Wasm ecosystem. 
 In \autoref{wasm:background:landscape} we simplify the ecosystem landscape by separating it into producers, consumers and major stakeholders categories.
-In the subsequent text, we describe the \Wasm ecosystem by separating it into stakeholders categories.
+In the subsequent text, we describe the \Wasm ecosystem.
 
 \begin{figure}
     \centering
@@ -231,12 +225,11 @@ In the subsequent text, we describe the \Wasm ecosystem by separating it into st
 \wrule{Producers}, such as compilers, transform source code into \Wasm binaries. 
 For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 In parallel developments, the KMM framework\toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, and the Javy approach\toolcite{https://github.com/bytecodealliance/javy} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
-This is achieved by porting both the engine and the source code into a secure \Wasm environment. 
-Blazor also enables the compilation of C# code into \Wasm binaries for browser execution\footnote{\url{https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor}}.
-Regardless of the source language or framework, the resulting \Wasm binary functions similar to a traditional shared library, replete with code instructions, symbols, and exported functions.
+This latter is achieved by porting both the engine and the source code into a secure \Wasm environment. 
+Similarly, Blazor also enables the compilation of C# code into \Wasm binaries for browser execution\footnote{\url{https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor}}.
 
-%From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
-%It falls upon the producers to specify which functions from the host environment will be imported by the \Wasm application.
+From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
+It falls upon the producers to specify which functions from the host environment will be imported by the \Wasm application.
 
 \wrule{Consumers} encompass tools that undertake the tasks of validating, analyzing, optimizing, transpiling to machine code, and executing \Wasm binaries, e.g. browser clients. 
 In the text that follows, we dissect them into specific categories and their respective domains of application.
@@ -251,7 +244,7 @@ For example, V8 just employs quick, rudimentary optimizations, such as constant 
 
 \wrule{Standalone engines:}\Wasm has expanded beyond browser environments, largely due to the WASI\cite{WASI}. 
 It standardizes the interactions between host environments and \Wasm modules through a POSIX-like interface.
-A range of standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASI. 
+A range of standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASIc. 
 In a similar vein, Singh et al.\cite{WARDuino2019} introduced a virtual machine for \Wasm tailored for Arduino-based devices. 
 Salim et al.\cite{trufflewasm} proposed TruffleWasm, an implementation of \Wasm hosted on Truffle and GraalVM. 
 Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
@@ -263,7 +256,7 @@ Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verific
 As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
 To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
 Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, WasmA\cite{wasma}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution. 
-VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
+Similarly, VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
 In the realm of dynamic analysis, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities. 
 Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
 Binaryen\toolcite{https://github.com/WebAssembly/binaryen} serves as a comprehensive toolkit for \Wasm binary manipulation, including validation, optimization, and compilation to machine code. 
@@ -271,27 +264,27 @@ Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm pro
 Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
 
 
-\wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis techniques. 
-Conversely, dynamic analysis is the forte of tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard}.
+\wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis through machine learning techniques to detect browser cryptomalwares. 
+Conversely, tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard} seek the same goal with dynamic analysis techniques.
 
 \wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm smart contracts. 
 Dynamic analysis tools in this sphere include EOSFuzzer\cite{EOSFuzzer} and wasai\cite{wasai}.
 Similarly, Manticore\toolcite{https://github.com/trailofbits/manticore/tree/master/manticore} supports the symbolic execution of \wasm smart contracts. 
 
 
-\wrule{Binary rewriting tools and obfuscators} The landscape for tools that can modify, obfuscate, or enhance \Wasm binaries for various purposes—including has increased. 
+\wrule{Binary rewriting tools and obfuscators} The landscape for tools that can modify, obfuscate, or enhance \Wasm binaries for various has increased. 
 For instance, BREWasm\cite{BREWasm} provides a comprehensive static binary rewriting framework specifically designed for \Wasm. 
-Wobfuscator\cite{wobfuscator} takes a different approach, serving as an opportunistic obfuscator for Wasm-JS programs. 
+Wobfuscator\cite{wobfuscator} takes a different approach, serving as an opportunistic obfuscator for Wasm-JS browser applications. 
 Madvex\cite{madvex} focuses on modifying \Wasm binaries to evade malware detection, with its approach being limited to alterations in the code section of a \Wasm binary. 
 Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by including memory access encryption, control flow flattening, and the insertion of opaque predicates.
 
 
 \msubsection{{\Wasm} opportunities}
 
-Despite its robust design, the \Wasm's ecosystem is still nascent and faces several security vulnerabilities, both in its implementation and in the binaries it produces. 
 As outlined, \Wasm is deterministic, well-typed, and follows a structured control flow, making it easier for compilers and engines to sandbox its execution\cite{WebAssemblySecurity}. 
-However, vulnerabilities persist. 
-For instance, Genkin et al. demonstrated that \Wasm could be exploited to exfiltrate data using cache timing-side channels\cite{Genkin2018DrivebyKC}. Lehmann et al. and Stiévenart and colleagues show that vulnerabilities in C/C++ source code could propagate to \Wasm binaries\cite{usenixWasm2020, DeRoover2022}.
+Despite its robust design, the \Wasm's ecosystem is still nascent and faces security vulnerabilities, both for \Wasm consumers and with the \Wasm binaries themselves. 
+For instance, Genkin et al. demonstrated that \Wasm could be exploited to exfiltrate data using cache timing-side channels\cite{Genkin2018DrivebyKC}. 
+Lehmann et al. and Stiévenart and colleagues show that vulnerabilities in C/C++ source code could propagate to \Wasm binaries\cite{usenixWasm2020, DeRoover2022}.
 
 Moreover, the \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
 A 2021 study by Hilbig et al. found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
