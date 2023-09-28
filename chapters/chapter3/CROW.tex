@@ -21,36 +21,43 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 
 
 %\emph{Exploration}
-\msubsection{Variants' generation}
+\msubsection{Variants' space exploration}
 
-The primary component of CROW's exploration process is its code replacement generation strategy. The diversifier implemented in CROW is based on the proposed superdiversifier methodology of Jacob \etal \cite{jacob2008superdiversifier}.
-A superoptimizer focuses on \emph{searching} for a new program that is faster or smaller than the original code while preserving its functionality.
-The concept of superoptimizing a program dates back to 1987, with the seminal work of Massalin \cite{Massalin1987} which proposes an exhaustive exploration of the solution space. The search space is defined by choosing a subset of the machine's instruction set and generating combinations of optimized programs, sorted by code size in ascending order. If any of these programs is found to perform the same function as the source program, the search halts. On the contrary, a superdiversifier keeps all intermediate search results despite their performance. 
+The cornerstone of CROW's exploration mechanism is its code replacement generation strategy, which is inspired by the superdiversifier methodology proposed by Jacob et al. \cite{jacob2008superdiversifier}. 
+The search space for generating variants is delineated through an enumerative synthesis process, which systematically produces all possible code replacements for each instruction and its data flow graph in the original program. 
+If a code replacement is identified to perform identically to the original program, it is flagged as a functionally equivalent variant.
+This equivalence is confirmed using a theorem solver for rigorous verification.
 
-
-We build CROW upon an already existing superoptimizer for LLVM called Souper \cite{Sasnauskas2017Souper:Superoptimizer}.
-Yet, we modify it to keep all possible solutions in their searching algorithm.
-Souper builds a Data Flow Graph for each LLVM integer-returning instruction. 
-Then, for each Data Flow Graph, Souper exhaustively builds all possible expressions from a subset of the LLVM IR language.
-Each syntactically correct expression in the search space is semantically checked versus the original with a theorem solver. Souper synthesizes the replacements in increasing size. Thus, the first found equivalent transformation is the optimal replacement result of the searching. 
-CROW keeps more equivalent replacements during the searching by removing the halting criteria. Instead of the original halting conditions, CROW does not halt when it finds the first replacement. CROW continues the search until a timeout is reached or the replacements grow to a size larger than a predefined threshold. 
+CROW is developed by modifying the enumerative synthesis implementation found in Souper \cite{Sasnauskas2017Souper:Superoptimizer}, an LLVM-based superoptimizer. 
+Specifically, CROW constructs a Data Flow Graph (DFG) for each LLVM instruction that returns an integer. 
+Subsequently, it generates all viable expressions derived from a selected subset of the LLVM Intermediate Representation (IR) language for each DFG.
+The enumerative synthesis process incrementally generates code replacements, starting with the simplest expressions—those composed of a single instruction—and gradually increasing in complexity. 
+The exploration process continues either until a timeout occurs or the size of the generated replacements exceeds a predefined threshold.
 
 Notice that the searching space increases exponentially with the size of the LLVM IR language subset. Thus,
-we prevent Souper from synthesizing instructions without correspondence in the \wasm\ backend. This decision reduces the searching space. For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
+we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend, effectively reducing the searching space. 
+For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
 Moreover, we disable the majority of the pruning strategies of Souper for the sake of more program variants.
 For example, Souper prevents the generation of commutative operations during the searching.
 On the contrary, CROW still uses such transformation as a strategy to generate program variants. 
 
 
-The last stage involves the custom Wasm LLVM backend, which generates the \wasm programs.
-For it, we have the premise of removing all built-in optimizations in the LLVM backend that could reverse Wasm variants.
-We disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
+To generate variants, CROW employs a strategy of recombining all found code replacements. 
+Leveraging the ascending nature of its enumerative synthesis process, CROW is capable of creating variants that may outperform the original program in both size and efficiency. 
+For instance, the first functionally equivalent transformation identified is typically the most optimal in terms of code size. 
+This approach offers developers a range of performance options, allowing them to balance between diversification and performance without compromising the latter.
+CROW applies these code transformations incrementally. 
+For instance, if a suitable replacement is identified that can be applied at $N$ different locations in the original program, CROW will generate $N$ distinct program variants, each with the transformation applied at a unique location. 
+This approach leads to a combinatorial explosion in the number of available program variants, especially as the number of possible replacements increases.
+
+The last stage at CROW involes a custom Wasm LLVM backend, which generates the \wasm programs.
+For it, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
 
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
-CROW, adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
-This means that Souper infers pieces of code as a single constant assignment. 
-In particular, Souper focuses on variables that are used to control branches.
+CROW, inherently adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
+In concrete, Souper infers pieces of code as a single constant assignment and this is ported to CROW. 
+This strategy mostly focuses on variables that are used to control branches.
 % By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 
 After a \emph{constant inferring}, the generated program is considerably different from the original program, being suitable for diversification.
 
@@ -124,8 +131,7 @@ int babbage() {
 % llvm-opt: rool unroll
 In theory, this value can also be inferred by unrolling the loop the correct number of times with the LLVM toolchain.
 However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.
-% Souper
-The original Souper deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached. Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
+CROW deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached. Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
 The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}
 %  Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}
 
@@ -144,15 +150,6 @@ We disable all optimizations in the \wasm\ backend that could reverse the CROW t
     \item Redundant operation removal: expressions such as the multiplication of variables by \texttt{$a = b2^n$} are replaced by shift left operations \texttt{$a = b << n$}.  
 \end{itemize}
 \end{comment}
-
-
-\msubsection{Combining replacements}
-
-When we retarget Souper, to create variants, we recombine all code replacements, including those for which a constant inferring was performed.
-This allows us to create variants that are also better than the original program in terms of size and performance. Most of the Artificial Software Diversification  works generate variants that are as performant or iller than the original program. By using a superdiversifier, we could be able to generate variants that are better, in terms of performance, than the original program. This will give the option to developers to decide between performance and diversification without sacrificing the former. 
-
-On the other hand, when Souper finds a replacement, it is applied to all equal instructions in the original LLVM binary. In our implementation, we apply the transformations one by one. 
-For example, if we find a replacement that is suitable for $N$ difference places in the original program, we generate $N$ different programs by applying the transformation in only one place at a time. Notice that this strategy provides a combinatorial explosion of program variants as soon as the number of replacements increases.
 
 
 
