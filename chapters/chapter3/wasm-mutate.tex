@@ -1,8 +1,8 @@
 \renewcommand{\tool}{WASM-MUTATE\xspace}
 \msection{\tool: Fast and Effective Binary for WebAssembly}
 
-In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates functionally equivalent variants of a WebAssembly program input. 
-Leveraging rewriting rules and e-graphs \cite{e-graph} for diversification space traversals, \tool synthesizes program variants by altering parts of the original binary. 
+In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates functionally equivalent variants of a WebAssembly binary input. 
+Leveraging rewriting rules and e-graphs \cite{e-graph} for diversification space traversals, \tool synthesizes program variants by transforming parts of the original binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling for a visual representation.
 
 \begin{figure*}[h!]
@@ -117,95 +117,40 @@ An instance of a rewriting rule in this category can be appreciated below:
 
 The previous rewriting rule example implies that the \texttt{LHS} 'x' is to be replaced by an idempotent bitwise \texttt{i32.or} operation with itself,  as soon as x, which can be any subexpression, leaves a value of type i32 in the execution stack.
 
-\msubsection{Extending peephole meta-rules with custom operators}
-\label{custom}
 
 As illustrated in \autoref{fig:wasm-mutate}, the initial step in the process involves parsing an input \Wasm program, generating an intermediate representation. 
 This step facilitates the transition of the \Wasm program to the next stages of \tool. 
 This representation extends the textual Wat format.
 We augment it with custom operator instructions to enhance the transformation capabilities of \tool.
-
-
 Custom operator instructions form part of the lowest level of transformation we provide in \tool, the Peephole meta-rule.
 These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques through rewriting rules.
-WASM-MUTATE includes four custom operator instructions in its intermediate representation of \wasm programs.
-In the following text, we describe each one of them.
-We also show concrete rewriting rules in the Peephole meta-rule that use them.
-
-\wrule{container}: it acts as a holder for multiple instructions, enabling transformations without altering the program's semantics. 
-Below, we demonstrate a rewriting rule that leverages it to insert \texttt{nop} instructions into the any \Wasm program place, a well-known low-level diversification strategy \cite{nop}:
+In concrete we add 4 custom operator instructions, namely \texttt{container}, \texttt{useglobal}, \texttt{unfold}, and \texttt{rand}.
+In the example belowm we demonstrate a rewriting rule that leverages it to insert \texttt{nop} instructions into the any \Wasm program place, a well-known low-level diversification strategy \cite{nop}, while using the \texttt{container} custom operator:
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
-
-\noindent The instruction \texttt{x} (it can be a complete subexpression), can be substituted with \texttt{container (x nop)}. Thus, when converting back the intermediate representation to \wasm, a \texttt{nop} opcode is appended to the original instruction.
-
-
-\wrule{\texttt{useglobal:}} this operator is used in a rewriting rule that substitutes its operand with the setting and retrieval actions involving a newly created global variable. In the following listing, we illustrate such a rewriting rule.
-
-\input{snippets/snippets-wasm-mutate/custom_operators/useglobal.tex}
-
-\noindent This rewriting rule is meant to stress the managed memory through random access to global variables.
-
-\wrule{unfold:} this operator, working with a constant numeric operand, statically generates two numbers whose sum equals the constant, followed by the addition of operations for these numbers.
-
-\input{snippets/snippets-wasm-mutate/custom_operators/unfold.tex}
-
-\wrule{rand:} this operator injects random constant numbers in any place of the program. One of the rewriting rules using this operator is shown below.
-
-\input{snippets/snippets-wasm-mutate/custom_operators/rand.tex}
-
-\noindent In this rewriting rule, a subexpression is replaced by a container for which operands are the subexpression itself and the pushing of a random value into the execution stack, to be removed after with a \texttt{drop} instruction.
 
 In practice, custom operators are only part of the rewriting rules of WASM-MUTATE.
 This means that, when converting Wasm to the intermediate representation no custom operator is generated.
 When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
 For example, the \texttt{container} custom operator is removed while its operands are encoded back to Wasm in their corresponding opcodes.
 
-\msubsection{E-graphs}
-\label{alg}
+\msubsection{E-Graphs traversals}
+\label{custom}
 
-We developed \tool leveraging e-graphs, a specific graph data structure for representing rewriting rules \cite{10.1145/3571207}. 
-Within an e-graph, there exist two distinct node types: e-nodes and e-classes. 
-The former encapsulates either an operator or an operand present in the rewriting rule, while the latter groups e-nodes into equivalence classes, essentially serving as a composite virtual node that contains a collection of e-nodes. 
-Consequently, each e-class contains at least one e-node.
-e-nodes have edges delineating the operator-operand equivalence relations between e-classes.
-%\todo{This is cryptic}
 
+We developed \tool leveraging e-graphs, a specific graph data structure for representing rewriting rules \cite{10.1145/3571207} (we detailed the e-graph construction process in Section 3 of \cite{wasmmutate}). 
 In the context of \tool, the e-graph is constructed from a WebAssembly program.
 This entails the transformation of each distinct expression, operator, and operand into e-nodes. 
 A primer e-graph is built from the original program.
 This initial e-graph is subsequently augmented with e-nodes and e-classes derived from each one of the rewriting rules.
 
-% How to construct
-Let us illustrate the e-graph construction with a program that consists of a single instruction that returns an integer constant, denoted as \texttt{i64.const 0}. 
-Besides, assume a single rewriting rule defined as \texttt{(x, x i64.or x, x returns type i64)}.
-In \autoref{e-graph} we visualize how the e-graph is built out of the program and rewriting rule.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.7\linewidth]{figures/egraph1.pdf}
-  \caption{e-graph construction for idempotent bitwise-or rewriting rule and a single instruction \wasm program. Solid lines represent operand-operator relations, and dashed lines represent equivalent class inclusion. }
-\label{e-graph}
-\end{figure}
-
-Building the e-graph begins with the incorporation of the solitary program instruction, \texttt{i64.const 0}, as an e-node \step{1}.
-Then, we derive additional e-nodes from the rewriting rule \step{2}. 
-This involves introducing a fresh e-node labeled \texttt{i64.or} and establishing edges leading to the \texttt{x} e-node.
-Since there is no extra condition in which the operator-operand relation is valid, \texttt{x} represents any e-class in the e-graph.
-Thus, the equivalence by merging the two e-nodes is affirmed, thus forming a unified e-class \step{3}. 
-Finally, we successfully construct an e-graph that encapsulates the relationships and equivalences dictated by the initial program and the rewriting rule \step{4}, setting the stage for further analyses and transformations based on this structured representation.
-
-\msubsection{Random e-graph traversal for variants generation}
-\label{traversal}
-
 % General use of case
-Willsey et al. demonstrated the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
+Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
 This methodology ensures the semantic equivalence of the derived code \cite{e-graph}. 
 For instance, e-graphs solve the problem of providing the best code out of several optimization rules \cite{optimization order problem}.
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
 In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a semantically equivalent code variant}. 
 
-The previously mentioned property is exploited in \autoref{e-graph}, showcasing the feasibility of crafting an endless series of "or" operations. 
 We exploit such property to generate diverse \Wasm variants.
 We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield semantically equivalent program variants, as detailed in \autoref{peephole:mutator}. 
 This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
@@ -238,6 +183,8 @@ Following this, the subexpressions are built (line 10) for each child node, culm
 	\caption{e-graph traversal algorithm taken from \cite{wasmmutate}.} 
 	\label{peephole:mutator}
 \end{algorithm}
+
+
 
 \msubsection{\tool instantiation}
 
