@@ -48,7 +48,7 @@ We disable all optimizations in the \wasm\ backend that could reverse the CROW t
 
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
-CROW, through using Souper adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
+CROW, adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
 This means that Souper infers pieces of code as a single constant assignment. 
 In particular, Souper focuses on variables that are used to control branches.
 % By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 
@@ -56,7 +56,7 @@ After a \emph{constant inferring}, the generated program is considerably differe
 
 
 Let us illustrate the case with an example.
-The Babbage problem code in \autoref{babbage} is composed of a loop that stops when it discovers the smaller number that fits with the Babbage condition in Line 4.
+The Babbage problem code in \autoref{babbage} is composed of a loop that stops when it discovers the smallest number that fits with the Babbage condition in Line 4.
 
 
 {
@@ -133,7 +133,7 @@ The new program in \autoref{inferring} is remarkably smaller and faster than the
 \begin{comment}
 
 \todo{This seems to be out of place :)}
-During the implementation of CROW, we have the premise of removing all built-in optimizations in the LLVM backend that could reverse Wasm variants.
+During the implementation of CROW, we have removed built-in optimizations in the LLVM backend that could reverse Wasm variants.
 Therefore, we modify the \wasm\ backend.
 We disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
 \begin{itemize}

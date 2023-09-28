@@ -38,7 +38,6 @@
     commentstyle=\color{commentgreen}
 }
 \lstdefinelanguage{llvm}{
-    morecomment = [l]{;},
     morestring=[b]", 
     sensitive = true,
     morekeywords=[2]{i32,f32,i64,f64},
@@ -81,6 +80,7 @@
         extractvalue, insertvalue,
     },
     alsoletter={\%},
+    morecomment=[l]{;},
     keywordsprefix={\%},% All identifiers starting with '%' will be printed as first order keywords.
     keywordstyle=[1]\bfseries,% As mentioned above, these are the keywords starting with '%', like '%5'
     keywordstyle=[2]\color{eminence}\bfseries,
