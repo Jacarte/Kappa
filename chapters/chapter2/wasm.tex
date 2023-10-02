@@ -157,9 +157,9 @@ Global variables are only accessible by their declaration index, and it is not p
 
 \wrule{Locals}: Locals are mutable variables that are local to a specific function instance, i.e. locals are only accessible through their index related to the executing function instance. As globals, locals are part of the managed data.
 
-\begin{note}\label{managed_unmanaged}
+\begin{definition}\label{managed_unmanaged}
     Along with this dissertation, as the work of Lehmann \etal \cite{usenixWasm2020}, we refer to managed and unmanaged data to differentiate between the data that is managed by the host engine and the data that is managed by the \Wasm program respectively. 
-\end{note}
+\end{definition}
 
 \wrule{Function Instances}: 
 A function instance groups locals and a function body.
