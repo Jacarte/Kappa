@@ -48,7 +48,7 @@ Remarkably, WASM-MUTATE removes the need for compiler adjustments, offering comp
 %\msubsection{Strength of the generated variants}
 
 %We analyze our tools through the lens of the following properties: the number of variants generated in one hour, the part of the \wasm binary diversified, the overhead introduced by the diversification and the strength of the generated variants as the \emph{Strength of the generated variants}.
-We draw several interesting phenomena when aggregating the data presented in the corresponding papers of CROW, MEWE and WASM-MUTATE \cite{CROW,MEWE, wasmmutate}. 
+We have observed several interesting phenomena when aggregating the empirical data presented in the corresponding papers of CROW, MEWE and WASM-MUTATE \cite{CROW,MEWE, wasmmutate}. 
 This can be appreciated in the fourth, fifth and sixth columns of \autoref{comp:table:tools}.
 We have observed that WASM-MUTATE generates more unique variants in one hour than CROW and MEWE in at least one order of magnitude.
 This is mainly because WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
