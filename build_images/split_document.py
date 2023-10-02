@@ -13,11 +13,11 @@ COUNTER = 1
 
 NAMES = [
     "intro",
-    "01introduction",
-    "02background",
-    "03automaticsoftwarediversification",
-    "04exploitingsoftware",
-    "05conclusions",
+    "1introduction",
+    "2background",
+    "3automaticsoftwarediversification",
+    "4exploitingsoftware",
+    "5conclusions",
     "references"
 ]
 

@@ -7,32 +7,31 @@
 \titleformat{\chapter}[display]
   % Add the current date, REMOVE THIS in production
   {\LARGE}
-  {\footnotetext[0]{\tiny Comp. time \today\ \currenttime\\}\renewcommand{\thechapter}{{\color{gray}0}\arabic{chapter}\color{gray}\vspace{2.0ex}\titlerule}
+  {\footnotetext[0]{\tiny Comp. time \today\ \currenttime\\}\renewcommand{\thechapter}{\arabic{chapter}\color{gray}\vspace{2.0ex}\titlerule}
   %\colorbox{blacm}
-  {{\bfseries\fontsize{40}{50}\selectfont
-  \thechapter\hspace*{-1.5cm}
-    \parbox[t][1.2cm][t]{1cm}{%
-      \centering\textcolor{black}  {}}}}}
-  {-3ex}
-  {%\color{black}\titlerule
-  \vspace{-12.5ex}\filleft\parbox[b]{0.5\textwidth}{\begin{flushright}\MakeUppercase{#1}\\\end{flushright}}\hspace*{-0.08cm}\vspace{-0.5cm}}
+  {}}
+  {-2ex}
+  {\vspace{-1cm}\filleft\parbox[b]{0.5\textwidth}{\begin{flushright}{\bfseries\fontsize{65}{70}\selectfont
+    \thechapter
+      }
+    \\\fontsize{18}{20}\selectfont\MakeUppercase{#1}\\\end{flushright}}\vspace{-0.5cm}}
   [\vspace{0.1ex}]
 % chapter tiltes spacing
 \titlespacing*{\chapter}{0pt}{10pt}{50pt}
 
 % section tiltes formatting
 \titleformat{\section}
-  {\LARGE}{\MySecSquare\ \thesection}{1em}{#1}
+  {\LARGE}{\thesection}{1em}{#1}
 
 \titleformat{name=\section,numberless}
   {\Large}{\MySecSquare}{1em}{#1}
 
 % subsection tiltes formatting
 \titleformat{\subsection}
-  {\large}{\MySecSquare}{1em}{\thesubsection\ #1}
+  {\LARGE}{}{1em}{\hspace{-0.5cm}\thesubsection\ #1}
   
 \titleformat{name=\subsection,numberless}
-  {\large}{\hspace{0.25em}\MySecSquare}{1em}{\thesubsection\ #1}
+  {\LARGE}{\hspace{0.25em}}{1em}{\thesubsection\ #1}
 
 % formatting for section entries in ToC  
 \titlecontents{section}
