@@ -4,7 +4,7 @@
 \renewcommand{\tool}{CROW\xspace}
 
 This section details CROW \cite{CROW}, represented as the red squared tooling in \autoref{fig:approach_landscape}. 
-CROW is designed to produce semantically equivalent \wasm variants from the output of an LLVM front-end, utilizing a custom Wasm LLVM backend.
+CROW is designed to produce functionally equivalent \wasm variants from the output of an LLVM front-end, utilizing a custom Wasm LLVM backend.
 
 \autoref{diagrams:crow} illustrates CROW's workflow in generating program variants, a process compound of two core stages: \textit{exploration} and \textit{combining}. 
 During the \textit{exploration} stage, CROW processes every instruction within each function of the LLVM input, creating a set of functionally equivalent code variants. 

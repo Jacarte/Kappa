@@ -8,7 +8,7 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=0.9\linewidth]{diagrams/wasm_mutate.workflow.pdf}
-    \caption{ \tool high-level architecture.  It generates semantically equivalent variants from a given WebAssembly binary input. 
+    \caption{ \tool high-level architecture.  It generates functionally equivalent variants from a given WebAssembly binary input. 
     Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs.}
   \label{fig:wasm-mutate}
 \end{figure*}
@@ -18,7 +18,7 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
 The first step involves parsing this binary to create suitable abstractions, e.g. an intermediate representation.
 Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
 Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
-This assurance of semantic preservation is rooted in the inherent properties of the individual rewrite rules employed.
+This assurance of functional preservation is rooted in the inherent properties of the individual rewrite rules employed.
 
 
 
@@ -67,13 +67,13 @@ This initial e-graph is subsequently augmented with e-nodes and e-classes derive
 
 % General use of case
 Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
-This methodology ensures the semantic equivalence of the derived code \cite{e-graph}. 
+This methodology ensures the functional equivalence of the derived code \cite{e-graph}. 
 For instance, e-graphs solve the problem of providing the best code out of several optimization rules \cite{optimization order problem}.
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
-In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a semantically equivalent code variant}. 
+In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a functionally equivalent code variant}. 
 
 We exploit such property to fastly generate diverse \Wasm variants.
-We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield semantically equivalent program variants, as detailed in \autoref{peephole:mutator}. 
+We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield functionally equivalent program variants, as detailed in \autoref{peephole:mutator}. 
 This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
 Within the algorithm, a random e-node is chosen from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
 Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line 3). 

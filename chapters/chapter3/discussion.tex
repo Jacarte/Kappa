@@ -19,7 +19,7 @@ This method removes the need for compiler adjustments, offering compatibility wi
 Moreover, it highlights how extending intermediate representations could establish a general framework for binary rewriting in \Wasm.
 
 \msubsection{Strength of the generated variants}
-CROW and MEWE use enumerative synthesis and verify semantic equivalence through SMT solvers. 
+CROW and MEWE use enumerative synthesis and verify functional equivalence through SMT solvers. 
 This approach not only has the potential to exceed handcrafted optimizations but also ensures that the transformations are \temph{preserved}. 
 In other words, the transformations generated out of CROW and MEWE are virtually irreversible, even following compiler optimizations. 
 This is particularly remarkable in the case of \emph{constant inferring} transformations (see \autoref{CROW:constant_inferring}).
