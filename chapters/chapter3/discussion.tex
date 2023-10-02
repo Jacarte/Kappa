@@ -23,7 +23,10 @@ Notice that, the data and insights presented in the table are sourced from the r
             WASM-MUTATE & rewriting rules + \textbf{Wasm bin.} & e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm part}  & 76\% & Resilience against: signature-based identification, static analysis, fingerprinting and timing side-channel attacks. \\
             
         \end{tabular}
-        \caption{title \label{comp:table:tools}}
+        \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, strength of the generated variants, and the security applications of these variants. 
+        The \emph{Variant strength} accounts for the capability of each tool on generating variants that are preserved after the JIT compilation of V8 and wasmtime in average.
+        Our three technical contributions are complementary tools that can be combined.
+        \label{comp:table:tools}}
     \end{table}
 \end{landscape}
 
