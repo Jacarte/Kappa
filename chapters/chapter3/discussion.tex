@@ -48,13 +48,12 @@ Remarkably, WASM-MUTATE removes the need for compiler adjustments, offering comp
 %\msubsection{Strength of the generated variants}
 
 %We analyze our tools through the lens of the following properties: the number of variants generated in one hour, the part of the \wasm binary diversified, the overhead introduced by the diversification and the strength of the generated variants as the \emph{Strength of the generated variants}.
-
-WASM-MUTATE generates more unique variants in one hour than CROW and MEWE in at least one order of magnitude.
-This is because WASM-MUTATE is a binary-based tool, not requiring any compilation step further the lazy parsing of the diversification target section.
-Besides, WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
+We draw several interesting phenomena when aggregating the data presented in the corresponding papers of CROW, MEWE and WASM-MUTATE \cite{CROW,MEWE, wasmmutate}. 
+This can be appreciated in the fourth, fifth and sixth columns of \autoref{comp:table:tools}.
+We have observed that WASM-MUTATE generates more unique variants in one hour than CROW and MEWE in at least one order of magnitude.
+This is mainly because WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
 In addition, CROW and MEWE generation capabilities are limited by the \emph{overlapping} phenomenon discussed in \autoref{section:crow:example}.
-On the other hand, CROW and MEWE use enumerative synthesis and verify functional equivalence through SMT solvers. 
-This approach not only has the potential to exceed handcrafted optimizations \cite{Sasnauskas2017Souper:Superoptimizer} but also ensures that the transformations are \temph{preserved}. 
+On the other hand, CROW and MEWE, by using enumerative synthesis, can exceed handcrafted optimizations \cite{Sasnauskas2017Souper:Superoptimizer}, ensuring that the generated variants are \temph{preserved}. 
 In other words, the transformations generated out of CROW and MEWE are virtually irreversible by JIT compilers, such as V8 and wasmtime.
 This phenomenon is highlighted in the \emph{Variants strength} column of \autoref{comp:table:tools}, where we show that CROW and MEWE generate variants with 96\% of preservation against 75\% of WASM-MUTATE.
 
