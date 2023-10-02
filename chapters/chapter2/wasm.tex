@@ -204,7 +204,8 @@ Break instructions within loops that effectively jump to the loop's beginning ar
 \msubsection{\Wasm's ecosystem}
 \label{background:wasm:ecosystems}
 
-
+\todo{Split in two sections. Do a new section on WebAssembly analysis.}
+\todo{Other WebAssembly tools section.}
 
 \Wasm programs are designed for execution in host environments such as web browsers.
 Though the execution of a \Wasm program might be considered its final lifecycle stage, the \Wasm ecosystem is far from simplistic.
@@ -267,6 +268,7 @@ Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Was
 \wrule{Specialized Malware Detection} In niche areas like cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis through machine learning techniques to detect browser cryptomalwares. 
 Conversely, tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard} seek the same goal with dynamic analysis techniques.
 \todo{Add VirusTotal here}
+\todo{Compare}
 
 \wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm smart contracts. 
 Dynamic analysis tools in this sphere include EOSFuzzer\cite{EOSFuzzer} and wasai\cite{wasai}.
@@ -281,12 +283,16 @@ Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by includ
 
 
 \msubsection{{\Wasm} opportunities}
+\todo{Emphasize what is missing. DO not talk about monoculture, neither diversification. Talks about runtime properties, side-channels, etc.}
+\todo{Put things into context.}
 
 As outlined, \Wasm is deterministic, well-typed, and follows a structured control flow, making it easier for compilers and engines to sandbox its execution\cite{WebAssemblySecurity}. 
 Despite its robust design, the \Wasm's ecosystem is still nascent and faces security vulnerabilities, both for \Wasm consumers and with the \Wasm binaries themselves. 
 For instance, Genkin et al. demonstrated that \Wasm could be exploited to exfiltrate data using cache timing-side channels\cite{Genkin2018DrivebyKC}. 
 Lehmann et al. and Stiévenart and colleagues show that vulnerabilities in C/C++ source code could propagate to \Wasm binaries\cite{usenixWasm2020, DeRoover2022}.
 
+
+\todo{Move to the end of the Kappa.}
 Moreover, the \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
 A 2021 study by Hilbig et al. found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
 This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
