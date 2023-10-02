@@ -15,12 +15,12 @@ Notice that, the data and insights presented in the table are sourced from the r
             } | p{0.06\linewidth} | p{0.1\linewidth} | p{0.07\linewidth} | p{0.25\linewidth} } 
             Tool & Input & Core & Variants in 1h & Target  & Variants Strength & Security applications \\
             \hline \hline
-            CROW & Source code or LLVM Ir & Enumerative synth. & > 1k & Code section  & \textbf{96\%} & Resilience against: signature-based identification, static analysis and side-channel attacks.  \\
+            CROW & Source code or LLVM Ir & Enumerative synth. & > 1k & Code section  & \textbf{96\%} & Static analysis and side-channel attacks.  \\
             \hline
             MEWE & Source code or LL
-            VM Ir & CROW + Execution path randomization  & > 1k & Code + Function sections  & \textbf{96\%} & Resilience against: signature-based identification, static and dynamic analysis, web timing-based attacks.  \\
+            VM Ir & CROW + Execution path randomization  & > 1k & Code + Function sections  & \textbf{96\%} & Static and dynamic analysis, web timing-based attacks.  \\
             \hline
-            WASM-MUTATE & rewriting rules + \textbf{Wasm bin.} & e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm part}  & 76\% & Resilience against: signature-based identification, static analysis, fingerprinting and timing side-channel attacks. \\
+            WASM-MUTATE & rewriting rules + \textbf{Wasm bin.} & e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm part}  & 76\% & Signature-based identification, static analysis, compiler fingerprinting and timing side-channel attacks. \\
             
         \end{tabular}
         \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, strength of the generated variants, and the security applications of these variants. 

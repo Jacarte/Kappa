@@ -25,16 +25,14 @@ This assurance of functional equivalence is rooted in the inherent properties of
 \msubsection{WebAssembly Rewriting Rules}
 \label{custom}
 
-\tool incorporates a comprehensive set of 135 rewriting rules.
+\tool contains a comprehensive set of 135 rewriting rules.
 Inside \tool, a rewriting rule is a tuple \texttt{(LHS, RHS, Cond)} where \texttt{LHS} specifies the segment of code targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place, e.g. enhancing type constraints.
-\tool groups these rewriting rules into meta-rules, ranging from high-level changes affecting all binary section structure to low-level modifications within the code section. 
-This section focuses on one specific meta-rule implemented in \tool, the \texttt{Peephole} meta-rule \footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
+\tool groups these rewriting rules into meta-rules depending on their target inside a \wasm binary, ranging from high-level changes affecting all binary section structure to low-level modifications within the code section. 
+This section focuses on the biggest meta-rule implemented in \tool, the \texttt{Peephole} meta-rule \footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
 
 % Determinism
 Rewriting rules inside the \emph{Peephole} meta-rule, operate over the data flow graph of instructions within a function body, representing the lowest level of rewriting.  
-In \tool, we have implemented 125 rewriting rules specifically for this category.
-Any rewriting rule inside the Peephole meta-rule avoids instructions that might induce undefined behavior, e.g., function calls.
-Consequently, ensuring the original functionality of the control frame labels (see \autoref{background:wasm:binary}).
+In \tool, we have implemented 125 rewriting rules specifically for this category, each one avoiding targeting instructions that might induce undefined behavior, e.g., function calls.
 
 % Augmentation of the internal representation
 Moreover, we augment the internal representation of a \wasm program to bolster \tool's transformation capabilities through the \texttt{Peephole} meta-rule.
@@ -55,9 +53,9 @@ When generating the \wasm variant, the \texttt{container} custom operator is rem
 \msubsection{E-Graphs traversals}
 
 
-We developed \tool leveraging e-graphs, a specific graph data structure for representing rewriting rules \cite{10.1145/3571207}. 
-In the context of \tool, a primer e-graph is constructed from a WebAssembly program.
-This initial e-graph is subsequently augmented with e-nodes and e-classes derived from each one of the rewriting rules (we detailed the e-graph construction process in Section 3 of \cite{wasmmutate}).
+We developed \tool leveraging e-graphs, a specific graph data structure for representing and applying rewriting rules \cite{10.1145/3571207}. 
+In the context of \tool, a primer e-graph is constructed from the input \Wasm program.
+This initial e-graph is subsequently augmented with e-nodes and e-classes derived from each one of the rewriting rules (we detail the e-graph construction process in Section 3 of \cite{wasmmutate}).
 
 % General use of case
 Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
