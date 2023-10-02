@@ -2,8 +2,8 @@
 \msection{\tool: Fast and Effective Binary for WebAssembly}
 
 In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates functionally equivalent variants of a WebAssembly binary input. 
-Leveraging rewriting rules and e-graphs \cite{e-graph} for diversification space traversals, \tool synthesizes program variants by transforming parts of the original binary. 
-In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling for a visual representation.
+Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
+In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
 \begin{figure*}[h!]
     \centering
@@ -18,57 +18,51 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
 The first step involves parsing this binary to create suitable abstractions, e.g. an intermediate representation.
 Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
 Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
-This assurance of functional preservation is rooted in the inherent properties of the individual rewrite rules employed.
+This assurance of functional equivalence is rooted in the inherent properties of the individual rewrite rules employed.
 
 
 
 \msubsection{WebAssembly Rewriting Rules}
 \label{custom}
 
-The \tool framework incorporates a comprehensive set of 135 rewriting rules, organized into distinct categories as meta-rules. 
-These rewriting rules are inspired by the foundational work of Sasnauskas et al. \cite{2017arXiv171104422S}, and are extended to include a predicate that enforces the conditions under which a replacement can occur. 
-Each rule is structured as a tuple, denoted as \texttt{(LHS, RHS, Cond)}.
- Here, \texttt{LHS} specifies the segment of code targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place. In the context of \Wasm binaries, the \texttt{Cond} predicate ensures that any replacement adheres to type constraints. 
- 
- \tool features seven different meta-rules, ranging from high-level changes affecting all binary section structure to low-level modifications within the code section, including alterations to both control and data flow. 
- To simplify the discussion, the subsequent text will focus on one specific meta-rule implemented in \tool, the \texttt{Peephole} meta-rule. 
- For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.
+\tool incorporates a comprehensive set of 135 rewriting rules.
+Inside \tool, a rewriting rule is a tuple \texttt{(LHS, RHS, Cond)} where \texttt{LHS} specifies the segment of code targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place, e.g. enhancing type constraints.
+\tool groups these rewriting rules into meta-rules, ranging from high-level changes affecting all binary section structure to low-level modifications within the code section. 
+This section focuses on one specific meta-rule implemented in \tool, the \texttt{Peephole} meta-rule \footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
 
+% Determinism
+Rewriting rules inside the \emph{Peephole} meta-rule, operate over the data flow graph of instructions within a function body, representing the lowest level of rewriting.  
+In \tool, we have implemented 125 rewriting rules specifically for this category.
+Any rewriting rule inside the Peephole meta-rule avoids instructions that might induce undefined behavior, e.g., function calls.
+Consequently, ensuring the original functionality of the control frame labels (see \autoref{background:wasm:binary}).
 
-The \texttt{Peephole} meta-rule focuses on the rewriting of instruction sequences found within function bodies, representing the lowest level of rewriting. 
-In \tool, we have devised 125 rewriting rules specifically for this category.
-\tool is structured to ensure the determinism of the instructions selected for replacement.
-Therefore, any rewriting rule inside the Peephole meta-rule avoids instructions that might induce undefined behavior, e.g., function calls.
-Consequently, preserving the original functionality of the control frame labels (see \autoref{background:wasm:binary}).
-
+% Augmentation of the internal representation
 Moreover, we augment the internal representation of a \wasm program to bolster \tool's transformation capabilities through the \texttt{Peephole} meta-rule.
 Concretely, we augment the parsing stage in \tool by including custom operator instructions.
-These custom operator instructions are designed to bolster \tool by utilizing well-established code diversification techniques through rewriting rules.
-In practice, we add 4 custom operator instructions, namely \texttt{container}, \texttt{useglobal}, \texttt{unfold}, and \texttt{rand}.
-Custom operands highlight the versatility of \tool as a general-purpose binary rewriting engine.
+These custom operator instructions are designed to use well-established code diversification techniques through rewriting rules.
+In practice, custom operators are only part of the rewriting rules of WASM-MUTATE.
+This means that, when parsing Wasm to the intermediate representation no custom operator is generated.
+When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
+Remarkably, custom operators highlight the versatility of \tool as a general-purpose binary rewriting engine.
 
-In the example below, we demonstrate a rewriting rule of the \texttt{Peephole} meta-rule that leverages a custom operator to insert \texttt{nop} instructions into any \Wasm program place, a well-known low-level diversification strategy \cite{nop}, while using the \texttt{container} custom operator:
 
+In the example below, we illustrate a rewriting rule of the \texttt{Peephole} meta-rule that leverages a custom operator to insert \texttt{nop} instructions into any \Wasm program place, a well-known low-level diversification strategy \cite{homescu2013profile}, while using the \texttt{container} custom operator.
+When generating the \wasm variant, the \texttt{container} custom operator is removed while its operands are encoded back to Wasm in their corresponding opcodes.
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
-In practice, custom operators are only part of the rewriting rules of WASM-MUTATE.
-This means that, when converting Wasm to the intermediate representation no custom operator is generated.
-When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
-For example, the \texttt{container} custom operator is removed while its operands are encoded back to Wasm in their corresponding opcodes.
+
 
 \msubsection{E-Graphs traversals}
 
 
 We developed \tool leveraging e-graphs, a specific graph data structure for representing rewriting rules \cite{10.1145/3571207}. 
-In the context of \tool, the e-graph is constructed from a WebAssembly program.
-This entails the transformation of each distinct expression, operator, and operand into e-nodes. 
-A primer e-graph is built from the original program.
+In the context of \tool, a primer e-graph is constructed from a WebAssembly program.
 This initial e-graph is subsequently augmented with e-nodes and e-classes derived from each one of the rewriting rules (we detailed the e-graph construction process in Section 3 of \cite{wasmmutate}).
 
 % General use of case
 Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
 This methodology ensures the functional equivalence of the derived code \cite{e-graph}. 
-For instance, e-graphs solve the problem of providing the best code out of several optimization rules \cite{optimization order problem}.
+For instance, e-graphs solve the problem of providing the best code out of several optimization rules \cite{10.1145/1480881.1480915}.
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
 In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a functionally equivalent code variant}. 
 
