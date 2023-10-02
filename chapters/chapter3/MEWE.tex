@@ -18,9 +18,7 @@ It then merges LLVM IR variants into a Wasm multivariant.
 In the figure, we highlight the two components of MEWE, \emph{Multivariant Generation} and the \emph{Mixer}.
 In the \emph{Multivariant Generation} process, 
 MEWE gathers the LLVM IR variants created by CROW.
-
-\emph{The Mixer} has three specific steps: 1) link the LLVM multivariant binary, 2) inject a random generator and 3) tamper the application's entrypoint.
-The Mixer component of MEWE  links the multivariant binary and creates a new entrypoint for the binary called \emph{entrypoint tampering}.
+The Mixer component, on the other hand, links the multivariant binary and creates a new entrypoint for the binary called \emph{entrypoint tampering}.
 The tampering is needed in case the output of CROW are variants of the original entrypoint, e.g. the \emph{main} function.
 Concretely, it wraps the dispatcher for the entrypoint variants as a new function for the final Wasm binary and is declared as the application entrypoint.
 The random generator is needed to perform the execution-path randomization.
@@ -42,7 +40,6 @@ Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ eng
 
 
 The key component of \tool consists of combining the variants into a single binary.
-The goal is to support execution-path randomization at runtime \cite{davi2015isomeron}.
 The core idea is to introduce one dispatcher function per original function with variants.
 A dispatcher function is a synthetic function in charge of choosing a variant at random when the original function is called.
 With the introduction of the dispatcher function,  \tool turns the original call graph into a multivariant call graph, defined as follows. 
