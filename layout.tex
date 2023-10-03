@@ -7,15 +7,16 @@
 \titleformat{\chapter}[display]
   % Add the current date, REMOVE THIS in production
   {\LARGE}
-  {\footnotetext[0]{\tiny Comp. time \today\ \currenttime\\}\renewcommand{\thechapter}{\arabic{chapter}\color{gray}\vspace{2.0ex}\titlerule}
+  {
+    \footnotetext[0]{\tiny Comp. time \today\ \currenttime\\}\renewcommand{\thechapter}{\arabic{chapter}\color{gray}\vspace{2.0ex}\titlerule}
   %\colorbox{blacm}
-  {}}
+  {\begin{flushright}{\bfseries\fontsize{65}{70}\selectfont
+    \arabic{chapter} 
+      } \end{flushright}}}
   {-2ex}
-  {\vspace{-1cm}\filleft\parbox[b]{0.5\textwidth}{\begin{flushright}{\bfseries\fontsize{65}{70}\selectfont
-    \thechapter 
-      }
-    \\\fontsize{18}{20}\selectfont\MakeUppercase{#1}\\\end{flushright}}\vspace{-0.5cm}}
+  {\vspace{-1cm}\filleft\parbox[b]{0.5\textwidth}{\begin{flushright}\fontsize{18}{20}\selectfont\MakeUppercase{#1}\\\end{flushright}}\vspace{-0.5cm}}
   [\vspace{0.1ex}]
+
 % chapter tiltes spacing
 \titlespacing*{\chapter}{0pt}{10pt}{50pt}
 
