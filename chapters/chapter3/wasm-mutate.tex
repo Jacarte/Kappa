@@ -1,7 +1,7 @@
 \renewcommand{\tool}{WASM-MUTATE\xspace}
 \msection{\tool: Fast and Effective Binary for WebAssembly}
 
-In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates functionally equivalent variants of a WebAssembly binary input. 
+In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
 Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
@@ -17,17 +17,18 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
 \autoref{fig:wasm-mutate} illustrates the workflow of \tool, which initiates with a WebAssembly binary as its input. 
 The first step involves parsing this binary to create suitable abstractions, e.g. an intermediate representation.
 Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
+The assurance of functional equivalence is rooted in the inherent properties of the individual rewrite rules employed.
 Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
-This assurance of functional equivalence is rooted in the inherent properties of the individual rewrite rules employed.
-
+\tool applies one transformation at a time.
+The output of one applied transformation can be chained again as an input \Wasm binary, enabling the generation of many variants.
 
 
 \msubsection{WebAssembly Rewriting Rules}
 \label{custom}
 
 \tool contains a comprehensive set of 135 rewriting rules.
-Inside \tool, a rewriting rule is a tuple \texttt{(LHS, RHS, Cond)} where \texttt{LHS} specifies the segment of code targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place, e.g. enhancing type constraints.
-\tool groups these rewriting rules into meta-rules depending on their target inside a \wasm binary, ranging from high-level changes affecting all binary section structure to low-level modifications within the code section. 
+In this context, a rewriting rule is a tuple \texttt{(LHS, RHS, Cond)} where \texttt{LHS} specifies the segment of binary targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place, e.g. enhancing type constraints.
+\tool groups these rewriting rules into meta-rules depending on their target inside a \wasm binary, ranging from high-level changes affecting binary section structure to low-level modifications within the code section. 
 This section focuses on the biggest meta-rule implemented in \tool, the \texttt{Peephole} meta-rule \footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
 
 % Determinism
@@ -142,6 +143,7 @@ Consequently, increasing the depth parameter in \autoref{peephole:mutator} would
 
 
 \begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+  \tool leverages random traversals over e-graphs to provide a binary-based solution for \Wasm diversification. \\
   \tool is fully presented in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
  \url{https://arxiv.org/pdf/2309.07638.pdf}.
   \\\\

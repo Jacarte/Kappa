@@ -108,7 +108,7 @@ define internal i32 @foo(i32 %0) {
 \end{minipage}
 \end{minipage}
 
-\todo{Recheck these works on the decision of using switch cases.}
+\todo{Recheck these works on the decision of using switch cases to double check.}
 % exaplanation of dispatcher
 
 In \autoref{listing:multivariant_template}, we demonstrate how MEWE constructs the function dispatcher, corresponding to the rightmost green node in \autoref{multivariant}, which handles three created variants including the original. 
@@ -133,6 +133,7 @@ Remarkably, we trade security over performance since dispatcher functions that p
 
 
 \begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+  MEWE provides dynamic execution path randomization by packaging variants generated out of CROW.\\
   MEWE is fully presented in Cabrera-Arteaga \etal "Multi-Variant Execution at the Edge"
   \emph{Proceedings of ACM, Moving Target Defense}
  \url{https://dl.acm.org/doi/abs/10.1145/3560828.3564007}
