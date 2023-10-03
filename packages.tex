@@ -21,6 +21,7 @@
 %\usepackage{amssymb}
 %\usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{colortbl}
 
 % Figure captions
 \usepackage[font={small,it},labelfont=bf,singlelinecheck=off]{caption}
@@ -84,8 +85,8 @@
 
 
 \newcommand{\msubsection}[1]{
-  \stepcounter{patchino}
   \setcounter{subsection}{\thepatchino}
+  \stepcounter{patchino}
   \subsection{#1}
 }
 
