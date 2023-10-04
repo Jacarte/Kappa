@@ -1,5 +1,5 @@
 \msection{\Wasm}
-
+\label{sota:wasm}
 %% For the intro
  % In 2014, Alon Zakai and colleagues proposed Emscripten \cite{emscripten}. 
 % Emscripten used a strict subset of JavaScript, asm.js, to allow low-level code such as C to be compiled to JavaScript. 
@@ -11,7 +11,7 @@
 
 % History
 The W3C publicly announced the \Wasm(Wasm) language in 2017 as the four scripting language supported in all major web browser vendors.
-\wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017. 
+\wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained and secure, and it promises to outperform JavaScript execution. 
 Since 2017, the adoption of \wasm\ keeps growing. 
 For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}. 
@@ -84,9 +84,9 @@ In addition, some sections are annotated as comments in the Wasm code in \autore
 
 \wrule{Custom Section (\texttt{00})}: Comprises two parts: the section name and arbitrary content. Primarily used for storing metadata, such as the compiler used to generate the binary (see lines 9 and 48 of \autoref{WASMExample}). This type of section has no order constraints with other sections and is optional. Compilers usually skip this section when consuming a \Wasm binary. 
 
-\wrule{Type Section (\texttt{01})}: Contains the function signatures for functions declared or defined within the binary (see lines 3 to 6 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
+\wrule{Type Section (\texttt{01})}: Contains the function signatures for functions declared or defined within the binary (see lines 3 to 6 in \autoref{WASMExample}). Functions may share the same function signature. This section must occur only once in a binary. It can be empty. 
 
-\wrule{Import Section (\texttt{02})}: Lists elements imported from the host, including functions, memories, globals, and tables (see line 8 in \autoref{WASMExample}). It must occur only once in a binary. It can be empty.
+\wrule{Import Section (\texttt{02})}: Lists elements imported from the host, including functions, memories, globals, and tables (see line 8 in \autoref{WASMExample}). This section is needed to enable code and data sharing with the host engine and other modules. It must occur only once in a binary. It can be empty.
 
 \wrule{Function Section (\texttt{03})}: Details functions defined within the binary. It essentially maps Type section entries to Code section entries. The text format already maps the function index to its name, as shown in lines 12 to 38 of \autoref{WASMExample}. This section must occur only once in a binary and, it can be empty. 
 
@@ -206,7 +206,7 @@ For example, in the left-most part of the previously discussed listing, a break 
 \Wasm programs are tailored for execution in host environments, most notably web browsers. 
 The \Wasm ecosystem is a diverse landscape, featuring a multitude of stakeholders and a comprehensive suite of tools to meet various requirements \cite{Avenger}. 
 In this section, we delineate two key categories of tools within this ecosystem: compilers and executors. 
-Compilers are responsible for converting source code into \Wasm binaries, while executors handle a range of tasks including validation, analysis, optimization, machine code transpilation, and actual execution of these \Wasm binaries. 
+Compilers are responsible for converting source code into \Wasm binaries, while executors handle a range of tasks including validation, optimization, machine code transpilation, and actual execution of these \Wasm binaries. 
 Executors are often found in browser clients, among other platform
 
 \wrule{Compilers} transform source code into \Wasm binaries. 
@@ -235,19 +235,18 @@ Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verific
 
 
 \msubsection{WebAssembly binary analysis}
-\todo{Check the avengers paper.}
 As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
 To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
-In the following text we provide a brief overview of the most relevant tools in this space.
+In the following text we provide a brief overview of the most relevant tools in this space w.r.t static and dynamic analysis, as well as specialized malware detection.
 
 %% PATCH
 \vspace{10mm}
 \wrule{Static and dynamic analysis:} 
-Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, WasmA\cite{wasma}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution. 
-Similarly, VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
-In the realm of dynamic analysis, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities. 
-Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
+Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution to detect vulnerabilities in \wasm binaries. 
+Remarkably, VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
+In the dynamic analysis counterpart, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities in vulnerability detection. 
 Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}. 
+Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
 % Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
 
 
@@ -255,19 +254,19 @@ Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm pro
 The main reason is that mining algorithms using CPUs moved to \wasm for obvious performance reasons \cite{musch2019new}. 
 In cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis through machine learning techniques to detect browser cryptomalwares. 
 Conversely, tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard} seek the same goal with dynamic analysis techniques.
-Remarkable VirusTotal\toolcite{https://www.virustotal.com}, packaging more than 60 commercial antivirus, detects cryptomalware in \wasm binaries.
+Remarkably, VirusTotal\toolcite{https://www.virustotal.com}, packaging more than 60 commercial antivirus as back-boxes, detects cryptomalware in \wasm binaries.
 
 
-
-
-
-%\todo{Emphasize what is missing. DO not talk about monoculture, neither diversification. Talks about runtime properties, side-channels, etc.}
-%\todo{Put things into context.}
 \msubsection{\Wasm's security}
 
-As outlined, \Wasm is deterministic, well-typed, and follows a structured control flow, making it easier for compilers and engines to sandbox its execution\cite{WebAssemblySecurity}. 
-Despite its robust design, the \Wasm's ecosystem is still nascent and faces security vulnerabilities, both for \Wasm consumers and with the \Wasm binaries themselves. 
-For instance, Genkin et al. demonstrated that \Wasm could be exploited to exfiltrate data using cache timing-side channels\cite{Genkin2018DrivebyKC}. 
-Lehmann et al. and Stiévenart and colleagues show that vulnerabilities in C/C++ source code could propagate to \Wasm binaries\cite{usenixWasm2020, DeRoover2022}.
-This dissertation aims to mitigate these issues by introducing a comprehensive suite of tools designed to enhance \Wasm security through Software Diversification and to improve testing rigor within the ecosystem.
+
+While \Wasm is engineered to be deterministic, well-typed, and to adhere to a structured control flow, the ecosystem is still emerging and faces various security vulnerabilities. 
+These vulnerabilities pose risks to both the consumers and the \Wasm binaries themselves. 
+Side-channel attacks, in particular, are a significant concern. 
+For example, Genkin et al. have shown that \Wasm can be exploited to exfiltrate data through cache timing-side channels \cite{Genkin2018DrivebyKC}. 
+Similarly, research by Maisuradze and Rossow demonstrates the feasibility of speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
+Rokicki \etal further reveal the potential for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}.
+
+Additionally, studies by Lehmann et al. and Stiévenart and colleagues indicate that vulnerabilities in C/C++ source code can propagate into \Wasm binaries \cite{usenixWasm2020, DeRoover2022}. 
+This dissertation introduces a comprehensive set of tools aimed at preemptively enhancing \Wasm security through Software Diversification and at improving testing rigor within the ecosystem.
 

@@ -2255,3 +2255,44 @@ archivePrefix = {arXiv},
   biburl       = {https://dblp.org/rec/conf/ndss/SchnitzlerKBP23.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
+
+@article{10.1145/3282510,
+author = {Rossberg, Andreas and Titzer, Ben L. and Haas, Andreas and Schuff, Derek L. and Gohman, Dan and Wagner, Luke and Zakai, Alon and Bastien, J. F. and Holman, Michael},
+title = {Bringing the Web up to Speed with WebAssembly},
+year = {2018},
+issue_date = {December 2018},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {61},
+number = {12},
+issn = {0001-0782},
+url = {https://doi.org/10.1145/3282510},
+doi = {10.1145/3282510},
+journal = {Commun. ACM},
+month = {nov},
+pages = {107–115},
+numpages = {9}
+}
+
+  
+
+@inproceedings{ret2spec,
+author = {Maisuradze, Giorgi and Rossow, Christian},
+title = {Ret2spec: Speculative Execution Using Return Stack Buffers},
+year = {2018},
+isbn = {9781450356930},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3243734.3243761},
+doi = {10.1145/3243734.3243761},
+abstract = {Speculative execution is an optimization technique that has been part of CPUs for over a decade. It predicts the outcome and target of branch instructions to avoid stalling the execution pipeline. However, until recently, the security implications of speculative code execution have not been studied. In this paper, we investigate a special type of branch predictor that is responsible for predicting return addresses. To the best of our knowledge, we are the first to study return address predictors and their consequences for the security of modern software. In our work, we show how return stack buffers (RSBs), the core unit of return address predictors, can be used to trigger misspeculations. Based on this knowledge, we propose two new attack variants using RSBs that give attackers similar capabilities as the documented Spectre attacks. We show how local attackers can gain arbitrary speculative code execution across processes, e.g., to leak passwords another user enters on a shared system. Our evaluation showed that the recent Spectre countermeasures deployed in operating systems can also cover such RSB-based cross-process attacks. Yet we then demonstrate that attackers can trigger misspeculation in JIT environments in order to leak arbitrary memory content of browser processes. Reading outside the sandboxed memory region with JIT-compiled code is still possible with 80\% accuracy on average.},
+booktitle = {Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security},
+pages = {2109–2122},
+numpages = {14},
+keywords = {side channel attacks, javascript, hardware security},
+location = {Toronto, Canada},
+series = {CCS '18}
+}
+
+  
+
