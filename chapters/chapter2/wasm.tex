@@ -227,14 +227,14 @@ For example, V8 just employs quick, rudimentary optimizations, such as constant 
 It standardizes the interactions between host environments and \Wasm modules through a POSIX-like interface.
 \wasm compilers can generate binaries that use WASI.
 Standalone engines can then execute these binaries in a variety of environments, including cloud, server, and IoT devices.
-A range of standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASI. 
+For example, standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASI. 
 In a similar vein, Singh et al.\cite{WARDuino2019} introduced a virtual machine for \Wasm tailored for Arduino-based devices. 
 Salim et al.\cite{trufflewasm} proposed TruffleWasm, an implementation of \Wasm hosted on Truffle and GraalVM. 
 Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
 Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verification of the \Wasm-WASI interaction with the underlying operating system.
 
 
-\msubsection{WebAssembly binary analysis}
+\msubsection{WebAssembly's binary analysis}
 As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
 To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
 In the following text we provide a brief overview of the most relevant tools in this space w.r.t static and dynamic analysis, as well as specialized malware detection.
