@@ -132,16 +132,16 @@ Notice that, the runtime structure is an abstraction that serves to validate the
 It contains the runtime representation of all the definitions within a module, including functions, tables, memories, and globals, as well as the module's exports and imports.
 
 
-\wrule{Table instances}: A table instance is a vector of function elements. 
-WebAssembly tables are used to support indirect function calls.
-For example, it allows modeling dynamic calls of functions (through pointers) from languages such as C/C++, for which the Wasm's compiler is in charge of populating the static table of functions.
+\wrule{Table instances}: A table instance is a vector of \emph{function instances} with the same signature. 
+They are used to validate and support indirect function calls during runtime.
+A table instance can be modified through table instructions from the function bodies.
 
 
 \wrule{Export Instances}: Export instances represent the functions, tables, elements, globals or memories that are exported by a \wasm binary to the host environment. 
 
 \wrule{Import Instances}: Import instances represent the functions, tables, elements, globals or memories that are imported into a module from the host environment. 
 
-\wrule{The Execution Stack} holds typed values and control frames, with control frames handling block instructions, loops, and function calls.
+\wrule{The Execution Stack} holds typed values, labels and control frames, with labels handling block instructions, loops, and function calls.
 Values inside the stack can be of the only static types allowed in Wasm 1.0, \texttt{i32} for 32 bits signed integer, \texttt{i64} for 64 bits signed integer, \texttt{f32} for 32 bits float and \texttt{f64} for 64 bits float.
 Therefore, abstract types, such as classes, objects, and arrays, are not natively supported. 
 Instead, during compilation, such types are transformed into primitive types and stored in the linear memory.
@@ -157,7 +157,7 @@ Global variables are only accessible by their declaration index, and it is not p
 
 \wrule{Locals}: Locals are mutable variables that are local to a specific function instance, i.e. locals are only accessible through their index related to the executing function instance. As globals, locals are part of the managed data.
 
-\wrule{Function Instances}: 
+\wrule{Function Instances}: are closures over the runtime module instance.
 A function instance groups locals and a function body.
 Locals are typed variables that are local to a specific function invocation as previously discussed.
 The function body is a sequence of instructions that are executed when the function is called.
