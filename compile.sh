@@ -4,19 +4,27 @@ echo "Compiling"
 # export ADDCONTRIB=True
 ARG=$1
 
-CALL :CASE_%ARG%
+case $ARG in
 
-:CASE_draft
-pdflatex -interaction=nonstopmode -shell-escape -synctex=1  Kappa.tex 
-echo "Draft generated"
-exit
+    draft)
 
-:CASE_bib
-bibtex Kappa 
-echo "Bib generated"
-exit
+        pdflatex -interaction=nonstopmode -shell-escape -draftmode  Kappa.tex 
+        echo "Draft generated"
+        ;;
+    bib)
+        :CASE_bib
+        bibtex Kappa 
+        echo "Bib generated"
+        ;;
+    final)
+        pdflatex -interaction=nonstopmode -draftmode  -shell-escape Kappa.tex 
+        bibtex Kappa 
+        pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex 
+        echo "Final generated"
+        ;;
+    *)
+        echo "Invalid command"
+        exit 1
+        ;;
+esac
 
-:CASE_final
-pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex 
-echo "Final generated"
-exit

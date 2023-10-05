@@ -90,7 +90,7 @@ It also adds rewriting rules to transform unmanaged memory instructions.
 Memory alterations, either to the unmanaged or managed memories, have substantial security implications, by eliminating potential jump points that facilitate malicious activities within the binary \cite{Swivel}.
 
 
-Besides, our technical contributions enhance security against timing-based attacks by creating variants that exhibit a wide range of execution times. 
+Besides, our technical contributions enhance security against timing-based attacks by creating variants that exhibit a wide range of execution times, including faster variants compared to the original program. 
 This strategy is especially prominent in MEWE’s approach, which develops multivariants functioning on randomizing execution paths, thereby thwarting attempts at timing-based inference attacks \cite{DBLP:conf/ndss/SchnitzlerKBP23}. 
 Adding another layer benefit, the integration of diverse variants into multivariants can potentially disrupt dynamic analysis tools such as symbolic executors \cite{wasmixer}. 
 Concretely, different control flows through a random discriminator, exponentially increase the number of possible execution paths, making multivariant binaries virtually unexplorable.

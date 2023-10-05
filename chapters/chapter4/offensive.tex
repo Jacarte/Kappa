@@ -1,36 +1,31 @@
 \msection{Offensive Diversification: Malware evasion}
 
+The primary malicious use of WebAssembly in browsers is cryptojacking \cite{musch2019new}. 
+This is due to the essence of cryptojacking, the faster the mining, the better. 
+Although the research of Lehmann and colleagues \cite{Hilbig2021AnES} suggests a decline in browser-based cryptominers, mainly due to the shutdown of Coinhive, a 2022 report by Kaspersky indicates that the use of cryptominers is on the rise \cite{kasperksy}. 
+This underscores the ongoing need for effective automatic detection of cryptojacking malware.
 
-The primary black-hat usage of WebAssembly is cryptojacking \cite{10.1145/3488932.3517411}. 
-Such WebAssembly code mines cryptocurrencies on users' browsers for the benefit of malicious actors and without the consent of the users \cite{ 10.1145/3339252.3339261}.
-The main reason for this phenomenon is that the core foundation of cryptojacking is: the faster, the better.
-In this context, WebAssembly, a binary instruction format designed to be portable and fast, is a feasible technology for implementing and distributing cryptojacking over the web.
-A Kaspersky report about the state of cryptojacking in the first three quarters of 2022 confirms the steady growth in the usage of cryptominers \cite{kasperksy}.
-The report shows that Monero \cite{monero} is the most used cryptocurrency for cryptomining in the browser.
-Attackers might hide WebAssembly cryptominers \cite{9566204} in multiple locations inside web applications.
-
-Antivirus and browsers provide support for detecting cryptojacking. 
-For example, the Firefox browser supports the detection of cryptomining by using deny lists \cite{firefoxcrypto}.
-The academic community also provides related work on detecting or preventing WebAssembly cryptojacking \cite{SEISMIC, minos, coinspy, MineThrotle, outgard,9286112}.
-Yet, it is known that black-hats can use evasion techniques to bypass detection.
-Only the previous work of Bhansali \etal \cite{10.1145/3507657.3528560} investigates the possibility of WebAssembly cryptojacking to evade detection techniques. This is a crucial motivation for our work, one of the first to study WebAssembly malware evasion.
+Both antivirus software and browsers have implemented measures to detect cryptojacking. For instance, Firefox employs deny lists to detect cryptomining activities \cite{firefoxcrypto}. 
+The academic community has also contributed to the body of work on detecting or preventing WebAssembly-based cryptojacking, as outlined in \autoref{background:wasm:analysis}. 
+However, it's worth noting that malicious actors can employ evasion techniques to circumvent these detection mechanisms. 
+Bhansali et al. are among the first who have investigated how WebAssembly cryptojacking could potentially evade detection \cite{10.1145/3507657.3528560}, highlighting the critical importance of this use case. 
+For an in-depth discussion on this topic, we direct the reader to our contribution \cite{EVASION}.
+The use of case illustrated in the subsequent sections uses Offensive Software Diversification for the sake of evading malware detection in \Wasm. 
 
 
-\todo{Present the SOTA of malware evasion. The assumption on lack of diversity in the malware detectors, not that much, check authors.}
-\todo{Then present the threat model image here}
+\msubsection{Threat model}
 
-
-\msubsection{Threat model and objective}
-
-
-
-In this paper, we design, implement and evaluate a  full-fledged evasion pipeline for WebAssembly.
-Concretely, we use wasm-mutate as a diversifier \cite{wasm-mutate}, which implements 135 possible bytecode transformations, grouped into three categories: peephole operator, module structure, and control flow.
-We demonstrate the effectiveness of our evasion technique against two cryptojacking detectors: VirusTotal, a general detection tool that comprises 60 antiviruses and, MINOS \cite{minos}, a WebAssembly-specific detector.
-
-
-
-\todo{Detail the threat model and make a clear statement of the objective of this use case.}
+Let us illustrate the threat model in which a malicious \wasm binary could be involved.
+\autoref{fig:threat_model} illustrates a browser attack scenario:
+a practical WebAssembly cryptojacking attack consists of three components: a WebAssembly binary, a JavaScript wrapper, and a backend cryptominer pool. 
+The WebAssembly binary is responsible for executing the hash calculations, which consume significant computational resources. 
+The JavaScript wrapper facilitates the communication between the WebAssembly binary and the cryptominer pool.
+Overall, a successful cryptojacking attack on a victim's browser consists in the following sequence of steps. 
+First, the victim visits a web page infected with the cryptojacking code. 
+The web page establishes a channel to the cryptominer pool, which then assigns a hashing job to the infected browser. 
+The WebAssembly cryptominer calculates thousands of hashes inside the browser, in parallel using multiple browser workers. 
+Once the malware server receives acceptable hashes, it is rewarded with cryptocurrencies for the mining. 
+Then, the server assigns a new job, and the mining process starts over.
 
 \begin{figure}
     \centering
@@ -38,6 +33,27 @@ We demonstrate the effectiveness of our evasion technique against two cryptojack
     \caption{Taken from \cite{EVASION}}
     \label{fig:threat_model}
 \end{figure}
+
+Some detection techniques discussed in \autoref{background:wasm:analysis} can be  deployed in the browser directly to prevent cryptojacking.
+The primary objective of our work is to demonstrate the possibility of using code diversification to bypass cryptojacking defenses. 
+Concretely, the following workflow can happen to successfully evade placed defenses:
+
+\begin{enumerate}
+    
+    \item The user visits a webpage that contains a cryptojacking malware, which utilizes network resources to execute, (1) and (2) in \autoref{attack-model}. Cryptojacking malware can be injected through malicious browser extensions, malvertising, compromised websites, or deceptive links \cite{9566204}. 
+    \item A malware detector blocks WebAssembly binaries that are identified as malicious (3). The malware detector system can be implemented locally or remotely. For instance, a proxy can intercept and send network resources to an external detector through the detector's API. 
+    \item The attacker, based on a malware oracle, crafts a WebAssembly cryptojacking malware variant that evade the detection (4). 
+    \item The attacker delivers the modified binary instead of the original one (5), which initiates the cryptojacking process and compromises the browser (6).
+\end{enumerate}
+
+
+The idea is that attackers rapidly diversify their WebAssembly code to stay ahead of the defense system and maintain successful cryptojacking operations. 
+Crucially, attackers must ensure that the diversified binaries they use for cryptojacking meet specific performance requirements.
+This requirement is why we chose diversification over obfuscation.  
+Obfuscation tools can generate program variants that are slower and less performant than the original program \cite{HOSSEINZADEH201872}.  
+In contrast, our WebAssembly diversifiers can be tuned to generate variants that span the full performance spectrum, from faster to slower as highlighted.
+
+\todo{Detail the threat model and make a clear statement of the objective of this use case.}
 
 Test and evade the resilience of \Wasm malware detectors mentioned in \autoref{background:wasm:ecosystems}.
 
