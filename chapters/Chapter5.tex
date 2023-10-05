@@ -30,4 +30,14 @@ This limited dataset poses challenges for machine learning-based analysis tools,
 The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
 This dissertation aims to mitigate these issues by introducing a comprehensive suite of tools designed to enhance \Wasm security through Software Diversification and to improve testing rigor within the ecosystem.
 
+
+\emph{Program Normalization}
+\tool was previously employed successfully for the evasion of malware detection, as outlined in \cite{CABRERAARTEAGA2023103296}. 
+The proposed mitigation in the prior study involved code normalization as a means of reducing the spectrum of malware variants. 
+Our current work provides insights into the potential effectiveness of this approach. 
+Specifically, a practically costless process of pre-compiling Wasm binaries could be employed as a preparatory measure for malware classifiers. 
+In other words, a \wasm binary can first be compiled with wasmtime, effectively eliminating approx. 25\% of malware variants according to our preservation statistics for wasmtime. 
+This approach could substantially enhance the efficiency and precision of malware detection systems.
+
+
 %\lipsum[1]
