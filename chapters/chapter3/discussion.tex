@@ -82,7 +82,7 @@ The preservation feature significantly reduces the impact of side-channel attack
 
 
 Altering the layout of a \Wasm program inherently influences its managed memory during runtime, a component not overseen by the \Wasm program itself (see \autoref{managed_unmanaged}).
-This pehomenon is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
+This phenomenon is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
 Significantly, CROW and MEWE considerably alter the managed memory by modifying the layout of the \Wasm program.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
 Furthermore, WASM-MUTATE not only affects managed memory through changes in the \Wasm program layout.

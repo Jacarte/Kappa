@@ -128,7 +128,7 @@ Notice that, the runtime structure is an abstraction that serves to validate the
 \wrule{Store}: The WebAssembly store represents the global state and is a collection of instances of functions, tables, memories, and globals. Each of these instances is uniquely identified by an address, which is usually represented as an i32 integer.
 
 
-\wrule{Module Instances}: A module instance is a runtime representation of a loaded and initialized WebAssembly module. 
+\wrule{Module Instances}: A module instance is a runtime representation of a loaded and initialized WebAssembly module (the binary file described in \autoref{background:wasm:binary}). 
 It contains the runtime representation of all the definitions within a module, including functions, tables, memories, and globals, as well as the module's exports and imports.
 
 
