@@ -1,0 +1,96 @@
+
+
+\msection{Defensive Diversification: Speculative Side-channel protection}
+
+\todo{Go around the last paper}
+
+\msubsection{Threat model}
+
+%\lipsum[1]
+
+%\lipsum[1]
+
+- Spectre timing cache attacks.
+
+- Rockiki paper on portable side channel in browsers.
+
+
+\msubsection{Approach}
+%\lipsum[1]
+
+- Use of wasm-mutate
+
+\msubsection{Results}
+
+- Diminshing of BER
+
+
+\begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
+    \emph{Under review}
+    \url{https://arxiv.org/pdf/2309.07638.pdf}. 
+\end{tcolorbox}
+
+
+
+
+\todo{TBD discuss deoptimization}
+% \subsection{Deoptimization}
+
+\subsection{Partial input/output validation}
+
+% We need to talk about this because, we do this checking right noe and it is probably a reason for the low count of variants.
+When \tool generates a variant, it can be executed to check the input/output equivalence.
+If the variant has a \_start function, both binaries, the original and the variant can be initialized. 
+If the state of the memory, the globals and the stack is the same after executing the \_start function, they are partially equivalent.
+%This mechanismm is already implemented in the fuzzing campaign of wasmtime.
+
+The \_start function is easier to execute given its signature.
+It does not receive parameters.
+Therefore, it can be executed directly.
+Yet, since a \Wasm program might contain more than one function that could be indistinctly called with and arbitrary number of parameters, we are not able to validate the whole program.
+Thus, we call the checking of the initialization of a \wasm variant, a partial validation.
+
+\subsection{Some other works to be cited along with the paper. Mostly in the Intro}
+
+\emph{Spectre and side-channel defenses}
+
+- paper 2021: Read this, since it is super related, \url{https://www.isecure-journal.com/article_136367_a3948a522c7c59c65b65fa87571fde7b.pdf} \cite{WasmSpectre}
+
+
+- A dataset of Wasm programs: \cite{nicholson2023wasmizer}
+
+- Papers 2020
+
+- Papers 2019
+- \cite{10.1145/3510003.3510070}
+
+Selwasm: A code protection mechanism for webassembly
+
+
+Babble
+
+- https://arxiv.org/pdf/2212.04596.pdf
+
+Principled Composition of Function Variants for Dynamic
+Software Diversity and Program Protection
+
+- https://dl.acm.org/doi/10.1145/3551349.3559553
+
+How Far We’ve Come – A Characterization Study of Standalone WebAssembly Runtimes
+
+- https://ieeexplore.ieee.org/document/9975423
+
+Code obfuscation against symbolic execution attacks
+
+Code artificiality: A metric for the code stealth based on an n-gram model
+
+Semantics-aware obfuscation scheme prediction for binary
+
+Wobfuscator: Obfuscating javascript malware via opportunistic translation to webassembly
+
+Synthesizing Instruction Selection Rewrite Rules from RTL using SMT
+"We also synthesize integer rewrite rules from WebAssembly to RISC-V "
+
+Wafl: Binary-only webassembly fuzzing with fast snapshots
+
