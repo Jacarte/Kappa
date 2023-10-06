@@ -115,8 +115,8 @@ Let us illustrate how \tool generates variant programs by using the before enunc
 Here, we use Algorithm \ref{peephole:mutator} with a maximum depth of 1.
 In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
 In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
-The former rule, which has been previously discussed in \autoref{custom}, grants the ability to append a \texttt{nop} instruction to any subexpression. 
-Conversely, the latter rule adds zero to any numeric value .
+The former rule, grants the ability to append a \texttt{nop} instruction to any subexpression, a well-known low-level diversification strategy \cite{homescu2013profile}. 
+Conversely, the latter rule adds zero to any numeric value.
 
 
 \input{snippets/snippets-wasm-mutate/peephole/peep_example}
