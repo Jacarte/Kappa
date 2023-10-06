@@ -11,7 +11,7 @@
 
 % History
 The W3C publicly announced the \Wasm(Wasm) language in 2017 as the four scripting language supported in all major web browser vendors.
-\wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg in 2018 \cite{10.1145/3282510}. 
+\wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained and secure, and it promises to outperform JavaScript execution. 
 Since 2017, the adoption of \wasm\ keeps growing. 
 For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}. 
@@ -114,7 +114,7 @@ It must occur only once in a binary. It can be empty.
 Due to its organization into a contiguous array of sections, a \wasm binary can be processed efficiently. 
 For example, this structure allows compilers to speed up the compilation process through parallel parsing or just by ignoring \emph{Custom Sections}.
 Additionally, the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding of instructions of the \emph{Code Section} further compacts the binary. 
-As a result, Wasm binaries are not only fast to process but also quick to transmit over a network.
+As a result, Wasm binaries are not only fast to validate and compile but also quick to transmit over a network.
 
 \msubsection{\Wasm's runtime structure}
 \label{background:wasm:execution}
@@ -221,7 +221,7 @@ It falls upon the compilers to specify which functions from the host environment
 \wrule{Browser} engines like V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} are at the forefront of executing \Wasm binaries in browser clients. 
 These engines leverage Just-In-Time (JIT) compilers to convert \Wasm into machine code. 
 This translation is typically a straightforward one-to-one mapping, given that \Wasm is already an optimized format closely aligned with machine code, as previously discussed in \autoref{background:wasm:binary}. 
-For example, V8 just employs quick, rudimentary optimizations, such as constant folding and dead code removal, to guarantee fast readiness for a \wasm binary to execute.\footnote{This analysis was corroborated through discussions with the V8 development team and through empirical studies in one of our contributions\cite{CROW}} 
+For example, V8 just employs quick, rudimentary optimizations, such as constant folding and dead code removal, to guarantee fast readiness for a \wasm binary to execute \cite{10.1145/3282510}.
 
 \wrule{Standalone engines:} \wasm has expanded beyond browser environments, largely due to the WASI\cite{WASI}. 
 It standardizes the interactions between host environments and \Wasm modules through a POSIX-like interface.

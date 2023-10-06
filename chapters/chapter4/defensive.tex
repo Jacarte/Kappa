@@ -2,18 +2,43 @@
 
 \msection{Defensive Diversification: Speculative Side-channel protection}
 
-\todo{Go around the last paper}
+As previously discussed in \autoref{background:wasm:ecosystems}, \Wasm is rapidly gaining traction in backend environments. 
+Companies like Cloudflare and Fastly are encouraging the use of \Wasm in their edge computing platforms, allowing developers to deploy faster applications in a modular and securely sandboxed fashion. 
+Typically, these client \Wasm applications are designed as isolated services with a single, focused responsibility.
+This model is usually called Function-as-a-Service (FaaS) \cite{pMendkiServerless, 1244493Jacobsson}.
 
-\msubsection{Threat model}
+The core concept behind \wasm in FaaS platforms is the ability to host thousands of client \Wasm binaries within a single host process, which is then distributed across multiple servers and data centers. 
+To achieve this, the platforms compile the \wasm programs to native code, which is then executed in a sandboxed environment.
+Then, the host processes are capable of instantiating a new Wasm sandbox for each client function, executing it in response to individual user requests in a matter of nanoseconds. 
+Utilizing \Wasm enables these platforms to inherently isolate the execution of client functions from one another as well as from the host process.
+However, this isolation is not foolproof against Spectre attacks \cite{Spectre,Narayan2021Swivel}.
+
+
+In the subsequent sections, we illustrate how diversification can be used to protect \Wasm binaries against Spectre attacks.
+We show a case of Defensive Software Diversification for the sake of protecting \Wasm binaries. 
+
+\msubsection{Threat model: speculative side-channel attacks}
+
+Let us illustrate the threat model in which a \Wasm program could be susceptible in FaaS platforms.
+Developers can submit any \Wasm binary to the FaaS platform.
+This includes potential malicious actors that could upload a \wasm binary that, when compiled to native code, uses Spectre attacks to leak sensitive information from the host process.
+Spectre attacks exploit hardware predictors to induce misspredictions and speculatively execute instructions—gadgets that would not run sequentially. 
+The attacker could then use this information to infer the contents of the memory of other client functions, or even the host process itself.
+
+Narayan and colleagues \cite{Narayan2021Swivel} dissected the possible Spectre attacks for \wasm binaries into three categories based on the specific hardware predictor that is exploited and the specific FaaS scenario: Sandbox breakout attacks, Sandbox poisoning attacks and Host poisoning attacks.
+The first one, exploits the branch target buffer by predicting the target of an indirect jump, thereby rerouting speculative control flow to an arbitrary target.
+The second one takes advantage of the pattern history table to anticipate the direction of a conditional branch during the ongoing evaluation of a condition.
+The third and last one exploits the return stack buffer that stores the locations of recently executed call instructions to predict the target of \texttt{ret} instructions. 
+Each attack methodology relies on the extraction of memory bytes from another hosted \wasm binary that executes in the same host process.
+
+
+
+\todo{Add diagram}
+\todo{Explain here the threat model with the diagram}
 
 %\lipsum[1]
 
 %\lipsum[1]
-
-- Spectre timing cache attacks.
-
-- Rockiki paper on portable side channel in browsers.
-
 
 \msubsection{Approach}
 %\lipsum[1]
@@ -23,14 +48,7 @@
 \msubsection{Results}
 
 - Diminshing of BER
-
-
-\begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
-    \emph{Under review}
-    \url{https://arxiv.org/pdf/2309.07638.pdf}. 
-\end{tcolorbox}
-
+- Rockiki paper on portable side channel in browsers.
 
 
 
@@ -93,4 +111,14 @@ Synthesizing Instruction Selection Rewrite Rules from RTL using SMT
 "We also synthesize integer rewrite rules from WebAssembly to RISC-V "
 
 Wafl: Binary-only webassembly fuzzing with fast snapshots
+
+
+
+\begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
+    \emph{Under review}
+    \url{https://arxiv.org/pdf/2309.07638.pdf}. 
+\end{tcolorbox}
+
+
 
