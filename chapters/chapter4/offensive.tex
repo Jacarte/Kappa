@@ -5,6 +5,7 @@ This is due to the essence of cryptojacking, the faster the mining, the better.
 Although the research of Lehmann and colleagues \cite{Hilbig2021AnES} suggests a decline in browser-based cryptominers, mainly due to the shutdown of Coinhive, a 2022 report by Kaspersky indicates that the use of cryptominers is on the rise \cite{kasperksy}. 
 This underscores the ongoing need for effective automatic detection of cryptojacking malware.
 
+
 Both antivirus software and browsers have implemented measures to detect cryptojacking. For instance, Firefox employs deny lists to detect cryptomining activities \cite{firefoxcrypto}. 
 The academic community has also contributed to the body of work on detecting or preventing WebAssembly-based cryptojacking, as outlined in \autoref{background:wasm:analysis}. 
 However, it's worth noting that malicious actors can employ evasion techniques to circumvent these detection mechanisms. 
@@ -17,10 +18,17 @@ The use of case illustrated in the subsequent sections uses Offensive Software D
 \msubsection{Threat model: cryptojacking}
 
 Let us illustrate the threat model in which a malicious \wasm binary could be involved.
-\autoref{fig:threat_model} illustrates a browser attack scenario:
+\autoref{fig:attack_crypto} illustrates a browser attack scenario:
 a practical WebAssembly cryptojacking attack consists of three components: a WebAssembly binary, a JavaScript wrapper, and a backend cryptominer pool. 
 The WebAssembly binary is responsible for executing the hash calculations, which consume significant computational resources. 
 The JavaScript wrapper facilitates the communication between the WebAssembly binary and the cryptominer pool.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/attack_crypto.pdf}
+    \caption{Cryptojacking components.}
+    \label{fig:attack_crypto}
+\end{figure}
 
 For the previous triad to work, the following steps are executed.
 First, the victim visits a web page infected with the cryptojacking code. 
@@ -43,6 +51,7 @@ Then, the server assigns a new job, and the mining process starts over.
 
 
 Several techniques, as outlined in \autoref{background:wasm:analysis}, can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
+Such defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm binary is blocked in \step{3}.
 The primary aim of this use of case is to investigate the effectiveness of code diversification as a means to circumvent cryptojacking defenses. 
 Specifically, we assess whether the following evasion workflow can successfully bypass existing security measures:
 

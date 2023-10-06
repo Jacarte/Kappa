@@ -6,6 +6,17 @@ As previously discussed in \autoref{background:wasm:ecosystems}, \Wasm is rapidl
 Companies like Cloudflare and Fastly are encouraging the use of \Wasm in their edge computing platforms, allowing developers to deploy faster applications in a modular and securely sandboxed fashion. 
 Typically, these client \Wasm applications are designed as isolated services with a single, focused responsibility.
 This model is usually called Function-as-a-Service (FaaS) \cite{pMendkiServerless, 1244493Jacobsson}.
+In \autoref{fig:edge_model} we illustrate how \Wasm binaries are used in FaaS platforms.
+Developers can submit any \Wasm binary to the FaaS platform that are then replicated and moved around the Edge-cloud worldwide platform.
+
+\todo{Align the figure with the terms}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/edge.pdf}
+    \caption{\Wasm binaries on FaaS platforms.}
+    \label{fig:edge_model}
+\end{figure}
 
 The core concept behind \wasm in FaaS platforms is the ability to host thousands of client \Wasm binaries within a single host process, which is then distributed across multiple servers and data centers. 
 To achieve this, the platforms compile the \wasm programs to native code, which is then executed in a sandboxed environment.
