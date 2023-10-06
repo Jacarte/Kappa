@@ -58,11 +58,14 @@ For it, we remove all built-in optimizations in the LLVM backend that could reve
 
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
-CROW, inherently adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
-In concrete, CROW infers pieces of code as a single constant assignment. 
-This strategy mostly focuses on variables that are used to control branches.
-% By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 
-After a \emph{constant inferring}, the generated program is considerably different from the original program, being suitable for diversification.
+CROW inherently introduces a novel transformation strategy called \emph{constant inferring}, which significantly expands the variety of \Wasm program variants. 
+Specifically, CROW identifies segments of code that can be simplified into a single constant assignment, with a particular focus on variables that control branching logic. 
+After applying this \emph{constant inferring} technique, the resulting program diverges substantially from the original program structure. 
+This is crucial for diversification efforts, as one of the primary objectives is to create variants that are as distinct as possible from the original source code \cite{somepaper}. 
+In essence, the more divergent the variant, the more challenging it becomes to trace it back to its original form.
+% This transformation is especially useful for generating \wasm variants that are highly preserved after the JIT compilation of further compilers.
+
+
 
 
 Let us illustrate the case with an example.
@@ -72,7 +75,7 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
 {
 
 
-\begin{minipage}[t]{0.42\linewidth}
+\begin{minipage}[t]{0.43\linewidth}
         \lstset{
         language=C,
         style=CStyle,
@@ -85,6 +88,7 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
         caption={Babbage problem. Taken from \cite{Lic}.},
         frame=b,
         captionpos=b,
+        numbers=none,
         label=babbage,
         postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
     } 
@@ -99,8 +103,8 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
         return 0 ;
     }
     \end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.48\linewidth}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\linewidth}
         \lstset{
         language=C,
         style=CStyle,
@@ -111,6 +115,7 @@ The Babbage problem code in \autoref{babbage} is composed of a loop that stops w
         columns=fullflexible,
         breaklines=true, 
         frame=b,
+        numbers=none,
         captionpos=b,
         caption={Constant inferring transformation over the original Babbage problem in \autoref{babbage}. Taken from \cite{Lic}.},
         label=inferring,
@@ -131,10 +136,12 @@ int babbage() {
     \end{lstlisting}
 \end{minipage}
 }
+
 % llvm-opt: rool unroll
-In theory, this value can also be inferred by unrolling the loop the correct number of times with the LLVM toolchain.
-However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.
-CROW deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached. Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
+CROW deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached \footnote{
+    In theory, this value can also be inferred by unrolling the loop the correct number of times with the LLVM toolchain.
+    However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.}. 
+Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
 The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}
 %  Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}
 
