@@ -6,10 +6,10 @@
 This section details CROW \cite{CROW}, represented as the red squared tooling in \autoref{fig:approach_landscape}. 
 CROW is designed to produce functionally equivalent \wasm variants from the output of an LLVM front-end, utilizing a custom Wasm LLVM backend.
 
-\autoref{diagrams:crow} illustrates CROW's workflow in generating program variants, a process compound of two core stages: \textit{exploration} and \textit{combining}. 
+\autoref{diagrams:crow} illustrates CROW's workflow in generating program variants, a process compound of two core stages: \textit{exploration} and \textit{combination}. 
 During the \textit{exploration} stage, CROW processes every instruction within each function of the LLVM input, creating a set of functionally equivalent code variants. 
 This process ensures a rich pool of options for the subsequent stage.
-In the \textit{combining} stage, these alternatives are assembled to form diverse LLVM IR variants, a task achieved through the exhaustive traversal of the power set of all potential combinations of code replacements. 
+In the \textit{combination} stage, these alternatives are assembled to form diverse LLVM IR variants, a task achieved through the exhaustive traversal of the power set of all potential combinations of code replacements. 
 The final step involves the custom Wasm LLVM backend, which compiles the crafted LLVM IR variants into \wasm binaries. 
 
 
@@ -28,7 +28,7 @@ The search space for generating variants is delineated through an enumerative sy
 If a code replacement is identified to perform identically to the original program, it is reported as a functionally equivalent variant.
 This equivalence is confirmed using a theorem solver for rigorous verification.
 
-Concretely, CROW is developed by modifying the enumerative synthesis implementation found in Souper \cite{Sasnauskas2017Souper:Superoptimizer}, an LLVM-based superoptimizer. 
+Concretely, CROW is developed by extending the enumerative synthesis implementation found in Souper \cite{Sasnauskas2017Souper:Superoptimizer}, an LLVM-based superoptimizer. 
 Specifically, CROW constructs a Data Flow Graph for each LLVM instruction that returns an integer. 
 Subsequently, it generates all viable expressions derived from a selected subset of the LLVM Intermediate Representation language for each DFG.
 The enumerative synthesis process incrementally generates code replacements, starting with the simplest expressions (those composed of a single instruction) and gradually increasing in complexity. 
@@ -38,17 +38,20 @@ The exploration process continues either until a timeout occurs or the size of t
 Notice that the search space increases exponentially with the size of the language used for enumerative synthesis. 
 To mitigate this issue, we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend, effectively reducing the searching space. 
 For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
-Moreover, we disable the majority of the pruning strategies of Souper for the sake of more program variants.
-For example, Souper prevents the generation of commutative operations during the searching.
-On the contrary, CROW still uses such transformation as a strategy to generate program variants. 
 
+% Boosting the geneation of variants
+CROW is carefully designed to boost the generation of variants as much as possible.
+First, we disable the majority of the pruning strategies.
+Instead of preventing the generation of commutative operations during the searching, CROW still uses such transformation as a strategy to generate program variants. 
+Second, CROW applies code transformations independently. 
+For instance, if a suitable replacement is identified that can be applied at $N$ different locations in the original program, CROW will generate $2^N$ distinct program variants, i.e., the power set of applying the transformation or not to each location. 
+This approach leads to a combinatorial explosion in the number of available program variants, especially as the number of possible replacements increases.
 
+% The full spectrumg
 Leveraging the ascending nature of its enumerative synthesis process, CROW is capable of creating variants that may outperform the original program in both size and efficiency. 
 For instance, the first functionally equivalent transformation identified is typically the most optimal in terms of code size. 
 This approach offers developers a range of performance options, allowing them to balance between diversification and performance without compromising the latter.
-CROW applies these code transformations incrementally. 
-For instance, if a suitable replacement is identified that can be applied at $N$ different locations in the original program, CROW will generate $N$ distinct program variants, each with the transformation applied at a unique location. 
-This approach leads to a combinatorial explosion in the number of available program variants, especially as the number of possible replacements increases.
+
 
 The last stage at CROW involves a custom Wasm LLVM backend, which generates the \wasm programs.
 For it, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
@@ -56,7 +59,7 @@ For it, we remove all built-in optimizations in the LLVM backend that could reve
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
 CROW, inherently adds a new transformation strategy that leads to more \wasm program variants, \emph{constant inferring}.
-In concrete, Souper infers pieces of code as a single constant assignment and this is ported to CROW. 
+In concrete, CROW infers pieces of code as a single constant assignment. 
 This strategy mostly focuses on variables that are used to control branches.
 % By extending Souper as a superdiversifier, we add this transformation strategy as a new mutation strategy to the ones defined in \autoref{sota:sota}. 
 After a \emph{constant inferring}, the generated program is considerably different from the original program, being suitable for diversification.
@@ -153,7 +156,7 @@ We disable all optimizations in the \wasm\ backend that could reverse the CROW t
 
 
 
-\msubsection{CROW instantiation}
+\msubsection{Exemplifying CROW}
 \label{section:crow:example}
 %In \autoref{section:crow} we describe the main components and contributions of CROW. In this section we instantiate the workflow presented in \autoref{workflow} from the input of an example C code to the generation of a pool of \wasm\ program variants.
 
@@ -170,13 +173,12 @@ In the example, the power set is the cartesian product of the found candidate co
 
 \input{snippets/wasm_codes.tex}
 
-One might think that a reasonable heuristic could be implemented to avoid such overlapping cases. Instead, we have found it easier and faster to generate the variants with the combination of the replacement and check their uniqueness after the program variant is compiled. This prevents us from having an expensive checking for overlapping inside the CROW code.  
-
-
 \begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    CROW, as a compiler-based approach, leverages enumerative synthesis to generate functionally equivalent code replacements and assembles them into diverse \wasm program variants. \\
+    CROW is a compiler-based approach.
+    It leverages enumerative synthesis to generate functionally equivalent code replacements and assembles them into diverse \wasm program variants. 
+    CROW uses SMT solvers to guarantee functional equivalence. \\
     CROW is fully presented in Cabrera-Arteaga \etal "CROW: Code Randomization of WebAssembly"
-    \emph{at proceedings of NDSS, Measurements, Attacks, and Defenses for the Web (MADWeb) 2021}
+    \emph{at proceedings of Measurements, Attacks, and Defenses for the Web (MADWeb), NDSS 2021}
     \url{https://doi.org/10.14722/madweb.2021.23004}. 
     \\\\
     CROW source code is available at \url{https://github.com/ASSERT-KTH/slumps}

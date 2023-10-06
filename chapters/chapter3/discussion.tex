@@ -5,12 +5,16 @@ In this section, we compare CROW, MEWE, and WASM-MUTATE, highlighting their key 
 These distinctions are summarized in \autoref{comp:table:tools}. 
 The table is organized into columns that represent attributes of each tool: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary for diversification, strength of the generated variants, and the security applications of these variants. 
 Each row in the table corresponds to a specific tool. 
+The \emph{Variant strength} accounts for the capability of each tool on generating variants that are preserved after the JIT compilation of V8 and wasmtime in average.
+For example, a higher value of the \emph{Variant strength} indicates that the generated variants are not reversed by JIT compilers, ensuring that the diversification is preserved in an end-to-end scenario of a \Wasm program, i.e. from the source code to its final execution.
 Notice that, the data and insights presented in the table are sourced from the respective papers of each tool and, from the previous discussion in this chapter.
+
+
 
 %% 
 \definecolor{Gray}{gray}{0.95}
-\newcolumntype{a}{>{\columncolor{Gray}}p{0.12\linewidth}}
-\newcolumntype{b}{>{\columncolor{Gray}}p{0.25\linewidth}}
+\newcolumntype{a}{>{\columncolor{Gray}}p{0.13\linewidth}}
+\newcolumntype{b}{>{\columncolor{Gray}}p{0.22\linewidth}}
 \begin{landscape}
     
 
@@ -20,12 +24,12 @@ Notice that, the data and insights presented in the table are sourced from the r
             \hline
             \textbf{Tool} & \textbf{Input} & \textbf{Core} & \textbf{Variants in 1h} & \textbf{Target}  & \textbf{Variants Strength} & \textbf{Security applications} \\
             \hline \hline
-            CROW & Source code or LLVM Ir & Enumerative synth. & > 1k & Code section  & \textbf{96\%} & Static analysis and side-channel attacks.  \\
+            CROW & Source code or LLVM Ir & Enumerative synthesis with functional equivalence proved through SMT solvers & > 1k & Code section  & \textbf{96\%} & Hinders static analysis reverse engineering.  \\
             \hline
             MEWE & Source code or LL
-            VM Ir & CROW, Execution path randomization  & > 1k & Code and Function sections  & \textbf{96\%} & Static and dynamic analysis, web timing-based attacks.  \\
+            VM Ir & Multivariant execution  & > 1k & Code and Function sections  & \textbf{96\%} & Hinders static and dynamic analysis reverse engineering, web timing-based attacks.  \\
             \hline
-            WASM-MUTATE & rewriting rules, \textbf{Wasm bin.} & e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm part}  & 76\% & Signature-based identification, static analysis, compiler fingerprinting and timing side-channel attacks. \\
+            WASM-MUTATE &  \textbf{Wasm binary} & hand-made rewriting rules, e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm section}  & 76\% & Hinders signature-based identification, and timing side-channel attacks. \\
             
         \end{tabular}
         \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, strength of the generated variants, and the security applications of these variants. 
@@ -35,40 +39,12 @@ Notice that, the data and insights presented in the table are sourced from the r
     \end{table}
 \end{landscape}
 
-% \msubsection{Technology and approach}
-%Based on the first two columns of \autoref{comp:table:tools},
-CROW is a compiler-based strategy, needing access to the source code or its LLVM IR representation to work. 
-Its core is an enumerative synthesis implementation with functionallity verification using SMT solvers, ensuring the functional equivalence of the generated variants.
-%This approach lays the groundwork for a universal LLVM superdiversifier, potentially extending its applications and adaptability to other technologies.
-In addition, MEWE extends the capabilities of CROW, utilizing the same underlying technology to create program variants. 
-It goes a step further by packaging the LLVM IR variants into a Wasm multivariant, providing MVE through execution path randomization.
-Both CROW and MEWE are fully automated, requiring no user intervention besides the input source code.
-WASM-MUTATE, on the other hand, is a semi-automated, binary-based tool.
-It needs a set of rewriting rules and the \wasm binary as inputs to generate program variants, centralizing its core around random e-graph traversals. 
-%This approach facilitates the creation of a pool of \Wasm program variants through the meticulous application of rewriting rules on an e-graph data structure. 
-Remarkably, WASM-MUTATE removes the need for compiler adjustments, offering compatibility with any existing \Wasm binary. 
-%Moreover, it highlights how extending intermediate representations could establish a general framework for binary rewriting in \Wasm.
-
-
-%\msubsection{Strength of the generated variants}
-
-%We analyze our tools through the lens of the following properties: the number of variants generated in one hour, the part of the \wasm binary diversified, the overhead introduced by the diversification and the strength of the generated variants as the \emph{Strength of the generated variants}.
-We have observed several interesting phenomena when aggregating the empirical data presented in the corresponding papers of CROW, MEWE and WASM-MUTATE \cite{CROW,MEWE, wasmmutate}. 
-This can be appreciated in the fourth, fifth and sixth columns of \autoref{comp:table:tools}.
-We have observed that WASM-MUTATE generates more unique variants in one hour than CROW and MEWE in at least one order of magnitude.
-This is mainly because WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
-In addition, CROW and MEWE generation capabilities are limited by the \emph{overlapping} phenomenon discussed in \autoref{section:crow:example}.
-On the other hand, CROW and MEWE, by using enumerative synthesis, can exceed handcrafted optimizations \cite{Sasnauskas2017Souper:Superoptimizer}, ensuring that the generated variants are \temph{preserved}. 
-In other words, the transformations generated out of CROW and MEWE are virtually irreversible by JIT compilers, such as V8 and wasmtime.
-This phenomenon is highlighted in the \emph{Variants strength} column of \autoref{comp:table:tools}, where we show that CROW and MEWE generate variants with 96\% of preservation against 75\% of WASM-MUTATE.
-
 
 \begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     
     Our three technical contributions serve as complementary tools that can be combined.
     For instance, when the source code for a \Wasm binary is either non-existent or inaccessible, WASM-MUTATE offers a viable solution for generating code variants. 
-    On the other hand, CROW and MEWE excel in scenarios where high preservation is crucial. Furthermore, WASM-MUTATE can benefit from the enumerative synthesis techniques employed by CROW and MEWE. 
-    Specifically, WASM-MUTATE could incorporate the transformations generated by these tools as rewriting rules.
+    On the other hand, CROW and MEWE excel in scenarios where high preservation is crucial. 
 \end{tcolorbox}
 
 
@@ -82,7 +58,7 @@ This means that these variants, each with unique \Wasm codes, maintain their dis
 The preservation feature significantly reduces the impact of side-channel attacks that exploit specific machine code instructions, e.g., port contention \cite{10.1145/3488932.3517411}.
 
 
-Altering the layout of a \Wasm program inherently influences its managed memory during runtime, a component not overseen by the \Wasm program itself (see \autoref{managed_unmanaged}).
+Altering the layout of a \Wasm program inherently influences its managed memory during runtime (see \autoref{managed_unmanaged}).
 This phenomenon is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
 Significantly, CROW and MEWE considerably alter the managed memory by modifying the layout of the \Wasm program.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
@@ -99,7 +75,7 @@ Concretely, different control flows through a random discriminator, exponentiall
 
 \begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     CROW, MEWE and WASM-MUTATE generate \Wasm variants that can be used to enhance security. 
-    Overall, they generate variants that are suitable for hardening static and dynamic analysis, side-channel attacks, to thwart signature-based identification and compiler fingerprinting. 
+    Overall, they generate variants that are suitable for hindering static and dynamic reverse engineering, side-channel attacks, and to thwart signature-based identification. 
 \end{tcolorbox}
 
 
@@ -108,7 +84,7 @@ Concretely, different control flows through a random discriminator, exponentiall
 In this chapter, we discuss the technical specifics underlying our primary technical contributions.
 We elucidate the mechanisms through which CROW generates program variants.
 Subsequently, we discuss MEWE, offering a detailed examination of its role in forging MVE for \Wasm. 
-We also explore the details of WASM-MUTATE, highlighting its pioneering utilization of an e-graph traversal algorithm to spawn \wasm program variants. 
+We also explore the details of WASM-MUTATE, proposing a novel e-graph traversal algorithm to fast spawn \wasm program variants. 
 Remarkably, we undertake a comparative analysis of the three tools, highlighting their respective benefits and limitations, alongside the potential security applications of the generated \wasm variants. 
 
 In \autoref{exploit}, we present two use cases that support the exploitation of these tools.

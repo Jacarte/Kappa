@@ -211,6 +211,7 @@ Executors are often found in browser clients, among other platform
 
 \wrule{Compilers} transform source code into \Wasm binaries. 
 For example, LLVM has offered \Wasm as a backend option since its 7.1.0 release\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
+Significantly, a study by Hilbig et al. reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
 In parallel developments, the KMM framework\toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, and the Javy approach\toolcite{https://github.com/bytecodealliance/javy} focuses on encapsulating JavaScript code within isolated \Wasm binaries. 
 This latter is achieved by porting both the engine and the source code into a secure \Wasm environment. 
 Similarly, Blazor also enables the compilation of C# code into \Wasm binaries for browser execution\footnote{\url{https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor}}.

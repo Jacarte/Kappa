@@ -2,7 +2,7 @@
 \msection{\tool: Fast and Effective Binary for WebAssembly}
 \label{tech::wasmmutate}
 
-In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
+In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out from a WebAssembly binary input. 
 Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
@@ -40,10 +40,8 @@ In \tool, we have implemented 125 rewriting rules specifically for this category
 Moreover, we augment the internal representation of a \wasm program to bolster \tool's transformation capabilities through the \texttt{Peephole} meta-rule.
 Concretely, we augment the parsing stage in \tool by including custom operator instructions.
 These custom operator instructions are designed to use well-established code diversification techniques through rewriting rules.
-In practice, custom operators are only part of the rewriting rules of WASM-MUTATE.
-This means that, when parsing Wasm to the intermediate representation no custom operator is generated.
 When converting back to the \Wasm binary format from the intermediate representation, custom instructions are meticulously handled to retain the original functionality of the \Wasm program. 
-Remarkably, custom operators highlight the versatility of \tool as a general-purpose binary rewriting engine.
+% Remarkably, custom operators highlight the versatility of \tool as a general-purpose binary rewriting engine.
 
 
 In the example below, we illustrate a rewriting rule of the \texttt{Peephole} meta-rule that leverages a custom operator to insert \texttt{nop} instructions into any \Wasm program place, a well-known low-level diversification strategy \cite{homescu2013profile}, while using the \texttt{container} custom operator.
@@ -56,8 +54,7 @@ When generating the \wasm variant, the \texttt{container} custom operator is rem
 
 
 We developed \tool leveraging e-graphs, a specific graph data structure for representing and applying rewriting rules \cite{10.1145/3571207}. 
-In the context of \tool, a primer e-graph is constructed from the input \Wasm program.
-This initial e-graph is subsequently augmented with e-nodes and e-classes derived from each one of the rewriting rules (we detail the e-graph construction process in Section 3 of \cite{wasmmutate}).
+In the context of \tool, e-graphs are constructed from the input \Wasm program and the implemented rewriting rules (we detail the e-graph construction process in Section 3 of \cite{wasmmutate}).
 
 % General use of case
 Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
@@ -101,7 +98,7 @@ Following this, the subexpressions are built (line 10) for each child node, culm
 
 
 
-\msubsection{\tool instantiation}
+\msubsection{Exemplifying \tool}
 
 % \todo{FIX cross refs}
 
@@ -144,9 +141,10 @@ Consequently, increasing the depth parameter in \autoref{peephole:mutator} would
 
 
 \begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-  \tool leverages random traversals over e-graphs to provide a binary-based solution for \Wasm diversification. \\
+  \tool uses hand-made rewriting rules and random traversals over e-graphs to provide a binary-based solution for \Wasm diversification. \\
   \tool is fully presented in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
+  \emph{Under review at Computers \& Security}
  \url{https://arxiv.org/pdf/2309.07638.pdf}.
   \\\\
-  \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the bytecodealliance organization \toolcite{https://bytecodealliance.org/}.
+  \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the Bytecode Alliance organization \toolcite{https://bytecodealliance.org/}. The Bytecode Alliance is dedicated to creating secure new software foundations, building on standards such as WebAssembly and WASI.
 \end{tcolorbox}
