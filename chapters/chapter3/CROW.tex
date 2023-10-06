@@ -56,6 +56,8 @@ This approach offers developers a range of performance options, allowing them to
 The last stage at CROW involves a custom Wasm LLVM backend, which generates the \wasm programs.
 For it, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
 
+\vspace{-2cm}
+
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
 CROW inherently introduces a novel transformation strategy called \emph{constant inferring}, which significantly expands the variety of \Wasm program variants. 
