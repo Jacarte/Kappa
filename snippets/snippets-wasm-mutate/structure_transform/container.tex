@@ -22,7 +22,7 @@
           columns=fullflexible,
           breaklines=true}
           \begin{lstlisting}[]{Name}
-   LHS x
+   LHS i32.const x
           \end{lstlisting}
           %\vspace{0.2cm}
      \end{minipage}   
@@ -37,8 +37,18 @@
           columns=fullflexible,
           breaklines=true}
           \begin{lstlisting}[]{Name}
-   RHS (container (x nop))
+   RHS (i32.add (i32.rand i32.const y))
           \end{lstlisting}
+
+          \lstset{
+          language=ttt,
+          style=watcode,
+          basicstyle=\footnotesize\ttfamily,
+          columns=fullflexible,
+          breaklines=true}
+        \begin{lstlisting}[]{Name}
+    Cond y = x - i32.rand 
+        \end{lstlisting}
           %\vspace{0.2cm}
      \end{minipage}
      

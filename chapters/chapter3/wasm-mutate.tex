@@ -44,10 +44,18 @@ When converting back to the \Wasm binary format from the intermediate representa
 % Remarkably, custom operators highlight the versatility of \tool as a general-purpose binary rewriting engine.
 
 
-In the example below, we illustrate a rewriting rule of the \texttt{Peephole} meta-rule that leverages a custom operator to insert \texttt{nop} instructions into any \Wasm program place, a well-known low-level diversification strategy \cite{homescu2013profile}, while using the \texttt{container} custom operator.
-When generating the \wasm variant, the \texttt{container} custom operator is removed while its operands are encoded back to Wasm in their corresponding opcodes.
+In the following example, we demonstrate a rewriting rule within the \texttt{Peephole} meta-rule that utilizes a custom \texttt{rand} operator to expand statically declared constants within any \Wasm program function body. 
+The unfold rewriting rule, as the name suggests, transforms statically declared constants into the sum of two random numbers.
+During the generation of the \Wasm variant, the custom \texttt{rand} operator is substituted with a randomly chosen static constant.
+Notice that the condition specified in the last part of the rewriting rule ensures that this predicate is satisfied. 
+
+
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
+Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{constant_folding}, it stresses on the spill/reload component of the compiler when the \Wasm binary is transpiled to machine code.
+Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
+The unfold rewriting rule indirectly stresses this segment of memory. 
+Notably, this specific rewriting triggered a CVE in the wasmtime runtime \cite{CVE}.
 
 
 \msubsection{E-Graphs traversals}
