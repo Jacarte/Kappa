@@ -84,14 +84,62 @@ Our evaluation focuses on three key metrics: the success rate of evading VirusTo
 
 
 \begin{table}
+    \small
     \centering
-    \begin{tabular}{l l | l l | l l |}
+    \begin{tabular}{r r | r l | r l }
         \hline
-        Hash & \#D & \multicolumn{2}{c|}{Uncontrolled diversification} & \multicolumn{2}{c|}{Controlled diversification} \\
+        Hash & \#D & \multicolumn{2}{c|}{Uncontrolled diversification} & \multicolumn{2}{c}{Controlled diversification} \\
         \hline
         &  & Max. #evaded & Mean #trans. & Max. #evaded & Mean #trans. \\
-        \hline\hline
-        A & 1 & 1 & 1 & 1 \\
+        \hline\hlined
+        47d29959 &                 31 &             \textbf{26} &     N/A & 19 & N/A    \\ 
+        9d30e7f0 &                 30 &             \textbf{24}  &      N/A & 17 & N/A   \\ 
+        8ebf4e44 &                 26 &             \textbf{21} &     N/A  & 13 & N/A   \\
+        c11d82d &                 20 &       20        &  \textbf{355} & 20 & 446 \\ 
+        0d996462 &                 19 &     19    &  \textbf{401} & 19 & 697 \\ 
+        a32a6f4b &                 18 &       18       &  635 & 18 & \textbf{625} \\
+        
+        
+        fbdd1efa &                 18 &         18      &  \textbf{310} & 18 & 726 \\ 
+        d2141ff2 &                  9 &          9      &  \textbf{461} & 9 & 781 \\ 
+        aafff587 &                  6 &          6      &  484 & 6 & \textbf{331} \\
+        
+        
+        046dc081 &                  6 &          6      &  404 & 6 & \textbf{159} \\ 
+        643116ff &                  6 &          6      &  \textbf{144} & 6 & 436 \\ 
+        15b86a25 &                  4 &          4      &  253 & 4 & \textbf{131} \\
+        
+        
+        
+        006b2fb6 &                  4 &           4     &  \textbf{282} & 4 & 380 \\ 
+        942be4f7 &                  4 &           4     &  200 & 4 & 200\\ 
+        7c36f462 &                  4 &           4     &  236 & 4 & \textbf{221}\\
+        
+        
+        fb15929f &                  4 &            4    &  \textbf{297} & 4 & 475 \\ 
+        24aae13a &                  4 &         4       &  \textbf{252 } & 4 & 401\\ 
+        000415b2 &                  3 &         3       &  302 & 3 & \textbf{34}\\
+        
+        4cbdbbb1 &                  3 &          3      &  295 & 3 & \textbf{72}\\ 
+        65debcbe &                  2 &          2      &  131  & 2 & \textbf{33} \\ 
+        59955b4c &                  2 &          2      &  130  & 2 & \textbf{33}\\
+        
+        
+        89a3645c &                  2 &           2     &  431 & 2 & \textbf{107}\\
+        a74a7cb8 &                  2 &           2     &  124 & 2 & \textbf{33}\\
+        119c53eb &                  2 &           2     &  104 & 2 & \textbf{18}\\
+        
+        089dd312 &                  2 &           2     &  153 & 2 & \textbf{123}\\
+        c1be4071 &                  2 &           2     &  130 & 2 & \textbf{33}\\
+        dceaf65b &                  2 &           2     &  140 & 2 & 132\\
+        
+        6b8c7899 &                  2 &            2    &  143 & 2 & \textbf{33}\\
+        a27b45ef &                  2 &         2       &  145 & 2 & \textbf{33}\\
+        68ca7c0e &                  2 &         2       &  137  & 2 & \textbf{33}\\
+        
+        f0b24409 &                  2 &         2       &  127  & 2 & \textbf{11}\\
+        5bc53343 &                  2 &         2       &  118  & 2 & \textbf{33}\\
+        e09c32c5 &                  1 &         1       &  \textbf{120}  & 1 & 488 \\
     \end{tabular}
     \caption{TODO}
     \label{offensive:results:fast}
