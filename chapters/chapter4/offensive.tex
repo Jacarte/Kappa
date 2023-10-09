@@ -1,4 +1,5 @@
 \msection{Offensive Diversification: Malware evasion}
+\label{offensive_app}
 
 The primary malicious use of WebAssembly in browsers is cryptojacking \cite{musch2019new}. 
 This is due to the essence of cryptojacking, the faster the mining, the better. 
@@ -90,14 +91,15 @@ After running the wasmbench dataset through VirusTotal and MINOS, we identify 33
 To simulate the evasion scenario, we use WASM-MUTATE to generate \Wasm binary variants to evade malware detection.
 We use WASM-MUTATE in two configurations: controlled and uncontrolled diversification.
 
-\begin{definition}{Uncontrolled Diversification}
-    \label{uncontrolled_def}
-    Unlike controlled diversification, uncontrolled diversification is a stochastic process where each transformation has an equal likelihood of being applied to the input \Wasm binary.
-\end{definition}
-
-\begin{definition}{Controlled Diversification}
+\begin{definition}{Controlled Diversification:}
     \label{controlled_def}
     In controlled diversification, the transformation process of a \Wasm program is guided by a numeric oracle, which influences the probability of each transformation. For instance, WASM-MUTATE can be configured to apply transformations that minimize the oracle's confidence score. Note that controlled diversification needs a numeric oracle.
+\end{definition}
+
+
+\begin{definition}{Uncontrolled Diversification:}
+    \label{uncontrolled_def}
+    Unlike controlled diversification, uncontrolled diversification is a stochastic process where each transformation has an equal likelihood of being applied to the input \Wasm binary.
 \end{definition}
 
 

@@ -55,5 +55,23 @@ Specifically, a practically costless process of pre-compiling Wasm binaries coul
 In other words, a \wasm binary can first be compiled with wasmtime, effectively eliminating approx. 25\% of malware variants according to our preservation statistics for wasmtime. 
 This approach could substantially enhance the efficiency and precision of malware detection systems.
 
+\textbf{Fuzzing \Wasm compilers with \tool}
+In fuzzing campaigns, generating well-formed inputs is a significant challenge \cite{7958599}. 
+This is particularly true for fuzzing compilers, where the inputs should be executable yet intricate enough programs to probe various compiler components. 
+\tool could address this challenge by generating semantically equivalent variants from an original \wasm binary, enhancing the scope and efficiency of the fuzzing process. 
+A practical example of this occurred in 2021, when this approach led to the discovery of a wasmtime security CVE \cite{CVE}. 
+Through the creation of semantically equivalent variants, the spill/reload component of cranelift was stressed, resulting in the discovery of the before-mentioned CVE.
+
+
+
+\textbf{Mitigating Port Contention with \tool} 
+Rokicki et al. \cite{10.1145/3488932.3517411} showed the practicality of a covert side-channel attack using port contention within \Wasm code in the browser. This attack fundamentally relies on the precise prediction of Wasm instructions that trigger port contention.
+To combat this security concern, \tool could be conveniently implemented as a browser plugin. 
+\tool has the ability to replace the \wasm instructions used as port contention predictor with other instructions.
+This would inevitably remove the port contention in the specific port used to conduct the attack, hardening browsers against such malicious maneuvers.
+
+
+
+
 
 %\lipsum[1]
