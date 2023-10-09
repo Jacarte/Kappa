@@ -140,52 +140,54 @@ Comparing to \autoref{comp:table:tools}, a variant with 200 stacked transformati
 
 
 % \todo{replace with violin plots}
-\autoref{attacks:impact:2} offers a graphical representation of \tool's influence on the Swivel original programs: ret2spec and pht with the rest2spec and pht attacks respectively. 
-For the ret2spec and pht scenarios, the produced variants consistently exhibit lower bandwidth than the original in 76\% and 71\% of instances, respectively.
-% Why is good, for breaking timers and for padding
-As depicted in the plots, the exfiltration bandwidth diminishes following the application of at least  100 stacked transformations.
-Both programs are hardened with attack bandwidth reduction, but this does not materialize in a short-term timeframe (low count of stacked transformations).
-Furthermore,  the exfiltration bandwidth is more dispersed for these two programs.
-Our analysis indicates a correlation between bandwidth reduction and the complexity of the binary subject to diversification.
-Ret2spec and pht are considerably larger than btb\_breakout and btb\_leakage.
-The former comprises more than 300k instructions, while the latter two include fewer than 800 instructions.
-Given that WASM-MUTATE applies precise, fine-grained transformations one at a time, the likelihood of impacting critical attack components, such as timing memory accesses, diminishes for larger binaries, particularly when limited to 1000 transformations.
-Based on these observations, we believe that a greater number of stacked transformations would further contribute to eventually eliminating the attacks associated with ret2spec and pht.
+As illustrated in \autoref{attacks:impact:2}, similarly to \autoref{attacks:impact:1}, WASM-MUTATE significantly impacts the programs ret2spec and pht when subjected to their respective attacks. 
+In 76\% of instances for ret2spec and 71\% for pht, the generated variants demonstrated reduced attack bandwidth compared to the original binaries.
+The plots reveal that a notable decrease in exfiltration bandwidth occurs after applying at least 100 stacked transformations. 
+While both programs show signs of hardening through reduced attack bandwidth, this effect is not immediate and requires a substantial number of transformations to become effective. 
+Additionally, the bandwidth distribution is more varied for these two programs compared to the two previous ones.
+Our analysis suggests a correlation between the reduction in attack bandwidth and the complexity of the binary being diversified. 
+Specifically, ret2spec and pht are substantially larger programs, containing over 300,000 instructions, compared to btb\_breakout and btb\_leakage, which have fewer than 800 instructions. 
+Given that WASM-MUTATE performs incremental transformations, the probability of affecting critical components to hinder attacks decreases in larger binaries.
+
+\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+    Based on these findings, we state that increasing the number of stacked transformations could further enhance the hardening process, potentially neutralizing the threats posed by ret2spec and pht attacks.
+\end{tcolorbox}
 
 \wrule{Managed memory impact:} The success in diminishing exfiltration is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
-Specifically, it does so by amplifying spill/reload operations, injecting artificial global variables, and changing the frequency of pre-existing memory accesses. 
-These transformations influence the \wasm program's memory (as discussed in \autoref{security_applications}), causing disruption to cache predictors. 
-As a result, these alterations contribute to a reduction in exfiltration bandwidth.
+We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
+First, modifications to the binary layout—even those that don't affect executed code—inevitably alter memory accesses within the program's stack. 
+Specifically, \tool generates variants that modify the return addresses of functions, which consequently leads to differences in execution flow and memory accesses.
+Second, one of our rewriting rules incorporates artificial global values into \wasm binaries. 
+Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{managed_unmanaged}).
+Third, \tool injects 'phantom' instructions which don't aim to modify the outcome of a transformed function during execution. 
+These intermediate calculations trigger the spill/reload component of the wasmtime compiler, varying spill and reload operations. 
+In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the discussion at \autoref{custom}).
+Finally, certain rewriting rules implemented by WASM-MUTATE replicate fragments of code, e.g., performing commutative operations. 
+These code segments may contain memory accesses, and while neither the memory addresses nor their values change, the frequency of these operations does.
 
 % More fine grained
-\wrule{Disrupting accurate timers:} Furthermore, many attacks rely on a timer component to measure cache access time for memory, and disrupting this component  effectively impairs the attack's effectiveness. 
-This strategy of dynamic alteration has also been  employed in other scenarios. 
-For instance, to counter potential timing attacks, Firefox randomizes its built-in JavaScript timer \cite{10.1007/978-3-319-70972-7_13}. \tool applies the same strategy by interspersing instructions within the timing steps of \wasm variants. 
-In \autoref{example:timer} and \autoref{example:timer2}, we demonstrate \tool's impact on time measurements. 
-The former illustrates the original time measurement, while the latter presents a variant with \tool-inserted operations amid the timing.
+\wrule{Disrupting accurate timers:} Cache timing side-channel attacks, including for the four binaries analyzed in this case study, depend on precise timers to measure cache access times. 
+Disrupting these timers can effectively neutralize the attack. 
+For example, in other contexts, Firefox employs a strategy to counter timing attacks by randomizing its built-in JavaScript timer \cite{10.1007/978-3-319-70972-7_13}. 
+WASM-MUTATE inherently adopts a similar approach, introducing perturbations in the timing steps of \wasm variants in case they are malicious. 
+This is illustrated in \autoref{example:timer} and \autoref{example:timer2}, where the former shows the original time measurement and the latter presents a variant with \tool-introduced operations.
+WASM-MUTATE is particularly effective in disrupting cache access timers. 
+By introducing additional instructions, the inherent randomness in the time measurement of a single or a few instructions is amplified, thereby reducing the timer's accuracy. 
 
 \input{snippets/spectre/timer}
 
-WASM-MUTATE proves effective against cache access timers because the time measurement of single or a few instructions is inherently different. 
-By introducing more instructions, this randomness is amplified, thereby reducing the timer's accuracy.
-Furthermore, CPUs have a maximum capacity for the number of instructions they can cache.
-\tool injects instructions in such a way that the vulnerable instruction may exceed this cacheable instruction limit, meaning that caching becomes disabled.
-This kind of transformation can be viewed as padding \cite{padding}.
-In \autoref{example:padding} and \autoref{example:padding2}, we illustrate the effect of \tool on padding instructions.
-\autoref{example:padding} presents the original code used for training the branch predictor, along with the expected speculated code.
+\wrule{Padding speculated instructions:} Additionally, CPUs have a limit on the number of instructions they can cache. 
+WASM-MUTATE injects instructions to potentially exceed this limit, effectively disabling the speculative execution of memory accesses. 
+This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
 
 \input{snippets/spectre/padding}
-
-The padding alters the arrangement of the binary code in memory, effectively impeding the attacker's capacity to initiate speculative execution.
-Even when an attack is launched and the vulnerable code is "speculated", the memory access is not impacted as planned.
-
-
-In every program, we note that the exfiltration bandwidth tends to be greater than the original when the variants include a few transformations.
-This indicates that, although the transformations generally contribute to the reduction of data leakage, the initial few might not consistently contribute positively towards this objective.
-We have identified several fundamental reasons, which we discuss below.
-
-Firstly, as emphasized previously in \autoref{offensive_app}, uncontrolled diversification can be counterproductive if a specific objective, such as a cost function, is not established at the beginning of the diversification process.
-Secondly, while some transformations yield distinct \wasm binaries, their compilation produces identical machine code.
+This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
+Even if speculative execution occurs, the memory access does not proceed as the attacker intended.
+However, we observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
+This suggests that not all transformations uniformly contribute to reducing data leakage. 
+Several key factors contribute to this phenomenon.
+First, as emphasized previously in \autoref{offensive_app}, uncontrolled diversification can be counterproductive if a specific objective, e.g., if a cost function, is not established at the beginning of the diversification process.
+Second, while some transformations yield distinct \wasm binaries, their compilation produces identical machine code.
 Transformations that are not preserved(see \autoref{discussion}) undermine the effectiveness of diversification.
 For example, incorporating random \texttt{nop} operations directly into \wasm does not modify the final machine code as the \texttt{nop} operations are often removed by the compiler.
 The same phenomenon is observed with transformations to custom sections of \Wasm binaries.
