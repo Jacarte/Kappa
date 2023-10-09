@@ -115,26 +115,38 @@ For example, a variant that still leaks data but does so at an impractically slo
 The Y-axis represents the exfiltration bandwidth (see \autoref{metric:ber}). 
 The bandwidth of the original binary under attack is marked as a blue dashed horizontal line.
 In each plot, the variants are grouped in clusters of 100 stacked transformations. 
-These are indicated by green violinplots.
+These are indicated by the green violinplots.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{plots/spectre/results.rq3.1.pdf}
-    \caption{TODO}
+    \caption{Impact of WASM-MUTATE over btb\_breakout and btb\_leakage binaries. The Y-axis denotes exfiltration bandwidth, with the original binary's bandwidth under attack highlighted by a blue marker and dashed line. Variants are clustered in groups of 100 stacked transformations, denoted by green violinplots. 
+    Overall, for all 100000 variants generated out of each original program, 70\% have less data leakage bandwidth.
+    After 200 stacked transformations, the exfiltration bandwidth drops to zero.
+    }
   \label{attacks:impact:1}
 \end{figure}
 
-\wrule{Population strength:} For btb\_breakout and btb\_leakage, \tool demonstrates effectiveness, generating variants that leak less information than the original in 78\% and 70\% of the cases, respectively.
-For these particular binaries, a significant reduction in exfiltration bandwidth to zero is noted after 200 stacked transformations.
-This means that with a minimum of 200 stacked transformations, \tool can create variants that are completely resistant to the original attack.
-Comparing to \autoref{comp:table:tools}, a variant with 200 stacked transformations can be generated in merely minutes.
+\wrule{Population Strength:} For the binaries btb\_breakout and btb\_leakage, \tool exhibits a high level of effectiveness, generating variants that leak less information than the original in 78\% and 70\% of instances, respectively.
+For both programs, after applying 200 stacked transformations, the exfiltration bandwidth drops to zero.
+This implies that \tool is capable of synthesizing variants that are entirely impervious to the original form of the attack, provided a minimum of 200 transformations are stacked.
+
+
+\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+    As indicated in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of minutes.
+    When scaled to the scope of a global FaaS platform, this means that a unique, fortified variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
+\end{tcolorbox}
+
+
+
 
 
 
 \begin{figure}[h]
     \centering    
     \includegraphics[width=\linewidth]{plots/spectre/results.rq3.2.pdf}
-    \caption{TODO}
+    \caption{Impact of WASM-MUTATE over ret2spec and pht binaries. The Y-axis denotes exfiltration bandwidth, with the original binary's bandwidth under attack highlighted by a blue marker and dashed line. Variants are clustered in groups of 100 stacked transformations, denoted by green violinplots. 
+    Overall, for both programs approximately 70\% of the variants have less data leakage bandwidth.}
   \label{attacks:impact:2}
 \end{figure}
 
@@ -148,10 +160,6 @@ Additionally, the bandwidth distribution is more varied for these two programs c
 Our analysis suggests a correlation between the reduction in attack bandwidth and the complexity of the binary being diversified. 
 Specifically, ret2spec and pht are substantially larger programs, containing over 300,000 instructions, compared to btb\_breakout and btb\_leakage, which have fewer than 800 instructions. 
 Given that WASM-MUTATE performs incremental transformations, the probability of affecting critical components to hinder attacks decreases in larger binaries.
-
-\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    Based on these findings, we state that increasing the number of stacked transformations could further enhance the hardening process, potentially neutralizing the threats posed by ret2spec and pht attacks.
-\end{tcolorbox}
 
 \wrule{Managed memory impact:} The success in diminishing exfiltration is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
 We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
@@ -200,7 +208,9 @@ Additionally, it is important to note that transformed code doesn't always execu
 % \subsection{Deoptimization}
 
 \begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    Software diversification is effective at synthesizing \wasm binaries that mitigate Spectre-like attacks. 
+    Software diversification crafts \Wasm binaries that are resilient to Spectre-like attacks. 
+    By integrating a software diversification layer into \Wasm binaries deployed on Function-as-a-Service (FaaS) platforms, security can be significantly bolstered. 
+    This approach allows for the deployment of unique and diversified \Wasm binaries, potentially utilizing a distinct variant for each cloud node, thereby enhancing the overall security posture.
     The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
     \emph{Under review}
     \url{https://arxiv.org/pdf/2309.07638.pdf}. 
