@@ -24,6 +24,7 @@ This architecture inherently isolates \Wasm binary executions from each other as
 However, while \Wasm is engineered with a strong on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
 In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. 
 Specifically, we discuss the concept of Defensive Software Diversification, aimed at enhancing the security of \Wasm binaries by generating a multitude of diverse and unique \Wasm variants that can be randomized during deployment.
+For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
 
 \msubsection{Threat model: speculative side-channel attacks}
 
@@ -153,7 +154,7 @@ For instance, to counter potential timing attacks, Firefox randomizes its built-
 In \autoref{example:timer} and \autoref{example:timer2}, we demonstrate \tool's impact on time measurements. 
 The former illustrates the original time measurement, while the latter presents a variant with \tool-inserted operations amid the timing.
 
-%\input{snippets/rq3/timer}
+\input{snippets/spectre/timer}
 
 \tool proves effective against cache access timers because the time measurement of single or a few instructions is inherently different. 
 By introducing more instructions, this randomness is amplified, thereby reducing the timer's accuracy.
@@ -170,7 +171,7 @@ This kind of transformation can be viewed as padding \cite{padding}.
 In \autoref{example:padding} and \autoref{example:padding2}, we illustrate the effect of \tool on padding instructions.
 \autoref{example:padding} presents the original code used for training the branch predictor, along with the expected speculated code.
 
-%\input{snippets/rq3/padding}
+\input{snippets/spectre/padding}
 
 The padding alters the arrangement of the binary code in memory, effectively impeding the attacker's capacity to initiate speculative execution.
 Even when an attack is launched and the vulnerable code is "speculated", the memory access is not impacted as planned.
