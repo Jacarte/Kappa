@@ -6,17 +6,6 @@ Although the research of Lehmann and colleagues \cite{Hilbig2021AnES} suggests a
 This underscores the ongoing need for effective automatic detection of cryptojacking malware.
 
 
-Both antivirus software and browsers have implemented measures to detect cryptojacking. For instance, Firefox employs deny lists to detect cryptomining activities \cite{firefoxcrypto}. 
-The academic community has also contributed to the body of work on detecting or preventing WebAssembly-based cryptojacking, as outlined in \autoref{background:wasm:analysis}. 
-However, it's worth noting that malicious actors can employ evasion techniques to circumvent these detection mechanisms. 
-Bhansali et al. are among the first who have investigated how WebAssembly cryptojacking could potentially evade detection \cite{10.1145/3507657.3528560}, highlighting the critical importance of this use case. 
-For an in-depth discussion on this topic, we direct the reader to our contribution \cite{EVASION}.
-The use of case illustrated in the subsequent sections uses Offensive Software Diversification for the sake of evading malware detection in \Wasm. 
-
-
-\msubsection{Threat model: cryptojacking defense evasion}
-\label{threat_model}
-
 Let us illustrate how a malicious \wasm binary could be involved into browser cryptojacking.
 \autoref{fig:attack_crypto} illustrates a browser attack scenario:
 a practical WebAssembly cryptojacking attack consists of three components: a WebAssembly binary, a JavaScript wrapper, and a backend cryptominer pool. 
@@ -37,6 +26,23 @@ The WebAssembly cryptominer calculates thousands of hashes inside the browser.
 Once the malware server receives acceptable hashes, it is rewarded with cryptocurrencies for the mining. 
 Then, the server assigns a new job, and the mining process starts over.
 
+Both antivirus software and browsers have implemented measures to detect cryptojacking. For instance, Firefox employs deny lists to detect cryptomining activities \cite{firefoxcrypto}. 
+The academic community has also contributed to the body of work on detecting or preventing WebAssembly-based cryptojacking, as outlined in \autoref{background:wasm:analysis}. 
+However, it's worth noting that malicious actors can employ evasion techniques to circumvent these detection mechanisms. 
+Bhansali et al. are among the first who have investigated how WebAssembly cryptojacking could potentially evade detection \cite{10.1145/3507657.3528560}, highlighting the critical importance of this use case. 
+For an in-depth discussion on this topic, we direct the reader to our contribution \cite{EVASION}.
+The use of case illustrated in the subsequent sections uses Offensive Software Diversification for the sake of evading malware detection in \Wasm. 
+
+
+\msubsection{Threat model: cryptojacking defense evasion}
+\label{threat_model}
+
+
+Considering the previous scenario, several techniques, as outlined in \autoref{background:wasm:analysis}, can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
+Such defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm malicious binary is blocked in \step{3}.
+The primary aim of our use of case is to investigate the effectiveness of code diversification as a means to circumvent cryptojacking defenses. 
+Specifically, we assess whether the following evasion workflow can successfully bypass existing security measures:
+
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/threat_model.pdf}
@@ -44,11 +50,6 @@ Then, the server assigns a new job, and the mining process starts over.
     \label{fig:threat_model}
 \end{figure}
 
-
-Considering the previous scenario, several techniques, as outlined in \autoref{background:wasm:analysis}, can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
-Such defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm malicious binary is blocked in \step{3}.
-The primary aim of our use of case is to investigate the effectiveness of code diversification as a means to circumvent cryptojacking defenses. 
-Specifically, we assess whether the following evasion workflow can successfully bypass existing security measures:
 
 \begin{enumerate}
     
