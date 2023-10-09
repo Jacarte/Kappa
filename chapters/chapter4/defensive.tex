@@ -33,8 +33,7 @@ A malicious actor could upload a \Wasm binary that, once compiled to native code
 Furthermore, even if a submitted \Wasm binary is not intentionally malicious, it may still be vulnerable to Spectre attacks. 
 For instance, a malicious actor could exploit this vulnerability by executing the susceptible binary through the FaaS service. 
 
-Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredictions, leading to the speculative execution of specific instruction sequences, commonly referred to as \emph{gadgets} \cite{gadgets}.
-These gadgets would not be part of the standard, sequential execution flow. 
+Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredictions, leading to the speculative execution of specific instruction sequences that are not part of the original, sequential execution flow. 
 By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance(including itself) or even the host process itself. 
 This poses a significant risk, compromising both the security and integrity of the overall system.
 
@@ -109,15 +108,99 @@ For example, a variant that still leaks data but does so at an impractically slo
 
 \msubsection{Results}
 
-- Diminshing of BER
-- Rockiki paper on portable side channel in browsers.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\linewidth]{plots/rq3/results.rq3.pdf}
+    \caption{Visual representation of \tool's impact on Swivel's original programs. The Y-axis denotes exfiltration bandwidth, with the original binary's bandwidth under attack highlighted by a blue marker and dashed line. Variants are clustered in groups of 100 stacked transformations, denoted by green dots (median bandwidth) and lines (interquartile bandwidth range). Overall, for all 100000 variants generated out of each original program, 70\% have less data leakage bandwidth.}
+  \label{attacks:impact}
+\end{figure*}
+
+% \todo{replace with violin plots}
+
+To answer \ref{rq:defensive}, we execute \tool on four distinct binaries \wasm susceptible to Spectre related attacks. Each of the four programs is transformed with one of for 100 different seeds and up to 1000 stacked transformations. 
+We assess the resulting impact of the attacks as outlined in \ref{protocol:rq3}. 
+The  analysis encompasses a total of 4$\times$100$\times$1000 binaries, which also includes the original four.
+
+\autoref{attacks:impact} offers a graphical representation of \tool's influence on the Swivel original programs and their attacks. 
+Each plot corresponds to one original \wasm binary and the attack it undergoes: btb\_breakout, btb\_leakage, ret2spec, and pht.
+The Y-axis represents the exfiltration bandwidth (see \autoref{metric:ber}). 
+The bandwidth of the original binary under attack is marked as a blue dashed horizontal line.
+In each plot, the variants are grouped in clusters of 100 stacked transformations. 
+These are indicated by green dots and lines. 
+The dot signifies the median bandwidth for the cluster, while the line represents the interquartile range of the group's bandwidth.
 
 
 
-\todo{TBD discuss deoptimization}
+% General results for all cases
+For btb\_breakout and btb\_leakage, \tool demonstrates effectiveness, generating variants that leak less information than the original in 78\% and 70\% of the cases, respectively.
+For these particular binaries, a significant reduction in exfiltration bandwidth to zero is noted after 200 stacked transformations.
+This means that with a minimum of 200 stacked transformations, \tool can create variants that are completely resistant to the original attack.
+For the ret2spec and pht scenarios, the produced variants consistently exhibit lower bandwidth than the original in 76\% and 71\% of instances, respectively.
+% Why is good, for breaking timers and for padding
+As depicted in the plots, the exfiltration bandwidth diminishes following the application of at least  100 stacked transformations.
+
+% High level of what we have seen
+This success is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
+Specifically, it does so by amplifying spill/reload operations, injecting artificial global variables, and changing the frequency of pre-existing memory accesses. 
+These transformations influence the \wasm program's memory, causing disruption to cache predictors. 
+As a result, these alterations contribute to a reduction in exfiltration bandwidth.
+
+% More fine grained
+Furthermore, many attacks rely on a timer component to measure cache access time for memory, and disrupting this component  effectively impairs the attack's effectiveness. 
+This strategy of dynamic alteration has also been  employed in other scenarios. 
+For instance, to counter potential timing attacks, Firefox randomizes its built-in JavaScript timer \cite{10.1007/978-3-319-70972-7_13}. \tool applies the same strategy by interspersing instructions within the timing steps of \wasm variants. 
+In \autoref{example:timer} and \autoref{example:timer2}, we demonstrate \tool's impact on time measurements. 
+The former illustrates the original time measurement, while the latter presents a variant with \tool-inserted operations amid the timing.
+
+%\input{snippets/rq3/timer}
+
+\tool proves effective against cache access timers because the time measurement of single or a few instructions is inherently different. 
+By introducing more instructions, this randomness is amplified, thereby reducing the timer's accuracy.
+% Mention something about performance here
+
+\begin{tcolorbox}[boxrule=1pt,arc=.3em,boxsep=-1.3mm]
+    \textbf{Answer to \ref{rq:defensive}}:  
+    \tool generates variants of btb\_breakout and btb\_leakage that are totally protected against the considered attack. For ret2spec and pht, it generates hardened variants  that are more resilient to the attack than the original program: 70\% of the diversified variants exhibit a reduced attack effectiveness (reduced data leakage bandwidth) compared to the original program.
+  \end{tcolorbox}
+
+Furthermore, CPUs have a maximum capacity for the number of instructions they can cache.
+\tool injects instructions in such a way that the vulnerable instruction may exceed this cacheable instruction limit, meaning that caching becomes disabled.
+This kind of transformation can be viewed as padding \cite{padding}.
+In \autoref{example:padding} and \autoref{example:padding2}, we illustrate the effect of \tool on padding instructions.
+\autoref{example:padding} presents the original code used for training the branch predictor, along with the expected speculated code.
+
+%\input{snippets/rq3/padding}
+
+The padding alters the arrangement of the binary code in memory, effectively impeding the attacker's capacity to initiate speculative execution.
+Even when an attack is launched and the vulnerable code is "speculated", the memory access is not impacted as planned.
+
+
+In every program, we note that the exfiltration bandwidth tends to be greater than the original when the variants include a small number of transformations.
+This indicates that, although the transformations generally contribute to the reduction of data leakage, the initial few might not consistently contribute positively towards this objective.
+We have identified several fundamental reasons, which we discuss below.
+
+Firstly, as emphasized in prior applications of \tool \cite{CABRERAARTEAGA2023103296}, uncontrolled diversification can be counterproductive if a specific objective, such as a cost function, is not established at the beginning of the diversification process.
+Secondly, while some transformations yield distinct \wasm binaries, their compilation produces identical machine code.
+Transformations that are not preserved undermine the effectiveness of diversification.
+For example, incorporating random \texttt{nop} operations directly into \wasm does not modify the final machine code as the \texttt{nop} operations are often removed by the compiler.
+The same phenomenon is observed with transformations to custom sections of \Wasm binaries.
+Additionally, it is important to note that transformed code doesn't always execute, i.e., \tool may generate dead code.
+
+Finally, for ret2spec and pht, both programs are hardened with attack bandwidth reduction, but this does not materialize in a short-term timeframe (low count of stacked transformations).
+Furthermore,  the exfiltration bandwidth is more dispersed for these two programs.
+Our analysis indicates a correlation between bandwidth reduction and the complexity of the binary subject to diversification.
+Ret2spec and pht are considerably larger than btb\_breakout and btb\_leakage.
+The former comprises more than 300k instructions, while the latter two include fewer than 800 instructions.
+Given that \tool applies precise, fine-grained transformations one at a time, the likelihood of impacting critical attack components, such as timing memory accesses, diminishes for larger binaries, particularly when limited to 1,000 transformations.
+Based on these observations, we believe that a greater number of stacked transformations would further contribute to eventually eliminating the attacks associated with ret2spec and pht.
+
+
+
 % \subsection{Deoptimization}
 
 \begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+    Software diversification is effective at synthesizing \wasm binaries that mitigate Spectre-like attacks. 
     The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
     \emph{Under review}
     \url{https://arxiv.org/pdf/2309.07638.pdf}. 
