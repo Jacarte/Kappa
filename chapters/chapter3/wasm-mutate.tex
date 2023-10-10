@@ -6,13 +6,13 @@ In this section, we introduce our third technical contribution, \tool \cite{wasm
 Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
-\begin{figure*}[h!]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\linewidth]{diagrams/wasm_mutate.workflow.pdf}
+    \includegraphics[width=0.8\linewidth]{diagrams/wasm_mutate.workflow.pdf}
     \caption{ \tool high-level architecture.  It generates functionally equivalent variants from a given WebAssembly binary input. 
     Its central approach involves synthesizing these variants by substituting parts of the original binary using rewriting rules, boosted by diversification space traversals using e-graphs.}
   \label{fig:wasm-mutate}
-\end{figure*}
+\end{figure}
 
 
 \autoref{fig:wasm-mutate} illustrates the workflow of \tool, which initiates with a WebAssembly binary as its input. 
@@ -20,8 +20,13 @@ The first step involves parsing this binary to create suitable abstractions, e.g
 Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
 The assurance of functional equivalence is rooted in the inherent properties of the individual rewrite rules employed.
 Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
+
 \tool applies one transformation at a time.
-The output of one applied transformation can be chained again as an input \Wasm binary, enabling the generation of many variants.
+Notice that, the output of one applied transformation can be chained again as an input \Wasm binary, enabling the generation of many variants, leading us to enunciate the notion of \emph{Stacked transformation}
+
+\begin{definition}{Stacked transformation:}\label{stack_transform}
+    Given an original input \Wasm binary $I$ and a diversifier $D$, stacked transformations are defined as the application of $D$ over the binary $I$ multiple times, i.e., $D(D(D(...(I))))$.  Notice that, the number of stacked transformations are the number of times the diversifier $D$ is applied.
+\end{definition}
 
 
 \msubsection{WebAssembly Rewriting Rules}

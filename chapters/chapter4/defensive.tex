@@ -10,7 +10,7 @@ The operational flow of \Wasm binaries in FaaS platforms is illustrated in \auto
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\linewidth]{figures/edge.pdf}
-    \caption{\Wasm binaries on FaaS platforms.}
+    \caption{\Wasm binaries on FaaS platforms. Developers can submit any \Wasm binary to the platform to be executed as a service in a sandboxed and isolated manner. Yet, \Wasm binaries are not immune to Spectre attacks.}
     \label{fig:edge_model}
 \end{figure}
 
@@ -23,15 +23,15 @@ Host processes can then instantiate new \Wasm sandboxes for each client function
 This architecture inherently isolates \Wasm binary executions from each other as well as from the host process, enhancing security.
 
 However, while \Wasm is engineered with a strong on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
-In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. 
-Specifically, we discuss the concept of Defensive Software Diversification, aimed at enhancing the security of \Wasm binaries by generating a multitude of diverse and unique \Wasm variants that can be randomized during deployment.
+In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. Dale ven
+
 For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
 
 \msubsection{Threat model: speculative side-channel attacks}
 
 To illustrate the threat model concerning \Wasm programs in FaaS platforms, consider the following scenarios. 
 Developers, including potentially malicious actors, have the ability to submit any \Wasm binary to the FaaS platform. 
-A malicious actor could upload a \Wasm binary that, once compiled to native code, employs Spectre attacks to either leak sensitive information from the host process or violate Control Flow Integrity (CFI).
+A malicious actor could then upload a \Wasm binary that, once compiled to native code, employs Spectre attacks to either leak sensitive information from the host process or violate Control Flow Integrity (CFI).
 Furthermore, even if a submitted \Wasm binary is not intentionally malicious, it may still be vulnerable to Spectre attacks. 
 For instance, a malicious actor could exploit this vulnerability by executing the susceptible binary through the FaaS service. 
 
@@ -59,11 +59,11 @@ The green-highlighted section in \autoref{fig:defense_model} illustrates how Sof
 The core idea is to generate unique and diverse \Wasm variants that can be randomized at the time of deployment. 
 For this use case, we employ WASM-MUTATE as our tool for Software Diversification.
 
-To empirically demonstrate that Software Diversification can indeed mitigate Spectre vulnerabilities, we utilize the \Wasm binaries proposed by Narayan and colleagues in their work on Swivel \cite{Swivel}. 
+To empirically demonstrate that Software Diversification can indeed mitigate Spectre vulnerabilities, we reuse the \Wasm attack scenarios proposed by Narayan and colleagues in their work on Swivel \cite{Swivel}. 
 Swivel is a compiler-based strategy designed to counteract Spectre attacks on \Wasm binaries by linearizing their control flow during machine code compilation. 
 Our approach differs from theirs in that it is binary-based, compiler-agnostic, and platform-agnostic; we do not propose altering the deployment or toolchain of FaaS platforms. 
 Although our experiments are conducted prior to submitting the \Wasm binary to the FaaS platform, we argue that \Wasm binary diversification could be implemented at any stage of the FaaS workflow.
-The same argument holds by using any other diversification technique included in this dissertation (see \autoref{tech}).
+The same argument holds by using any other diversification tool presented in this dissertation (see \autoref{tech}).
 
 
 \begin{figure}[h]
@@ -89,13 +89,13 @@ The same argument holds by using any other diversification technique included in
 
 %\end{adjustbox}
     \end{tabular}
-    \caption{}
+    \caption{\Wasm program name and its respective attack.}
     \label{programs}
 \end{table}
 
 To measure the efficacy of WASM-MUTATE in mitigating Spectre, we diversify four \Wasm binaries proposed in the Swivel study. 
-The details of these programs and the specific attacks we examine are available in \cite{programs}. 
-For each of these four binaries, we generate up to 1000 random stacked transformations using 100 distinct seeds, resulting in a total of 100,000 variants for each original binary. 
+The names of these programs and the specific attacks we examine are available in \cite{programs}. 
+For each of these four binaries, we generate up to 1000 random stacked transformations (see \autoref{stack_transform}) using 100 distinct seeds, resulting in a total of 100,000 variants for each original binary. 
 At every 100th stacked transformation for each binary and seed, we assess the impact of diversification on the Spectre attacks by measuring the attack bandwidth for data exfiltration. 
 This metric not only captures the success or failure of the attacks but also quantifies the extent to which data exfiltration is hindered. 
 For example, a variant that still leaks data but does so at an impractically slow rate would be considered hardened against the attack.
@@ -129,7 +129,7 @@ These are indicated by the green violinplots.
 
 \wrule{Population Strength:} For the binaries btb\_breakout and btb\_leakage, \tool exhibits a high level of effectiveness, generating variants that leak less information than the original in 78\% and 70\% of instances, respectively.
 For both programs, after applying 200 stacked transformations, the exfiltration bandwidth drops to zero.
-This implies that \tool is capable of synthesizing variants that are entirely impervious to the original form of the attack, provided a minimum of 200 transformations are stacked.
+This implies that \tool is capable of synthesizing variants that are entirely protected from the original attack.
 
 
 \begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
@@ -159,7 +159,7 @@ While both programs show signs of hardening through reduced attack bandwidth, th
 Additionally, the bandwidth distribution is more varied for these two programs compared to the two previous ones.
 Our analysis suggests a correlation between the reduction in attack bandwidth and the complexity of the binary being diversified. 
 Specifically, ret2spec and pht are substantially larger programs, containing over 300,000 instructions, compared to btb\_breakout and btb\_leakage, which have fewer than 800 instructions. 
-Given that WASM-MUTATE performs incremental transformations, the probability of affecting critical components to hinder attacks decreases in larger binaries.
+Therefore, given that WASM-MUTATE performs incremental transformations, the probability of affecting critical components to hinder attacks decreases in larger binaries.
 
 \wrule{Managed memory impact:} The success in diminishing exfiltration is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
 We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
@@ -169,7 +169,7 @@ Second, one of our rewriting rules incorporates artificial global values into \w
 Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{managed_unmanaged}).
 Third, \tool injects 'phantom' instructions which don't aim to modify the outcome of a transformed function during execution. 
 These intermediate calculations trigger the spill/reload component of the wasmtime compiler, varying spill and reload operations. 
-In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the discussion at \autoref{custom}).
+In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the example at \autoref{custom}).
 Finally, certain rewriting rules implemented by WASM-MUTATE replicate fragments of code, e.g., performing commutative operations. 
 These code segments may contain memory accesses, and while neither the memory addresses nor their values change, the frequency of these operations does.
 
@@ -187,11 +187,12 @@ By introducing additional instructions, the inherent randomness in the time meas
 \wrule{Padding speculated instructions:} Additionally, CPUs have a limit on the number of instructions they can cache. 
 WASM-MUTATE injects instructions to potentially exceed this limit, effectively disabling the speculative execution of memory accesses. 
 This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
-
-\input{snippets/spectre/padding}
 This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
 Even if speculative execution occurs, the memory access does not proceed as the attacker intended.
-However, we observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
+
+\input{snippets/spectre/padding}
+
+\wrule{Controlled vs Uncontrolled diversification:} We observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
 This suggests that not all transformations uniformly contribute to reducing data leakage. 
 Several key factors contribute to this phenomenon.
 First, as emphasized previously in \autoref{offensive_app}, uncontrolled diversification can be counterproductive if a specific objective, e.g., if a cost function, is not established at the beginning of the diversification process.
@@ -210,7 +211,7 @@ Additionally, it is important to note that transformed code doesn't always execu
 \begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     Software diversification crafts \Wasm binaries that are resilient to Spectre-like attacks. 
     By integrating a software diversification layer into \Wasm binaries deployed on Function-as-a-Service (FaaS) platforms, security can be significantly bolstered. 
-    This approach allows for the deployment of unique and diversified \Wasm binaries, potentially utilizing a distinct variant for each cloud node, thereby enhancing the overall security posture.
+    This approach allows for the deployment of unique and diversified \Wasm binaries, potentially utilizing a distinct variant for each cloud node, thereby enhancing the overall security.
     The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
     \emph{Under review}
     \url{https://arxiv.org/pdf/2309.07638.pdf}. 

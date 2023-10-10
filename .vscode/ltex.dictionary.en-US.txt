@@ -2,3 +2,4 @@ concolic
 tunneable
 cryptojacking
 cryptominer
+diversifier
