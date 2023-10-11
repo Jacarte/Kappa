@@ -2,121 +2,20 @@
 \msection{Software diversification}
 \label{sota:sw}
 
+
+Software Diversification has been widely studied in the past decades. This section discusses its state-of-the-art.
+% What is Software diversity
+Software diversification consists in synthesizing, reusing, distributing, and executing different, functionally equivalent programs. 
+According to the survey by Baudry \etal \cite{natural_diversity}, the motivation for software diversification can be separated in five categories: reusability \cite{pohl2005software}, software testing \cite{Chen2010AdaptiveRT}, performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219} and security \cite{cohen1993operating}. Our work contributes to the latter two categories. In this section we discuss related works by highlighting how they generate diversification and how they put it into practice. 
+
 \todo{Work on differential testing}\url{https://arxiv.org/pdf/2309.12167.pdf}
 
 %\lipsum[1]
 
 %\lipsum[1]
 
-\msubsection{Generating Software Diversification}
+\msubsection{Generation of Software Variants}
 
-%\lipsum[1]
-
-%\lipsum[1]
-
-\begin{definition}{Uncontrolled diversification}
-    \label{uncontroll_def}
-    TODO
-\end{definition}
-
-\begin{definition}{Controlled diversification}
-    \label{controlled_def}
-    TODO
-\end{definition}
-
-
-
-
-\msubsection{Variants generation}
-
-%\lipsum[1]
-
-\msubsection{Variants equivalence}
-
-%\lipsum[1]
-
-\todo{Automatic, SMT based}
-\todo{Take a look to Jackson thesis, we have a similar problem he faced with the superoptimization of NaCL}
-\todo{By design}
-\todo{Introduce the notion of rewriting rule by Sasnaukas.}
-\url{https://link.springer.com/chapter/10.1007/978-3-319-68063-7_13}
-
-
-\msubsection{Defensive Diversification}
-
-%\lipsum[1]
-
-\msubsection{Offensive Diversification}
-
-%\lipsum[1]
-
-\section{Software Diversification  }
-\label{sota:sota}
-%Checkmarck symbol
-\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
-
-% Commands to refer to the milestones
-\newtheoremstyle{sota}% name of the style to be used
-  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
-  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
-  {\itshape}% name of font to use in the body of the theorem
-  {0pt}% measure of space to indent
-  {\bfseries}% name of head font
-  {}% punctuation between head and body
-  { }% space after theorem head; " " = normal interword space
-  {(\thmname{#1}\thmnumber{#2})\textnormal{\thmnote{ (#3)}}}
-
-\def\Gnospace~{G{}}
-\theoremstyle{sota}
-\newtheorem{goal}{G}
-\providecommand*{\definitionautorefname}{\Gnospace}
-\newcommand{\goalautorefname}{\Gnospace}
-
-
-\def\Snospace~{S{}}
-\theoremstyle{sota}
-\newtheorem{strategy}{S}
-\providecommand*{\definitionautorefname}{\Snospace}
-\newcommand{\strategyautorefname}{\Snospace}
-
-\def\Unospace~{U{}}
-\theoremstyle{sota}
-\newtheorem{usage}{U}
-\providecommand*{\definitionautorefname}{\Unospace}
-\newcommand{\usageautorefname}{\Unospace}
-
-%\%todo{Esta muy regado ahora.}
-
-%\todo{Stress input-output equivalence in the artificial diversification.}
-
-%\todo{Mention concrete objective and achievement when citing.}
-
-%\todo{emove some strategies, just cite some papers and thats it. Reduce to five transformations. Stick to U2 andd U3. Add techincal stack in the table.}
-
-%\todo{Add level of transformation as a dimension. Hoigh level, fine-grained transofmrations, etc}
-
-%\todo{Start with COhen, then go form high level to fine granied and from technologies to LLVM and Wasm.}
-
-
-%\todo{Given a collection of pgorams, then enumerate the usages. Second approach, multiple encapsulation in one single program.}
-
-Software Diversification has been widely studied in the past decades. This section discusses its state-of-the-art.
-% What is Software diversity
-Software diversification consists in synthesizing, reusing, distributing, and executing different, functionally equivalent programs. 
-According to the survey by Baudry \etal \cite{natural_diversity}, the motivation for software diversification can be separated in five categories: reusability \cite{pohl2005software}, software testing \cite{Chen2010AdaptiveRT}, performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219} and security \cite{cohen1993operating}. Our work contributes to the latter two categories. In this section we discuss related works by highlighting how they generate diversification and how they put it into practice. 
-%We finalize by comparing our contributions with the related work.
-
-%\todo{Do not talk about complexity of replacements, stress them in the other chapters. Stress the comparison between techniques.}
-
-%\todo{ Important things  }
-
-%\todo{Rework hard sentences.}
-
-%\todo{One section on semantically equivalence and checking...}
-
-% \todo{Split sentences by ideas.}
-
-%\subsection*{artificial software diversity.}
 
 There are two primary sources of software diversification: Natural Diversity and Artificial Diversity\cite{natural_diversity}. This work contributes to the state of the art of Artificial Diversity, which consists of software synthesis. 
 % Intro to Cohen and that functional/semantic equivalence is 
@@ -124,9 +23,6 @@ This thesis is founded on the work of Cohen in 1993 \cite{cohen1993operating} as
 
 
 
-% Why we use their approach
-
-\subsection{Variants' generation}
 % Mutation strategy
 Cohen \etal \cite{cohen1993operating} proposed to generate artificial software diversification through mutation strategies.
 A mutation strategy is a set of rules to define how a specific component of software development should be changed to provide a different yet functionally equivalent program. Cohen and colleagues proposed 10 concrete transformation strategies that can be applied at fine-grained levels. 
@@ -214,7 +110,6 @@ All described strategies can be mixed together. They can be applied in any seque
  
 
 
-\subsection{Variants' equivalence}
 
 Equivalence checking between program variants is an essential component for any program transformation task, from checking compiler optimizations \cite{LeCompilers} to the artificial synthesis of programs discussed in this chapter. 
 Equivalence checking proves that two pieces of code or programs are semantically equivalent \cite{churchill2019}. % Why is important
@@ -260,7 +155,32 @@ Fuzzers randomly generate inputs that provide different observable behavior. If 
 
 %Superdiversifier, all the others, and then finish with that we contribute to fine-grained.
 
-\subsection{Usages of Software Diversity}
+
+
+
+\begin{definition}{Software variant}
+    \todo{Define}
+\end{definition}
+%\lipsum[1]
+
+%\lipsum[1]
+
+\begin{definition}{Uncontrolled diversification}
+    \label{uncontroll_def}
+    TODO
+\end{definition}
+
+\begin{definition}{Controlled diversification}
+    \label{controlled_def}
+    TODO
+\end{definition}
+
+
+
+
+\msubsection{Variants deployment}
+
+
 
 After program variants are generated, they can be used in two main scenarios: Randomization or Multivariant Execution (MVE) \cite{jackson}. In \autoref{diagrams:sota:randomization} and \autoref{diagrams:sota:mve} we illustrate both scenarios. 
 
@@ -361,6 +281,60 @@ Both scenarios have demonstrated to harden security by tackling known vulnerabil
 %In the case of \autoref{usage:n-version}, this usage lacks of the time dimension, \ie program variants are not changed from time to time. 
 
 %\end{usage}
+
+\todo{Multivariant}
+
+
+\begin{definition}{Multivariant}
+    \todo{Define}
+\end{definition}
+
+%\lipsum[1]
+
+\todo{Automatic, SMT based}
+\todo{Take a look to Jackson thesis, we have a similar problem he faced with the superoptimization of NaCL}
+\todo{By design}
+\todo{Introduce the notion of rewriting rule by Sasnaukas.}
+\url{https://link.springer.com/chapter/10.1007/978-3-319-68063-7_13}
+
+
+\msubsection{Defensive Diversification}
+
+%\lipsum[1]
+
+\msubsection{Offensive Diversification}
+
+
+%\%todo{Esta muy regado ahora.}
+
+%\todo{Stress input-output equivalence in the artificial diversification.}
+
+%\todo{Mention concrete objective and achievement when citing.}
+
+%\todo{emove some strategies, just cite some papers and thats it. Reduce to five transformations. Stick to U2 andd U3. Add techincal stack in the table.}
+
+%\todo{Add level of transformation as a dimension. Hoigh level, fine-grained transofmrations, etc}
+
+%\todo{Start with COhen, then go form high level to fine granied and from technologies to LLVM and Wasm.}
+
+
+%\todo{Given a collection of pgorams, then enumerate the usages. Second approach, multiple encapsulation in one single program.}
+
+%We finalize by comparing our contributions with the related work.
+
+%\todo{Do not talk about complexity of replacements, stress them in the other chapters. Stress the comparison between techniques.}
+
+%\todo{ Important things  }
+
+%\todo{Rework hard sentences.}
+
+%\todo{One section on semantically equivalence and checking...}
+
+% \todo{Split sentences by ideas.}
+
+%\subsection*{artificial software diversity.}
+
+% Why we use their approach
 
 \section{Open challenges}
 \label{sota:openchallenges}

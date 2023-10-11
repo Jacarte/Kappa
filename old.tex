@@ -193,3 +193,37 @@ Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by includ
 
 
 \todo{ The malware evasion paper}
+
+%\lipsum[1]
+%Checkmarck symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
+% Commands to refer to the milestones
+\newtheoremstyle{sota}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {(\thmname{#1}\thmnumber{#2})\textnormal{\thmnote{ (#3)}}}
+
+\def\Gnospace~{G{}}
+\theoremstyle{sota}
+\newtheorem{goal}{G}
+\providecommand*{\definitionautorefname}{\Gnospace}
+\newcommand{\goalautorefname}{\Gnospace}
+
+
+\def\Snospace~{S{}}
+\theoremstyle{sota}
+\newtheorem{strategy}{S}
+\providecommand*{\definitionautorefname}{\Snospace}
+\newcommand{\strategyautorefname}{\Snospace}
+
+\def\Unospace~{U{}}
+\theoremstyle{sota}
+\newtheorem{usage}{U}
+\providecommand*{\definitionautorefname}{\Unospace}
+\newcommand{\usageautorefname}{\Unospace}
