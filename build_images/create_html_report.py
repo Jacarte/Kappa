@@ -4,7 +4,7 @@ from jinja2.nativetypes import NativeEnvironment
 import sys
 import os
 
-DIR = os.path.dirname(__file__)
+DIR = os.path.abspath(os.path.dirname(__file__))
 
 if __name__ == '__main__':
 
@@ -17,6 +17,6 @@ if __name__ == '__main__':
     template = env.from_string(open(f"{DIR}/templates/matches.html", 'r').read())
 
     data = json.loads(open(data, 'r').read())
-    rendered = template.render(data=data)
+    rendered = template.render(data=data, counts=data['counts'])
 
     open(out, 'w').write(rendered)

@@ -38,10 +38,14 @@ A host environment is in charge of complementing the Wasm program, such as provi
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code in the browser. 
 
 
-In \autoref{CExample1} and \autoref{WASMExample}, we illustrate a C program and its corresponding Wasm binary. 
-The C function includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses. 
-The Wasm code in \autoref{WASMExample} displays the textual format of the generated Wasm (Wat)\footnote{The WAT text format is mostly for human readability and for low-level manual modification.}.
-
+In \autoref{CExample1} and \autoref{WASMExample}, we present a C program alongside its corresponding WebAssembly binary. 
+The C function encompasses various elements such as heap allocation, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
+The Wasm code shown in \autoref{WASMExample} is displayed in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
+The static memory declared in line 2 of \autoref{CExample1} is allocated within the Wasm binary's linear memory, as illustrated in line 47 of \autoref{WASMExample}.
+The function declared in line 5 of \autoref{CExample1} is converted into an imported function, as seen in line 8 of \autoref{WASMExample}.
+The main function, spanning lines 7 to 14 in \autoref{CExample1}, is transcribed into a Wasm function covering lines 12 to 38 in \autoref{WASMExample}. Within this function, the translation of various C language constructs into Wasm can be observed.
+For instance, the \texttt{for} loop found in line 8 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
+The loop's breaking condition is converted into a conditional branch, as shown in line 25 of \autoref{WASMExample}.
 
 
 \begin{minipage}[hbtp]{0.9\textwidth}
@@ -52,7 +56,7 @@ The Wasm code in \autoref{WASMExample} displays the textual format of the genera
         basicstyle=\small\ttfamily,
         captionpos=b,
         frame=b,
-        numbers=none,
+        numbers=left,
         postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
         escapeinside={(*@}{@*)}
         }
@@ -75,6 +79,7 @@ Each section is optional, where an omitted section is considered empty.
 In the following, we summarize each one of the 13 types of \wasm sections, providing their name, ID, and purpose. 
 In addition, some sections are annotated as comments in the Wasm code in \autoref{WASMExample}.
     
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/section.pdf}
@@ -82,6 +87,12 @@ In addition, some sections are annotated as comments in the Wasm code in \autore
     \label{background:wasm:fig:section}
 \end{figure}
 
+Due to its organization into a contiguous array of sections, a \wasm binary can be processed efficiently. 
+For example, this structure allows compilers to speed up the compilation process through parallel parsing or just by ignoring \emph{Custom Sections}.
+Additionally, the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding of instructions of the \emph{Code Section} further compacts the binary. 
+As a result, Wasm binaries are not only fast to validate and compile but also quick to transmit over a network.
+
+\begin{comment}
 \wrule{Custom Section (\texttt{00})}: Comprises two parts: the section name and arbitrary content. Primarily used for storing metadata, such as the compiler used to generate the binary (see lines 9 and 48 of \autoref{WASMExample}). This type of section has no order constraints with other sections and is optional. Compilers usually skip this section when consuming a \Wasm binary. 
 
 \wrule{Type Section (\texttt{01})}: Contains the function signatures for functions declared or defined within the binary (see lines 3 to 6 in \autoref{WASMExample}). Functions may share the same function signature. This section must occur only once in a binary. It can be empty. 
@@ -108,13 +119,7 @@ In addition, some sections are annotated as comments in the Wasm code in \autore
 
 \wrule{Data Count Section (\texttt{12})}: Primarily used for validating the Data Section. If the segment count in the Data Section mismatches the Data Count, the binary is considered malformed. The example code in \autoref{WASMExample} does not include a Data Count Section.
 It must occur only once in a binary. It can be empty.
-
-
-\vspace{2mm}
-Due to its organization into a contiguous array of sections, a \wasm binary can be processed efficiently. 
-For example, this structure allows compilers to speed up the compilation process through parallel parsing or just by ignoring \emph{Custom Sections}.
-Additionally, the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding of instructions of the \emph{Code Section} further compacts the binary. 
-As a result, Wasm binaries are not only fast to validate and compile but also quick to transmit over a network.
+\end{comment}
 
 \msubsection{\Wasm's runtime structure}
 \label{background:wasm:execution}

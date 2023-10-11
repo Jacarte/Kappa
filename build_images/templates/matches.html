@@ -81,6 +81,9 @@
 </head>
 <body>  
     <h1>Warnings in {{ data | length }} pages</h1>
+    {% for msg, vals in counts.items() %}
+        <h3>{{ msg }}: {{ vals | length }}</h3>
+    {% endfor %}
     <div class="container">
 
         {% for page, d in data.items() %}

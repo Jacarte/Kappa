@@ -10,7 +10,38 @@ import json
 import language_tool_python
 tool = language_tool_python.LanguageTool('en-US')
 
-OUT = os.path.dirname(__file__)
+OUT = os.path.abspath(os.path.dirname(__file__))
+
+
+def get_by_template(imagefile, templatefile):
+    img_rgb = cv2.imread(imagefile)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+
+    template = cv2.imread(templatefile, 0)
+
+    w, h = template.shape[::-1]
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+
+    threshold = 0.8
+
+    # Store the coordinates of matched area in a numpy array
+    loc = np.where(res >= threshold)
+
+    # Draw a rectangle around the matched region.
+    rectangles = []
+    for pt in zip(*loc[::-1]):
+        # check if therre are not overlaping
+        overlap = False
+        for r in rectangles:
+            if pt[0] > r[0] and pt[0] < r[0] + r[2]:
+                overlap = True
+                break
+        if not overlap:
+            rectangles.append((pt[0], pt[1], w, h))
+        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 255, 255), 2)
+
+    return rectangles
+
 
 
 def get_paragraphs_from_image(imagefile, sizemin=10000):
@@ -149,6 +180,7 @@ def get_terms(text):
 
 def spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, words2ignore = []):
     matches = tool.check(text)
+    # Check missing references in imagedata
 
     boxes = len(tesseractdata['level'])
     obs = []
@@ -227,24 +259,73 @@ def process_pdf(pdffile, ignore):
     words2ignore = open(ignore, 'r').readlines()
     words2ignore = [l.lower().strip().replace("\n", "").replace("\\\\", "\\") for l in words2ignore]
 
-    images = convert_from_path(pdffile, dpi=350, first_page=10)
+    images = convert_from_path(pdffile, dpi=450, first_page=10)
+    print("Images", len(images))
 
     pagen = 0
     REPORT = {}
+    COUNTS = {
+
+    }
     ID = 0
 
     for image in images:
         try:
             # Save temp
             REPORTPAGE = []
+
             relative = f"rois/page_{pagen}.jpg"
             name = f"{OUT}/{relative}"
             image.save(name, "JPEG")
+
             squares = get_paragraphs_from_image(name)
+
+
             i = 0
             imagedata = cv2.imread(name)
 
+            # Detect missing references
+
+
+            for templatename, message in [
+                ("question_template.png", "Missing cross reference"),
+                ("missing_template.png", "Missing reference"),
+                ("question2_template.png", "Missing reference"),
+                ("todo_template.png", "TODO not solved"),
+            ]:
+                # Get custom templates
+                missing_cross = get_by_template(name, f"{OUT}/templates/{templatename}")
+                print(message, len(missing_cross))
+                for miss in missing_cross:
+                    x, y, w, h = miss
+                    cv2.rectangle(imagedata, (x, y), (x + w , y + h), (255,36,12), 2)
+                    REPORTPAGE.append(dict(
+                        pageannotatedfile = f"rois/annotated_{pagen}.png",
+                        matches = [dict(
+                            message=message,
+                            replacements="",
+                            ruleId="",
+                            offsetInContext=0,
+                            category=message,
+                            offset=0,
+                            errorLength=len(message),
+                            text=message
+                        )],
+                        places = [dict(
+                            x=int(x) ,
+                            y = int(y),
+                            w = int(w),
+                            h = int(h)
+                        )]
+                    ))
+
+                if len(missing_cross) > 0:
+                    if message not in COUNTS:
+                        COUNTS[message] = []
+                    COUNTS[message] += [len(missing_cross)]
+
             for roi, s, rect in squares:
+                # continue
                 # Comment this, it is debugging
                 data = pytesseract.image_to_data(roi,output_type='dict')#, config=custom_config)
                 #print(data)
@@ -258,10 +339,18 @@ def process_pdf(pdffile, ignore):
                 # Some sanitization
                 text = text.replace("\n", " ")
                 text = text.replace(". ", ".\n")
-                text = text.strip()
-                text = text.replace("  ", " ")
+                
+                while True:
+                    old = text
+                    text = text.replace("  ", " ")
+                    if old == text:
+                        break
 
-                # Call language tool or any other
+                text = text.replace(" .", ".")
+                text = text.strip()
+                
+                    
+                 # Call language tool or any other
                 
                 # Sentiment analysis?
                 # scores = get_score(text)
@@ -288,6 +377,7 @@ def process_pdf(pdffile, ignore):
         except KeyboardInterrupt:
             break
 
+    REPORT["counts"] = COUNTS
     open(f"{OUT}/report.json", "w").write(json.dumps(REPORT, indent=4))
 
 if __name__ == '__main__':
