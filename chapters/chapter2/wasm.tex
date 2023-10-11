@@ -72,7 +72,7 @@ In \autoref{background:wasm:fig:section} we show the binary format of a Wasm sec
 A Wasm section starts with a 1-byte section ID, followed by a 4-byte section size, and concludes with the section content, which precisely matches the size indicated earlier.
 A \wasm binary contains sections of 13 types, each with a specific semantic role and placement within the module. 
 Each section is optional, where an omitted section is considered empty.
-In the following text, we summarize each one of the 13 types of \wasm sections, providing their name, ID, and purpose. 
+In the following, we summarize each one of the 13 types of \wasm sections, providing their name, ID, and purpose. 
 In addition, some sections are annotated as comments in the Wasm code in \autoref{WASMExample}.
     
 \begin{figure}[h]
@@ -122,7 +122,7 @@ As a result, Wasm binaries are not only fast to validate and compile but also qu
 
 The \Wasm runtime structure is described in the WebAssembly specification by enunciating 10 key components: the Store, Module Instances,  Table Instances, Export Instances, Import Instances, the Execution Stack, Memory Instances, Global Instances, Function Instances and Locals.  
 These components are particularly significant in maintaining the state of a WebAssembly program during its execution. 
-In the following text, we provide a brief description of each runtime component.
+In the following, we provide a brief description of each runtime component.
 Notice that, the runtime structure is an abstraction that serves to validate the execution of a \wasm binary.
 
 \wrule{Store}: The WebAssembly store represents the global state and is a collection of instances of functions, tables, memories, and globals. Each of these instances is uniquely identified by an address, which is usually represented as an i32 integer.
@@ -240,7 +240,7 @@ Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verific
 \label{background:wasm:analysis}
 As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
 To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
-In the following text we provide a brief overview of the most relevant tools in this space w.r.t static and dynamic analysis, as well as specialized malware detection.
+In the following we provide a brief overview of the most relevant tools in this space w.r.t static and dynamic analysis, as well as specialized malware detection.
 
 %% PATCH
 \vspace{10mm}
