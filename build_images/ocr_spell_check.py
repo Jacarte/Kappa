@@ -259,7 +259,7 @@ def process_pdf(pdffile, ignore):
     words2ignore = open(ignore, 'r').readlines()
     words2ignore = [l.lower().strip().replace("\n", "").replace("\\\\", "\\") for l in words2ignore]
 
-    images = convert_from_path(pdffile, dpi=450, first_page=10)
+    images = convert_from_path(pdffile, dpi=350, first_page=1)
     print("Images", len(images))
 
     pagen = 0
