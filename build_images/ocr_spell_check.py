@@ -1,7 +1,7 @@
 from statistics import mean, median
 import cv2
 import numpy as np
-from pdf2image import convert_from_path
+from pdf2image import convert_from_path,pdfinfo_from_path
 import sys
 import os
 import pytesseract
@@ -258,10 +258,10 @@ def spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, words2
 def process_pdf(pdffile, ignore):
     words2ignore = open(ignore, 'r').readlines()
     words2ignore = [l.lower().strip().replace("\n", "").replace("\\\\", "\\") for l in words2ignore]
+    info = pdfinfo_from_path(pdffile, userpw=None, poppler_path=None)
+    maxPages = info["Pages"]
 
-    images = convert_from_path(pdffile, dpi=350, first_page=1)
-    print("Images", len(images))
-
+    print("Pages", maxPages)
     pagen = 0
     REPORT = {}
     COUNTS = {
@@ -269,113 +269,119 @@ def process_pdf(pdffile, ignore):
     }
     ID = 0
 
-    for image in images:
-        try:
-            # Save temp
-            REPORTPAGE = []
+    STEP=5
 
-            relative = f"rois/page_{pagen}.jpg"
-            name = f"{OUT}/{relative}"
-            image.save(name, "JPEG")
+    for page in range(1, maxPages+1, STEP):
+        print("Processing pages", page, min(page + STEP - 1, maxPages))
+        images = convert_from_path(pdffile, dpi=700, first_page=page, last_page=min(page + STEP - 1, maxPages))
 
-            squares = get_paragraphs_from_image(name)
+        for image in images:
+            try:
+                # Save temp
+                REPORTPAGE = []
+
+                relative = f"rois/page_{pagen}.jpg"
+                name = f"{OUT}/{relative}"
+                image.save(name, "JPEG")
+
+                squares = get_paragraphs_from_image(name)
 
 
-            i = 0
-            imagedata = cv2.imread(name)
+                i = 0
+                imagedata = cv2.imread(name)
 
-            # Detect missing references
+                # Detect missing references
 
 
-            for templatename, message in [
-                ("question_template.png", "Missing cross reference"),
-                ("missing_template.png", "Missing reference"),
-                ("question2_template.png", "Missing reference"),
-                ("todo_template.png", "TODO not solved"),
-            ]:
-                # Get custom templates
-                missing_cross = get_by_template(name, f"{OUT}/templates/{templatename}")
-                print(message, len(missing_cross))
-                for miss in missing_cross:
-                    x, y, w, h = miss
-                    cv2.rectangle(imagedata, (x, y), (x + w , y + h), (255,36,12), 2)
-                    REPORTPAGE.append(dict(
-                        pageannotatedfile = f"rois/annotated_{pagen}.png",
-                        matches = [dict(
-                            message=message,
-                            replacements="",
-                            ruleId="",
-                            offsetInContext=0,
-                            category=message,
-                            offset=0,
-                            errorLength=len(message),
-                            text=message
-                        )],
-                        places = [dict(
-                            x=int(x) ,
-                            y = int(y),
-                            w = int(w),
-                            h = int(h)
-                        )]
-                    ))
+                for templatename, message in [
+                    ("question_template.png", "Missing cross reference"),
+                    ("missing_template.png", "Missing reference"),
+                    ("question2_template.png", "Missing reference"),
+                    ("todo_template.png", "TODO not solved"),
+                ]:
+                    # Get custom templates
+                    missing_cross = get_by_template(name, f"{OUT}/templates/{templatename}")
+                    print(message, len(missing_cross))
+                    for miss in missing_cross:
+                        x, y, w, h = miss
+                        cv2.rectangle(imagedata, (x, y), (x + w , y + h), (255,36,12), 2)
+                        REPORTPAGE.append(dict(
+                            pageannotatedfile = f"rois/annotated_{pagen}.png",
+                            matches = [dict(
+                                message=message,
+                                replacements="",
+                                ruleId="",
+                                offsetInContext=0,
+                                category=message,
+                                offset=0,
+                                errorLength=len(message),
+                                text=message
+                            )],
+                            places = [dict(
+                                x=int(x) ,
+                                y = int(y),
+                                w = int(w),
+                                h = int(h)
+                            )]
+                        ))
 
-                if len(missing_cross) > 0:
-                    if message not in COUNTS:
-                        COUNTS[message] = []
-                    COUNTS[message] += [len(missing_cross)]
+                    if len(missing_cross) > 0:
+                        if message not in COUNTS:
+                            COUNTS[message] = []
+                        COUNTS[message] += [len(missing_cross)]
 
-            for roi, s, rect in squares:
-                # continue
-                # Comment this, it is debugging
-                data = pytesseract.image_to_data(roi,output_type='dict')#, config=custom_config)
-                #print(data)
-                boxes = len(data['level'])
-                text = ""
-                for i in range(boxes):
-                    text += " " +  data['text'][i]
-                
+                for roi, s, rect in squares:
+                    # continue
+                    # Comment this, it is debugging
+                    data = pytesseract.image_to_data(roi,output_type='dict')#, config=custom_config)
+                    #print(data)
+                    boxes = len(data['level'])
+                    text = ""
+                    for i in range(boxes):
+                        text += " " +  data['text'][i]
                     
-                # cv2.imwrite(f"{OUT}/rois/roi_{i}_{pagen}_{s}.png", roi)
-                # Some sanitization
-                text = text.replace("\n", " ")
-                text = text.replace(". ", ".\n")
-                
-                while True:
-                    old = text
-                    text = text.replace("  ", " ")
-                    if old == text:
-                        break
-
-                text = text.replace(" .", ".")
-                text = text.strip()
-                
+                        
+                    # cv2.imwrite(f"{OUT}/rois/roi_{i}_{pagen}_{s}.png", roi)
+                    # Some sanitization
+                    text = text.replace("\n", " ")
+                    text = text.replace(". ", ".\n")
                     
-                 # Call language tool or any other
-                
-                # Sentiment analysis?
-                # scores = get_score(text)
+                    while True:
+                        old = text
+                        text = text.replace("  ", " ")
+                        if old == text:
+                            break
 
-                # This does spell check
-                obs = spell_check(ID, text, imagedata, pagen, data, rect, relative, words2ignore)
-                # here do different things
-                REPORTPAGE += obs
+                    text = text.replace(" .", ".")
+                    text = text.strip()
+                    
+                        
+                    # Call language tool or any other
+                    
+                    # Sentiment analysis?
+                    # scores = get_score(text)
 
-                
+                    # This does spell check
+                    obs = spell_check(ID, text, imagedata, pagen, data, rect, relative, words2ignore)
+                    # here do different things
+                    REPORTPAGE += obs
 
-            if len(REPORTPAGE) > 0:
-                cv2.imwrite(f"{OUT}/rois/annotated_{pagen}.png", imagedata)
+                    
 
-                if name not in REPORT:
-                    REPORT[relative] = []
+                if len(REPORTPAGE) > 0:
+                    cv2.imwrite(f"{OUT}/rois/annotated_{pagen}.png", imagedata)
 
-                REPORT[relative] += REPORTPAGE
-            else:
-                os.remove(name)
+                    if name not in REPORT:
+                        REPORT[relative] = []
 
-            i += 1
-            pagen += 1
-        except KeyboardInterrupt:
-            break
+                    REPORT[relative] += REPORTPAGE
+                else:
+                    os.remove(name)
+
+                i += 1
+                pagen += 1
+            except KeyboardInterrupt:
+                break
 
     REPORT["counts"] = COUNTS
     open(f"{OUT}/report.json", "w").write(json.dumps(REPORT, indent=4))

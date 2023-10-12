@@ -75,9 +75,12 @@ The Wasm binary format is close to machine code and already optimized, being a c
 In \autoref{background:wasm:fig:section} we show the binary format of a Wasm section.
 A Wasm section starts with a 1-byte section ID, followed by a 4-byte section size, and concludes with the section content, which precisely matches the size indicated earlier.
 A \wasm binary contains sections of 13 types, each with a specific semantic role and placement within the module. 
-Each section is optional, where an omitted section is considered empty.
-In the following, we summarize each one of the 13 types of \wasm sections, providing their name, ID, and purpose. 
-In addition, some sections are annotated as comments in the Wasm code in \autoref{WASMExample}.
+For instance, the Custom Section stores metadata like the compiler used, while the Type Section contains function signatures. 
+The Import Section lists elements imported from the host, and the Function Section details the functions defined within the binary. 
+Other sections like Table, Memory, and Global Sections specify the structure for indirect calls, unmanaged linear memories, and global variables, respectively. 
+Export, Start, Element, Code, Data, and Data Count Sections handle aspects ranging from declaring elements for host engine access to initializing program state and linear memory. 
+Each of these sections must occur only once in a binary and can be empty, i.e, they can be empty.
+For the sake of understanding, we also annotate sections as comments in the Wasm code in \autoref{WASMExample}.
     
 
 \begin{figure}[h]
