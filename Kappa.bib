@@ -2357,3 +2357,21 @@ series = {CCS '18}
   year={2018},
   organization={Springer}
 }
+
+
+@inproceedings{10.1145/3593434.3593454,
+author = {Wagner, Linus and Mayer, Maximilian and Marino, Andrea and Soldani Nezhad, Alireza and Zwaan, Hugo and Malavolta, Ivano},
+title = {On the Energy Consumption and Performance of WebAssembly Binaries across Programming Languages and Runtimes in IoT},
+year = {2023},
+isbn = {9798400700446},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3593434.3593454},
+doi = {10.1145/3593434.3593454},
+abstract = {Context. WebAssembly (WASM) is a low-level bytecode format that is gaining traction among Internet of Things (IoT) devices. Because of IoT devices’ resources limitations, using WASM is becoming a popular technique for virtualization on IoT devices. However, it is unclear if the promises of WASM regarding its efficient use of energy and performance gains hold true. Goal. This study aims to determine how different source programming languages and runtime environments affect the energy consumption and performance of WASM binaries. Method. We perform a controlled experiment where we compile three benchmarking algorithms from four different programming languages (i.e., C, Rust, Go, and JavaScript) to WASM and run them using two different WASM runtimes on a Raspberry Pi 3B. Results. The source programming language significantly influences the performance and energy consumption of WASM binaries. We did not find evidence of the impact of the runtime environment. However, certain combinations of source programming language and runtime environment leads to a significant improvement of its energy consumption and performance. Conclusions. IoT developers should choose the source programming language wisely to benefit from better performance and a reduction in energy consumption. Specifically, Javy-compiled JavaScript should be avoided, while C and Rust are better options. We found no conclusive results for the choice of the WASM runtime.},
+booktitle = {Proceedings of the 27th International Conference on Evaluation and Assessment in Software Engineering},
+pages = {72–82},
+numpages = {11},
+location = {Oulu, Finland},
+series = {EASE '23}
+}
