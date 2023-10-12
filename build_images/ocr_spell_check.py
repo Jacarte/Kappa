@@ -13,33 +13,46 @@ tool = language_tool_python.LanguageTool('en-US')
 OUT = os.path.abspath(os.path.dirname(__file__))
 
 
-def get_by_template(imagefile, templatefile):
+def get_by_template(imagefile, templatefile, th=0.6):
     img_rgb = cv2.imread(imagefile)
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    # img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    
+    template = cv2.imread(templatefile)
 
-    template = cv2.imread(templatefile, 0)
+    blurred_img = cv2.GaussianBlur(img_rgb, (5, 5), 0)
+    blurred_template = cv2.GaussianBlur(template, (5, 5), 0)
+    
+    w, h, _ = template.shape[::-1]
+    for scale in np.linspace(0.2, 1.0, 20)[::-1]:
+        # Resize the image according to the scale
+        resized = cv2.resize(blurred_img, (int(blurred_img.shape[1] * scale), int(blurred_img.shape[0] * scale)))
+        
+        # If the resized image is smaller than the template, break from the loop
+        if resized.shape[0] < h or resized.shape[1] < w:
+            break
+        # Perform match operations in color
+        res = cv2.matchTemplate(resized, blurred_template, cv2.TM_CCOEFF_NORMED)
+        # Define a threshold for detection based on empirical testing
+        threshold = th  #
+        # Define a threshold for detection
+        #threshold = 0.8
+        
+        # Find where the good matches are
+        loc = np.where(res >= threshold)
 
-    w, h = template.shape[::-1]
-    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+        # Draw a rectangle around the matched region.
+        rectangles = []
+        for pt in zip(*loc[::-1]):
+            # check if therre are not overlaping
+            rectangles.append((pt[0]/scale, pt[1]/scale, w/scale, h/scale))
+            cv2.rectangle(img_rgb, (int(pt[0] / scale), int(pt[1] / scale)), 
+                      (int((pt[0] + w) / scale), int((pt[1] + h) / scale)), (0, 255, 255), 2)
 
-    threshold = 0.8
 
-    # Store the coordinates of matched area in a numpy array
-    loc = np.where(res >= threshold)
-
-    # Draw a rectangle around the matched region.
-    rectangles = []
-    for pt in zip(*loc[::-1]):
-        # check if therre are not overlaping
-        overlap = False
-        for r in rectangles:
-            if pt[0] > r[0] and pt[0] < r[0] + r[2]:
-                overlap = True
-                break
-        if not overlap:
-            rectangles.append((pt[0], pt[1], w, h))
-        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 255, 255), 2)
-
+    # Save res
+    #cv2.imwrite(f"{imagefile}.res.jpg", res)
+    # Save for debug
+    cv2.imwrite(f"{imagefile}.template.jpg", img_rgb)
     return rectangles
 
 
@@ -270,10 +283,10 @@ def process_pdf(pdffile, ignore):
     ID = 0
 
     STEP=5
-
+    DPI=400
     for page in range(1, maxPages+1, STEP):
         print("Processing pages", page, min(page + STEP - 1, maxPages))
-        images = convert_from_path(pdffile, dpi=700, first_page=page, last_page=min(page + STEP - 1, maxPages))
+        images = convert_from_path(pdffile, dpi=DPI, first_page=page, last_page=min(page + STEP - 1, maxPages))
 
         for image in images:
             try:
@@ -292,46 +305,7 @@ def process_pdf(pdffile, ignore):
 
                 # Detect missing references
 
-
-                for templatename, message in [
-                    ("question_template.png", "Missing cross reference"),
-                    ("missing_template.png", "Missing reference"),
-                    ("question2_template.png", "Missing reference"),
-                    ("todo_template.png", "TODO not solved"),
-                ]:
-                    # Get custom templates
-                    missing_cross = get_by_template(name, f"{OUT}/templates/{templatename}")
-                    print(message, len(missing_cross))
-                    for miss in missing_cross:
-                        x, y, w, h = miss
-                        cv2.rectangle(imagedata, (x, y), (x + w , y + h), (255,36,12), 2)
-                        REPORTPAGE.append(dict(
-                            pageannotatedfile = f"rois/annotated_{pagen}.png",
-                            matches = [dict(
-                                message=message,
-                                replacements="",
-                                ruleId="",
-                                offsetInContext=0,
-                                category=message,
-                                offset=0,
-                                errorLength=len(message),
-                                text=message
-                            )],
-                            places = [dict(
-                                x=int(x) ,
-                                y = int(y),
-                                w = int(w),
-                                h = int(h)
-                            )]
-                        ))
-
-                    if len(missing_cross) > 0:
-                        if message not in COUNTS:
-                            COUNTS[message] = []
-                        COUNTS[message] += [len(missing_cross)]
-
                 for roi, s, rect in squares:
-                    # continue
                     # Comment this, it is debugging
                     data = pytesseract.image_to_data(roi,output_type='dict')#, config=custom_config)
                     #print(data)
