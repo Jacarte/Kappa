@@ -24,6 +24,7 @@ Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \ci
 
 
 \todo{TBD: Some words about the evergreen method and how to extend Wasm?}
+%\vspace{-1.5cm}
 % How to generate
 %\msubsection{\Wasm's generation and binary format}
 %\todo{Replace by Rust example}
@@ -107,28 +108,35 @@ For the sake of understanding, we also annotate sections as comments in the Wasm
     \label{background:wasm:fig:section}
 \end{figure}
 
-Due to its organization into a contiguous array of sections, a \wasm binary can be processed efficiently. 
-For example, this structure allows compilers to speed up the compilation process through parallel parsing or just by ignoring \emph{Custom Sections}.
-Additionally, the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding of instructions of the \emph{Code Section} further compacts the binary. 
-As a result, Wasm binaries are not only fast to validate and compile but also quick to transmit over a network.
+A \wasm binary can be processed efficiently due to its organization into a contiguous array of sections. 
+For instance, this structure permits compilers to expedite the compilation process either through parallel parsing or by disregarding \emph{Custom Sections}. 
+Moreover, the \emph{Code Section}'s instructions are further compacted through the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding. 
+Consequently, Wasm binaries are not only fast to validate and compile, but also swift to transmit over a network.
 
 \msubsection{\Wasm's runtime}
 \label{background:wasm:execution}
 
+The \Wasm's runtime characterizes the behavior of \wasm programs during execution. 
+This section describes the main components of the \Wasm runtime, namely the execution stack, functions, memory model, and execution process. 
+These components are crucial for understanding both the \Wasm's control flow and the analysis of \Wasm binaries.
 
 
-During runtime, \Wasm engines instantiate a \Wasm module, which is a runtime representation of a loaded and initialized \Wasm binary (the binary file described in \autoref{background:wasm:binary}). 
-The key component of a module instance is its Execution Stack.
-The Execution Stack holds typed values, labels and control frames, with labels handling block instructions, loops, and function calls.
-Values inside the stack can be of the only static types allowed in Wasm 1.0, \texttt{i32} for 32 bits signed integer, \texttt{i64} for 64 bits signed integer, \texttt{f32} for 32 bits float and \texttt{f64} for 64 bits float.
-Therefore, abstract types, such as classes, objects, and arrays, are not natively supported. 
-Instead, during compilation, such types are transformed into primitive types and stored in the linear memory.
+\wrule{Execution Stack:} At runtime, \Wasm engines instantiate a \Wasm module. 
+This module is a runtime representation of a loaded and initialized \Wasm binary described in \autoref{background:wasm:binary}. 
+The primary component of a module instance is its Execution Stack. 
+The Execution Stack stores typed values, labels, and control frames. 
+Labels manage block instructions, loops, and function calls. 
+Values within the stack can only be static types.\footnote{
+Our explanation pertains to \Wasm version 1.0. Several extensions or proposals have introduced additional types. For instance, the SIMD proposal introduced the v128 type. } 
+These types include \texttt{i32} for 32-bit signed integers, \texttt{i64} for 64-bit signed integers, \texttt{f32} for 32-bit floats, and \texttt{f64} for 64-bit floats. 
+Abstract types such as classes, objects, and arrays are not supported natively. 
+Instead, these types are abstracted into primitive types during compilation and stored in linear memory.
 
-At runtime, \Wasm functions are closures over the runtime module instance.
-A function groups locals and a function body.
-Locals are typed variables that are local to a specific function invocation as previously discussed.
-The function body is a sequence of instructions that are executed when the function is called.
-Each instruction either reads from the stack, writes to the stack, or modifies the control flow of the function.
+
+\wrule{Functions: }At runtime, \Wasm functions are closures over the module instance, grouping locals and function bodies.
+Locals are typed variables that are local to a specific function invocation.
+A function body is a sequence of instructions that are executed when the function is called.
+Each instruction either reads from the execution stack, writes to the execution stack, or modifies the control flow of the function.
 Recalling the example \wasm binary previously showed, 
 % Functions
 the local variable declarations and typed instructions that are evaluated using the stack can be appreciated between Line 7 and Line 32 in \autoref{WASMExample}. 
@@ -136,48 +144,52 @@ Each instruction reads its operands from the stack and pushes back the result.
 In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add}. 
 As the listing also shows, instructions are annotated with a numeric type.
 
-A WebAssembly module instance encapsulates three types of memory-related instances.
-First, it might include several linear memory instances, which are a contiguous array of bytes.
-Memory instances are accessed with \texttt{i32} pointers (integer of 32 bits). 
-Memory instances are only shareable between the process that instantiates the \Wasm module and the binary itself.
-Linear memories can be operated by both, the engine and the \Wasm runtime instance.
-Second, global instances, which are variables with values and mutability flags, indicating whether the global can be modified or is immutable.
-Global variables are managed by the host engine, i.e., their allocation and memory placement are managed by the host engine.
-Global variables are only accessible by their declaration index, and it is not possible to dynamically address them. 
-Third, and similar to globals, locals are mutable variables that are local to a specific function instance, i.e. locals are only accessible through their index related to the executing function instance. 
-As globals, locals are part of the managed data.
+
+\wrule{Memory model:} A WebAssembly module instance incorporates three key types of memory-related components. 
+These components can either be managed solely by the host engine or shared with the \Wasm binary itself. 
+This division of responsibility is often categorized as \emph{managed} and \emph{unmanaged} memory \cite{usenixWasm2020}. 
+Managed refers to components that are exclusively modified by the host engine at the lowest level, e.g. when the \Wasm binary is JITed, while unmanaged components can also be altered through  \Wasm opcodes.
+First, modules may include multiple linear memory instances, which are contiguous arrays of bytes. 
+These are accessed using 32-bit integers (\texttt{i32}) and are shareable only between the initiating engine and the \Wasm binary. 
+Generally, these linear memories are considered to be unmanaged, e.g. line 21 of \autoref{WASMExample} shows an explicit memory opcode. 
+Second, there are global instances, which are variables accompanied by values and mutability flags (see example in line 42 of \autoref{WASMExample}). 
+These globals are managed by the host engine, which controls their allocation and memory placement completely oblivious to the \Wasm binary scope. 
+They can only be accessed via their declaration index, prohibiting dynamic addressing. 
+Third, local variables are mutable and specific to a given function instance. 
+They are accessible only through their index relative to the executing function and are part of the data managed by the host engine.
 
 
-\wrule{Browser} engines like V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} are at the forefront of executing \Wasm binaries in browser clients. 
-These engines leverage Just-In-Time (JIT) compilers to convert \Wasm into machine code. 
-This translation is typically a straightforward one-to-one mapping, given that \Wasm is already an optimized format closely aligned with machine code, as previously discussed in \autoref{background:wasm:binary}. 
-For example, V8 just employs quick, rudimentary optimizations, such as constant folding and dead code removal, to guarantee fast readiness for a \wasm binary to execute \cite{10.1145/3282510}.
+\wrule{Execution:} \Wasm is optimized and closely aligned with machine code for performance reasons, which typically results in fast JIT compilation for execution.
+Engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} employ this strategy when executing \Wasm binaries in browser clients. 
+After JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment only via imported JavaScript functions from the host.
+While \Wasm was initially developed for browsers, it has significantly evolved, primarily due to WASI\cite{WASI}. 
+WASI provides a standardized POSIX-like interface for interactions between \Wasm modules and host environments. 
+Compilers can generate \wasm binaries that employ WASI, enabling execution in standalone engines. 
+These binaries can subsequently be executed by standalone engines across various environments, including the cloud, servers, and IoT devices. 
+Much like browsers, these engines often convert \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process. 
+Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI. 
+In a similar vein, Singh et al.\cite{WARDuino2019} created a \Wasm virtual machine explicitly designed for Arduino-based devices.
 
-\wrule{Standalone engines:} \wasm has expanded beyond browser environments, largely due to the WASI\cite{WASI}. 
-It standardizes the interactions between host environments and \Wasm modules through a POSIX-like interface.
-\wasm compilers can generate binaries that use WASI.
-Standalone engines can then execute these binaries in a variety of environments, including cloud, server, and IoT devices.
-For example, standalone engines like WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have emerged to support \Wasm and WASI. 
-In a similar vein, Singh et al.\cite{WARDuino2019} introduced a virtual machine for \Wasm tailored for Arduino-based devices. 
-Salim et al.\cite{trufflewasm} proposed TruffleWasm, an implementation of \Wasm hosted on Truffle and GraalVM. 
-Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
-Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verification of the \Wasm-WASI interaction with the underlying operating system.
 
 
 \msubsection{\Wasm's control flow}
 
-In \Wasm, a defined function instructions are organized into blocks, with the function's starting point serving as the root block. 
-Unlike traditional assembly code, control flow structures in Wasm jump between block boundaries rather than arbitrary positions within the code. 
-Each block might specify the required stack state before execution and the resulting stack state after its instructions have run. 
-This stack state is used to validate the binary during compilation and to ensure that the stack is in a valid state before executing the block's instructions.
-Blocks in Wasm are explicit, indicating, where they start and end.
-By design, each block cannot reference or execute code from outer blocks.
 
-At runtime, each break instruction is limited to jumping to one of its enclosing blocks.
-%Loops in Wasm are specialized blocks that can be restarted using a break instruction. 
-Excepting loop constructions, breaks jump to the end of the block, effectively continuing to the next immediate instruction.
-Within a loop, block ends jump to the block's beginning, effectively restarting the loop.   
-To illustrate this, \autoref{background:wasm:block} provides an example comparing a standard block and a loop block in a Wasm function.
+A \Wasm function groups instructions which are organized into blocks, with the function's entrypoint point acting as the root block. 
+In contrast to conventional assembly code, control flow structures in Wasm leap between block boundaries rather than arbitrary positions within the code, effectively prohibiting \texttt{goto}s to random code positions. 
+Each block may specify the needed execution stack state before execution as well as the resultant execution stack state once its instructions have been executed.
+Typically, the execution stack state is simply the quantity and numeric type of values on the stack. 
+This stack state is used to validate the binary during compilation and to ensure that the stack is in a valid state before the execution of the block's instructions.
+Blocks in Wasm are explicit (see instructions \texttt{block} and \texttt{end} in lines 16 and 34 of \autoref{WASMExample}), delineating where they commence and conclude.
+By design, a block cannot reference or execute code from external blocks.
+
+
+During runtime, \Wasm break instructions can only jump to one of its enclosing blocks. 
+Breaks, except for those within loop constructions, jump to the block's end and continue to the next immediate instruction. 
+For instance, after line 34 of \autoref{WASMExample}, the execution would proceed to line 35. 
+Within a loop, the end of a block results in a jump to the block's beginning, thus restarting the loop. 
+For example, if line 30 of \autoref{WASMExample} evaluates as false, the next instruction to be executed in the loop would be line 18. 
+\autoref{background:wasm:block} provides an example for better understanding, comparing a standard block and a loop block in a Wasm function.
 
 \input{snippets/jumps.tex}
 
@@ -196,14 +208,16 @@ In the following we provide a brief overview of the most relevant tools in this 
 
 %% PATCH
 \vspace{10mm}
-\wrule{Static and dynamic analysis:} 
+\wrule{Static analysis:} 
 Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution to detect vulnerabilities in \wasm binaries. 
 Remarkably, VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
+
+% Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
+
+\wrule{Dynamic analysis:}
 In the dynamic analysis counterpart, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities in vulnerability detection. 
 Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}. 
 Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
-% Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
-
 
 \wrule{Specialized Malware Detection:} Cryptomalware have a wide presence in the web since the first days of \wasm.
 The main reason is that mining algorithms using CPUs moved to \wasm for obvious performance reasons \cite{musch2019new}. 
@@ -213,6 +227,10 @@ Remarkably, VirusTotal\toolcite{https://www.virustotal.com}, packaging more than
 
 
 \msubsection{\Wasm's security}
+
+Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
+Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verification of the \Wasm-WASI interaction with the underlying operating system.
+
 
 From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
 It falls upon the compilers to specify which functions from the host environment will be imported by the \Wasm application.
