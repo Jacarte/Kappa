@@ -176,16 +176,21 @@ Third, local variables are mutable and specific to a given function instance.
 They are accessible only through their index relative to the executing function and are part of the data managed by the host engine.
 
 
-\wrule{\Wasm module execution:} \Wasm is optimized and closely aligned with machine code for performance reasons, which typically results in fast JIT compilation for execution.
-Engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} employ this strategy when executing \Wasm binaries in browser clients. 
-After JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment only via imported JavaScript functions from the host.
-While \Wasm was initially developed for browsers, it has significantly evolved, primarily due to WASI\cite{WASI}. 
-WASI provides a standardized POSIX-like interface for interactions between \Wasm modules and host environments. 
-Compilers can generate \wasm binaries that employ WASI, enabling execution in standalone engines. 
-These binaries can subsequently be executed by standalone engines across various environments, including the cloud, servers, and IoT devices. 
-Much like browsers, these engines often convert \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process. 
-Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI. 
-In a similar vein, Singh et al.\cite{WARDuino2019} created a \Wasm virtual machine explicitly designed for Arduino-based devices.
+\wrule{\Wasm module execution:}
+\Wasm is optimized and closely aligned with machine code for performance reasons, leading to swift JIT compilation for execution.
+Engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} utilize this strategy when executing \Wasm binaries in browser clients.
+Once JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment exclusively through imported functions.
+The communication between the host and the \Wasm module execution is typically facilitated by trampolines in the JITed machine code.
+
+\wrule{\Wasm standalone engines:}
+While initially intended for browsers, \Wasm has undergone significant evolution, primarily due to WASI\cite{WASI}.
+WASI establishes a standardized POSIX-like interface for interactions between \Wasm modules and host environments.
+Compilers can generate \wasm binaries that implement WASI, which allows execution in standalone engines.
+These binaries can then be executed by standalone engines across a variety of environments, including the cloud, servers, and IoT devices \cite{makitalo2021webassembly}.
+Similarly to browsers, these engines often translate \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process.
+Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI.
+In a related development, Singh et al.\cite{WARDuino2019} have created a \Wasm virtual machine specifically designed for Arduino-based devices.
+
 
 
 
@@ -214,7 +219,7 @@ Each break instruction includes the depth of the enclosing block as an operand.
 This depth is used to identify the target block for the break instruction. 
 For example, in the left-most part of the previously discussed listing, a break instruction with a depth of 1 would jump past two enclosing blocks.
 This design hardens the rewriting of \wasm binaries.
-For instance, if a block is removed, the depth of the break instructions within the block must be updated to reflect the new enclosing block depth.
+For instance, if a block is moved, the depth of the break instructions within the block must be updated to reflect the new enclosing block depth.
 This is a significant challenge for rewriting tools, as it requires the analysis of the control flow graph to determine the enclosing block depth for each break instruction.
 
 \msubsection{Security and Reliability for WebAssembly}
