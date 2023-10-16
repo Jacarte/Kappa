@@ -196,7 +196,7 @@ In a related development, Singh et al.\cite{WARDuino2019} have created a \Wasm v
 
 
 \msubsection{\Wasm's control flow}
-
+\label{wasm:control_flow}
 
 A \Wasm function groups instructions which are organized into blocks, with the function's entrypoint point acting as the root block. 
 In contrast to conventional assembly code, control flow structures in Wasm leap between block boundaries rather than arbitrary positions within the code, effectively prohibiting \texttt{goto}s to random code positions. 
@@ -274,7 +274,8 @@ However, obfuscation studies have exposed their shortcomings, revealing an almos
 In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
 
 
-\wrule{Open challenges:} 
+\msubsection{Open challenges}
+\label{background:wasm:challenges} 
 Despite advancements in \Wasm analysis, several challenges persist.
 \Wasm, although deterministic and well-typed by design, has an emerging ecosystem vulnerable to various security threats.
 Most notably, as previously noted, most works on \Wasm sit on the reactive side.
