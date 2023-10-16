@@ -177,8 +177,9 @@ They are accessible only through their index relative to the executing function 
 
 
 \wrule{\Wasm module execution:}
-\Wasm is optimized and closely aligned with machine code for performance reasons, leading to swift JIT compilation for execution.
-Engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} utilize this strategy when executing \Wasm binaries in browser clients.
+While a \Wasm binary could be interpreted, the most practical approach is to JIT compile it into machine code.
+The main reason is that \Wasm is optimized and closely aligned with machine code, leading to swift JIT compilation for execution.
+Browser engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} utilize this strategy when executing \Wasm binaries in browser clients.
 Once JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment exclusively through imported functions.
 The communication between the host and the \Wasm module execution is typically facilitated by trampolines in the JITed machine code.
 
