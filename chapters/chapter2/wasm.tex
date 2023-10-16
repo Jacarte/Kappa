@@ -177,7 +177,7 @@ Third, local variables are mutable and specific to a given function instance.
 They are accessible only through their index relative to the executing function and are part of the data managed by the host engine.
 
 
-\wrule{Execution:} \Wasm is optimized and closely aligned with machine code for performance reasons, which typically results in fast JIT compilation for execution.
+\wrule{\Wasm module execution:} \Wasm is optimized and closely aligned with machine code for performance reasons, which typically results in fast JIT compilation for execution.
 Engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} employ this strategy when executing \Wasm binaries in browser clients. 
 After JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment only via imported JavaScript functions from the host.
 While \Wasm was initially developed for browsers, it has significantly evolved, primarily due to WASI\cite{WASI}. 
