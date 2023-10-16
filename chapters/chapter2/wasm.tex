@@ -144,8 +144,7 @@ This module is a runtime representation of a loaded and initialized \Wasm binary
 The primary component of a module instance is its Execution Stack. 
 The Execution Stack stores typed values, labels, and control frames. 
 Labels manage block instructions, loops, and function calls. 
-Values within the stack can only be static types.\footnote{
-Our explanation pertains to \Wasm version 1.0. Several extensions or proposals have introduced additional types. For instance, the SIMD proposal introduced the v128 type. } 
+Values within the stack can only be static types.
 These types include \texttt{i32} for 32-bit signed integers, \texttt{i64} for 64-bit signed integers, \texttt{f32} for 32-bit floats, and \texttt{f64} for 64-bit floats. 
 Abstract types such as classes, objects, and arrays are not supported natively. 
 Instead, these types are abstracted into primitive types during compilation and stored in linear memory.
