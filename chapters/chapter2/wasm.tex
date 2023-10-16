@@ -13,17 +13,35 @@
 The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported in all major web browser vendors.
 \wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained and secure, and it outperforms JavaScript execution. 
-Since 2017, the adoption of \wasm\ keeps growing. 
-For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}. 
+%Since 2017, the adoption of \wasm\ keeps growing. 
+%For example; Adobe, announced a full online version of Photoshop\footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}} written in WebAssembly;  game companies moved their development from JavaScript to Wasm like is the case of a full Minecraft version\footnote{\url{https://satoshinm.github.io/NetCraft/}}. 
 
 Moreover, WebAssembly has been evolving outside web browsers since its first announcement.
 Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 Consequently, in 2019, the Bytecodealliance proposed WebAssembly System Interface (WASI) \cite{WASI}. 
 WASI pioneered the execution of \wasm\ with a POSIX system interface protocol, making it possible to execute Wasm closer to the underlying operating system. 
-Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, making it suitable for standalone and backend execution scenarios \cite{9640153, wen2020wasmachine}.
+Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, i.e., IoT and Edge computing \cite{9640153, wen2020wasmachine}.
+
+% Usages of Wasm
+%%IMPROVED
+Currently, \Wasm serves a variety of functions in browsers, ranging from gaming to cryptomining \cite{Hilbig2021AnES}. 
+Other applications include text processing, visualization, media processing, programming language testing, online gambling, bar code and QR code fast reading, hashing, and PDF viewing. 
+On the backend, \Wasm notably excels in short-running tasks. 
+As such, it is particularly suitable for Function as a Service (FaaS) platforms like Cloudflare and Fastly.
+The broad spectrum of applicability and the rapid adoption of \Wasm have resulted in demands for additional features. 
+However, not all these demands align with its original specification.
+Thus, since the introduction of \Wasm, various extensions have been proposed for standardization. 
+For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
+To become a standard, a proposal must fulfill certain criteria, including having a formal specification and at least two independent implementations, e.g., two different engines. 
+Notably, even after adoption, new extensions are optional; the core \Wasm remains untouched and continues to be referred to as version 1.0. 
+The subsequent text in this chapter focuses specifically on \Wasm version 1.0. 
+However, the tools, techniques, and methodologies discussed are applicable to future \Wasm versions.
 
 
-\todo{TBD: Some words about the evergreen method and how to extend Wasm?}
+
+
+
+%\todo{TBD: Some words about the evergreen method and how to extend Wasm?}
 %\vspace{-1.5cm}
 % How to generate
 %\msubsection{\Wasm's generation and binary format}
@@ -41,17 +59,7 @@ A host environment is in charge of complementing the Wasm program, such as provi
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code in the browser. 
 
 
-In \autoref{CExample1} and \autoref{WASMExample}, we present a C program alongside its corresponding WebAssembly binary. 
-The C function encompasses various elements such as heap allocation, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
-The Wasm code shown in \autoref{WASMExample} is displayed in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
-The static memory declared in line 2 of \autoref{CExample1} is allocated within the Wasm binary's linear memory, as illustrated in line 47 of \autoref{WASMExample}.
-The function declared in line 5 of \autoref{CExample1} is converted into an imported function, as seen in line 8 of \autoref{WASMExample}.
-The main function, spanning lines 7 to 14 in \autoref{CExample1}, is transcribed into a Wasm function covering lines 12 to 38 in \autoref{WASMExample}. Within this function, the translation of various C language constructs into Wasm can be observed.
-For instance, the \texttt{for} loop found in line 8 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
-The loop's breaking condition is converted into a conditional branch, as shown in line 25 of \autoref{WASMExample}.
-
-
-\begin{minipage}[hbtp]{0.9\textwidth}
+\begin{minipage}[h]{0.9\textwidth}
     \begin{minipage}[t]{1.0\linewidth}
         \lstset{language=C,caption={Example C program which includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses.  },
         label=CExample1,
@@ -66,6 +74,16 @@ The loop's breaking condition is converted into a conditional branch, as shown i
     \input{sota/code/code.c}
     \end{minipage}
 \end{minipage}
+
+
+In \autoref{CExample1} and \autoref{WASMExample}, we present a C program alongside its corresponding WebAssembly binary. 
+The C function encompasses various elements such as heap allocation, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
+The Wasm code shown in \autoref{WASMExample} is displayed in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
+The static memory declared in line 2 of \autoref{CExample1} is allocated within the Wasm binary's linear memory, as illustrated in line 47 of \autoref{WASMExample}.
+The function declared in line 5 of \autoref{CExample1} is converted into an imported function, as seen in line 8 of \autoref{WASMExample}.
+The main function, spanning lines 7 to 14 in \autoref{CExample1}, is transcribed into a Wasm function covering lines 12 to 38 in \autoref{WASMExample}. Within this function, the translation of various C language constructs into Wasm can be observed.
+For instance, the \texttt{for} loop found in line 8 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
+The loop's breaking condition is converted into a conditional branch, as shown in line 25 of \autoref{WASMExample}.
 
 
 
@@ -133,7 +151,7 @@ Abstract types such as classes, objects, and arrays are not supported natively.
 Instead, these types are abstracted into primitive types during compilation and stored in linear memory.
 
 
-\wrule{Functions: }At runtime, \Wasm functions are closures over the module instance, grouping locals and function bodies.
+\wrule{Functions:} At runtime, \Wasm functions are closures over the module instance, grouping locals and function bodies.
 Locals are typed variables that are local to a specific function invocation.
 A function body is a sequence of instructions that are executed when the function is called.
 Each instruction either reads from the execution stack, writes to the execution stack, or modifies the control flow of the function.
@@ -200,48 +218,72 @@ This design hardens the rewriting of \wasm binaries.
 For instance, if a block is removed, the depth of the break instructions within the block must be updated to reflect the new enclosing block depth.
 This is a significant challenge for rewriting tools, as it requires the analysis of the control flow graph to determine the enclosing block depth for each break instruction.
 
-\msubsection{WebAssembly's binary analysis}
+\msubsection{Security and Reliability for WebAssembly}
 \label{background:wasm:analysis}
-As the WebAssembly ecosystem continues to grow, the need for robust tools to ensure its security and reliability has increased. 
-To address this, a variety of tools have been developed that employ different strategies to identify vulnerabilities in \Wasm programs. 
-In the following we provide a brief overview of the most relevant tools in this space w.r.t static and dynamic analysis, as well as specialized malware detection.
 
-%% PATCH
-\vspace{10mm}
-\wrule{Static analysis:} 
-Tools like Wassail\cite{wassail}, SecWasm\cite{secwasm}, Wasmati\cite{wasmati}, and Wasp\cite{Wasp} leverage techniques such as information flow control, code property graphs, control flow analysis, and concolic execution to detect vulnerabilities in \wasm binaries. 
-Remarkably, VeriWasm\cite{veriwasm} stands out as a static offline verifier specifically designed for native x86-64 binaries compiled from \Wasm. 
+The WebAssembly ecosystem's expansion needs robust tools to ensure its security and reliability. 
+Numerous tools, employing various strategies to detect vulnerabilities in \Wasm programs, have been created to meet this need. 
+This paper presents a review of the most relevant tools in this field, focusing on those capable of providing security guarantees for \Wasm binaries.
 
-% Finally, Wafl\cite{wafl} extends AFL++ to perform coverage-based fuzzing on \Wasm binaries.
+%%ORIGINAL
+\wrule{Static analysis:} SecWasm\cite{secwasm} uses information control flow strategies to identify vulnerabilities in \Wasm binaries. 
+Conversely, Wasmati\cite{wasmati} employs code property graphs for this purpose. 
+Wasp\cite{Wasp} leverages concolic execution to identify potential vulnerabilities in \Wasm binaries. 
+VeriWasm\cite{veriwasm}, an offline verifier designed specifically for native x86-64 binaries JITed from \Wasm, adopts a unique approach. 
+While these tools emphasize specific strategies, others adopt a more holistic approach. 
+CT-Wasm\cite{ctwasm}, verifies the implementation of cryptographic algorithms in \Wasm. 
+For example, both Wassail\cite{wassail} and WasmA\cite{WasmA} provide a comprehensive static analysis framework for \Wasm binaries. 
+However, static analysis tools may have limitations. 
+They may fail to detect vulnerabilities triggered at runtime by a specific \Wasm input. 
+For instance, a newly, semantically equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{breaking example}.
+If the \Wasm input differs from the input used during static analysis, the vulnerability may go unnoticed. 
+Thus, there may be a lack of subjects to evaluate the effectiveness of these tools.
 
-\wrule{Dynamic analysis:}
-In the dynamic analysis counterpart, tools like TaintAssembly\cite{taintassembly}, Wasabi\cite{wasabi}, and Fuzzm\cite{fuzzm} offer similar functionalities in vulnerability detection. 
-Stiévenart and colleagues have introduced a dynamic approach to slice \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}. 
-Hybrid methods have also gained traction, with tools like CT-Wasm\cite{ctwasm} enabling the verifiably secure implementation of cryptographic algorithms in \Wasm. 
+\wrule{Dynamic analysis:} Dynamic analysis involves tools such as TaintAssembly\cite{taintassembly}, which conducts taint analysis on \Wasm binaries. 
+Fuzzm\cite{fuzzm} identifies vulnerabilities in host engines by conducting property fuzzing through \Wasm binary execution. 
+Furthermore, Stiévenart and colleagues have developed a dynamic approach to slicing \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}.
+Similarly, Vivienne applies relational Symbolic Execution (SE) to \Wasm binaries in order to reveal vulnerabilities in cryptographic implementations\cite{Vivienne}. 
+This technique aids in debugging, understanding programs, and conducting security analysis.
+However, Wasabi\cite{wasabi} remains the only general-purpose dynamic analysis tool for \Wasm binaries, primarily used for profiling, instrumenting, and debugging \Wasm code. 
+Similar to static analysis, these tools typically analyze software behavior during execution, making them inherently reactive. 
+In other words, they can only identify vulnerabilities or performance issues while pseudo-executing input \wasm programs.
+Thus, facing an important limitation on overhead for real-world scenarios. 
 
-\wrule{Specialized Malware Detection:} Cryptomalware have a wide presence in the web since the first days of \wasm.
-The main reason is that mining algorithms using CPUs moved to \wasm for obvious performance reasons \cite{musch2019new}. 
-In cryptomalware detection, tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} utilize static analysis through machine learning techniques to detect browser cryptomalwares. 
-Conversely, tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard} seek the same goal with dynamic analysis techniques.
-Remarkably, VirusTotal\toolcite{https://www.virustotal.com}, packaging more than 60 commercial antivirus as back-boxes, detects cryptomalware in \wasm binaries.
-
-
-\msubsection{\Wasm's security}
-
-Additionally, SWAM\toolcite{https://github.com/satabin/swam} stands out as \Wasm interpreter implemented in Scala. 
-Finally, WaVe\cite{wave} offers a \Wasm interpreter featuring mechanized verification of the \Wasm-WASI interaction with the underlying operating system.
-
-
-From a security standpoint, \Wasm programs are designed without a standard library and are prohibited from direct interactions with the operating system. Instead, the host environment offers a predefined set of functions that can be imported into the \Wasm program. 
-It falls upon the compilers to specify which functions from the host environment will be imported by the \Wasm application.
+%%ORIGINAL
+\wrule{Protecting \Wasm binaries and runtimes:}
+The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
+However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and fortifying the security of the entire execution runtimes ecosystem. 
+For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries, particularly in Function-as-a-Service (FaaS) platforms such as Fastly. 
+Conversely, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 
+This engine can be employed to detect anomalies in engines running Wasm-WASI programs. 
+Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
 
 
-While \Wasm is engineered to be deterministic, well-typed, and to adhere to a structured control flow, the ecosystem is still emerging and faces various security vulnerabilities. 
-These vulnerabilities pose risks to both the consumers and the \Wasm binaries themselves. 
-Side-channel attacks, in particular, are a significant concern. 
-For example, Genkin et al. have shown that \Wasm can be exploited to exfiltrate data through cache timing-side channels \cite{Genkin2018DrivebyKC}. 
-Similarly, research by Maisuradze and Rossow demonstrates the feasibility of speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
-Rokicki \etal further reveal the potential for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}.
-Additionally, studies by Lehmann et al. and Stiévenart and colleagues indicate that vulnerabilities in C/C++ source code can propagate into \Wasm binaries \cite{usenixWasm2020, DeRoover2022}. 
-This dissertation introduces a comprehensive set of tools aimed at preemptively enhancing \Wasm security through Software Diversification.
+\wrule{\Wasm malware:} The web has seen a steady prevalence of cryptomalware since the inception of \wasm. 
+This is primarily due to the transition of mining algorithms from using CPUs to \wasm, a change driven by clear performance benefits \cite{musch2019new}. 
+Tools like MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} use static analysis through machine learning techniques to detect browser-based cryptomalwares. 
+On the other hand, tools like SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{outguard} utilize dynamic analysis techniques to achieve the same goal.
+VirusTotal\toolcite{https://www.virustotal.com}, which incorporates over 60 commercial antivirus systems as black-boxes, can detect cryptomalware in \wasm binaries.
+However, certain obfuscation studies have revealed their flaws.
+The seminal work of Bahnsali \etal \cite{10.1145/3507657.3528560} demonstrated that previous techniques could be evaded using obfuscation techniques directly on the cryptomining algorithm's source code.
+%Yet, this specific technique might be limited due to compilers leaving fingerprints in the generated \Wasm binary \cite{EVASION}.
 
+\wrule{Open challenges:} 
+Despite advancements in \Wasm analysis, several challenges persist.
+\Wasm, although deterministic and well-typed by design, has an emerging ecosystem vulnerable to various security threats.
+Most notably, as previously noted, most works on \Wasm sit on the reactive side.
+Their implementation are based on already reported vulnerabilities.
+Thus, \Wasm binaries and runtime implementations might be susceptible to unidentified attacks.
+Conversely, these techniques may not be tested in real-world scenarios, analyzing a limited set of \Wasm binaries.
+Moreover, Side-channel attacks pose a significant threat.
+For example, Genkin et al. demonstrated that \Wasm can be exploited to extract data through cache timing-side channels \cite{Genkin2018DrivebyKC}. 
+Research by Maisuradze and Rossow also showed the possibility of speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
+Rokicki \etal revealed the potential for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}.
+Furthermore, studies by Lehmann et al. and Stiévenart et al. suggested that vulnerabilities in C/C++ source code could propagate into \Wasm binaries \cite{usenixWasm2020, DeRoover2022}. 
+
+
+This dissertation presents a comprehensive toolset designed to enhance \Wasm security proactively through Software Diversification.
+First, Software Diversification expands the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities through static and dynamic analysis.
+Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making the analysis more accurate. 
+Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
+Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
