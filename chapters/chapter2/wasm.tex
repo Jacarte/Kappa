@@ -274,21 +274,21 @@ In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstra
 
 \msubsection{Open challenges}
 \label{background:wasm:challenges} 
-Despite advancements in \Wasm analysis, several challenges persist.
-\Wasm, although deterministic and well-typed by design, has an emerging ecosystem vulnerable to various security threats.
-Most notably, as previously noted, most works on \Wasm sit on the reactive side.
-Their implementations are based on already reported vulnerabilities.
-Thus, \Wasm binaries and runtime implementations might be susceptible to unidentified attacks.
-Conversely, these techniques may not be tested in real-world scenarios, analyzing a limited set of \Wasm binaries.
-Moreover, Side-channel attacks pose a significant threat.
-For example, Genkin et al. demonstrated that \Wasm can be exploited to extract data through cache timing-side channels \cite{Genkin2018DrivebyKC}. 
-Research by Maisuradze and Rossow also showed the possibility of speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
-Rokicki \etal revealed the potential for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}.
-Furthermore, studies by Lehmann et al. and Stiévenart et al. suggested that vulnerabilities in C/C++ source code could propagate into \Wasm binaries \cite{usenixWasm2020, DeRoover2022}. 
+Despite progress in \Wasm analysis, numerous challenges remain. 
+\Wasm, though deterministic and well-typed by design, boasts an emerging ecosystem susceptible to a variety of security threats. 
+First, most existing \Wasm research is reactive, focusing on detecting and fixing vulnerabilities already reported. 
+This approach leaves \Wasm binaries and runtime implementations potentially open to unidentified attacks. 
+Second, side-channel attacks present a significant risk. 
+Genkin et al., for example, illustrated how \Wasm could be manipulated to extract data via cache timing-side channels \cite{Genkin2018DrivebyKC}. 
+Furthermore, research conducted by Maisuradze and Rossow demonstrated the potential for speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
+Rokicki et al. disclosed the possibility for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
+Finally, the binaries themselves may be inherently vulnerable. 
+For example, studies by Lehmann et al. and Stiévenart et al. suggested that flaws in C/C++ source code could infiltrate \Wasm binaries \cite{usenixWasm2020, DeRoover2022}.
+ 
 
 
 This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
-First, Software Diversification could expand the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities through static and dynamic analysis.
-Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making the analysis more accurate. 
+First, Software Diversification could expand the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
+Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
 Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
 Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
