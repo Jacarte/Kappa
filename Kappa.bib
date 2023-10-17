@@ -2464,3 +2464,127 @@ series = {EuroSys '22}
   year={1995},
   publisher={John Wiley \& Sons, New York}
 }
+
+
+@article{debloating4evasion,
+  author = {Gen\c{c}, Ziya Alper and Lenzini, Gabriele and Sgandurra, Daniele},
+  title = {Cut-and-Mouse and Ghost Control: Exploiting Antivirus Software with Synthesized Inputs},
+  year = {2021},
+  issue_date = {March 2021},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {2},
+  number = {1},
+  url = {https://doi.org/10.1145/3431286},
+  doi = {10.1145/3431286},
+  abstract = {To protect their digital assets from malware attacks, most users and companies rely on antivirus (AV) software. AVs’ protection is a full-time task against malware: This is similar to a game where malware, e.g., through obfuscation and polymorphism, denial of service attacks, and malformed packets and parameters, tries to circumvent AV defences or make them crash. However, AVs react by complementing signature-based detection with anomaly or behavioral analysis, and by using OS protection, standard code, and binary protection techniques. Further, malware counter-acts, for instance, by using adversarial inputs to avoid detection, and so on. In this cat-and-mouse game, a winning strategy is trying to anticipate the move of the adversary by looking into one’s own weaknesses, seeing how the adversary can penetrate them, and building up appropriate defences or attacks. In this article, we play the role of malware developers and anticipate two novel moves for the malware side to demonstrate the weakness in the AVs and to improve the defences in AVs’ side. The first one consists in simulating mouse events to control AVs, namely, to send them mouse “clicks” to deactivate their protection. We prove that many AVs can be disabled in this way, and we call this class of attacks Ghost Control. The second one consists in controlling whitelisted applications, such as Notepad, by sending them keyboard events (such as “copy-and-paste”) to perform malicious operations on behalf of the malware. We prove that the anti-ransomware protection feature of AVs can be bypassed if we use Notepad as a “puppet” to rewrite the content of protected files as a ransomware would do. Playing with the words, and recalling the cat-and-mouse game, we call this class of attacks Cut-and-Mouse. We tested these two attacks on 29 AVs, and the results show that 14 AVs are vulnerable to Ghost Control attack while all 29 AV programs tested are found vulnerable to Cut-and-Mouse. Furthermore, we also show some weaknesses in additional protection mechanisms of AVs, such as sandboxing and CAPTCHA verification. We have engaged with the affected AV companies, and we reported the disclosure communication with them and their responses.},
+  journal = {Digital Threats},
+  month = {feb},
+  articleno = {4},
+  numpages = {23},
+  keywords = {simulate mouse, vulnerability, ransomware, evasion, synthesize inputs, Antivirus}
+}
+
+@inproceedings{sinatra,
+  author       = {Ugnius Rumsevicius and
+                  Siddhanth Venkateshwaran and
+                  Ellen Kidane and
+                  Lu{\'{\i}}s Pina},
+  editor       = {Karim Ali and
+                  Guido Salvaneschi},
+  title        = {Sinatra: Stateful Instantaneous Updates for Commercial Browsers Through
+                  Multi-Version eXecution},
+  booktitle    = {37th European Conference on Object-Oriented Programming, {ECOOP} 2023,
+                  July 17-21, 2023, Seattle, Washington, United States},
+  series       = {LIPIcs},
+  volume       = {263},
+  pages        = {26:1--26:29},
+  publisher    = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
+  year         = {2023},
+  url          = {https://doi.org/10.4230/LIPIcs.ECOOP.2023.26},
+  doi          = {10.4230/LIPIcs.ECOOP.2023.26},
+  timestamp    = {Tue, 11 Jul 2023 17:14:10 +0200},
+  biburl       = {https://dblp.org/rec/conf/ecoop/RumseviciusVKP23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{cornucopia,
+  author = {Singhal, Vidush and Pillai, Akul Abhilash and Saumya, Charitha and Kulkarni, Milind and Machiry, Aravind},
+  title = {Cornucopia : A Framework for Feedback Guided Generation of Binaries},
+  year = {2023},
+  isbn = {9781450394758},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3551349.3561152},
+  doi = {10.1145/3551349.3561152},
+  abstract = {Binary analysis is an important capability required for many security and software engineering applications. Consequently, there are many binary analysis techniques and tools with varied capabilities. However, testing these tools requires a large, varied binary dataset with corresponding source-level information. In this paper, we present Cornucopia, an architecture agnostic automated framework that can generate a plethora of binaries from corresponding program source by exploiting compiler optimizations and feedback-guided learning. Our evaluation shows that Cornucopia was able to generate 309K binaries across four architectures (x86, x64, ARM, MIPS) with an average of 403 binaries for each program and outperforms BinTuner  [53], a similar technique. Our experiments revealed issues with the LLVM optimization scheduler resulting in compiler crashes (∼ 300). Our evaluation of four popular binary analysis tools angr, Ghidra, ida, and radare, using Cornucopia generated binaries, revealed various issues with these tools. Specifically, we found 263 crashes in angr and one memory corruption issue in ida. Our differential testing on the analysis results revealed various semantic bugs in these tools. We also tested machine learning tools, Asm2Vec, SAFE, and Debin, that claim to capture binary semantics and show that they perform poorly (e.g., Debin F1 score dropped to 12.9\% from reported 63.1\%) on Cornucopia generated binaries. In summary, our exhaustive evaluation shows that Cornucopia is an effective mechanism to generate binaries for testing binary analysis techniques effectively.},
+  booktitle = {Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering},
+  articleno = {27},
+  numpages = {13},
+  keywords = {Fuzzing, Compiler Optimizations, Binary Code Difference, Automated Binary Generation},
+  location = {Rochester, MI, USA},
+  series = {ASE '22}
+}
+
+  
+
+@Article{cryptography4020013,
+AUTHOR = {Bow, Ivan and Bete, Nahome and Saqib, Fareena and Che, Wenjie and Patel, Chintan and Robucci, Ryan and Chan, Calvin and Plusquellic, Jim},
+TITLE = {Side-Channel Power Resistance for Encryption Algorithms Using Implementation Diversity},
+JOURNAL = {Cryptography},
+VOLUME = {4},
+YEAR = {2020},
+NUMBER = {2},
+ARTICLE-NUMBER = {13},
+URL = {https://www.mdpi.com/2410-387X/4/2/13},
+ISSN = {2410-387X},
+ABSTRACT = {This paper investigates countermeasures to side-channel attacks. A dynamic partial reconfiguration (DPR) method is proposed for field programmable gate arrays (FPGAs)s to make techniques such as differential power analysis (DPA) and correlation power analysis (CPA) difficult and ineffective. We call the technique side-channel power resistance for encryption algorithms using DPR, or SPREAD. SPREAD is designed to reduce cryptographic key related signal correlations in power supply transients by changing components of the hardware implementation on-the-fly using DPR. Replicated primitives within the advanced encryption standard (AES) algorithm, in particular, the substitution-box (SBOX)s, are synthesized to multiple and distinct gate-level implementations. The different implementations change the delay characteristics of the SBOXs, reducing correlations in the power traces, which, in turn, increases the difficulty of side-channel attacks. The effectiveness of the proposed countermeasures depends greatly on this principle; therefore, the focus of this paper is on the evaluation of implementation diversity techniques.},
+DOI = {10.3390/cryptography4020013}
+}
+
+@inproceedings{payer2014embracing,
+  title={Embracing the new threat: Towards automatically self-diversifying malware},
+  author={Payer, Mathias}
+}
+
+
+
+@INPROCEEDINGS{8714698,
+
+  author={Castro, Raphael Labaca and Schmitt, Corinna and Rodosek, Gabi Dreo},
+
+  booktitle={2019 5th International Conference on Information Management (ICIM)}, 
+
+  title={ARMED: How Automatic Malware Modifications Can Evade Static Detection?}, 
+
+  year={2019},
+
+  volume={},
+
+  number={},
+
+  pages={20-27},
+
+  doi={10.1109/INFOMAN.2019.8714698}}
+
+
+@inproceedings{offensive_div,
+  author = {Lundquist, Gilmore R. and Mohan, Vishwath and Hamlen, Kevin W.},
+  title = {Searching for Software0 Diversity: Attaining Artificial Diversity through Program Synthesis},
+  year = {2016},
+  isbn = {9781450348133},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3011883.3011891},
+  doi = {10.1145/3011883.3011891},
+  abstract = {A means of attaining richer, more comprehensive forms of software diversity on a mass scale is proposed through leveraging and repurposing a closely related, yet heretofore untapped, line of computer science research---automatic program synthesis. It is argued that the search-based methodologies presently used for obtaining implementations from specifications can be broadened relatively easily to a search for many candidate solutions, potentially diversifying the software monoculture. Small-scale experiments using the Rosette synthesis tool offer preliminary support for this proposed approach. But the possible rewards are not without danger: It is argued that the same approach can power a dangerous new level of sophistication for malware mutation and reactively adaptive software threats.},
+  booktitle = {Proceedings of the 2016 New Security Paradigms Workshop},
+  pages = {80–91},
+  numpages = {12},
+  keywords = {security, artificial diversity, program synthesis},
+  location = {Granby, Colorado, USA},
+  series = {NSPW '16}
+}
+
+  
+

@@ -135,8 +135,9 @@ The primary limitation for fuzzers is that the process is notably time-consuming
 
 
 \msubsection{Variants deployment}
+Program variants, once generated and verified, may be utilized in two primary scenarios: Randomization or Multivariant Execution (MVE) \cite{jackson}. 
+Additionally, these variants serve both defensive and offensive purposes \cite{offensive_div}.
 
-After program variants are generated and verified, they can be used in two main scenarios: Randomization or Multivariant Execution (MVE) \cite{jackson}. 
 
 \wrule{Randomization:}
 In the context of our work, the term \emph{Randomization} denotes a program's ability to present different variants to different clients. 
@@ -146,10 +147,9 @@ El-Khalil and colleagues \cite{ElKhalil2004} suggest employing a custom compiler
 They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
 Aga and colleagues \cite{aga2019smokestack}, contributing to this discussion, propose the generation of program variants through the randomization of its data layout in memory. 
 This method allows each variant to operate on the same data in memory but at different memory offsets. 
-The company Polyverse\footnote{\url{https://polyverse.com/}} applies randomization on a commercial scale. 
-They provide each client with a unique Linux distribution compilation by scrambling the Linux packages at the source code level. 
 Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
 In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
+\todo{Cornucopia}\cite{cornucopia}
 
 
 \wrule{Multivariant Execution (MVE):}
@@ -164,31 +164,27 @@ Isomeron operates by simultaneously loading the original program and a variant. 
 Previous works have highlighted the benefits of limiting execution to only two variants in a multivariant environment. 
 Agosta and colleagues, as well as Crane and colleagues, used more than two generated programs in the multivariant composition, thereby randomizing software control flow at runtime \cite{agosta2015meet, crane2015thwarting}. 
 Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
+\todo{SINATRA}\cite{sinatra}
 
-
-\msubsection{Defensive Diversification}
-
+\wrule{Defensive Diversification:}
+Lundquist and colleagues \cite{offensive_div} separate the usages of Software diversification into two categories: Defensive Software Diversification and Offensive Software Diversification.
 Defensive Software Diversification is the traditional application of software diversification techniques aimed at enhancing the security and reliability of software systems.
-The previously discussed works on generating and deploying software variants are examples of defensive diversification.
 The core idea is to generate multiple, functionally equivalent but internally different variants of a software program, making it more difficult for attackers to predict the system's behavior and exploit vulnerabilities. 
 By doing so, even if an attacker manages to compromise one variant, the others may remain secure, thereby limiting the potential impact of the attack.
+Defensive diversification is often used in tandem with other security measures, such as encryption and intrusion detection systems, to create a multi-layered defense strategy \cite{cryptography4020013}. 
+By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
 
-
-Defensive diversification is often used in tandem with other security measures, such as encryption and intrusion detection systems, to create a multi-layered defense strategy. 
-By making software more unpredictable and less uniform, defensive software diversification aims to proactively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
-
-\msubsection{Offensive Diversification}
-
-Offensive Software Diversification is a somewhat unconventional approach that uses the principles of software diversification, typically aimed at enhancing security, in a manner designed to challenge or 'attack' existing security mechanisms. 
-In traditional software diversification, multiple variants of a software program are created to confound attackers and make it difficult to exploit vulnerabilities consistently across all versions. 
-However, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{wobfuscator}.
-
-For example, an attacker could generate multiple diversified variants of a malware program, each with slightly different characteristics, making it more challenging for antivirus software or intrusion detection systems to identify the malicious code based on static signatures or behavior analysis. 
-These diversified malware variants can bypass security measures more effectively, as they present moving targets that are hard to pin down \cite{MTDNationalCyberLaep}.
+\wrule{Offensive Diversification:}
+Offensive Software Diversification is a somewhat unconventional approach that uses the principles of software diversification, typically aimed at enhancing security.
+Yet, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{8714698}.
+For example, in the context of \wasm, the seminal work of Romano et al.  \cite{wobfuscator} proposed to intermix JavaScript and \wasm code to obfuscate JavaScript malware and make it more difficult to analyze for malware detectors.
+The obfuscated version of the code is functionally equivalent to the original, being, in practice, Offensive Software Diversification.
 
 
 \msubsection{Open challenges}
 \label{sota:openchallenges}
+
+\todo{Redo}
 
 As outlined in \autoref{background:wasm:challenges}, our primary motivation for this thesis contributions stems problem we perceive in \wasm wrt side-channel attacks and the lack of \wasm subjects to test analysis tools.
 On the other hand, although there is a wealth of related work regarding software diversity, its exploration within the realm of \wasm\ remains limited. 
