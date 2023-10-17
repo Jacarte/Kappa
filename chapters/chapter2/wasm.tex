@@ -84,15 +84,12 @@ For instance, the \texttt{for} loop found in line 8 of \autoref{CExample1} is ma
 The loop's breaking condition is converted into a conditional branch, as shown in line 25 of \autoref{WASMExample}.
 
 
-
-\input{chapters/chapter2/wasm_example}
-
-
 There exist several compilers that turn source code into \Wasm binaries. 
 For example, LLVM compiles to \Wasm as a backend option since its 7.1.0 release\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
 The main advantage of using LLVM is that it provides a modular and state-of-the-art optimization infrastructure for \Wasm binaries.
 In parallel, the KMM framework\toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target.
+
 
 
 A recent trend in the \Wasm ecosystem involves porting various programming languages by converting both the language's engine or interpreter and the source code into a \Wasm program. 
@@ -102,6 +99,10 @@ Similarly, Blazor\toolcite{https://dotnet.microsoft.com/en-us/apps/aspnet/web-ap
 However, packaging the interpreter and the code in one single standalone \Wasm binary is still immature and faces challenges.
 For example, the absence of JIT compilation for the "interpreted" code makes it less suitable for long-running tasks \cite{10.1145/3593434.3593454}. 
 On the other hand, it proves effective for short-running tasks, particularly those executed in Edge-Cloud computing platforms.
+
+\input{chapters/chapter2/wasm_example}
+
+
 
 \msubsection{\Wasm's binary format}
 \label{background:wasm:binary}
