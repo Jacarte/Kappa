@@ -1,6 +1,13 @@
 name: Build and deploy
 # This workflow is triggered on pushes to the repository.
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Make manually triggered on dispatch
+
 
 
 concurrency:
@@ -34,12 +41,6 @@ jobs:
         env:
           ADDCONTRIB: "False"  
 
-      # If the build works, do the spell check
-      - name: Split by chapter
-        run: |
-          mkdir -p kappa_chapter
-          python3 build_images/split_document.py Kappa.nocontrib.pdf kappa_chapter
-      
       - name: Build document
         run: |
           pdflatex -draftmode -interaction=nonstopmode -shell-escape Kappa.tex || true
@@ -58,6 +59,12 @@ jobs:
         env:
           ADDCONTRIB: "True" 
 
+      # If the build works, do the spell check
+      - name: Split by chapter
+        run: |
+          mkdir -p kappa_chapter
+          python3 build_images/split_document.py Kappa.contrib.pdf kappa_chapter
+      
       - name: Deploy document
         run: |
           
