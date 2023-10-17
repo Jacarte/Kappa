@@ -55,7 +55,7 @@ jobs:
           #cp Lic.pdf Lic.pdf.bck
           #rm Lic.pdf
           # python3 usab/fix_index.py Lic.pdf.bck usab/kappa.pdf Lic.index.pdf
-          cp Kappa.pdf Kappa.contrib.pdf
+          cp Kappa.pdf Kappa.nocontrib.pdf
         env:
           ADDCONTRIB: "True" 
 
