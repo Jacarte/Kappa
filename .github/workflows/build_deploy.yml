@@ -41,6 +41,12 @@ jobs:
         env:
           ADDCONTRIB: "False"  
 
+      # If the build works, do the spell check
+      - name: Split by chapter
+        run: |
+          mkdir -p kappa_chapter
+          python3 build_images/split_document.py Kappa.nocontrib.pdf kappa_chapter
+
       - name: Build document
         run: |
           pdflatex -draftmode -interaction=nonstopmode -shell-escape Kappa.tex || true
@@ -55,15 +61,10 @@ jobs:
           #cp Lic.pdf Lic.pdf.bck
           #rm Lic.pdf
           # python3 usab/fix_index.py Lic.pdf.bck usab/kappa.pdf Lic.index.pdf
-          cp Kappa.pdf Kappa.nocontrib.pdf
+          cp Kappa.pdf Kappa.contrib.pdf
         env:
           ADDCONTRIB: "True" 
 
-      # If the build works, do the spell check
-      - name: Split by chapter
-        run: |
-          mkdir -p kappa_chapter
-          python3 build_images/split_document.py Kappa.contrib.pdf kappa_chapter
       
       - name: Deploy document
         run: |
