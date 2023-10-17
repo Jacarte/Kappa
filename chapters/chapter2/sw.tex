@@ -1,4 +1,6 @@
 
+\todo{Redo this full subsection.}
+
 \msection{Software diversification}
 \label{sota:sw}
 Software Diversification has been extensively studied in recent decades. 
@@ -186,7 +188,7 @@ These diversified malware variants can bypass security measures more effectively
 \msubsection{Open challenges}
 \label{sota:openchallenges}
 
-As outlined in \autoref{background:wasm:challenges}, our primary motivation for this thesis contributions stems problem we perceive in \wasm wrt side-channel attacks and the lack of \wasm subjects to test analysis tools. 
+As outlined in \autoref{background:wasm:challenges}, our primary motivation for this thesis contributions stems problem we perceive in \wasm wrt side-channel attacks and the lack of \wasm subjects to test analysis tools.
 On the other hand, although there is a wealth of related work regarding software diversity, its exploration within the realm of \wasm\ remains limited. 
 Furthermore, as \wasm\ is an emerging technology, the implementation of defensive measures is still a work in progress \cite{Narayan2021Swivel, johnson2021}, proceeding at a slow pace and making software diversification a potentially valuable preemptive strategy. 
 Additionally, \wasm\ is becoming increasingly popular for Edge platforms. 
@@ -194,5 +196,9 @@ However, less research has been conducted on MVE in a distributed setting such a
 
 
 
-
+% Besides, the process of diversifying a \Wasm program can be conceptualized as a three-stage procedure: parsing the program, transforming it, and finally re-encoding it back into \wasm. 
+%Our review of the literature has revealed several studies that have employed parsing and encoding components for \wasm binaries across various domains as discussed in \autoref{background:wasm:analysis}. 
+%This indicates that these works accept a \wasm binary as an input and output a unique \wasm binary. 
+%When the transformation stage introduces randomized mutations to the original program, the aforementioned tools could potentially be built as diversifiers.
+%However, we have not found any work that evaluates the impact of such tools as diversifiers.
 
