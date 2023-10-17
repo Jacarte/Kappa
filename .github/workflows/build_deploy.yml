@@ -24,15 +24,12 @@ jobs:
           apt-get update
           apt-get install -y curl
           pdflatex -draftmode  -interaction=nonstopmode -shell-escape Kappa.tex || true
-          sleep 20
+          sleep 30
           bibtex Kappa || true
           sleep 30
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
           sleep 30
 
-          #pip3 install pikepdf
-          # Check later
-          # python3 usab/fix_index.py Kappa.pdf usab/kappa.pdf Lic.index.pdf
           cp Kappa.pdf Kappa.nocontrib.pdf
         env:
           ADDCONTRIB: "False"  
