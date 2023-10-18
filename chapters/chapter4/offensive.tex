@@ -239,11 +239,11 @@ The outcomes are displayed in the last column of \autoref{offensive:results:fast
 The last row of \autoref{offensive:results:fast} shows that WebAssembly diversification requires fewer iterations to evade MINOS than VirusTotal, meaning that it is easier to evade MINOS.
 The median number of iterations needed overall for evading VirusTotal is 218 for the uncontrolled diversification setup, and 131 for the controlled diversification setup, while for MINOS is 38.
 Remarkably, WASM-MUTATE totally evades detection for 8 out of 33 binaries in one single iteration in the case of MINOS.
-This shows that the MINOS model is fragile wrt binary diversification. 
+This shows that the MINOS model is fragile with respect to binary diversification. 
 
 
 \begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    According to our results, VirusTotal can be considered better than MINOS wrt to cryptojacking detection. 
+    According to our results, VirusTotal can be considered better than MINOS with respect to to cryptojacking detection. 
     The main reason is that a wider spectrum of antivirus vendors is used in VirusTotal, while MINOS is a single detector.
     Therefore, this advocates for the use of multiple malware oracles (meta-oracles) to detect cryptojacking malware in browsers, even in the case Wasm-specific detection mechanism.
 \end{tcolorbox}
