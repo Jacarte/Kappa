@@ -5,7 +5,8 @@
 \chapter{Introduction}
 \label{Intro}
 
-
+\chapterprecishere{"\input{quotes/cinderella1.tex}"\par\raggedleft--- {\small\textup{MR. Cox} \textbf{1893}, Cinderella: Three hundred and forty-five variants \cite{cox1893cinderella}}}
+cd 
 
 \todo{Recent papers first. Mention Workshops instead in conference. "Procedings of XXXX". Add the pages in the papers list.}
 
@@ -18,8 +19,6 @@
 \section{Background}
 \todo{Motivate with the open challenges.}
 
-The company Polyverse\footnote{\url{https://polyverse.com/}} applies randomization on a commercial scale. 
-They provide each client with a unique Linux distribution compilation by scrambling the Linux packages at the source code level. 
 
 
 %\lipsum[1]
@@ -42,47 +41,53 @@ They provide each client with a unique Linux distribution compilation by scrambl
 
 %\todo{The superoptimization paper is a foundation, yet, we do not generate diversity perse in that paper. Is there a need to mention the contributions explicitly in the table}
 
-\begin{enumerate}[label=\textbf{C\arabic*}:, ref=C\arabic*]
-	\item \label{methodcontrib} Methodology contribution: We propose a methodology for generating software diversification for \Wasm and the assessment of the generated diversity.
+\begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
+	\item \label{methodcontrib} \wrule{Experimental contribution:} We propose reproducible methodology for generating software diversification for \Wasm, the assessment of the generated diversity and the exploitation of the generated variants.
 	
-	\item \label{therycontrib} Theoretical contribution: We propose theoretical foundation in order to improve Software Diversification for \Wasm.
+	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to improve Software Diversification for \Wasm.
 	
-	\item \label{generationcontrib} Automatic diversity generation for \Wasm: We generate \Wasm program variants.
+	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants.
 	
-	\item \label{defensivecontrib} Software Diversity for Defensive Purposes: We assess how generated \Wasm program variants could be used for defensive purposes.
+	\item \label{defensivecontrib} \wrule{Defensive Diversification:} We assess how generated \Wasm program variants could be used for defensive purposes.
 	
-	\item \label{ofensivecontrib} Software Diversity for Offensives Purposes: We assess how generated \Wasm program variants could be used for offensive purposes, yet improving security systems.
+	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} We assess how generated \Wasm program variants could be used for offensive purposes, yet improving security systems.
 	
-	\item \label{artifactcontrib} Software Artifacts: We provide software artifacts for the research community to reproduce our results.
+	\item \label{artifactcontrib} \wrule{Software Artifacts:} We provide software artifacts for the research community to reproduce our results.
 \end{enumerate}
 
-\todo{Make multi column table}
-
 \begin{table}
-	\begin{tabular}{r | l l l l l }
-		Contribution & Resarch  papers \\
-		& \ref{superoptimizerpaper} & \ref{crowpaper} & \ref{mewepaper} & \ref{wasmmutatepaper} & \ref{evasionpaper} \\
+	\centering
+	\begin{tabular}{l | l l l l l }
+		\multicolumn{1}{c|}{Contribution} & \multicolumn{5}{c}{Research papers} 
+		\\
+		& \ref{superoptimizerpaper}  & \ref{crowpaper} & \ref{mewepaper} & \ref{wasmmutatepaper} & \ref{evasionpaper} \\
 		\hline
-		\ref{methodcontrib} & x & x &  & x & x \\
-		\ref{therycontrib} & x & x &  &  &  \\
-		\ref{generationcontrib} & x & x & x\\
-		\ref{defensivecontrib} & x & x & x\\
-		\ref{ofensivecontrib} & & & x\\
-		\ref{artifactcontrib} & x & x & x & x & x
+		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+		\ref{therycontrib} Theoretical contribution & \checkmark & \checkmark &  &  \checkmark &  \\
+		\ref{generationcontrib} Diversity generation &  & \checkmark & \checkmark & \checkmark & \checkmark\\
+		\ref{defensivecontrib} Defensive diversification &  & \checkmark & \checkmark & \checkmark\\
+		\ref{ofensivecontrib} Offensive diversification & & & & & \checkmark\\
+		\ref{artifactcontrib} Software artifacts & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark
 	\end{tabular}
 	\label{contribmap}
 	\caption{}
 \end{table}
 
 \section{Summary of research papers}
-%\lipsum[1]
+
+This compilation thesis comprises the following research papers.
 
 \begin{enumerate}[label={\textbf{P\arabic*}:}, ref={P\arabic*}]
-	\item \label{superoptimizerpaper} Superoptimization of WebAssembly Bytecode. %\lipsum[1]
-	\item \label{crowpaper} CROW: Code randomization for WebAssembly bytecode. %\lipsum[1]
-	\item \label{mewepaper} Multivariant execution at the Edge. %\lipsum[1]
-	\item \label{wasmmutatepaper} Wasm-mutate: Fast and efficient software diversification for WebAssembly. %\lipsum[1]
-	\item \label{evasionpaper} WebAssembly Diversification for Malware evasion. %\lipsum[1]
+	\item \label{superoptimizerpaper} \textbf{Superoptimization of WebAssembly Bytecode.} \\ 
+	\wrule{Summary:} \lipsum[1]
+	\item \label{crowpaper} \textbf{CROW: Code randomization for WebAssembly bytecode.} \\ 
+	\wrule{Summary:} \lipsum[1]
+	\item \label{mewepaper} \textbf{Multivariant execution at the Edge. } \\ 
+	\wrule{Summary:} \lipsum[1]
+	\item \label{wasmmutatepaper} \textbf{ Wasm-mutate: Fast and efficient software diversification for WebAssembly. }\\ 
+	\wrule{Summary:} \lipsum[1]
+	\item \label{evasionpaper} \textbf{WebAssembly Diversification for Malware evasion.} \\ 
+	\wrule{Summary:} \lipsum[1]
  
 \end{enumerate}
 
@@ -90,5 +95,11 @@ They provide each client with a unique Linux distribution compilation by scrambl
 %\todo{End up with the diagram locating our contributions in the landscape.}
 
 \section{Thesis outline}
-%\lipsum[1]
+This dissertation comprises two parts as a compilation thesis. 
+Part one summarises the research papers included within, which is partially rooted in the author's licentiate thesis \cite{Lic}. 
+Chapter 2 offers a background on \Wasm and the latest advancements in Software Diversification. 
+Chapter 3 delves into our technical contributions. 
+Chapter 4 exhibits two use cases applying our technical contributions. 
+Chapter 5 concludes the thesis and outlines future research directions. 
+The second part of this thesis incorporates all the papers discussed in part one.
 
