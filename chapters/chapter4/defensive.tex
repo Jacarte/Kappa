@@ -2,7 +2,7 @@
 
 \msection{Defensive Diversification: Speculative Side-channel protection}
 
-As discussed in \autoref{background:wasm:ecosystems}, \Wasm is quickly becoming a cornerstone technology in backend systems. 
+As discussed in \autoref{sota:wasm}, \Wasm is quickly becoming a cornerstone technology in backend systems. 
 Leading companies like Cloudflare and Fastly are championing the integration of \Wasm into their edge computing platforms, thereby enabling developers to deploy applications that are both modular and securely sandboxed. 
 These client-side \Wasm applications are generally architected as isolated, single-responsibility services, a model referred to as Function-as-a-Service (FaaS) \cite{pMendkiServerless, 1244493Jacobsson}. 
 The operational flow of \Wasm binaries in FaaS platforms is illustrated in \autoref{fig:edge_model}.
@@ -23,9 +23,7 @@ Host processes can then instantiate new \Wasm sandboxes for each client function
 This architecture inherently isolates \Wasm binary executions from each other as well as from the host process, enhancing security.
 
 However, while \Wasm is engineered with a strong on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
-In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. Dale ven
-
-For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
+In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
 
 \msubsection{Threat model: speculative side-channel attacks}
 
@@ -166,7 +164,7 @@ We have identified four primary factors responsible for the divergence in memory
 First, modifications to the binary layout—even those that don't affect executed code—inevitably alter memory accesses within the program's stack. 
 Specifically, \tool generates variants that modify the return addresses of functions, which consequently leads to differences in execution flow and memory accesses.
 Second, one of our rewriting rules incorporates artificial global values into \wasm binaries. 
-Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{managed_unmanaged}).
+Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{background:wasm:execution}).
 Third, \tool injects 'phantom' instructions which don't aim to modify the outcome of a transformed function during execution. 
 These intermediate calculations trigger the spill/reload component of the wasmtime compiler, varying spill and reload operations. 
 In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the example at \autoref{custom}).

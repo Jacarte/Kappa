@@ -54,10 +54,10 @@ High preservation is especially important where the preservation of the diversif
             \hline
             \textbf{Tool} & \textbf{Input} & \textbf{Core} & \textbf{Variants in 1h} & \textbf{Target}  & \textbf{Variants Strength} & \textbf{Security applications} \\
             \hline \hline
-            CROW & Source code or LLVM Ir & Enumerative synthesis with functional equivalence proved through SMT solvers & > 1k & Code section  & \textbf{96\%} & Hinders Static analysis reverse engineering.  \\
+            CROW & Source code or LLVM Ir & Enumerative synthesis with functional equivalence proved through SMT solvers & > 1k & Code section  & \textbf{96\%} & Hinders static analysis and reverse engineering.  \\
             \hline
             MEWE & Source code or LL
-            VM Ir & CROW, Multivariant execution  & > 1k & Code and Function sections  & \textbf{96\%} & Hinders, static and dynamic analysis reverse engineering and, web timing-based attacks.  \\
+            VM Ir & CROW, Multivariant execution  & > 1k & Code and Function sections  & \textbf{96\%} & Hinders static and dynamic analysis, reverse engineering and, web timing-based attacks.  \\
             \hline
             WASM-MUTATE &  \textbf{Wasm binary} & hand-made rewriting rules, e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm section}  & 76\% & Hinders signature-based identification, and cache timing side-channel attacks. \\
             
