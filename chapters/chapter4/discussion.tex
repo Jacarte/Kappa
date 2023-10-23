@@ -1,11 +1,9 @@
 \msection{Intrinsic properties of diversification}
 \label{exploit:discussion}
+In \autoref{exploit:defensive}, we have noted an increasing trend of exfiltration bandwidth in certain variants. 
+\autoref{offensive_app} presents a similar case, indicating that without a clear objective in the diversification process, uncontrolled diversification can be counterproductive. 
+This implies that not all transformations contribute equally to the diversification objectives of \Wasm.
 
-In \autoref{exploit:defensive}, we have observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
-A similar case could be observed in \autoref{offensive_app} where uncontrolled diversification can be counterproductive if a specific objective is not set in the diversification process, e.g., evasion.
-This suggests that not all transformations uniformly contribute to reducing data leakage. 
-In the following, we discuss four types of transformations that can be applied to \wasm binaries and their impact on the effectiveness of diversification.
-%Two key factors contribute to this phenomenon.
 
 \wrule{Preservation:}
 Some transformations yield distinct \wasm binaries, yet their JIT compilation produces identical machine code.
@@ -24,7 +22,6 @@ However, dynamic analysis tools can identify this type of variant.
 This reduces the effectiveness of evasion. 
 Furthermore, the inclusion of non-executing dead code does not affect side-channels, thereby not strengthening against attacks.
  
-\vspace{4mm}
 % More fine grained
 \wrule{Disrupting accurate timers:} Cache timing side-channel attacks, including for the four binaries analyzed in \autoref{exploit:defensive}, depend on precise timers to measure cache access times. 
 Disrupting these timers can effectively neutralize the attack \cite{JStimers}. 
