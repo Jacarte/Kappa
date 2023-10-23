@@ -91,7 +91,7 @@ Our approach differs from theirs in that it is binary-based, compiler-agnostic, 
 \end{table}
 
 To measure the efficacy of WASM-MUTATE in mitigating Spectre, we diversify four \Wasm binaries proposed in the Swivel study. 
-The names of these programs and the specific attacks we examine are available in \cite{programs}. 
+The names of these programs and the specific attacks we examine are available in \autoref{programs}. 
 For each of these four binaries, we generate up to 1000 random stacked transformations (see \autoref{stack_transform}) using 100 distinct seeds, resulting in a total of 100,000 variants for each original binary. 
 At every 100th stacked transformation for each binary and seed, we assess the impact of diversification on the Spectre attacks by measuring the attack bandwidth for data exfiltration. 
 This metric not only captures the success or failure of the attacks but also quantifies the extent to which data exfiltration is hindered. 
