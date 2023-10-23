@@ -1,0 +1,49 @@
+\msection{Intrinsic properties of diversification}
+\label{exploit:discussion}
+
+In \autoref{exploit:defensive}, we have observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
+A similar case could be observed in \autoref{offensive_app} where uncontrolled diversification can be counterproductive if a specific objective is not set in the diversification process, e.g., evasion.
+This suggests that not all transformations uniformly contribute to reducing data leakage. 
+In the following, we discuss four types of transformations that can be applied to \wasm binaries and their impact on the effectiveness of diversification.
+%Two key factors contribute to this phenomenon.
+
+\wrule{Preservation:}
+Some transformations yield distinct \wasm binaries, yet their JIT compilation produces identical machine code.
+Non-preserved transformations undermine the effectiveness of diversification, as discussed in \autoref{discussion}.
+Incorporating random \texttt{nop} operations directly into \wasm, for instance, does not alter the final machine code because JIT compilers frequently eliminate these \texttt{nop} operations.
+This phenomenon is also observed with transformations to the custom sections of \Wasm binaries.
+Identical machine code, even when their \wasm variants are different, can be detected by malware detectors.
+On the other hand, side-channel attacks occur at the machine code level, making \wasm variants preservation essential code for successful diversification.
+
+
+\wrule{Dead code addition:} 
+Transformed code may not always execute. 
+For example, Software Diversification might generate dead code or introduce a new function that the original program does not execute. 
+This is beneficial for static analysis, whether for avoiding reverse engineering or evading static malware detection. 
+However, dynamic analysis tools can identify this type of variant. 
+This reduces the effectiveness of evasion. 
+Furthermore, the inclusion of non-executing dead code does not affect side-channels, thereby not strengthening against attacks.
+ 
+\vspace{4mm}
+% More fine grained
+\wrule{Disrupting accurate timers:} Cache timing side-channel attacks, including for the four binaries analyzed in \autoref{exploit:defensive}, depend on precise timers to measure cache access times. 
+Disrupting these timers can effectively neutralize the attack \cite{JStimers}. 
+The \wasm variants inherently adopts a similar approach, introducing perturbations in the timing steps of \wasm variants in case they are malicious. 
+This is illustrated in \autoref{example:timer} and \autoref{example:timer2}, where the former shows the original time measurement and the latter presents a variant with introduced operations.
+Remarkably, WASM-MUTATE is particularly effective in disrupting cache access timers. 
+By introducing additional instructions, the inherent randomness in the time measurement of a single or a few instructions is amplified, thereby reducing the timer's accuracy. 
+
+\input{snippets/spectre/timer}
+
+\todo{Recheck term-citation padding here}
+
+\wrule{Padding speculated instructions:} Additionally, CPUs have a limit on the number of instructions they can cache. 
+Diversification injects instructions to potentially exceed this limit, effectively disabling the speculative execution of memory accesses. 
+This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
+This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
+Even if speculative execution occurs, the memory access does not proceed as the attacker intended.
+
+\input{snippets/spectre/padding}
+
+
+

@@ -1,6 +1,7 @@
 
 
 \msection{Defensive Diversification: Speculative Side-channel protection}
+\label{exploit:defensive}
 
 As discussed in \autoref{sota:wasm}, \Wasm is quickly becoming a cornerstone technology in backend systems. 
 Leading companies like Cloudflare and Fastly are championing the integration of \Wasm into their edge computing platforms, thereby enabling developers to deploy applications that are both modular and securely sandboxed. 
@@ -159,37 +160,6 @@ These intermediate calculations trigger the spill/reload component of the wasmti
 In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the example at \autoref{custom}).
 Finally, certain rewriting rules implemented by WASM-MUTATE replicate fragments of code, e.g., performing commutative operations. 
 These code segments may contain memory accesses, and while neither the memory addresses nor their values change, the frequency of these operations does.
-
-% More fine grained
-\wrule{Disrupting accurate timers:} Cache timing side-channel attacks, including for the four binaries analyzed in this case study, depend on precise timers to measure cache access times. 
-Disrupting these timers can effectively neutralize the attack. 
-For example, in other contexts, Firefox employs a strategy to counter timing attacks by randomizing its built-in JavaScript timer \cite{10.1007/978-3-319-70972-7_13}. 
-WASM-MUTATE inherently adopts a similar approach, introducing perturbations in the timing steps of \wasm variants in case they are malicious. 
-This is illustrated in \autoref{example:timer} and \autoref{example:timer2}, where the former shows the original time measurement and the latter presents a variant with \tool-introduced operations.
-WASM-MUTATE is particularly effective in disrupting cache access timers. 
-By introducing additional instructions, the inherent randomness in the time measurement of a single or a few instructions is amplified, thereby reducing the timer's accuracy. 
-
-\input{snippets/spectre/timer}
-
-\wrule{Padding speculated instructions:} Additionally, CPUs have a limit on the number of instructions they can cache. 
-WASM-MUTATE injects instructions to potentially exceed this limit, effectively disabling the speculative execution of memory accesses. 
-This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
-This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
-Even if speculative execution occurs, the memory access does not proceed as the attacker intended.
-
-\input{snippets/spectre/padding}
-
-\wrule{Drawbacks:} We observed that the exfiltration bandwidth tends to increase in variants with only a few transformations. 
-This suggests that not all transformations uniformly contribute to reducing data leakage. 
-Several key factors contribute to this phenomenon.
-First, as emphasized previously in \autoref{offensive_app}, uncontrolled diversification can be counterproductive if a specific objective, e.g., if a cost function, is not established at the beginning of the diversification process.
-Second, while some transformations yield distinct \wasm binaries, their compilation produces identical machine code.
-Transformations that are not preserved(see \autoref{discussion}) undermine the effectiveness of diversification.
-For example, incorporating random \texttt{nop} operations directly into \wasm does not modify the final machine code as the \texttt{nop} operations are often removed by the compiler.
-The same phenomenon is observed with transformations to custom sections of \Wasm binaries.
-Additionally, it is important to note that transformed code doesn't always execute, i.e., \tool may generate dead code.
-
-
 
 
 

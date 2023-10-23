@@ -263,6 +263,9 @@ This engine can be employed to detect anomalies in engines running Wasm-WASI pro
 Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
 
 
+\todo{Isolation without taxation}\url{https://arxiv.org/abs/2105.00033}
+
+
 %%ORIGINAL
 \wrule{\Wasm malware:} Since the introduction of \wasm, the Web has consistently experienced an increase in cryptomalware. 
 This rise primarily stems from the shift of mining algorithms from CPUs to \wasm, a transition driven by notable performance benefits \cite{musch2019new}.
@@ -293,3 +296,4 @@ First, Software Diversification could expand the capabilities of the mentioned t
 Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
 Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
 Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
+
