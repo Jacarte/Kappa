@@ -58,7 +58,6 @@ Conversely, the application of enumerative synthesis to \Wasm has not been explo
 This strategy involves reordering independent instructions or entire program blocks.
 The location of variable declarations may also change if compilers reorder them in the symbol tables. This prevents static examination and analysis of parameters and alters memory locations. In this area, Bhatkar \etal \cite{bhatkar03, bhatkar2005efficient} proposed the random permutation of variable and routine order for ELF binaries.
 Such strategies are not implemented for \Wasm to the best of our knowledge.
-Yet, it is part of our technical contributions.
 
 \wrule{Adding, Changing, Removing Jumps and Calls:}
 This strategy generates program variants by adding, changing, or removing jumps and calls in the original program. Cohen \cite{cohen1993operating} primarily illustrated this concept by inserting random jumps in programs. Pettis and Hansen \cite{pettisochhansen} suggested splitting basic blocks and functions for the PA-RISC architecture, inserting jumps between splits.
@@ -67,7 +66,6 @@ In their approach, each de-inlined code transforms into semantically equivalent 
 On the same topic, Bhatkar \etal \cite{bhatkar2005efficient} extended their previous approach \cite{bhatkar03}, replacing function calls with indirect pointer calls in C source code, allowing post-binary reordering of function calls. 
 Recently, Romano \etal \cite{wobfuscator} proposed an obfuscation technique for JavaScript in which part of the code is replaced by calls to complementary Wasm functions.
 As previously discussed in \autoref{wasm:control_flow}, the control flow of \Wasm is restricted, making them impractical to directly port these strategies to \Wasm.
-Yet, we implement a similar strategy in our diversification tools for \Wasm, as discussed in \autoref{tech}.
 
 \wrule{Program Memory and Stack Randomization:}
 This strategy alters the layout of programs in the host memory. 
