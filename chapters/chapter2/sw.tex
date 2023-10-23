@@ -42,7 +42,7 @@ This method requires substituting the original code with identical arithmetic ex
 There are primarily two methods for generating such equivalent code: rewriting rules and enumerative synthesis. 
 In the first method, manual rewriting rules dictate the replacement strategies. 
 A rewriting rule consists of a code segment and its semantically identical substitution. 
-For instance, Cleemput et al. \cite{Cleemput2012} and Homescu et al.~\cite{homescu2013profile} introduce NOP instructions to produce statically varied versions. 
+For instance, Cleemput et al. \cite{Cleemput2012} and Homescu et al.~\cite{homescu2013profile} inject NOP instructions to produce statically varied versions. 
 In these studies, the rewriting rule is expressed as \texttt{instr => (nop instr)}, implying a \texttt{nop} operation followed by the instruction as a valid substitute.
 In contrast, enumerative synthesis explores all potential programs specific to a language. 
 In this domain, Jacob et al. \cite{jacob2008superdiversifier} introduced a technique called superdiversification for x86 binaries. 
@@ -75,8 +75,10 @@ Tadesse Aga and Autin \cite{aga2019smokestack}, and Lee \etal \cite{lee2021savio
 Younan \etal \cite{Younan2006} suggest separating a conventional stack into multiple stacks where each stack contains a particular class of data. 
 On the same topic, Xu \etal \cite{xu2020merr} transforms programs to reduce memory exposure time, improving the time needed for frequent memory address randomization. 
 This makes it very challenging for an attacker to ignore the key to inject executable code. 
-This strategy disrupts the predictability of program execution and mitigates certain exploits such as speculative execution. 
-We have not found any work that applies this strategy to \Wasm.
+This strategy disrupts the predictability of program execution and mitigates certain exploits such as speculative execution.
+No work has been found that explicitly applies this strategy to \Wasm.
+However, the transformation of \Wasm binaries inherently randomizes the memory layout.
+Consequently, memory access is randomized as these binaries are further JITed to machine code in the majority of cases.
 
 \wrule{ISA Randomization and Simulation}
 This strategy involves using a key to cypher the original program binary into another encoded binary. 
@@ -144,7 +146,7 @@ In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to mini
 \wrule{Multivariant Execution (MVE):}
 Multiple program variants are composed into a single binary, known as a multivariant binary \cite{cox06}. 
 Each multivariant binary is randomly deployed to a client.
-Upon at the client, the multivariant binary executes its embedded program variants at runtime. 
+Then, the multivariant binary executes its embedded program variants at runtime. 
 These embedded variants can either execute in parallel to check for inconsistencies, or as a single program to randomize execution paths \cite{bhatkar03}. 
 Bruschi and colleagues extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
 At the same time, Salamat \etal modifies a standard library to generate 32-bit Intel variants. 
@@ -157,6 +159,8 @@ Agosta and colleagues, as well as Crane and colleagues, used more than two gener
 Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
 Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
 
+\todo{Redo this part}
+
 \wrule{Defensive Diversification:}
 Lundquist and colleagues \cite{offensive_div} separate the usages of Software diversification into two categories: Defensive Software Diversification and Offensive Software Diversification.
 Defensive Software Diversification is the traditional application of previously discussed techniques aimed at enhancing the security and reliability of software systems.
@@ -166,12 +170,13 @@ Defensive diversification is often complementary with other security measures, s
 %By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
 
 \wrule{Offensive Diversification:}
-Offensive Software Diversification is a somewhat unconventional approach that uses the principles of software diversification, typically aimed at enhancing security.
+Offensive Software Diversification uses the principles of software diversification.
 Yet, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{8714698}.
 For example, in the context of \wasm, the seminal work of Romano et al.  \cite{wobfuscator} proposed to intermix JavaScript and \wasm code to obfuscate JavaScript malware and make it more difficult to analyze for malware detectors.
 The obfuscated version of the code is functionally equivalent to the original, being, in practice, Offensive Software Diversification.
 Notice that, this method also measures the resilience and accuracy of security systems.
-
+However, obfuscation studies have exposed their shortcomings, revealing an almost unexplored area for \Wasm that threatens malware detection accuracy.
+In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
 
 \msubsection{Open challenges}
 \label{sota:openchallenges}

@@ -96,6 +96,14 @@ On the other hand, it proves effective for short-running tasks, particularly tho
 
 \input{chapters/chapter2/wasm_example}
 
+\msubsection{Extending \Wasm}
+
+The broad spectrum of applicability and the rapid adoption of \Wasm has resulted in demands for additional features. 
+However, not all of these demands align with its original specifications.
+Thus, since the introduction of \Wasm, various extensions have been proposed for standardization. 
+For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
+To become a standard, a proposal must fulfill certain criteria, including having a formal specification and at least two independent implementations, e.g., two different engines. 
+Notably, even after adoption, new extensions are optional, e.g., the core \Wasm remains untouched and continues to be referred to as version 1.0. 
 
 
 \msubsection{\Wasm's binary format}
@@ -252,12 +260,10 @@ Thus, facing an important limitation on overhead for real-world scenarios.
 The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
 However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and fortifying the security of the entire execution runtimes ecosystem. 
 For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries, particularly in Function-as-a-Service (FaaS) platforms such as Fastly. 
+Similarly, Kolosick and colleagues \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating thee performance overhead of SFI guarantees implementation.
 Conversely, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 
-This engine can be employed to detect anomalies in engines running Wasm-WASI programs. 
+WaVe can be employed to detect anomalies in engines running Wasm-WASI programs. 
 Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
-
-
-\todo{Isolation without taxation}\url{https://arxiv.org/abs/2105.00033}
 
 
 %%ORIGINAL
@@ -269,16 +275,6 @@ VirusTotal\toolcite{https://www.virustotal.com}, a tool incorporating over 60 co
 However, obfuscation studies have exposed their shortcomings, revealing an almost unexplored area for \Wasm that threatens malware detection accuracy.
 In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
 
-
-\msubsection{Extending \Wasm}
-\todo{Maybe to move to Intro}
-
-The broad spectrum of applicability and the rapid adoption of \Wasm has resulted in demands for additional features. 
-However, not all of these demands align with its original specifications.
-Thus, since the introduction of \Wasm, various extensions have been proposed for standardization. 
-For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
-To become a standard, a proposal must fulfill certain criteria, including having a formal specification and at least two independent implementations, e.g., two different engines. 
-Notably, even after adoption, new extensions are optional, e.g., the core \Wasm remains untouched and continues to be referred to as version 1.0. 
 
 
 \msubsection{Open challenges}
