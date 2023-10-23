@@ -1,8 +1,8 @@
 \begin{lstlisting}[style=CStyle]
-// Some raw data
+// Static raw data
 const int A[250];
 
-// Imported function
+// External function usage
 int ftoi(float a);
 
 int main() {

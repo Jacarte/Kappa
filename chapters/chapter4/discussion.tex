@@ -6,12 +6,12 @@ This implies that not all transformations contribute equally to the diversificat
 
 
 \wrule{Preservation:}
-Some transformations yield distinct \wasm binaries, yet their JIT compilation produces identical machine code.
+Some transformations yield distinct \Wasm binaries, yet their JIT compilation produces identical machine code.
 Non-preserved transformations undermine the effectiveness of diversification, as discussed in \autoref{discussion}.
-Incorporating random \texttt{nop} operations directly into \wasm, for instance, does not alter the final machine code because JIT compilers frequently eliminate these \texttt{nop} operations.
+Incorporating random \texttt{nop} operations directly into \Wasm, for instance, does not alter the final machine code because JIT compilers frequently eliminate these \texttt{nop} operations.
 This phenomenon is also observed with transformations to the custom sections of \Wasm binaries.
-Identical machine code, even when their \wasm variants are different, can be detected by malware detectors.
-On the other hand, side-channel attacks occur at the machine code level, making \wasm variants preservation essential code for successful diversification.
+Identical machine code, even when their \Wasm variants are different, can be detected by malware detectors.
+On the other hand, side-channel attacks occur at the machine code level, making \Wasm variants preservation essential code for successful diversification.
 
 
 \wrule{Dead code addition:} 
@@ -25,7 +25,7 @@ Furthermore, the inclusion of non-executing dead code does not affect side-chann
 % More fine grained
 \wrule{Disrupting accurate timers:} Cache timing side-channel attacks, including for the four binaries analyzed in \autoref{exploit:defensive}, depend on precise timers to measure cache access times. 
 Disrupting these timers can effectively neutralize the attack \cite{JStimers}. 
-The \wasm variants inherently adopts a similar approach, introducing perturbations in the timing steps of \wasm variants in case they are malicious. 
+The \Wasm variants inherently adopts a similar approach, introducing perturbations in the timing steps of \Wasm variants in case they are malicious. 
 This is illustrated in \autoref{example:timer} and \autoref{example:timer2}, where the former shows the original time measurement and the latter presents a variant with introduced operations.
 Remarkably, WASM-MUTATE is particularly effective in disrupting cache access timers. 
 By introducing additional instructions, the inherent randomness in the time measurement of a single or a few instructions is amplified, thereby reducing the timer's accuracy. 

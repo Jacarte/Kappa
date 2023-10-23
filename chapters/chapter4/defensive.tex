@@ -38,7 +38,7 @@ Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredi
 By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance(including itself) or even the host process itself. 
 This poses a significant risk, compromising both the security and integrity of the overall system.
 
-Narayan and colleagues \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
+Narayan and colleagues \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
 
 \begin{enumerate}
     \item The Spectre Branch Target Buffer (btb) attack exploits the branch target buffer by predicting the target of an indirect jump, thereby rerouting speculative control flow to an arbitrary target.
@@ -127,7 +127,7 @@ These are indicated by the green violinplots.
 \wrule{Population Strength:} For the binaries btb\_breakout and btb\_leakage, \tool exhibits a high level of effectiveness, generating variants that leak less information than the original in 78\% and 70\% of instances, respectively.
 For both programs, after applying 200 stacked transformations, the exfiltration bandwidth drops to zero.
 This implies that \tool is capable of synthesizing variants that are entirely protected from the original attack.
-If we consider the results in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of seconds for a single \wasm binary.
+If we consider the results in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of seconds for a single \Wasm binary.
 When scaled to the scope of a global FaaS platform, this means that a unique, fortified variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
 
 \begin{figure}[h]
@@ -153,7 +153,7 @@ Therefore, given that WASM-MUTATE performs incremental transformations, the prob
 We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
 First, modifications to the binary layout—even those that don't affect executed code—inevitably alter memory accesses within the program's stack. 
 Specifically, \tool generates variants that modify the return addresses of functions, which consequently leads to differences in execution flow and memory accesses.
-Second, one of our rewriting rules incorporates artificial global values into \wasm binaries. 
+Second, one of our rewriting rules incorporates artificial global values into \Wasm binaries. 
 Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{background:wasm:execution}).
 Third, \tool injects 'phantom' instructions which don't aim to modify the outcome of a transformed function during execution. 
 These intermediate calculations trigger the spill/reload component of the wasmtime compiler, varying spill and reload operations. 

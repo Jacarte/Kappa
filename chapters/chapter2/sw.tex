@@ -3,6 +3,15 @@
 \msection{Software diversification}
 \label{sota:sw}
 
+
+
+This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
+First, Software Diversification could expand the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
+Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
+Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
+Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
+
+
 Software Diversification has been extensively studied in recent decades. 
 This section explores its current state of the art. 
 Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs. 
@@ -43,7 +52,6 @@ Compared to other methods, Jacob et al. and Tsoupidi et al.'s work does not need
 While their techniques can be implemented in any language, they are not directly applicable to \Wasm.
 For instance, while the studies of Cleemput et al. and Homescu et al. are directly applicable to \Wasm, since \Wasm typically compiles later, this specific strategy could fall into a \emph{non preserved} category, meaning JIT compilers could eliminate this diversification strategy by simply applying straightforward optimizations.
 Conversely, the application of enumerative synthesis to \Wasm has not been explored, and it is actually one of our contributions. 
-As further stated in \autoref{tech}, implementing enumerative synthesis for \Wasm poses language-specific challenges.
 
 
 \wrule{Instruction Reordering:} 
@@ -102,18 +110,19 @@ Cleemput \etal \cite{Cleemput2012} and Homescu \etal \cite{homescu2013profile}, 
 However, developer errors can occur in this process, necessitating further validation. 
 The test suite of the original program can serve as a check for the variant. 
 If the program variant passes the test suite \cite{harrand2020java}, it can be considered equivalent to the original. 
-However, this technique is limited by the need for a preexisting test suite. 
+However, this technique is limited by the need for a preexisting test suite and does not give guarantees. 
 Should the test suite not exist, an alternative technique is required for equivalence checking.
+An alternative method for checking program equivalence involves the use of fuzzers \cite{zalewski2017american}.
+Fuzzers randomly generate inputs that yield different observable behaviors. 
+If two inputs produce a different output in the variant, the variant and the original program are not equivalent. 
+The primary limitation for fuzzers is that the process is notably time-consuming and necessitates manual introduction of oracles.
 
 \wrule{Automated equivalence checking:} In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove equivalence. 
 The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
 The SMT solver then checks for counter-examples. When it finds a counter-example, there is an input for which the two mathematical formulas yield different outputs. 
 The primary limitation of this technique is that not all algorithms can be translated into a mathematical formula, such as loops. 
 Nevertheless, this technique is frequently used for checking no-branching-programs like basic block and peephole replacements \cite{SuperoptimizationScaling}.
-An alternative method for checking program equivalence, similar to using SMT solvers, involves the use of fuzzers \cite{zalewski2017american}.
-Fuzzers randomly generate inputs that yield different observable behaviors. 
-If two inputs produce a different output in the variant, the variant and the original program are not equivalent. 
-The primary limitation for fuzzers is that the process is notably time-consuming and necessitates manual introduction of oracles.
+
 
 
 

@@ -6,7 +6,7 @@ This is due to the essence of cryptojacking, the faster the mining, the better.
 Although the research of Lehmann and colleagues \cite{Hilbig2021AnES} suggests a decline in browser-based cryptominers, mainly due to the shutdown of Coinhive, a 2022 report by Kaspersky indicates that the use of cryptominers is on the rise \cite{kasperksy}. 
 
 
-Let us illustrate how a malicious \wasm binary could be involved into browser cryptojacking.
+Let us illustrate how a malicious \Wasm binary could be involved into browser cryptojacking.
 \autoref{fig:attack_crypto} illustrates a browser attack scenario:
 a practical WebAssembly cryptojacking attack consists of three components: a WebAssembly binary, a JavaScript wrapper, and a backend cryptominer pool. 
 The WebAssembly binary is responsible for executing the hash calculations, which consume significant computational resources. 
@@ -121,7 +121,7 @@ For VirusTotal, we further subdivide the results based on the two diversificatio
 In these subsections, we provide columns that indicate the number of VirusTotal vendors that flag the original binary as malware (\#D), the maximum number of successfully evaded detectors (Max. \#evaded), and the average number of transformations required (Mean \#trans.) for each sample. 
 We highlight in bold text the values for which the uncontrolled diversification or controlled diversification setups are better than each other, the lower, the better.
 The MINOS section simply includes a column that specifies the number of transformations needed for complete evasion. 
-The table has 33 + 1 rows, each representing a unique \wasm malware study subject. 
+The table has 33 + 1 rows, each representing a unique \Wasm malware study subject. 
 The final row offers the median number of transformations required for evasion across our evaluated setups and oracles. 
 
 \newcolumntype{t}{>{\columncolor{Gray}}r}
@@ -254,13 +254,13 @@ Consequently, this supports the employment of multiple malware oracles (meta-ora
 
 %\msubsection{Efficiency and correctness results}
 
-\wrule{\wasm execution impact:} To evaluate the real-world efficacy of WASM-MUTATE in evading malware detection, we focused on six binaries that we could build and execute end-to-end, as these had all three components outlined in \autoref{fig:attack_crypto}. 
+\wrule{\Wasm execution impact:} To evaluate the real-world efficacy of WASM-MUTATE in evading malware detection, we focused on six binaries that we could build and execute end-to-end, as these had all three components outlined in \autoref{fig:attack_crypto}. 
 We select only six binaries because the process of building and executing the binaries involves three components. 
 As detailed in \autoref{fig:attack_crypto}, they include the \Was binary, its JavaScript complement, and the miner pool. 
 These components were not found for the remaining 27 binaries in the study subjects.
 For the six binaries, we then replace the original WebAssembly code with variants generated using VirusTotal as the malware oracle and WASM-MUTATE for both controlled and uncontrolled diversification configurations. 
 We then execute both the original and the generated variants. 
-We assessed the variants based on the hash generation rate, providing a hint on the impact of diversification in the \wasm variants execution.
+We assessed the variants based on the hash generation rate, providing a hint on the impact of diversification in the \Wasm variants execution.
 
 % Efficiency
 We have found that 19\% of the generated variants outperformed the original cryptojacking binaries. 
