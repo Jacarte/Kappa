@@ -4,7 +4,7 @@
 
 As discussed in \autoref{sota:wasm}, \Wasm is quickly becoming a cornerstone technology in backend systems. 
 Leading companies like Cloudflare and Fastly are championing the integration of \Wasm into their edge computing platforms, thereby enabling developers to deploy applications that are both modular and securely sandboxed. 
-These client-side \Wasm applications are generally architected as isolated, single-responsibility services, a model referred to as Function-as-a-Service (FaaS) \cite{pMendkiServerless, 1244493Jacobsson}. 
+These server-side \Wasm applications are generally architected as isolated, single-responsibility services, a model referred to as Function-as-a-Service (FaaS) \cite{pMendkiServerless, 1244493Jacobsson}. 
 The operational flow of \Wasm binaries in FaaS platforms is illustrated in \autoref{fig:edge_model}.
 
 \begin{figure}[h]
@@ -22,8 +22,8 @@ These platforms convert \Wasm programs into native code, which is subsequently e
 Host processes can then instantiate new \Wasm sandboxes for each client function, executing them in response to specific user requests with nanosecond-level latency (\step{3} in \autoref{fig:edge_model}). 
 This architecture inherently isolates \Wasm binary executions from each other as well as from the host process, enhancing security.
 
-However, while \Wasm is engineered with a strong on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
-In the sections that follow, we explore how software diversification techniques can be employed to fortify \Wasm binaries against such attacks. For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
+However, while \Wasm is engineered with a strong focus on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
+In the sections that follow, we explore how software diversification techniques can be employed to harden \Wasm binaries against such attacks. For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
 
 \msubsection{Threat model: speculative side-channel attacks}
 
@@ -60,8 +60,6 @@ For this use case, we employ WASM-MUTATE as our tool for Software Diversificatio
 To empirically demonstrate that Software Diversification can indeed mitigate Spectre vulnerabilities, we reuse the \Wasm attack scenarios proposed by Narayan and colleagues in their work on Swivel \cite{Swivel}. 
 Swivel is a compiler-based strategy designed to counteract Spectre attacks on \Wasm binaries by linearizing their control flow during machine code compilation. 
 Our approach differs from theirs in that it is binary-based, compiler-agnostic, and platform-agnostic; we do not propose altering the deployment or toolchain of FaaS platforms. 
-Although our experiments are conducted prior to submitting the \Wasm binary to the FaaS platform, we argue that \Wasm binary diversification could be implemented at any stage of the FaaS workflow.
-The same argument holds by using any other diversification tool presented in this dissertation (see \autoref{tech}).
 
 
 \begin{figure}[h]
@@ -128,17 +126,8 @@ These are indicated by the green violinplots.
 \wrule{Population Strength:} For the binaries btb\_breakout and btb\_leakage, \tool exhibits a high level of effectiveness, generating variants that leak less information than the original in 78\% and 70\% of instances, respectively.
 For both programs, after applying 200 stacked transformations, the exfiltration bandwidth drops to zero.
 This implies that \tool is capable of synthesizing variants that are entirely protected from the original attack.
-
-
-\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    As indicated in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of minutes.
-    When scaled to the scope of a global FaaS platform, this means that a unique, fortified variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
-\end{tcolorbox}
-
-
-
-
-
+If we consider the results in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of seconds for a single \wasm binary.
+When scaled to the scope of a global FaaS platform, this means that a unique, fortified variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
 
 \begin{figure}[h]
     \centering    

@@ -4,7 +4,6 @@
 The primary malicious use of WebAssembly in browsers is cryptojacking \cite{musch2019new}. 
 This is due to the essence of cryptojacking, the faster the mining, the better. 
 Although the research of Lehmann and colleagues \cite{Hilbig2021AnES} suggests a decline in browser-based cryptominers, mainly due to the shutdown of Coinhive, a 2022 report by Kaspersky indicates that the use of cryptominers is on the rise \cite{kasperksy}. 
-This underscores the ongoing need for effective automatic detection of cryptojacking malware.
 
 
 Let us illustrate how a malicious \wasm binary could be involved into browser cryptojacking.
@@ -20,7 +19,7 @@ The JavaScript wrapper facilitates the communication between the WebAssembly bin
     \label{fig:attack_crypto}
 \end{figure}
 
-For the previous triad to work, the following steps are executed.
+For the previous triad to work, the following steps are performed.
 First, the victim visits a web page infected with the cryptojacking code. 
 The web page establishes a channel to the cryptominer pool, which then assigns a hashing job to the infected browser. 
 The WebAssembly cryptominer calculates thousands of hashes inside the browser. 
@@ -38,7 +37,7 @@ The use of case illustrated in the subsequent sections uses Offensive Software D
 \label{threat_model}
 
 
-Considering the previous scenario, several techniques, as outlined in \autoref{background:wasm:analysis}, can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
+Considering the previous scenario, several techniques can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
 Such defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm malicious binary is blocked in \step{3}.
 The primary aim of our use of case is to investigate the effectiveness of code diversification as a means to circumvent cryptojacking defenses. 
 Specifically, we assess whether the following evasion workflow can successfully bypass existing security measures:
@@ -201,24 +200,21 @@ The final row offers the median number of transformations required for evasion a
 \end{table}
 
 
-\wrule{Uncontrolled diversification to evade VirusTotal:} We run uncontrolled diversification with WASM-MUTATE with a limit of 1000 iterations per binary. 
-At each iteration, we query VirusTotal to check if the new binary evades the detection.
-This process is repeated with 10 random seeds per binary to simulate 10 different evasion experiments per binary.
-As shown in the uncontrolled diversification part of \autoref{offensive:results:fast}, we successfully generate variants that evade detection for 30 out of 33 binaries.
-The mean value of iterations needed to generate a variant that evades all detectors ranges from 120 to 635 stacked transformations.
-The mean number of iterations needed is always less than 1000 stacked transformations.
-There are 3 binaries for which the uncontrolled diversification setup does not completely evade the detection. 
-In these three cases, the algorithm misses 5 out 31, 6 out of 30 and 5 out 26 detectors.
-The explanation is the maximum number of iterations 1000 we use for our experiments.
-However, having more iterations seems not a realistic scenario.
-For example, if some transformations increment the binary size during the transformation, a considerably large binary might be impractical for bandwidth reasons.
-Overall, uncontrolled diversification with WASM-MUTATE clearly decreases the detection rate by VirusTotal antivirus vendors for cryptojacking malware, achieving total evasion of WebAssembly cryptojacking malware in 30/33 (90\%) of the malware dataset.
-
-
-\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    When compared with the data in \autoref{comp:table:tools},   WASM-MUTATE generates an average of nearly 10000 variants per binary within an hour. 
-    Thus, WASM-MUTATE is capable of successfully evading detection systems in just a matter of minutes.
-\end{tcolorbox}
+\wrule{Uncontrolled diversification to evade VirusTotal:}
+We execute an uncontrolled diversification with WASM-MUTATE, setting a limit of 1000 iterations for each binary. 
+In every iteration, we query VirusTotal to determine if the newly generated binary can elude detection. 
+We repeat this procedure with ten distinct seeds for each binary, replicating ten different evasion experiments. 
+As the uncontrolled diversification section of \autoref{offensive:results:fast} illustrates, we successfully produce variants that fully evade detection for 30 out of 33 binaries. 
+The average amount of iterations required to produce a variant that evades all detectors oscillates between 120 to 635 stacked transformations. 
+The mean number of iterations needed never exceeds 1000 stacked transformations. 
+However, three binaries remain detectable under the uncontrolled diversification setup. 
+In these instances, the algorithm fails to evade 5 out of 31, 6 out of 30, and 5 out of 26 detectors. 
+This shortfall can be attributed to the maximum number of iterations, 1000, that we employ in our experiments. 
+Increasing iterations further, however, seems unrealistic. 
+If certain transformations enlarge the binary size, a significantly large binary could become impractical due to bandwidth limitations. 
+In summary, uncontrolled diversification with WASM-MUTATE markedly reduces the detection rate by VirusTotal antivirus vendors for cryptojacking malware, achieving total evasion in 30 out of 33 (90\%) cases within the malware dataset. 
+Remarkably, as \autoref{comp:table:tools} shows, WASM-MUTATE can generate an average of nearly 10,000 variants per binary within an hour. 
+Therefore, WASM-MUTATE proves capable of successfully evading detection systems in just a few minutes.
 
 \wrule{Controlled diversification to evade VirusTotal:}  Uncontrolled diversification does not guide the diversification based on the number of evaded detectors, it is purely random, and has some drawbacks.
 For example, some transformations might suppress other transformations previously applied.
@@ -230,23 +226,28 @@ The iterations needed for the controlled diversification setup are 92\% of the n
 For 21 of 30 binaries that evade detection entirely, we observe that the mean number of oracle calls needed is lower than those in the baseline evasion algorithm.
 For example, \texttt{f0b24409} needs 11 oracle calls with controlled diversification setup to fully evade VirusTotal, while for the uncontrolled one, it needs 127 oracles calls.
 For those 21 binaries, it needs only 40\% of the calls the controlled diversification setup needs.
-
-\wrule{Uncontrolled diversification to evade MINOS: }Additionally, relying solely on VirusTotal as the detection mechanism could be problematic, especially when specialized solutions exist exclusively for \Wasm, unlike the general-purpose vendors in VirusTotal. 
-To address this concernt, we also assessed the efficacy of our evasion algorithms against MINOS, a \Wasm-specific antivirus. 
-We iteratively applied random mutations to the original malware binary until either MINOS was fully evaded or a maximum iteration limit was reached. 
-This process was repeated 10 times for each binary. 
-The outcomes are displayed in the last column of \autoref{offensive:results:fast}.
-The last row of \autoref{offensive:results:fast} shows that WebAssembly diversification requires fewer iterations to evade MINOS than VirusTotal, meaning that it is easier to evade MINOS.
-The median number of iterations needed overall for evading VirusTotal is 218 for the uncontrolled diversification setup, and 131 for the controlled diversification setup, while for MINOS is 38.
-Remarkably, WASM-MUTATE totally evades detection for 8 out of 33 binaries in one single iteration in the case of MINOS.
-This shows that the MINOS model is fragile with respect to binary diversification. 
+The controlled diversification setup, having fewer stacked transformations overall, demonstrates larger efficiency than the uncontrolled diversification setup. 
+For instance, a potential attacker may be limited by budget on the number of transformations applicable to the malware binary. 
+Additionally, the performance of the resulting binary benefits from this approach.
 
 
-\begin{tcolorbox}[title=Takeaway,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    According to our results, VirusTotal can be considered better than MINOS with respect to to cryptojacking detection. 
-    The main reason is that a wider spectrum of antivirus vendors is used in VirusTotal, while MINOS is a single detector.
-    Therefore, this advocates for the use of multiple malware oracles (meta-oracles) to detect cryptojacking malware in browsers, even in the case Wasm-specific detection mechanism.
-\end{tcolorbox}
+\wrule{Uncontrolled diversification to evade MINOS: }
+Relying exclusively on VirusTotal for detection could pose issues, particularly given the existence of specialized solutions for \Wasm, which differ from the general-purpose vendors within VirusTotal. 
+In \autoref{background:wasm:analysis} we highlight several examples of such solutions.
+Yet, for its simplicity, we initially extend this experiment by using MINOS\cite{MINOS}, an antivirus specifically designed for \Wasm. 
+We incrementally apply stacked transformations to the original malware binary until MINOS was completely evaded or the maximum iteration limit was achieved. 
+We repeat this procedure ten times for every binary. 
+The results of these trials can be seen in the final column of \autoref{offensive:results:fast}.
+The bottom row of \autoref{offensive:results:fast} highlights that fewer iterations are required to evade MINOS than VirusTotal through WebAssembly diversification, indicating a greater ease in eluding MINOS.
+The median iteration count needed to evade VirusTotal is 218 for the uncontrolled diversification setup, and 131 for the controlled diversification setup; however, only 38 iterations are needed for MINOS.
+Interestingly, WASM-MUTATE managed to evade detection for 8 out of 33 binaries in just a single iteration when testing against MINOS.
+This suggests the MINOS model's vulnerability to binary diversification. 
+We have also noted an interesting phenomenon.
+Based on our data, VirusTotal appears to outperform MINOS in terms of detecting cryptojacking. 
+The primary reason for this is VirusTotal's use of a wider array of antivirus vendors, encompassing several diverse detection approaches. 
+In contrast, MINOS operates as a standalone detector.
+Consequently, this supports the employment of multiple malware oracles (meta-oracles) for the detection of cryptojacking malware in browsers, even when using a Wasm-specific detection mechanism.
+
 
 
 
@@ -254,10 +255,12 @@ This shows that the MINOS model is fragile with respect to binary diversificatio
 %\msubsection{Efficiency and correctness results}
 
 \wrule{Performance} To evaluate the real-world efficacy of WASM-MUTATE in evading malware detection, we focused on six binaries that we could build and execute end-to-end, as these had all three components outlined in \autoref{fig:attack_crypto}. 
-For these binaries, we replace the original WebAssembly code with variants generated using VirusTotal as the malware oracle and WASM-MUTATE for both controlled and uncontrolled diversification configurations. 
+We select only six binaries because the process of building and executing the binaries involves three components. 
+As detailed in \autoref{fig:attack_crypto}, they include the \Was binary, its JavaScript complement, and the miner pool. 
+These components were not found for the remaining 27 binaries in the study subjects.
+For the six binaries, we then replace the original WebAssembly code with variants generated using VirusTotal as the malware oracle and WASM-MUTATE for both controlled and uncontrolled diversification configurations. 
 We then execute both the original and the generated variants. 
 We assessed the variants based on the hash generation rate.
-
 % Efficiency
 We have found that 19\% of the generated variants outperformed the original cryptojacking binaries. 
 This improvement is attributed to WASM-MUTATE's ability to introduce code optimizations. 

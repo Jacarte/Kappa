@@ -41,6 +41,8 @@ cd
 
 %\todo{The superoptimization paper is a foundation, yet, we do not generate diversity perse in that paper. Is there a need to mention the contributions explicitly in the table}
 
+\todo{Describe each one}
+
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 	\item \label{methodcontrib} \wrule{Experimental contribution:} We propose reproducible methodology for generating software diversification for \Wasm, the assessment of the generated diversity and the exploitation of the generated variants.
 	
@@ -52,22 +54,20 @@ cd
 	
 	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} We assess how generated \Wasm program variants could be used for offensive purposes, yet improving security systems.
 	
-	\item \label{artifactcontrib} \wrule{Software Artifacts:} We provide software artifacts for the research community to reproduce our results.
 \end{enumerate}
 
 \begin{table}
 	\centering
-	\begin{tabular}{l | l l l l l }
-		\multicolumn{1}{c|}{Contribution} & \multicolumn{5}{c}{Research papers} 
+	\begin{tabular}{l | l l l l }
+		\multicolumn{1}{c|}{Contribution} & \multicolumn{4}{c}{Research papers} 
 		\\
-		& \ref{superoptimizerpaper}  & \ref{crowpaper} & \ref{mewepaper} & \ref{wasmmutatepaper} & \ref{evasionpaper} \\
+		&  \ref{crowpaper} & \ref{mewepaper} & \ref{wasmmutatepaper} & \ref{evasionpaper} \\
 		\hline
-		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
-		\ref{therycontrib} Theoretical contribution & \checkmark & \checkmark &  &  \checkmark &  \\
-		\ref{generationcontrib} Diversity generation &  & \checkmark & \checkmark & \checkmark & \checkmark\\
-		\ref{defensivecontrib} Defensive diversification &  & \checkmark & \checkmark & \checkmark\\
-		\ref{ofensivecontrib} Offensive diversification & & & & & \checkmark\\
-		\ref{artifactcontrib} Software artifacts & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark
+		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark \\
+		\ref{therycontrib} Theoretical contribution  & \checkmark &  &  \checkmark &  \\
+		\ref{generationcontrib} Diversity generation   & \checkmark & \checkmark & \checkmark & \checkmark\\
+		\ref{defensivecontrib} Defensive diversification   & \checkmark & \checkmark & \checkmark\\
+		\ref{ofensivecontrib} Offensive diversification  & & & & \checkmark\\
 	\end{tabular}
 	\label{contribmap}
 	\caption{}
@@ -78,8 +78,6 @@ cd
 This compilation thesis comprises the following research papers.
 
 \begin{enumerate}[label={\textbf{P\arabic*}:}, ref={P\arabic*}]
-	\item \label{superoptimizerpaper} \textbf{Superoptimization of WebAssembly Bytecode.} \\ 
-	\wrule{Summary:} \lipsum[1]
 	\item \label{crowpaper} \textbf{CROW: Code randomization for WebAssembly bytecode.} \\ 
 	\wrule{Summary:} \lipsum[1]
 	\item \label{mewepaper} \textbf{Multivariant execution at the Edge. } \\ 
