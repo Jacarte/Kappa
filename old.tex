@@ -227,3 +227,8 @@ Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by includ
 \newtheorem{usage}{U}
 \providecommand*{\definitionautorefname}{\Unospace}
 \newcommand{\usageautorefname}{\Unospace}
+
+We have observed that some transformations can be applied in any order. 
+This means that different sequences of transformations can produce the same binary variant. 
+This often happens when two mutation targets inside the binary are different, such as two disjoint pieces of code.
+Therefore, a potential parallelization for the baseline algorithm is possible as soon as transformation sequences do not interfere with others.
