@@ -128,7 +128,7 @@ These are indicated by the green violinplots.
 For both programs, after applying 200 stacked transformations, the exfiltration bandwidth drops to zero.
 This implies that \tool is capable of synthesizing variants that are entirely protected from the original attack.
 If we consider the results in \autoref{comp:table:tools}, generating a variant with 200 stacked transformations can be accomplished in just a matter of seconds for a single \Wasm binary.
-When scaled to the scope of a global FaaS platform, this means that a unique, fortified variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
+When scaled to the scope of a global FaaS platform, this means that a unique, hardened variant could be deployed for each machine and even for each fresh \Wasm spawned per user request.
 
 \begin{figure}[h]
     \centering    
@@ -147,9 +147,9 @@ While both programs show signs of hardening through reduced attack bandwidth, th
 Additionally, the bandwidth distribution is more varied for these two programs compared to the two previous ones.
 Our analysis suggests a correlation between the reduction in attack bandwidth and the complexity of the binary being diversified. 
 Specifically, ret2spec and pht are substantially larger programs, containing over 300,000 instructions, compared to btb\_breakout and btb\_leakage, which have fewer than 800 instructions. 
-Therefore, given that WASM-MUTATE performs incremental transformations, the probability of affecting critical components to hinder attacks decreases in larger binaries.
+Therefore, given that WASM-MUTATE performs one transformation per invocation, the probability of affecting critical components to hinder attacks decreases in larger binaries.
 
-\wrule{Managed memory impact:} The success in diminishing exfiltration is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
+\wrule{Managed memory impact:} The success in diminishing Spectre attacks is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
 We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
 First, modifications to the binary layout—even those that do not affect executed code—inevitably alter memory accesses within the program's stack. 
 Specifically, \tool generates variants that modify the return addresses of functions, which consequently leads to differences in execution flow and memory accesses.
