@@ -195,14 +195,55 @@ This compilation thesis comprises the following research papers.
 
 \begin{enumerate}[label={\textbf{P\arabic*}:}, ref={P\arabic*}]
 	\item \label{crowpaper} \textbf{CROW: Code randomization for WebAssembly bytecode.} \\ 
-	\wrule{Summary:} \lipsum[1]
-	\item \label{mewepaper} \textbf{Multivariant execution at the Edge. } \\ 
-	\wrule{Summary:} \lipsum[1]
-	\item \label{wasmmutatepaper} \textbf{ Wasm-mutate: Fast and efficient software diversification for WebAssembly. }\\ 
-	\wrule{Summary:} \lipsum[1]
+	\textbf{Javier Cabrera-Arteaga}, Orestis Floros, Oscar Vera-Pérez, Benoit Baudry, Martin Monperrus\\
+	\textit{ Measurements, Attacks, and Defenses for the Web (MADWeb 2021), 12 pages} \\
+	\url{https://doi.org/10.14722/madweb.2021.23004}
+	
+	\wrule{Summary:} In this paper, we introduce the first entirely automated workflow for diversifying WebAssembly binaries. 
+	We present CROW, an open-source tool that implements software diversification through enumerative synthesis. 
+	We assess the capabilities of CROW and examine its application on real-world, security-sensitive programs.
+	In general, CROW can create statically diverse variants. 
+	Furthermore, we illustrate that the generated variants exhibit different behaviors at runtime.
+
+	
+	
+	\item \label{mewepaper} \textbf{Multivariant execution at the Edge. } \\
+	\textbf{Javier Cabrera-Arteaga},Pierre Laperdrix, Martin Monperrus, Benoit Baudry\\
+    \textit{Moving Target Defense (MTD 2022), 12 pages} \\
+    \url{https://dl.acm.org/doi/abs/10.1145/3560828.3564007} 
+	\wrule{Summary:} 
+	In this paper, we synthesize functionally equivalent variants of a deployed edge service. 
+	These variants are encapsulated into a single multivariant WebAssembly binary, 
+	When executing the service endpoint, a random variant is selected each time a function is invoked.
+	Execution of these multivariant binaries occurs on the global edge platform provided by Fastly, as part of a research collaboration. 
+	We demonstrate that these multivariant binaries present a diverse range of execution traces throughout the entire edge platform, distributed worldwide, effectively creating a moving target defense.
+
+	
+	\item \label{wasmmutatepaper}\textbf{Wasm-mutate: Fast and efficient software diversification for WebAssembly. }\\ 
+	\textbf{Javier Cabrera-Arteaga}, Nicholas Fitzgerald, Martin Monperrus, Benoit Baudry\\
+	\textit{Under review, 17 pages} \\
+	\url{https://arxiv.org/pdf/2309.07638.pdf}    
+
+	\wrule{Summary:}
+	%%IMPROVED
+	This paper introduces WASM-MUTATE, a compiler-agnostic WebAssembly diversification engine. 
+	The engine is designed to swiftly generate semantically equivalent yet behaviorally diverse WebAssembly variants by leveraging an e-graph. 
+	We show that WASM-MUTATE can generate tens of thousands of unique WebAssembly variants in mere minutes. 
+	Importantly, WASM-MUTATE can safeguard WebAssembly binaries from timing side-channel attacks, such as Spectre.
+
+
+
 	\item \label{evasionpaper} \textbf{WebAssembly Diversification for Malware evasion.} \\ 
-	\wrule{Summary:} \lipsum[1]
- 
+	\textbf{Javier Cabrera-Arteaga},Tim Toady, Martin Monperrus, Benoit Baudry\\
+	\textit{Computers \& Security, Volume 131, 2023, 17 pages} \\
+	\wrule{Summary:}  
+	\Wasm, while enhancing rich applications in browsers, also proves efficient in developing cryptojacking malware. 
+	The rise of cryptojacking malware has sparked numerous protective measures. 
+	However, these defenses have not factored in the potential use of evasion techniques by attackers. 
+	This paper delves into the potential of automatic binary diversification in aiding WebAssembly cryptojacking detectors' evasion. 
+	We provide proof that our diversification tools can generate variants of WebAssembly cryptojacking that successfully evade VirusTotal and MINOS. 
+	We further demonstrate that these generated variants introduce minimal performance overhead, thus verifying binary diversification as an effective evasion technique.
+
 \end{enumerate}
 
 
