@@ -35,7 +35,7 @@ Furthermore, even if a submitted \Wasm binary is not intentionally malicious, it
 For instance, a malicious actor could exploit this vulnerability by executing the susceptible binary through the FaaS service. 
 
 Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredictions, leading to the speculative execution of specific instruction sequences that are not part of the original, sequential execution flow. 
-By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance(including itself) or even the host process itself. 
+By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance (including itself) or even the host process itself. 
 This poses a significant risk, compromising both the security and integrity of the overall system.
 
 Narayan and colleagues \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
@@ -78,7 +78,7 @@ Our approach differs from theirs in that it is binary-based, compiler-agnostic, 
         \hline \hline
         btb\_breakout & Spectre branch target buffer (btb)  \\
         \hline
-         btb\_leakage & Spectre branch target buffer(btb)  \\
+         btb\_leakage & Spectre branch target buffer (btb)  \\
         \hline
          ret2spec &  Spectre Return Stack Buffer (rsb)  \\
         \hline
@@ -151,13 +151,13 @@ Therefore, given that WASM-MUTATE performs incremental transformations, the prob
 
 \wrule{Managed memory impact:} The success in diminishing exfiltration is explained by the fact that \tool synthesizes variants that effectively alter memory access patterns. 
 We have identified four primary factors responsible for the divergence in memory accesses among \tool generated variants.
-First, modifications to the binary layout—even those that don't affect executed code—inevitably alter memory accesses within the program's stack. 
+First, modifications to the binary layout—even those that do not affect executed code—inevitably alter memory accesses within the program's stack. 
 Specifically, \tool generates variants that modify the return addresses of functions, which consequently leads to differences in execution flow and memory accesses.
 Second, one of our rewriting rules incorporates artificial global values into \Wasm binaries. 
-Since these global variables are inherently manipulated via the stack, and given that the stack is located within linear memory, their access inevitably affects the managed memory (see \autoref{background:wasm:execution}).
-Third, \tool injects 'phantom' instructions which don't aim to modify the outcome of a transformed function during execution. 
+The access to these global variables inevitably affects the managed memory (see \autoref{background:wasm:execution}).
+Third, \tool injects 'phantom' instructions which do not aim to modify the outcome of a transformed function during execution. 
 These intermediate calculations trigger the spill/reload component of the wasmtime compiler, varying spill and reload operations. 
-In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses(see the example at \autoref{custom}).
+In the context of limited physical resources, these operations temporarily store values in memory for later retrieval and use, thus creating diverse managed memory accesses (see the example at \autoref{custom}).
 Finally, certain rewriting rules implemented by WASM-MUTATE replicate fragments of code, e.g., performing commutative operations. 
 These code segments may contain memory accesses, and while neither the memory addresses nor their values change, the frequency of these operations does.
 

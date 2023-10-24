@@ -57,7 +57,7 @@ Notice that the condition specified in the last part of the rewriting rule ensur
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
-Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{constant_folding}, it stresses on the spill/reload component of the compiler when the \Wasm binary is transpiled to machine code.
+Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{constant_folding}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
 Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
 The unfold rewriting rule indirectly stresses this segment of memory. 
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.

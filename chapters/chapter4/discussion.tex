@@ -8,22 +8,22 @@ This implies that not all transformations contribute equally to the diversificat
 \wrule{Preservation:}
 Some transformations yield distinct \Wasm binaries, yet their JIT compilation produces identical machine code.
 Non-preserved transformations undermine the effectiveness of diversification, as discussed in \autoref{discussion}.
-Incorporating random \texttt{nop} operations directly into \Wasm, for instance, does not alter the final machine code because JIT compilers frequently eliminate these \texttt{nop} operations.
+Incorporating random \texttt{nop} operations directly into \Wasm, for instance, does not alter the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
 This phenomenon is also observed with transformations to the custom sections of \Wasm binaries.
 Identical machine code, even when their \Wasm variants are different, can be detected by malware detectors.
 For practitioners, malware detection tools can be enhanced by incorporating a pre-compilation step to normalize \Wasm binaries.
 Besides, developers could focus on transformations that preserve the machine code, as they are more likely to contribute to the diversification objectives, e.g., evasion.
-On the other hand, side-channel attacks occur at the machine code level, making \Wasm variants preservation essential code for successful diversification.
-If the machine code is preserved, the side-channel attack will not be effective against the \Wasm variant.
+On the other hand, side-channel attacks occur at the machine code level.
+Thus, making \Wasm variants preservation is essential code for successful defensive diversification, i.e., if the machine code is preserved, the side-channel attack will not be effective against the \Wasm variant.
 
 
-\wrule{Dead code addition:} 
-Transformed code may not always execute. 
-For example, Software Diversification might generate dead code or introduce a new function that the original program does not execute. 
-This is beneficial for static analysis, whether for avoiding reverse engineering or proving static malware detection. 
-However, dynamic analysis tools can identify this type of variant, e.g., this might reduce the effectiveness of evasion. 
-Furthermore, the inclusion of non-executing dead code does not affect side-channels.
-When the variant executes, it behaves identically to the original program, thereby not strengthening against potential attacks.
+%\wrule{Dead code addition:} 
+%Transformed code may not always execute. 
+%For example, Software Diversification might generate dead code or introduce a new function that the original program does not execute. 
+%This is beneficial for static analysis, whether for avoiding reverse engineering or proving static malware detection. 
+%However, dynamic analysis tools can identify this type of variant, e.g., this might reduce the effectiveness of evasion. 
+%Furthermore, the inclusion of non-executing dead code does not affect side-channels.
+%When the variant executes, it behaves identically to the original program, thereby not strengthening against potential attacks.
  
 % More fine grained
 \wrule{Disrupting timers:} Cache timing side-channel attacks, including for the four binaries analyzed in \autoref{exploit:defensive}, depend on precise timers to measure cache access times. 
