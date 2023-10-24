@@ -5,12 +5,6 @@
 
 
 
-This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
-First, Software Diversification could expand the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
-Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
-Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
-Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
-
 
 Software Diversification has been extensively studied in recent decades. 
 This section explores its current state of the art. 
@@ -26,14 +20,23 @@ This section presents related works, emphasizing how they generate diversificati
 
 % - \todo{For fault tolerance: System structure for software fault tolerance} \cite{10.1145/390016.808467}
 
+%%ORIGINAL
 \msubsection{Generation of Software Variants}
-
 Software variants are functionally equivalent versions of an original program, created through software diversification at different stages of the software lifecycle, such as the source code or machine code levels. 
-The diversification can be either natural \cite{natural_diversity}, arising spontaneously but requiring significant human effort, or artificial \cite{offensive_div}, which is automated and the focus of our work in the context of \Wasm.
-The concept of software variants dates back to Randell's 1975 work \cite{10.1145/390016.808467}, which introduced the idea of fault-tolerant instruction blocks. Later, artificial software diversification was further developed through rewriting strategies, as proposed by Cohen and similarly by Forrest in the 1990s \cite{cohen1993operating, 595185}. 
-These strategies consist of rule sets for altering software components to create functionally equivalent but distinct programs. 
+The diversification can be either natural \cite{natural_diversity} or artificial \cite{offensive_div}.
+Natural diversity denotes the innate process wherein humans create software variants using various programming languages, compilers, and operating systems \cite{natural_diversity}, all adhering to the same initial functional requirements.
+As an example, varying versions of the Linux kernel exemplify natural diversity, given their practical differences.
+Natural diversity plays a crucial role in securing systems, as different variants are not susceptible to identical vulnerabilities.
+However, it is an unviable solution for software security, as ensuring functional equivalence among different versions of the program is impossible. Creating natural software variants demands a significant amount of human effort and time. 
+This makes it impractical for new ecosystems such as \Wasm.
+
+
+The concept of artificial software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
+Artificial software diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
+These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
+Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent replacement.
 Our work builds on these foundational studies and focuses on artificial diversification techniques, particularly for \Wasm, drawing insights from significant works by Baudry \etal \cite{natural_diversity} and Jackson \etal \cite{jackson}.
-In the following, we group the major strategies used to artificially generate software variants and their current state with respect to \Wasm.
+In the following, we group the major strategies used to artificially generate software variants and their current state concerning \Wasm.
 
 
 \wrule{Replacement of Equivalent Instructions:}
