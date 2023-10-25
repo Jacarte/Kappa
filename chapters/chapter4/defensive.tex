@@ -31,12 +31,9 @@ In the sections that follow, we explore how software diversification techniques 
 To illustrate the threat model concerning \Wasm programs in FaaS platforms, consider the following scenarios. 
 Developers, including potentially malicious actors, have the ability to submit any \Wasm binary to the FaaS platform. 
 A malicious actor could then upload a \Wasm binary that, once compiled to native code, employs Spectre attacks to either leak sensitive information from the host process or violate Control Flow Integrity (CFI).
-Furthermore, even if a submitted \Wasm binary is not intentionally malicious, it may still be vulnerable to Spectre attacks. 
-For instance, a malicious actor could exploit this vulnerability by executing the susceptible binary through the FaaS service. 
-
 Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredictions, leading to the speculative execution of specific instruction sequences that are not part of the original, sequential execution flow. 
-By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance (including itself) or even the host process itself. 
-This poses a significant risk, compromising both the security and integrity of the overall system.
+By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to other \Wasm instance (including itself) or even the host process. 
+Therefore, this poses a significant risk for the overall execution system.
 
 Narayan and colleagues \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
 
