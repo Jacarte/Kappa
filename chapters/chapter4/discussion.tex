@@ -6,16 +6,14 @@ In \autoref{exploit:defensive}, we have noted an increasing trend of exfiltratio
 We observed that the preservation of variants is the primary cause of such phenomena. 
 Consistently, this challenge has emerged during our provision of Software Diversification to \Wasm.
 
+Preservation refers to the ability of a transformation at the \Wasm level to maintain the machine code of the original \Wasm program.
+On the other hand, some transformations result in distinct \Wasm binaries, yet identical machine code is produced upon their JIT compilation.
+Transformations that are not preserved can compromise the effectiveness of diversification.
+Consider, for instance, the inclusion of random \texttt{nop} operations directly into \Wasm. 
+Our experiments show that this does not change the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
+This phenomenon is similarly noticed with transformations to the custom sections of \Wasm binaries.
 
-\begin{strategy}[Preservation]    
-    Some transformations yield distinct \Wasm binaries, yet their JIT compilation produces identical machine code.
-    Non-preserved transformations undermine the effectiveness of diversification.
-    For example, incorporating random \texttt{nop} operations directly into \Wasm, does not alter the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
-    This phenomenon is also observed with transformations to the custom sections of \Wasm binaries.
-\end{strategy}
-
-
-For example, in the context of \Wasm malware detection, this means that identical machine code, even when their \Wasm variants are different, can be detected by malware detectors.
+In the context of \Wasm malware detection, this means that identical machine code, even when their \Wasm variants are different, can be detected by malware detectors.
 For practitioners, malware detection tools can be enhanced by incorporating a pre-compilation step to normalize \Wasm binaries.
 To the best of our knowledge, the current antivirus do not do this process.
 Besides, developers could focus on transformations that preserve the machine code, as they are more likely to contribute to the diversification objectives, e.g., evasion.

@@ -9,6 +9,8 @@
 
 \lettrine[lines=3]{I}{n} this chapter, we illustrate the application of Software Diversification for both offensive and defensive purposes.
 We discuss two selected use cases that demonstrate practical applications of our contributions.
+Additionally, we discuss the challenges and benefits arising from the application of Software Diversification to \Wasm.
+
 
 
 
@@ -20,14 +22,13 @@ We discuss two selected use cases that demonstrate practical applications of our
 % \input{chapters/chapter4/threats_to_validity.tex}
 
 \section*{Conclusions}
+In this chapter, we explore Offensive and Defensive Software Diversification applied to \Wasm.
+Offensive Software Diversification highlights both the potential and the latent security risks in applying Software Diversification to \Wasm malware. 
+Our findings suggest potential enhancements to the automatic detection of cryptojacking malware in WebAssembly, e.g., by stressing their resilience with \Wasm malware variants. 
+Conversely, Defensive Software Diversification serves as a proactive guard, specifically designed to mitigate the risks associated with Spectre attacks. 
 
-In this chapter, we discuss two sides of Software Diversification as applied to \Wasm: Offensive Software Diversification and Defensive Software Diversification.
-Offensive Software Diversification underscores both the capabilities and the latent security risks inherent in applying Software Diversification to \Wasm malware.
-Our research indicates that there are ways for enhancing the automated detection of cryptojacking malware in WebAssembly, e.g. by stressing their resilience with \Wasm malware variants.
-On the other hand, Defensive Software Diversification acts as a preemptive safeguard, specifically to mitigate the risks posed by Spectre attacks.
-
-While we did not cover all possible scenarios for the use of our tools, we have experimented with other use cases. 
-For example, CROW excels at generating \Wasm variants that reduce noise in side-channels, thus strengthening against potential attacks. 
-Conversely, the deployment of multivariants out of MEWE can prevent high-level timing-based side-channels \cite{morgan2015web}. 
-Specifically, we have experimented with the round-trip times of the generated multivariants and concluded that, at a high level, variants cannot be discriminated by collecting this timing side-channel information. 
-In the following chapter, we will consolidate the main conclusions of this dissertation and outline directions for future research.
+Moreover, we have conducted experiments with various use cases that are not shown in this chapter.
+For instance, CROW excels in generating \Wasm variants that minimize side-channel noise, thereby bolstering defenses against potential side-channel attacks. 
+Alternatively, deploying multivariants from MEWE can thwart high-level timing-based side-channels \cite{morgan2015web}. 
+Specifically, we conducted experiments on the round-trip times of the generated multivariants and concluded that, at a high level, the timing side-channel information cannot discriminate between variants. 
+In the subsequent chapter, we will summarize the primary conclusions of this dissertation and propose avenues for future research.
