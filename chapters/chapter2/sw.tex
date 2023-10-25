@@ -174,53 +174,61 @@ Program variants, once generated and verified, may be utilized in two primary sc
 Additionally, these variants serve both defensive and offensive purposes \cite{offensive_div}.
 
 
-\wrule{Randomization:}
-In the context of our work, the term \emph{Randomization} denotes a program's ability to present different variants to different clients. 
-In this setup, a program, chosen from a collection of variants (referred to as the program's variant pool), is assigned to a random client during each deployment. 
-Jackson \etal \cite{jackson} define the variant pool in Randomization as herd immunity, as vulnerable binaries can only affect a segment of the client community. 
-El-Khalil and colleagues \cite{ElKhalil2004} suggest employing a custom compiler to generate varying binaries from the compilation process. 
-They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
-Similarly, Singhal and colleagues, propose Cornucopia \cite{cornucopia}.
-Cornucopia generates multiple variants of a program by using different compiler flag combinations.
-Aga and colleagues \cite{aga2019smokestack}, contributing to this discussion, propose the generation of program variants through the randomization of its data layout in memory. 
-This method allows each variant to operate on the same data in memory but at different memory offsets. 
-Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
-In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
+\begin{strategy}[Randomization]
+    \label{randomization}
+    In the context of our work, the term \emph{Randomization} denotes a program's ability to present different variants to different clients. 
+    In this setup, a program, chosen from a collection of variants (referred to as the program's variant pool), is assigned to a random client during each deployment. 
+    Jackson \etal \cite{jackson} define the variant pool in Randomization as herd immunity, as vulnerable binaries can only affect a segment of the client community. 
+    El-Khalil and colleagues \cite{ElKhalil2004} suggest employing a custom compiler to generate varying binaries from the compilation process. 
+    They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
+    Similarly, Singhal and colleagues, propose Cornucopia \cite{cornucopia}.
+    Cornucopia generates multiple variants of a program by using different compiler flag combinations.
+    Aga and colleagues \cite{aga2019smokestack}, contributing to this discussion, propose the generation of program variants through the randomization of its data layout in memory. 
+    This method allows each variant to operate on the same data in memory but at different memory offsets. 
+    Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
+    In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
+\end{strategy}
 
 
-\wrule{Multivariant Execution (MVE):}
-Multiple program variants are composed into a single binary, known as a multivariant binary \cite{cox06}. 
-Each multivariant binary is randomly deployed to a client.
-Then, the multivariant binary executes its embedded program variants at runtime. 
-These embedded variants can either execute in parallel to check for inconsistencies, or as a single program to randomize execution paths \cite{bhatkar03}. 
-Bruschi and colleagues extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
-At the same time, Salamat \etal modifies a standard library to generate 32-bit Intel variants. 
-These variants have a stack that grows in the opposite direction, allowing for the detection of memory inconsistencies \cite{salamat2007stopping}. 
-Davi and colleagues propose Isomeron, an approach for execution-path randomization \cite{davi2015isomeron}. 
-Isomeron operates by simultaneously loading the original program and a variant. 
-It then uses a coin flip to determine which copy of the program to execute next at the function call level. 
-Previous works have highlighted the benefits of limiting execution to only two variants in a multivariant environment. 
-Agosta and colleagues, as well as Crane and colleagues, used more than two generated programs in the multivariant composition, thereby randomizing software control flow at runtime \cite{agosta2015meet, crane2015thwarting}. 
-Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
-Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
+\begin{strategy}[Multivariant Execution (MVE)]
+    Multiple program variants are composed into a single binary, known as a multivariant binary \cite{cox06}. 
+    Each multivariant binary is randomly deployed to a client.
+    Then, the multivariant binary executes its embedded program variants at runtime. 
+    These embedded variants can either execute in parallel to check for inconsistencies, or as a single program to randomize execution paths \cite{bhatkar03}. 
+    Bruschi and colleagues extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
+    At the same time, Salamat \etal modifies a standard library to generate 32-bit Intel variants. 
+    These variants have a stack that grows in the opposite direction, allowing for the detection of memory inconsistencies \cite{salamat2007stopping}. 
+    Davi and colleagues propose Isomeron, an approach for execution-path randomization \cite{davi2015isomeron}. 
+    Isomeron operates by simultaneously loading the original program and a variant. 
+    It then uses a coin flip to determine which copy of the program to execute next at the function call level. 
+    Previous works have highlighted the benefits of limiting execution to only two variants in a multivariant environment. 
+    Agosta and colleagues, as well as Crane and colleagues, used more than two generated programs in the multivariant composition, thereby randomizing software control flow at runtime \cite{agosta2015meet, crane2015thwarting}. 
+    Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
+    Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
+\end{strategy}
 
+\begin{strategy}[Defensive Diversification]
 
-\wrule{Defensive Diversification:}
-Lundquist and colleagues \cite{offensive_div} separate the usages of Software diversification into two categories: Defensive Software Diversification and Offensive Software Diversification.
-Defensive Software Diversification is the traditional application of previously discussed techniques aimed at enhancing the security and reliability of software systems.
-The core idea is to make it more difficult for attackers to predict the system's behavior and exploit program vulnerabilities. 
-By doing so, even if an attacker manages to compromise one variant, the others may remain secure, thereby limiting the potential impact of the attack.
-Defensive diversification is often complementary with other security measures, such as encryption and intrusion detection systems, to create a multi-layered defense strategy \cite{cryptography4020013}. 
-%By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
+    Lundquist and colleagues \cite{offensive_div} separate the usages of Software diversification into two categories: Defensive Software Diversification and Offensive Software Diversification.
+    Defensive Software Diversification is the traditional application of previously discussed techniques aimed at enhancing the security and reliability of software systems.
+    The core idea is to make it more difficult for attackers to predict the system's behavior and exploit program vulnerabilities. 
+    By doing so, even if an attacker manages to compromise one variant, the others may remain secure, thereby limiting the potential impact of the attack.
+    Defensive diversification is often complementary with other security measures, such as encryption and intrusion detection systems, to create a multi-layered defense strategy \cite{cryptography4020013}. 
+    %By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
+        
+\end{strategy}
 
-\wrule{Offensive Diversification:}
-Offensive Software Diversification uses the principles of software diversification.
-Yet, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{8714698}.
-For example, in the context of \wasm, the seminal work of Romano et al.  \cite{wobfuscator} proposed to intermix JavaScript and \wasm code to obfuscate JavaScript malware and make it more difficult to analyze for malware detectors.
-The obfuscated version of the code is functionally equivalent to the original, being, in practice, Offensive Software Diversification.
-Notice that, this method also measures the resilience and accuracy of security systems.
-However, obfuscation studies have exposed their shortcomings, revealing an almost unexplored area for \Wasm that threatens malware detection accuracy.
-In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
+\begin{strategy}[Offensive Diversification]    
+
+    Offensive Software Diversification uses the principles of software diversification.
+    Yet, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{8714698}.
+    For example, in the context of \wasm, the seminal work of Romano et al.  \cite{wobfuscator} proposed to intermix JavaScript and \wasm code to obfuscate JavaScript malware and make it more difficult to analyze for malware detectors.
+    The obfuscated version of the code is functionally equivalent to the original, being, in practice, Offensive Software Diversification.
+    Notice that, this method also measures the resilience and accuracy of security systems.
+    However, obfuscation studies have exposed their shortcomings, revealing an almost unexplored area for \Wasm that threatens malware detection accuracy.
+    In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
+    
+\end{strategy}
 
 \msubsection{Open challenges}
 \label{sota:openchallenges}
