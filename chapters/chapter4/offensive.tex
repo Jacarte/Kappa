@@ -62,6 +62,8 @@ Specifically, we assess whether the following evasion workflow can successfully 
 
 \msubsection{Methodology}
 
+Our aim is to validate, empirically, the effectiveness of Offensive Software Diversification in evading malware detection systems.
+To achieve this, we employ WASM-MUTATE for generating \Wasm malware variants, with the goal of evading.
 In this study, we categorize malware detection mechanisms as malware oracles, which can be of two types: binary and numeric. 
 A binary oracle provides a binary decision, labeling a \Wasm binary as either malicious or benign. 
 In contrast, a numeric oracle returns a numerical value representing the confidence level of the detection.
@@ -79,7 +81,7 @@ It returns a binary decision, making it a binary oracle.
 
 
 We use the wasmbench dataset \cite{Hilbig2021AnES} to establish a ground truth. 
-After running the wasmbench dataset through VirusTotal and MINOS, we identify 33 binaries: 1)flagged as malicious by at least one VirusTotal vendor and 2) also detected by MINOS.
+After running the wasmbench dataset through VirusTotal and MINOS, we identify 33 binaries that are: 1) flagged as malicious by at least one VirusTotal vendor and, 2) are also detected by MINOS.
 Then, to simulate the evasion scenario, we use WASM-MUTATE to generate \Wasm binary variants to evade malware detection.
 We use WASM-MUTATE in two configurations: controlled and stochastic diversification.
 
@@ -99,7 +101,7 @@ Based on the two types of malware oracles and diversification configurations, we
 1) VirusTotal with a feedback-guided diversification, 2) VirusTotal with an stochastic diversification, and 3) MINOS with a stochastic diversification.
 Notice that, the fourth scenario with MINOS and a feedback-guided diversification is not feasible, as MINOS is a binary oracle and cannot provide the numerical values required for feedback-guided diversification.
 
-Our evaluation focuses on two key metrics: the success rate of evading detection mechanisms in VirusTotal and MINOS across the 33 flagged binaries, and the performance impact on the variants that successfully evade detection.
+Our evaluation focuses on three key metrics: the success rate of evading detection mechanisms in VirusTotal and MINOS across the 33 flagged binaries, the correctness of the generated variants, and the performance impact on the variants that successfully evade detection.
 The first metric measures the efficacy of WASM-MUTATE in bypassing malware detection systems. 
 For each flagged binary, we input it into WASM-MUTATE, configured with the selected oracle and diversification strategy. 
 We then iteratively apply transformations to the output from the preceding step. 

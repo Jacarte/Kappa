@@ -9,8 +9,8 @@ Consistently, this challenge has emerged during our provision of Software Divers
 
 \begin{strategy}[Preservation]    
     Some transformations yield distinct \Wasm binaries, yet their JIT compilation produces identical machine code.
-    Non-preserved transformations undermine the effectiveness of diversification, as discussed in \autoref{discussion}.
-    Incorporating random \texttt{nop} operations directly into \Wasm, for instance, does not alter the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
+    Non-preserved transformations undermine the effectiveness of diversification.
+    For example, incorporating random \texttt{nop} operations directly into \Wasm, does not alter the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
     This phenomenon is also observed with transformations to the custom sections of \Wasm binaries.
 \end{strategy}
 
