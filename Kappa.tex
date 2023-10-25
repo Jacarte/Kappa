@@ -98,6 +98,35 @@
 \newtheorem{note}{Note}
 \providecommand*{\noteautorefname}{Note}
 
+% Commands to refer to the milestones
+\newtheoremstyle{sota}% name of the style to be used
+  {.5\baselineskip±.2\baselineskip}% measure of space to leave above the theorem. E.g.: 3pt
+  {.5\baselineskip±.2\baselineskip}% measure of space to leave below the theorem. E.g.: 3pt
+  {\addtolength{\leftskip}{3mm}}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {}% punctuation between head and body
+  {}% space after theorem head; " " = normal interword space
+  {{\thmnote{#3: }}}
+
+\def\Snospace~{S{}}
+\theoremstyle{sota}
+\newtheorem{strategy}{S}
+\providecommand*{\definitionautorefname}{\Snospace}
+\newcommand{\strategyautorefname}{\Snospace}
+
+\def\Cnospace~{C{}}
+\theoremstyle{sota}
+\newtheorem{checking}{C}
+\providecommand*{\definitionautorefname}{\Cnospace}
+\newcommand{\checkingautorefname}{\Cnospace}
+
+% FIXME: the link is only set to the label name :(
+\makeatletter
+\renewcommand{\mnameref}[2]{%
+  \nameref{#1} in \autoref{#2} 
+}
+\makeatother
 
 \newtheorem{property}{Property}
 \providecommand*{\propertyautorefname}{Property}
