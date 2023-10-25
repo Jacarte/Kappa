@@ -19,6 +19,16 @@ MEWE provides dynamic execution path randomization by packaging variants generat
 Finally WASM-MUTATE, uses hand-made rewriting rules and random traversals over e-graphs to provide a binary-based solution for \Wasm diversification.
 
 
+CROW is a compiler-based strategy, needing access to the source code or its LLVM IR representation to work. 
+Its core is an enumerative synthesis implementation with functionallity verification using SMT solvers, ensuring the functional equivalence of the generated variants.
+In addition, MEWE extends the capabilities of CROW, utilizing the same underlying technology to create program variants. 
+It goes a step further by packaging the LLVM IR variants into a Wasm multivariant, providing MVE through execution path randomization.
+Both CROW and MEWE are fully automated, requiring no user intervention besides the input source code.
+WASM-MUTATE, on the other hand, is a binary-based tool.
+It uses a set of rewriting rules and the input \wasm binary to generate program variants, centralizing its core around random e-graph traversals. 
+Remarkably, WASM-MUTATE removes the need for compiler adjustments, offering compatibility with any existing \Wasm binary. 
+
+
 
 \todo{Wrapping up of the technical contributions and main challenges per tool. We provide all our tools}
 

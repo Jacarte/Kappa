@@ -44,7 +44,7 @@ Because of these problems, the Web Consortium (W3C) standardized in 2017 a bytec
 
 % Describe WebAssembly
 Wasm is designed to be fast, portable, self-contained, and secure \cite{Haas_2017}.
-All Wasm programs are compiled ahead-of-time from source languages such as C/C++ and Rust.
+All \Wasm programs are compiled ahead-of-time from source languages such as C/C++ and Rust.
 Wasm is created by third-party compilers that might include optimizations like in the case of LLVM.  
 The Wasm language defines its Instruction Set Architecture \cite{wasm_spec} as an abstraction close to machine code instructions but agnostic to CPU architectures. Thus,  web browsers can use it to rapidly compile to the target architectures in a one-to-one translation process.
 
@@ -157,10 +157,10 @@ For \wasm, no software diversification solution has been proposed, primarily due
 
 %\todo{The superoptimization paper is a foundation, yet, we do not generate diversity perse in that paper. Is there a need to mention the contributions explicitly in the table}
 
-\todo{Describe each one}
+In the space of Software Diversification we make the following contributions.
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
-	\item \label{methodcontrib} \wrule{Experimental contribution:} We propose reproducible methodology for generating software diversification for \Wasm, the assessment of the generated diversity and the exploitation of the generated variants.
+	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
 	
 	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to improve Software Diversification for \Wasm.
 	

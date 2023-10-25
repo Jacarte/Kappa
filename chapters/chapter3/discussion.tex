@@ -16,7 +16,7 @@ Notice that, the data and insights presented in the table are sourced from the r
 CROW is a compiler-based strategy, needing access to the source code or its LLVM IR representation to work. 
 Its core is an enumerative synthesis implementation with functionallity verification using SMT solvers, ensuring the functional equivalence of the generated variants.
 In addition, MEWE extends the capabilities of CROW, utilizing the same underlying technology to create program variants. 
-It goes a step further by packaging the LLVM IR variants into a Wasm multivariant, providing MVE through execution path randomization.
+It goes a step further by packaging the LLVM IR variants into a  \Wasm multivariant, providing MVE through execution path randomization.
 Both CROW and MEWE are fully automated, requiring no user intervention besides the input source code.
 WASM-MUTATE, on the other hand, is a binary-based tool.
 It uses a set of rewriting rules and the input \wasm binary to generate program variants, centralizing its core around random e-graph traversals. 
@@ -59,7 +59,7 @@ High preservation is especially important where the preservation of the diversif
             MEWE & Source code or LL
             VM Ir & CROW, Multivariant execution  & > 1k & Code and Function sections  & \textbf{96\%} & Hinders static and dynamic analysis, reverse engineering and, web timing-based attacks.  \\
             \hline
-            WASM-MUTATE &  \textbf{Wasm binary} & hand-made rewriting rules, e-graph random traversals & \textbf{> 10k}  & \textbf{Any Wasm section}  & 76\% & Hinders signature-based identification, and cache timing side-channel attacks. \\
+            WASM-MUTATE &  \textbf{Wasm binary} & hand-made rewriting rules, e-graph random traversals & \textbf{> 10k}  & \textbf{All \Wasm sections}  & 76\% & Hinders signature-based identification, and cache timing side-channel attacks. \\
             
         \end{tabular}
         \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, strength of the generated variants, and the security applications of these variants. 
