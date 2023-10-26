@@ -277,15 +277,13 @@ The final row offers the median number of transformations required for evasion a
 %\todo{Do those results hold only for Spectre? do they generalize to other attacks? do you recommend binary diversification for any Wasm build pipeline as an hardening technique? how far are we from that?}
 
 \begin{tcolorbox}[title=Reflection,boxrule=1pt,arc=.2em,boxsep=1.0mm]
-    Our experiments conclusively demonstrate that WASM-MUTATE can effectively circumvent malware detection systems within mere minutes. 
+    Our experiments conclusively demonstrate that WASM-MUTATE can effectively circumvent malware detection systems. 
     A possible key factor behind this is a misguided perception of resilience. 
     While malware detection is a hard-known problem, we have seen that prior research on WebAssembly malware detection erroneously presumes the absence of obfuscation techniques for \Wasm. 
     MINOS and VirusTotal serve as tangible examples. 
-    As explored in \autoref{sota:sw}, a software diversification engine can potentially function as an obfuscator. 
-    The previously discussed use case demonstrates that the assumption of non-existing obfuscators may not necessarily be correct.
-    Moreover, we determined that employing meta-oracles seems to be a promising approach for detecting \Wasm malware. 
-    Ultimately, our findings suggest that feedback-guided diversification is more efficient than stochastic diversification, requiring fewer transformations to avoid detection.
-    
+    As explored in \autoref{sota:sw}, a software diversification engine can potentially function as an obfuscator. %%ORIGINAL
+    The use case previously discussed suggests that the assumption of non-existing obfuscators may be incorrect.
+    %Ultimately, our findings suggest that feedback-guided diversification is more efficient than stochastic diversification, requiring fewer transformations to avoid detection.    
 \end{tcolorbox}
 
 

@@ -212,10 +212,10 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
 
     The memory obliviousness of the diversification engines does not diminish our results on memory-related behavior for \Wasm variants. 
     For example, neither CROW nor MEWE directly modify memory accesses in the way that WASM-MUTATE does.
-    Yet, they do alter the memory behavior during variant executions. 
-    In the previous discussion of memory impact, the key lies in the change in \Wasm binary layout. 
+    Yet, generated variants have different memory behaviors during execution. 
+    In the previous discussion of memory impact, the key lies in the change to the \Wasm binary layout. 
     A different \Wasm binary layout ends up in a different machine code layout, hosted in a different memory location in the host process.
-    This change is the first inherent property of our diversification engines and significantly affects memory accesses, despite not explicitly targeting the \Wasm binary's memory model. 
+    This change is the first inherent property of our diversification engines and significantly affects memory behaviors. 
     Upon deeper reflection, one could argue that diversification slightly above the machine code level can effectively modify the memory behavior of variants.
 
 \end{tcolorbox}
