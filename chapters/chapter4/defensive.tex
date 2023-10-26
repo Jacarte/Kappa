@@ -165,7 +165,7 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
 
 \begin{strategy}[Padding speculated instructions]
     CPUs have a limit on the number of instructions they can cache. 
-    Besides the effectiveness of the created variants, another key reason is that WASM-MUTATE injects instructions to exceed this limit. 
+    WASM-MUTATE injects instructions to exceed this limit. 
     This effectively disables the speculative execution of memory accesses.
     This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
     This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
