@@ -4,13 +4,12 @@
 In \autoref{exploit:defensive}, we have noted an increasing trend of exfiltration bandwidth in certain variants. 
 \autoref{offensive_app} presents a similar case, indicating that without a clear objective in the diversification process, stochastic diversification can be counterproductive. 
 We observed that the preservation of variants is the primary cause of such phenomena. 
-Consistently, this challenge has emerged during our provision of Software Diversification to \Wasm.
 
 Preservation refers to the ability of a transformation at the \Wasm level to maintain the machine code of the original \Wasm program.
-On the other hand, some transformations result in distinct \Wasm binaries, yet identical machine code is produced upon their JIT compilation.
+In concrete, some transformations result in distinct \Wasm binaries, yet identical machine code is produced upon their JIT compilation.
 Transformations that are not preserved can compromise the effectiveness of diversification.
-Consider, for instance, the inclusion of random \texttt{nop} operations directly into \Wasm. 
-Our experiments show that this does not change the final machine code because JIT compilers typically eliminate these \texttt{nop} operations.
+For instance, the inclusion of random \texttt{nop} operations directly into \Wasm. 
+Our experiments show that this specific transformation does not change the final machine code because JIT compilers typically eliminate \texttt{nop} operations.
 This phenomenon is similarly noticed with transformations to the custom sections of \Wasm binaries.
 
 In the context of \Wasm malware detection, this means that identical machine code, even when their \Wasm variants are different, can be detected by malware detectors.
@@ -22,36 +21,10 @@ On the other hand, side-channel attacks occur at the machine code level.
 Preserving \Wasm variants is thus essential for successful defensive diversification. 
 If the machine code for the generated variants is preserved, the original \Wasm program's side-channel attack is not effective against the variant.
 
-\msection{Intrinsic benefits of diversification for \Wasm}
-\label{exploit:discussion_good}
+%\msection{Intrinsic benefits of diversification for \Wasm}
+%\label{exploit:discussion_good}
 
-In the following, we elaborate on two concrete security benefits that our contributions provide to \Wasm variants through diversification.
+%In the following, we elaborate on two concrete security benefits that our contributions provide to \Wasm variants through diversification.
  
-% More fine grained
-\begin{strategy}[Disrupting timers]
-    Cache timing side-channel attacks, including for the four binaries analyzed in \autoref{exploit:defensive}, depend on precise timers to measure cache access times. 
-    Disrupting these timers can effectively neutralize the attack \cite{JStimers}. 
-    Our techniques create variants that offer a similar approach.
-    Our \Wasm variants introduce perturbations in the timing steps of \Wasm variants. 
-    This is illustrated in \autoref{example:timer} and \autoref{example:timer2}, where the former shows the original time measurement and the latter presents a variant with introduced operations.
-    By introducing additional instructions, the inherent randomness in the time measurement of a single or a few instructions is amplified, thereby reducing the timer's accuracy.
-
-\end{strategy}
-
-\input{snippets/spectre/timer}
-
-\begin{strategy}[Padding speculated instructions]
-    CPUs have a limit on the number of instructions they can cache. 
-    Our techniques inject instructions to exceed this limit, effectively disabling the speculative execution of memory accesses. 
-    This approach is akin to padding \cite{padding}, as demonstrated in \autoref{example:padding} and \autoref{example:padding2}.
-    This padding disrupts the binary code's layout in memory, hindering the attacker's ability to initiate speculative execution. 
-    Even if speculative execution occurs, the memory access does not proceed as the attacker intended.
-    
-\end{strategy}
-
-
-
-\input{snippets/spectre/padding}
-    
 
 

@@ -88,7 +88,7 @@ This high level of preservation significantly mitigates the risks associated wit
 For instance, if a \Wasm binary is transformed in such a manner that its resulting machine code instructions differ from the original, it becomes more challenging for a side-channel attack. 
 Conversely, if the compiler translates the variant into machine code that closely resembles the original, the side-channel attack could still exploit those instructions to extract information about the original \Wasm binary.
 
-Altering the layout of a \Wasm program inherently influences its managed memory during runtime (see \autoref{managed_unmanaged}).
+Altering the layout of a \Wasm program inherently influences its managed memory during runtime (see \autoref{background:wasm:execution}).
 This phenomenon is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
 Significantly, CROW and MEWE considerably alter the managed memory by modifying the layout of the \Wasm program.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
