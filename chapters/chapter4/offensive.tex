@@ -259,7 +259,7 @@ The final row offers the median number of transformations required for evasion a
 \end{strategy}
     
 %\msubsection{Efficiency and correctness results}
-
+\vspace{5mm}
 \begin{strategy}[\Wasm variants correctness]
     \label{evasion_impact}
     To evaluate the correctness of the malware variants created with WASM-MUTATE, we focused on six binaries that we could build and execute end-to-end, as these had all three components outlined in \autoref{fig:attack_crypto}. 
@@ -271,6 +271,8 @@ The final row offers the median number of transformations required for evasion a
     Our findings show that all variants generated with WASM-MUTATE are correct, i.e., they generate the correct hashes and execute without error.
     Additionally, we found that 19\% of the generated variants surpassed the original cryptojacking binaries in performance.
 \end{strategy}
+
+% what's missing is to take a step back: what do those results validate? Wasm-mutate? the evasion process? both? what does this mean wrt to diversification in general?
 
 %\todo{Do those results hold only for Spectre? do they generalize to other attacks? do you recommend binary diversification for any Wasm build pipeline as an hardening technique? how far are we from that?}
 
