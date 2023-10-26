@@ -24,7 +24,7 @@ Host processes can then instantiate new \Wasm sandboxes for each client function
 This architecture inherently isolates \Wasm binary executions from each other as well as from the host process, enhancing security.
 
 However, while \Wasm is engineered with a strong focus on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
-In the sections that follow, we explore how software diversification techniques can be employed to harden \Wasm binaries against such attacks. For an in-depth discussion on this topic, we direct the reader to our contribution \cite{wasmmutate}.
+In the sections that follow, we explore how software diversification techniques can be employed to harden \Wasm binaries against such attacks.
 
 \msubsection{Threat model: speculative side-channel attacks}
 
