@@ -27,7 +27,7 @@ A notable example of this is the lack of memory isolation in JavaScript, which a
 These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2015, which is the \Wasm(Wasm) language.
 Hence, \Wasm became the fourth official language for the web.
 
-\msection{\Wasm}
+%\msection{\Wasm}
 
 \Wasm was designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}.
 It allows for all programs to be compiled ahead-of-time from source languages like C/C++ and Rust.
@@ -36,86 +36,78 @@ The Wasm language defines its Instruction Set Architecture as an abstraction, si
 This design allows web browsers to compile quickly to target architectures through a fast, one-to-one translation process.
 
 The versatility of WebAssembly extends not just to web browsers, but to backend scenarios as well. 
-Previous research has demonstrated the advantages of utilizing WebAssembly as an intermediary layer, noting improved startup times and more efficient memory usage when compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
+Research has demonstrated the advantages of utilizing WebAssembly as an intermediary layer, noting improved startup times and more efficient memory usage when compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 In response to these findings, the Bytecode Alliance introduced the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}. 
-WASI facilitated the execution of \wasm\ with a POSIX system interface protocol, thus enabling the direct execution of Wasm in the operating system. 
-To underline the significance of this development, consider the words of Solomon Hykes, the former CEO of Docker, in a tweet about \Wasm and WASI:
+WASI facilitated the execution of \Wasm\ with a POSIX system interface protocol, thus enabling the direct execution of Wasm in the operating system. 
 
-\vspace{5mm}
-\begin{minipage}{0.95\linewidth}
-	%\centering	
-	\emph{If WASM+WASI existed in 2008, we wouldn't have needed to created Docker. That's how important it is. Webassembly on the server is the future of computing. A standardized system interface was the missing link. Let's hope WASI is up to the task! \cite{solomon}}
+%In this dissertation, we propose a proactive approach to enhance WebAssembly security through Software Diversification.
 
-\end{minipage}
-\vspace{5mm}
+\msection{\Wasm security}
 
 WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
 However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
 In addition, WebAssembly binaries may be inherently vulnerable due to flaws in their source code \cite{DeRoover2022}. 
 There are also significant risks from side-channel attacks, as demonstrated by various researchers \cite{ret2spec, 10.1145/3488932.3517411, Swivel}. 
 These vulnerabilities are not limited to the web browser environment, as WebAssembly is also used in the backend.
-Yet, existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks. 
-In this dissertation, we propose a proactive approach to enhance WebAssembly security through Software Diversification.
 
-\msection{Software Diversification}
+\msection{Software Monoculture}
 
+Web browsers and JavaScript have evolved significantly in the past thirty years, leading to numerous implementations. 
+Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
+This situation reflects a software monoculture problem wherein a single flaw could impact multiple applications. 
+The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity. 
+Currently, web pages including WebAssembly binaries are centrally served from main servers. 
+Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
+Despite its design for secure execution and sandboxing, Wasm is not immune to vulnerabilities. 
+Therefore, sharing Wasm code through web browsers could also share its vulnerabilities. 
 
-Software Diversification is the process of finding, creating, and deploying program variants of a given original program \cite{okhravi2013survey} for the sake of security.
-Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185} pioneered this field by proposing software diversification through code transformations. 
-They proposed to produce variants of programs while preserving their functionalities, aiming to mitigate vulnerabilities.
-Since then, transformations aiming at reducing the predictability of observable behavior of programs have been proposed. For example, works on this direction proposed to diversify programs control flow \cite{davi2015isomeron}, instruction set \cite{barrantes2003randomized}, or the system calls they use \cite{Chew02mitigatingbuffer}. 
-Several of these transformations can be combined to produce less predictable variants.
+The software monoculture problem exacerbates when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
+Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
+This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
+In simpler terms, the same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide catastrophe.
 
-While previous works on software diversification demonstrated the removal of vulnerabilities, in all cases, it can be used as a preemptive solution.
-For example, if a vulnerability is present in one program variant, discovering and disseminating it will not affect other variants.
-Software diversification has been widely researched, yet, the field does not study its application to \Wasm.
+\msection{\Wasm malware}
 
-This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
-First, Software Diversification could expand the capabilities of already settled \Wasm analysis tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
-Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
-Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes.
-Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
+\todo{SHort description of cryptojacking and open challenges, missconception of missing obfuscators.}
+
+\msection{Problem statements}
+
+According to the discussion above, we identify three key problems to be addressed.
+
+\begin{enumerate}[label=\textbf{P\arabic*}, ref=C\arabic*]
+	\item \label{prob2} \textbf{Software monoculture}:
+	 
+	\item \label{prob3} \textbf{Side-channel attacks}:
+ 
+	\item \label{prob4} \textbf{WebAssembly security}:
+	
+	\item \label{prob1} \textbf{Reactive defenses}: Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks. 
+
+\end{enumerate}
 
 
 \begin{comment}
 \msection{Problem statement}
 
-Web browsers and JavaScript have nearly three decades of development.
-Since then, web browsers have grown, reaching several implementations \cite{grosskurth2005reference, GARCES2021111004}. 
-Nevertheless, only Firefox, Chrome, Safari, and Edge dominate on user computers.
-This means that, for 5 arbitrary devices (computers, tablets, smartphones) in a world of millions, at least two of them use the same web browser.
-This highlights a software monoculture problem \cite{goth2003addressing}, as an ecosystem of machines running the exact same software. 
-The monoculture concept is an analogy from biology \cite{lala2009monoculture}. 
-It describes an ecosystem that faces extinction due the lack of diversity as all individuals share the exact same vulnerabilities.
-In other words, many applications can crash due to a single shared vulnerability.
-
-Nowadays, the serving of web pages, including WebAssembly code, is centralized and provided through main servers \cite{STRAC}.
-Thus, a similar argument for software monoculture can be used for the Wasm code that is served to web browsers. 
-Despite being designed for sandboxing and secure execution, \wasm\ is not exempt from vulnerabilities \cite{WebAssemblySecurity}.
-For example, \wasm\ engines are vulnerable to speculative execution \cite{Narayan2021Swivel}, and C/C++ source code vulnerabilities might be ported to Wasm binaries \cite{DeRoover2022}.  
-Therefore, the sharing of the \wasm\ code through web browsers, also includes \wasm\ vulnerabilities.
-
-
-% Escalating
-The software monoculture problem escalates if we consider the edge-cloud computing platforms and how they are adopting \Wasm to provide services, as we previously mentioned.
-Concretely, along with browser clients, thousands of edge devices running Wasm as backend services might be affected due to vulnerabilities sharing.
-This means that if one node in an edge network is vulnerable, all the others are vulnerable in the exact same manner as the same binary is replicated on each node. 
-In other words, the same attacker payload would break all edge nodes at oncem a single distributed Wasm binary could unleash a worldwide catasthrophe.
-
-One might think that the solution is to adopt more web browser and interpreters implementations. 
-However, this is virtually impossible as 4 web browsers dominate the market and edge-cloud computing platforms are transparently executed in the backend.
-Thus, a solution in this direction is doomed to fail. 
-Another solution is to provide different WebAssembly codes.
-For example, a different source code, yet equivalent, can be provided when a web page requests it \cite{CROW}. 
-Consequently, millions of computers would execute different codes even though they use the same web browser.
-This strategy is called Software Diversification.
 \end{comment}
 
-\section{List of contributions}
+\msection{Contributions in Software Diversification}
 
-%\todo{The superoptimization paper is a foundation, yet, we do not generate diversity perse in that paper. Is there a need to mention the contributions explicitly in the table}
+This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problem statements via Software Diversification.
+Software Diversification is a security-focused process that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
+Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
+Their proposal suggested creating program variants while maintaining their functionalities to mitigate potential vulnerabilities.
+Subsequently, transformations aimed at reducing the predictability of programs' observable behavior have been suggested. For instance, some researchers proposed diversifying the control flow of programs \cite{davi2015isomeron}, their instruction set \cite{barrantes2003randomized}, or the system calls they utilize \cite{Chew02mitigatingbuffer}. 
+A combination of these transformations can yield less predictable and therefore more secure variants.
 
-In the space of Software Diversification we make the following contributions.
+While previous studies on software diversification have illustrated the removal of vulnerabilities, it can consistently serve as a preemptive solution in every instance. 
+Despite the extensive research on software diversification, its application to \Wasm remains largely unexplored. 
+Firstly, software diversification could enhance the capabilities of established \Wasm analysis tools by including diversified program variants, thus complicating the task for attackers to exploit any overlooked vulnerabilities. 
+Generated as a proactive security measure, these diversified variants could mimic a wider range of real-world conditions, consequently increasing the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
+Secondly, we observed that current solutions to reduce side-channel attacks on \Wasm binaries are either limited to specific attacks or require the alteration of runtimes. 
+Software diversification could address yet-to-be-discovered vulnerabilities on \Wasm binaries by creating diversified variants in a manner that is independent of the platform. 
+In the realm of software diversification, we present the following contributions.
+
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
