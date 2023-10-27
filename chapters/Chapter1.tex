@@ -72,15 +72,15 @@ In simpler terms, the same attacker payload could compromise all edge nodes simu
 
 \msection{Problem statements}
 
-According to the discussion above, we identify four key problems to be addressed.
+According to the discussion above, we identify three key problems to be addressed.
 
 \begin{enumerate}[label=\textbf{P\arabic*}, ref=C\arabic*]
+
+	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks, specially side-channel attacks. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks.
+	Besides, current defenses are limited to specific attacks or require the alteration of runtimes. 
+	
 	\item \label{prob2} \textbf{Software monoculture}: Identical \Wasm binaries are deployed on multiple nodes and browsers. This situation is a potential threat to the entire ecosystem as potential vulnerabilities are shared.
 	 
-	\item \label{prob3} \textbf{Side-channel attacks}: \Wasm binaries are vulnerable to side-channel attacks. Current defenses are limited to specific attacks or require the alteration of runtimes.
- 
-	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks. 
-	
 	\item \label{prob5} \textbf{WebAssembly malware}: \Wasm malware is a threat, while currently implemented defenses are not enough mostly due to the misconception of missing obfuscators.
 
 \end{enumerate}
