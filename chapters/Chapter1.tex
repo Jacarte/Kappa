@@ -7,95 +7,58 @@
 
 \chapterprecishere{\input{quotes/cinderella1.tex}\par\raggedleft--- {\small\textup{MR. Cox} \textbf{1893}, Cinderella: Three hundred and forty-five variants \cite{cox1893cinderella}}}
 
-This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
-First, Software Diversification could expand the capabilities of the mentioned tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
-Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
-Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes, e.g., Swivel as a cloud-deployed compiler.
-Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
+\lettrine[lines=3]{T}{he} first web browser, Nexus, made its appearance in 1990 \cite{nexus}. 
+At its inception, web browsing consisted solely of retrieving and displaying small, static textual web pages. 
+In simpler terms, users could only read page content without any interactive components. 
+However, the escalating computing power of devices, the proliferation of the internet, the valuation of internet based companies and the demand for more engaging user experiences birthed the concept of executing code in conjunction with web pages. 
+In 1995, the Netscape browser revolutionized this concept by introducing JavaScript \cite{10.1007/978-3-642-14107-2_7}, a language that allowed code execution on the client-side.
+Interactive web content immediately highlighted benefits: unlike classical native software, web applications do not require installation, are always up-to-date, and are accessible from any device with a web browser. 
+Significantly, since the advent of Netscape, all browsers have offered JavaScript support. 
+In the present day, the majority of web pages incorporate not only HTML but also JavaScript code, which is executed on client computers. 
+Over the past several decades, web browsers have metamorphosed into JavaScript language virtual machines. 
+They have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers, like the one displaying this document.
 
+JavaScript is presently the most widely utilized scripting language in all contemporary web browsers \cite{mulazzani2013fast}.
+However, it is not without limitations due to the inherent characteristics of the language.
+For instance, each JavaScript engine necessitates the parsing and recompiling of the JavaScript code, resulting in substantial overhead.
+In fact, just parsing and compiling JavaScript code consume the majority of the load times of websites \cite{clark}.
+In addition to performance limitations, JavaScript also has security concerns \cite{10.1145/1190216.1190252}.
+A notable example of this is the lack of memory isolation in JavaScript, which allows extraction of information from other processes \cite{10.1145/3412841.3442001}.
+These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2015, which is the \Wasm(Wasm) language.
+Hence, \Wasm became the fourth official language for the web.
 
-Our work focuses on artificial diversification techniques, particularly for \Wasm, drawing insights from significant works by Baudry \etal \cite{natural_diversity} and Jackson \etal \cite{jackson}.
+\msection{\Wasm}
 
-\todo{From the LIC}
+\Wasm was designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}.
+It allows for all programs to be compiled ahead-of-time from source languages like C/C++ and Rust.
+Third-party compilers create \Wasm binaries, potentially including optimizations, as in the case of LLVM.
+The Wasm language defines its Instruction Set Architecture as an abstraction, similar to machine code instructions but independent of CPU architectures \cite{wasm_spec}.
+This design allows web browsers to compile quickly to target architectures through a fast, one-to-one translation process.
 
-{
-	\color{red}
-	% From Web 1.0 to JavaScript and how it support full-fledge applications
-The first web browser, Nexus \cite{nexus}, appeared in 1990.
-At that moment, web browsing was only about retrieving and showing small and static HTML web pages.
-In other words, users read the content of pages without interactions.
-The growing computing power of devices, the spread of the internet, and the need for more interaction and experiences for users encouraged the idea of executing code along with web pages.
-The Netscape browser made possible the execution of code on the client-side with the introduction of the JavaScript \cite{10.1007/978-3-642-14107-2_7} language in 1995.
-Remarkably, all browsers have supported JavaScript since Netscape. 
-Nowadays, most web pages include not only HTML, but also include JavaScript code that is executed in client computers.
-During the past decades, web browsers have become JavaScript language virtual machines. 
-They evolved to complex systems that can run full-fledged applications, like video and audio players, animation creators, and PDF document renderers such as the one showing this document.
+The versatility of WebAssembly extends not just to web browsers, but to backend scenarios as well. 
+Previous research has demonstrated the advantages of utilizing WebAssembly as an intermediary layer, noting improved startup times and more efficient memory usage when compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
+In response to these findings, the Bytecode Alliance introduced the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}. 
+WASI facilitated the execution of \wasm\ with a POSIX system interface protocol, thus enabling the direct execution of Wasm in the operating system. 
+To underline the significance of this development, consider the words of Solomon Hykes, the former CEO of Docker, in a tweet about \Wasm and WASI:
 
+\vspace{5mm}
+\begin{minipage}{0.95\linewidth}
+	%\centering	
+	\emph{If WASM+WASI existed in 2008, we wouldn't have needed to created Docker. That's how important it is. Webassembly on the server is the future of computing. A standardized system interface was the missing link. Let's hope WASI is up to the task! \cite{solomon}}
 
+\end{minipage}
+\vspace{5mm}
 
-% Javascript problems
-JavaScript is currently the most used scripting language in all modern web browsers \cite{mulazzani2013fast}. 
-However, JavaScript faces several limitations related to the characteristics of the language. For example, any JavaScript engine requires the parsing and recompiling the JavaScript code, which implies a significant overhead.
-Moreover, JavaScript faces security issues \cite{10.1145/1190216.1190252}.
-For example, JavaScript lacks of memory isolation, making possible to extract pieces of information from others processes \cite{10.1145/3412841.3442001}.
-%Besides, due to the dynamicity of JavaScript, cross-scripting is possible \cite{10.1145/3184558.3188736} 
-Because of these problems, the Web Consortium (W3C) standardized in 2017 a bytecode for the web environment, the \wasm\ (Wasm) language. 
-%\wasm\ becomes the fourth official language for the web with HTML, CSS, and JavaScript.
+WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
+However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
+In addition, WebAssembly binaries may be inherently vulnerable due to flaws in their source code \cite{DeRoover2022}. 
+There are also significant risks from side-channel attacks, as demonstrated by various researchers \cite{ret2spec, 10.1145/3488932.3517411, Swivel}. 
+These vulnerabilities are not limited to the web browser environment, as WebAssembly is also used in the backend.
+Yet, existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks. 
+In this dissertation, we propose a proactive approach to enhance WebAssembly security through Software Diversification.
 
-% Describe WebAssembly
-Wasm is designed to be fast, portable, self-contained, and secure \cite{Haas_2017}.
-All \Wasm programs are compiled ahead-of-time from source languages such as C/C++ and Rust.
-Wasm is created by third-party compilers that might include optimizations like in the case of LLVM.  
-The Wasm language defines its Instruction Set Architecture \cite{wasm_spec} as an abstraction close to machine code instructions but agnostic to CPU architectures. Thus,  web browsers can use it to rapidly compile to the target architectures in a one-to-one translation process.
+\msection{Software Diversification}
 
-WebAssembly evolved outside web browsers.
-Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
-Consequently, in 2019, the Bytecode Alliance \cite{bytecodealliance} proposed WebAssembly System Interface (WASI) \cite{WASI}. 
-WASI pionered the execution of \wasm\ with a POSIX system interface protocol, making possible to execute Wasm directly in the operating system. 
-Therefore, it standardizes the adoption of \wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, making it suitable for edge-cloud computing platforms \cite{9640153, wen2020wasmachine}
-
-\section{Software Monoculture}
-% Monoculture
-Web browsers and JavaScript have nearly three decades of development.
-Since then, web browsers have grown, reaching several implementations \cite{grosskurth2005reference, GARCES2021111004}. 
-Nevertheless, only Firefox, Chrome, Safari, and Edge dominate on user computers.
-This means that, for 5 arbitrary devices (computers, tablets, smartphones) in a world of millions, at least two of them use the same web browser.
-This highlights a software monoculture problem \cite{goth2003addressing}, as an ecosystem of machines running the exact same software. 
-The monoculture concept is an analogy from biology \cite{lala2009monoculture}. 
-It describes an ecosystem that faces extinction due the lack of diversity as all individuals share the exact same vulnerabilities.
-In other words, many applications can crash due to a single shared vulnerability.
-
-
-\renewcommand{\wasm}{Wasm}
-
-Nowadays, the serving of web pages, including WebAssembly code, is centralized and provided through main servers \cite{STRAC}.
-Thus, a similar argument for software monoculture can be used for the Wasm code that is served to web browsers. 
-Despite being designed for sandboxing and secure execution, \wasm\ is not exempt from vulnerabilities \cite{WebAssemblySecurity}.
-For example, \wasm\ engines are vulnerable to speculative execution \cite{Narayan2021Swivel}, and C/C++ source code vulnerabilities might be ported to Wasm binaries \cite{DeRoover2022}.  
-Therefore, the sharing of the \wasm\ code through web browsers, also includes \wasm\ vulnerabilities.
-
-
-% Escalating
-The software monoculture problem escalates if we consider the edge-cloud computing platforms and how they are adopting Wasm to provide services, as we previously mentioned.
-Concretely, along with browser clients, thousands of edge devices running Wasm as backend services might be affected due to vulnerabilities sharing.
-This means that if one node in an edge network is vulnerable, all the others are vulnerable in the exact same manner as the same binary is replicated on each node. In other words, the same attacker payload would break all edge nodes at once.
-This illustrates how Wasm execution is fragile with respect to systemic vulnerabilities for the whole internet.
-Let us take the example of what happened on June 8, 2021, with Fastly \cite{BREAKFastly}.
-That day, the whole internet suffered a 45 minutes disruption because of a failure when one Wasm binary was deployed at Fastly.
-The complete Fastly platform crashed.
-The bug, combined with most web pages being CDN-dependant, created a catastrophe.
-Therefore, a single distributed Wasm binary could unleash the same incident \cite{CVE}.
-
-One might think that the solution is to adopt more web browser and interpreters implementations. 
-However, this is virtually impossible as 4 web browsers dominate the market and edge-cloud computing platforms are transparently executed in the backend.
-Thus, a solution in this direction is doomed to fail. 
-Another solution is to provide different WebAssembly codes.
-For example, a different source code, yet equivalent, can be provided when a web page requests it \cite{CROW}. 
-Consequently, millions of computers would execute different codes even though they use the same web browser.
-This strategy is called Software Diversification.
-% Monoculture and diversification motivation, 
- 
-\section{Software Diversification}
 
 Software Diversification is the process of finding, creating, and deploying program variants of a given original program \cite{okhravi2013survey} for the sake of security.
 Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185} pioneered this field by proposing software diversification through code transformations. 
@@ -105,53 +68,48 @@ Several of these transformations can be combined to produce less predictable var
 
 While previous works on software diversification demonstrated the removal of vulnerabilities, in all cases, it can be used as a preemptive solution.
 For example, if a vulnerability is present in one program variant, discovering and disseminating it will not affect other variants.
-Software diversification has been widely researched, yet, the field does not study its application to Wasm.
-Only Romano \etal \cite{wobfuscator} proposed the intermixing JavaScript and Wasm function calls to provide obfuscation against code analysis. 
-For \wasm, no software diversification solution has been proposed, primarily due to its novelty.
+Software diversification has been widely researched, yet, the field does not study its application to \Wasm.
+
+This dissertation presents toolsets, approaches and methodologies designed to enhance \Wasm security proactively through Software Diversification.
+First, Software Diversification could expand the capabilities of already settled \Wasm analysis tools by incorporating diversified program variants, making it more challenging for attackers to exploit any missed vulnerabilities.
+Generated as proactive security, these diversified variants can simulate a broader set of real-world conditions, thereby making \Wasm analysis tools more accurate. 
+Second, we noted that current solutions to mitigate side-channel attacks on \Wasm binaries are either specific to certain attacks or need the modification of runtimes.
+Software Diversification could mitigate yet-unknown vulnerabilities on \Wasm binaries by generating diversified variants in a platform-agnostic manner.
 
 
-}
+\begin{comment}
+\msection{Problem statement}
+
+Web browsers and JavaScript have nearly three decades of development.
+Since then, web browsers have grown, reaching several implementations \cite{grosskurth2005reference, GARCES2021111004}. 
+Nevertheless, only Firefox, Chrome, Safari, and Edge dominate on user computers.
+This means that, for 5 arbitrary devices (computers, tablets, smartphones) in a world of millions, at least two of them use the same web browser.
+This highlights a software monoculture problem \cite{goth2003addressing}, as an ecosystem of machines running the exact same software. 
+The monoculture concept is an analogy from biology \cite{lala2009monoculture}. 
+It describes an ecosystem that faces extinction due the lack of diversity as all individuals share the exact same vulnerabilities.
+In other words, many applications can crash due to a single shared vulnerability.
+
+Nowadays, the serving of web pages, including WebAssembly code, is centralized and provided through main servers \cite{STRAC}.
+Thus, a similar argument for software monoculture can be used for the Wasm code that is served to web browsers. 
+Despite being designed for sandboxing and secure execution, \wasm\ is not exempt from vulnerabilities \cite{WebAssemblySecurity}.
+For example, \wasm\ engines are vulnerable to speculative execution \cite{Narayan2021Swivel}, and C/C++ source code vulnerabilities might be ported to Wasm binaries \cite{DeRoover2022}.  
+Therefore, the sharing of the \wasm\ code through web browsers, also includes \wasm\ vulnerabilities.
 
 
-%\section{Artificial Software Diversification for \wasm}
+% Escalating
+The software monoculture problem escalates if we consider the edge-cloud computing platforms and how they are adopting \Wasm to provide services, as we previously mentioned.
+Concretely, along with browser clients, thousands of edge devices running Wasm as backend services might be affected due to vulnerabilities sharing.
+This means that if one node in an edge network is vulnerable, all the others are vulnerable in the exact same manner as the same binary is replicated on each node. 
+In other words, the same attacker payload would break all edge nodes at oncem a single distributed Wasm binary could unleash a worldwide catasthrophe.
 
-
-%We port, for \wasm, the code transformations proposed in previous works as a preemptive software diversity solution.
-%Since the majority of the Wasm binaries are created by the LLVM pipeline \cite{Hilbig2021AnES}, we propose a novel approach to generate software diversification for \wasm\ through the LLVM pipeline.
-%We create a general approach to make code analysis for Wasm code in-between the LLVM compilation process.
-%In addition, we create several \wasm\ variants by transforming their intermediate LLVM representation.
-%Moreover, we combine \wasm\ program variants in multivariant execution binaries, that are able to execute different, yet semantically equivalent, computations in worldwide internet platforms.
-
-
-
-\todo{Recent papers first. Mention Workshops instead in conference. "Procedings of XXXX". Add the pages in the papers list.}
-
-%\lipsum[1]
-
-%\lipsum[1]
-
-%\lipsum[1]
-
-\section{Background}
-\todo{Motivate with the open challenges.}
-
-
-
-%\lipsum[1]
-
-%\lipsum[1]
-
-\section{Problem statement}
-\todo{Problem statement}
-\todo{Set the requirements as R1, R2, then map each contribution to them.}
-
-%\lipsum[1]
-
-\section{Automatic Software diversification requirements}
-
-\begin{enumerate}
-	\item \textbf{1:} \todo{Requirement 1}
-\end{enumerate}
+One might think that the solution is to adopt more web browser and interpreters implementations. 
+However, this is virtually impossible as 4 web browsers dominate the market and edge-cloud computing platforms are transparently executed in the backend.
+Thus, a solution in this direction is doomed to fail. 
+Another solution is to provide different WebAssembly codes.
+For example, a different source code, yet equivalent, can be provided when a web page requests it \cite{CROW}. 
+Consequently, millions of computers would execute different codes even though they use the same web browser.
+This strategy is called Software Diversification.
+\end{comment}
 
 \section{List of contributions}
 
