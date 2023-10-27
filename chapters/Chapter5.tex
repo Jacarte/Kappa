@@ -4,7 +4,7 @@
 
 \chapterprecishere{\input{quotes/ullman.tex}\par\raggedleft--- {\small\textup{Jeffrey D. Ullman}}}
 
-\lettrine[lines=3]{O}{wing} to the growing popularity of \Wasm, we have focused on the security of \Wasm programs and the potential usages of Software Diversification.
+\lettrine[lines=3]{O}{wing} to the growing adoption of \Wasm, we have focused on the security of \Wasm programs and the potential usages of Software Diversification.
 This thesis introduces a comprehensive set of methods and tools for Software Diversification in \Wasm.
 It includes the technical contributions of this dissertation: CROW, MEWE, and WASM-MUTATE.
 Additionally, we present specific use cases for exploiting the diversification created for \Wasm programs, along with their corresponding experimental results.
@@ -13,27 +13,21 @@ We then offer a succinct overview of the empirical findings of our research.
 Lastly, we delineate challenges and future research directions in this field.
 
 \section{Summary of technical contributions}
+CROW is a strategy that utilizes the LLVM compiler and requires the source code or the LLVM IR representation for its functioning. 
+Its core comprises an enumerative synthesis implementation. 
+Employing SMT solvers for functionality verification, CROW ensures the functional equivalence of the generated variants. 
 
-CROW is a strategy based on the LLVM compiler, requiring access to the source code or the LLVM IR representation to function. 
-The core of CROW is an enumerative synthesis implementation (see \mnameref{enumerative_synthesis}{sota:sw}). 
-It utilizes SMT solvers for functionality verification. 
-This approach guarantees the functional equivalence of the generated variants.
+MEWE, on the other hand, enhances CROW by using identical core technology to generate program variants. 
+Furthermore, it encapsulates the LLVM IR variants into a \Wasm multivariant, thereby facilitating MVE through execution path randomization. 
+Both CROW and MEWE are fully automated systems, necessitating only the input source code from users. 
 
-MEWE enhances CROW's capabilities by using the same core technology to generate program variants. 
-Additionally, it packages the LLVM IR variants into a \Wasm multivariant, thus providing MVE via execution path randomization. 
-Both CROW and MEWE are fully automated systems that only require the input source code from the user. 
+WASM-MUTATE, a tool based on binary, uses a set of rewriting rules and the input \wasm binary to generate program variants. 
+The generation of \Wasm variants primarily involves random e-graph traversals. 
+Importantly, WASM-MUTATE eliminates the need for compiler adjustments, thus ensuring compatibility with all existing \Wasm binaries. 
+Unlike CROW and MEWE, which are confined to code and function sections, WASM-MUTATE can generate variants by transforming any segment of the \wasm binary.
 
-Lastly, WASM-MUTATE is a tool based on binary. 
-Using a set of rewriting rules and the input \wasm binary, it generates program variants.
-The generation of \Wasm variants focuses on random e-graph traversals. 
-Notably, WASM-MUTATE eliminates the requirement for compiler adjustments, thus offering compatibility with all existing \Wasm binaries. 
-Unlike CROW and MEWE, which are limited to code and function sections, WASM-MUTATE can generate variants by transforming any part of the \wasm binary.
-
-% Open research and the availability of tools
-CROW, MEWE and WASM-MUTATE are open-source and publicly available.
-Therefore, their deployment is completely feasible.
-Moreover, WASM-MUTATE is being used in the wild for improving \Wasm compiler tests\toolcite{https://github.com/bytecodealliance/wasm-tools}.
-
+CROW, MEWE, and WASM-MUTATE are open-source, public tools, making their deployment entirely practical. 
+Notably, WASM-MUTATE is currently in use in real-world scenarios to enhance \Wasm compiler tests\toolcite{https://github.com/bytecodealliance/wasm-tools}.
 
 \section{Summary of empirical findings}
 
