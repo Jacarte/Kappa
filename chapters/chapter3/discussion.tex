@@ -32,7 +32,7 @@ Second, CROW and MEWE generation capabilities are limited by the \emph{overlappi
 Third, WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
 
 
-On the other hand, CROW and MEWE, by using enumerative synthesis, ensure that the generated variants are \temph{preserved}. 
+On the other hand, CROW and MEWE, by using enumerative synthesis, ensure that the generated variants are more \temph{preserved} than the variants created by WASM-MUTATE. 
 In other words, the transformations generated out of CROW and MEWE are virtually irreversible by JIT compilers, such as V8 and wasmtime.
 This phenomenon is highlighted in the \emph{Variants strength} column of \autoref{comp:table:tools}, where we show that CROW and MEWE generate variants with 96\% of preservation against 75\% of WASM-MUTATE.
 High preservation is especially important where the preservation of the diversification is crucial, e.g. to hinder reverse engineering.

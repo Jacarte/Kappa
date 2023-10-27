@@ -248,15 +248,6 @@ The final row offers the median number of transformations required for evasion a
     WASM-MUTATE evaded detection for 8 out of 33 binaries in a single iteration. 
     This result implies a vulnerability in the MINOS model to binary diversification.
 \end{strategy}
-
-\begin{strategy}[Meta-oracles]
-    \label{meta-oracles}
-    Our experiments indicate that VirusTotal surpasses MINOS in detecting \Wasm cryptojacking. 
-    The primary factor contributing to this is VirusTotal's utilization of a broader range of antivirus vendors, which employs various detection strategies. 
-    On the other hand, MINOS functions as a binary oracle. 
-    This evidence supports the use of multiple malware oracles (meta-oracles) in identifying cryptojacking malware in browsers. 
-    In the context of \Wasm, given the existence of numerous and diverse Wasm-specific detection mechanisms, this strategy is both practical and feasible, yet not explored in the literature.
-\end{strategy}
     
 %\msubsection{Efficiency and correctness results}
 \vspace{5mm}
@@ -280,8 +271,7 @@ The final row offers the median number of transformations required for evasion a
     Our experiments conclusively demonstrate that WASM-MUTATE can effectively circumvent malware detection systems. 
     A possible key factor behind this is a misguided perception of resilience. 
     Malware detection is a well-known difficult problem. 
-    Yet, prior research on static WebAssembly malware detection has shown an erroneous presumption: the existing of only metadata (\Wasm custom sections) obfuscation, or the complete absence of obfuscation techniques for \Wasm \cite{Minesweeper, MinerRay, SEISMIC, RAPID, MINOS}.
-    MINOS and VirusTotal serve as tangible examples. 
+    Yet, prior research on static WebAssembly malware detection has shown an erroneous presumption: the existing of only metadata (\Wasm custom sections) obfuscation, or the complete absence of obfuscation techniques for \Wasm \cite{Minesweeper, MinerRay, SEISMIC, RAPID, MINOS}. 
     As explored in \autoref{sota:sw}, a software diversification engine can potentially function as an obfuscator. %%ORIGINAL
     The discussed use case partially demonstrates the assumption of non-existing obfuscators might be incorrect. 
     Consequently, our software diversification tools provide a viable solution for enhancing the accuracy of \Wasm malware detection systems.
