@@ -279,10 +279,13 @@ The final row offers the median number of transformations required for evasion a
 \begin{tcolorbox}[title=Reflection,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     Our experiments conclusively demonstrate that WASM-MUTATE can effectively circumvent malware detection systems. 
     A possible key factor behind this is a misguided perception of resilience. 
-    While malware detection is a hard-known problem, we have seen that prior research on WebAssembly malware detection erroneously presumes the absence of obfuscation techniques for \Wasm. 
+    Malware detection is a well-known difficult problem. 
+    Yet, prior research on static WebAssembly malware detection has shown an erroneous presumption: the existing of only metadata (\Wasm custom sections) obfuscation, or the complete absence of obfuscation techniques for \Wasm \cite{Minesweeper, MinerRay, SEISMIC, RAPID, MINOS}.
     MINOS and VirusTotal serve as tangible examples. 
     As explored in \autoref{sota:sw}, a software diversification engine can potentially function as an obfuscator. %%ORIGINAL
-    The use case previously discussed suggests that the assumption of non-existing obfuscators may be incorrect.
+    The discussed use case partially demonstrate the assumption of non-existing obfuscators might be incorrect. 
+    Consequently, our software diversification tools provide a viable solution for enhancing the accuracy of \Wasm malware detection systems.
+
     %Ultimately, our findings suggest that feedback-guided diversification is more efficient than stochastic diversification, requiring fewer transformations to avoid detection.    
 \end{tcolorbox}
 

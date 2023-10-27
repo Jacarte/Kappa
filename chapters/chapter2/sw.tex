@@ -107,9 +107,23 @@ The diversification can be either natural \cite{natural_diversity} or artificial
     Yet, both strategies aim to tackle static reverse engineering of programs.
     In the context of \Wasm, Romano \etal \cite{wobfuscator} proposed an obfuscation technique, wobfuscator, for JavaScript in which part of the code is replaced by calls to complementary \Wasm functions.
     Yet, wobfuscator targets JavaScript code, not \Wasm binaries.
+    \todo{Mention BREWasm}
     Madvex \cite{madvex}, on the other hand, aims to obfuscate \Wasm binaries to achieve malware evasion, being confined to altering solely the code section of \Wasm binaries. 
 \end{strategy}
 
+
+
+%% BREWasm
+%BREWasm \cite{rewritingtool2023} offers a comprehensive static binary rewriting framework for \Wasm and can be considered to be the most similar to \tool. 
+%For instance, it can be used to model a diversification engine.
+%It parses a Wasm binary into objects, rewrites them using fine-grained APIs, integrates these APIs to provide high-level ones, and re-encodes the updated objects back into a valid Wasm binary. 
+%The effectiveness and efficiency of BREWasm have been demonstrated through various Wasm applications and case studies on code obfuscation, software testing, program repair, and software optimization. 
+%\todo{I do not understand the following 2 sentences. What are the main differences between \tool and BREWasm? in their input? in their output? in their purpose? in their technical approach? }
+%The implementation of BREWasm follows a completely different technical approach.
+%In comparison with our work, the authors pointed out that our tool employs lazy parsing of Wasm. 
+%\todo{not clear: did the authors of brewasm mention something about our tool? is brewasm evaluated against security cases?}
+%Although they perceived this as a limitation, it is eagerly implemented to accelerate the generation of \wasm binaries.
+%Additionally, our tool leverages the parser and encoder of wasmtime, a standalone compiler and interpreter for Wasm, thereby boosting its reliability and lowering its error-prone nature.
 
 \begin{strategy}[Enumerative synthesis]
     \label{enumerative_synthesis}
@@ -207,6 +221,8 @@ Additionally, these variants serve both defensive and offensive purposes \cite{o
     Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
 \end{strategy}
 
+\todo{Redo from here}
+
 \begin{strategy}[Defensive Diversification]
 
     Lundquist and colleagues \cite{offensive_div} separate the usages of Software diversification into two categories: Defensive Software Diversification and Offensive Software Diversification.
@@ -217,6 +233,7 @@ Additionally, these variants serve both defensive and offensive purposes \cite{o
     %By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
         
 \end{strategy}
+
 
 \begin{strategy}[Offensive Diversification]    
 
