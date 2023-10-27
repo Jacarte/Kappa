@@ -68,18 +68,38 @@ In simpler terms, the same attacker payload could compromise all edge nodes simu
 
 \msection{\Wasm malware}
 
-\todo{SHort description of cryptojacking and open challenges, missconception of missing obfuscators.}
+
+WebAssembly is often used in browsers for computation-intensive activities, including gaming and image processing, but it has also been exploited by malicious actors for cryptojacking \cite{10.1145/3339252.3339261}.
+The popularity of WebAssembly for cryptojacking stems from its capacity for executing high volumes of hash functions, a task that demands substantial computing resources and is faster than JavaScript.
+Besides, WebAssembly code's poor readability makes it a convenient tool for obfuscating harmful code.
+Cryptojacking via WebAssembly often involves a malicious JavaScript+WebAssembly payload that secretly executes on the victim's browser \cite{9566204}.
+It's commonly found on websites offering illegal downloads or adult content, using cryptojacking as a means to generate passive income.
+Because it is hard to detect and remove, cryptojacking can persist on a victim's computer, continuously using resources and generating income for the attacker.
+This profitable malware does not require exploiting vulnerabilities or stealing credentials.
+
+MineSweeper \cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} use static analysis and machine learning to detect browser-based cryptomalwares.
+On the other hand, SEISMIC\cite{SEISMIC}, RAPIDRAPID\cite{RAPID}, and OUTGuardOUTGuard\cite{outguard} employ dynamic analysis techniques for the same purpose.
+However, obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in Wasm.
+Remarkably, these studies do not consider the existence of obfuscation tools.
+Bahnsali et al. have shown that cryptomining algorithms can evade these techniques through obfuscation \cite{10.1145/3507657.3528560}.
+
+
+
+
 
 \msection{Problem statements}
 
 According to the discussion above, we identify three key problems to be addressed.
 
-\begin{enumerate}[label=\textbf{P\arabic*}, ref=C\arabic*]
+\begin{enumerate}[label=\textbf{PS\arabic*}, ref=C\arabic*]
 
 	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks, specially side-channel attacks. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks.
 	Besides, current defenses are limited to specific attacks or require the alteration of runtimes. 
 	
-	\item \label{prob2} \textbf{Software monoculture}: Identical \Wasm binaries are deployed on multiple nodes and browsers. This situation is a potential threat to the entire ecosystem as potential vulnerabilities are shared.
+	\item \label{prob2} \textbf{Software monoculture}: 
+	Identical \Wasm binaries are deployed on multiple nodes and browsers. 
+	Deployment systems, including web browsers, might be also identical. 
+	Such a situation presents a potential threat to the entire ecosystem due to shared vulnerabilities.
 	 
 	\item \label{prob5} \textbf{WebAssembly malware}: \Wasm malware is a threat, while currently implemented defenses are not enough mostly due to the misconception of missing obfuscators.
 
@@ -112,13 +132,17 @@ In the realm of software diversification, we present the following contributions
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
 	
-	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to improve Software Diversification for \Wasm.
+	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
 	
-	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants.
+	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants. The variants are semantically equivalent to the original program, yet behaviorally diverse.
 	
-	\item \label{defensivecontrib} \wrule{Defensive Diversification:} We assess how generated \Wasm program variants could be used for defensive purposes.
+	\item \label{defensivecontrib} \wrule{Defensive Diversification:} We assess how generated \Wasm program variants could be used for defensive purposes. We provide empirical insights about practical usage of the generated variants in preventing side-channel attacks.
 	
-	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} We assess how generated \Wasm program variants could be used for offensive purposes, yet improving security systems.
+	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} 
+	We evaluate the potential for using generated \Wasm program variants for offensive purposes, while also enhancing security systems. 
+	Our research includes experiments where we test the resilience of \Wasm analysis tools against these generated variants. 
+	Furthermore, we offer insights into which types of program variants practitioners should prioritize to improve \Wasm analysis tools.
+
 	
 \end{enumerate}
 
