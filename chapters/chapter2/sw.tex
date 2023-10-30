@@ -26,6 +26,8 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 \end{strategy}
 
 
+\todo{Artificial can be systematic: covers more, you define a topology whle humans tend to think alike \cite{?}.}
+
 \begin{strategy}[Artificial Diversity]
     \label{artificial_diversity}
     The concept of artificial software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
@@ -127,6 +129,7 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 
 \begin{strategy}[Enumerative synthesis]
     \label{enumerative_synthesis}
+    \todo{Mention that is systematic}
     Enumerative synthesis is a fully automated approach to generate program variants.
     It examines all possible programs specific to a given language.
     The process of enumerative synthesis commences with a piece of input program, typically a basic block.
@@ -238,6 +241,7 @@ Additionally, these variants serve both defensive and offensive purposes \cite{o
 \begin{strategy}[Offensive Diversification]    
 
     Offensive Software Diversification uses the principles of software diversification.
+    \todo{Compare to pbfuscation. Obfuscation wanst to prevent reverse engineering while offensive wants to avoid detection.}
     Yet, in the offensive context, diversification techniques may be applied to malware or other malicious code to evade detection by security software \cite{8714698}.
     For example, in the context of \wasm, the seminal work of Romano et al.  \cite{wobfuscator} proposed to intermix JavaScript and \wasm code to obfuscate JavaScript malware and make it more difficult to analyze for malware detectors.
     The obfuscated version of the code is functionally equivalent to the original, being, in practice, Offensive Software Diversification.

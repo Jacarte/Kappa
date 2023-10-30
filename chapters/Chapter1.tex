@@ -35,6 +35,8 @@ Third-party compilers create \Wasm binaries, potentially including optimizations
 The Wasm language defines its Instruction Set Architecture as an abstraction, similar to machine code instructions but independent of CPU architectures \cite{wasm_spec}.
 This design allows web browsers to compile quickly to target architectures through a fast, one-to-one translation process.
 
+\todo{One paragraph here about the format of Wasm}
+
 The versatility of WebAssembly extends not just to web browsers, but to backend scenarios as well. 
 Research has demonstrated the advantages of utilizing WebAssembly as an intermediary layer, noting improved startup times and more efficient memory usage when compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 In response to these findings, the Bytecode Alliance introduced the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}. 
@@ -43,6 +45,8 @@ WASI facilitated the execution of \Wasm\ with a POSIX system interface protocol,
 %In this dissertation, we propose a proactive approach to enhance WebAssembly security through Software Diversification.
 
 \msection{\Wasm security}
+
+\todo{Expand here, maybe separate in two paragraphs}
 
 WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
 However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
@@ -77,8 +81,7 @@ It's commonly found on websites offering illegal downloads or adult content, usi
 Because it is hard to detect and remove, cryptojacking can persist on a victim's computer, continuously using resources and generating income for the attacker.
 This profitable malware does not require exploiting vulnerabilities or stealing credentials.
 
-MineSweeper \cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} use static analysis and machine learning to detect browser-based cryptomalwares.
-On the other hand, SEISMIC\cite{SEISMIC}, RAPIDRAPID\cite{RAPID}, and OUTGuardOUTGuard\cite{outguard} employ dynamic analysis techniques for the same purpose.
+Several techniques employ static analysis, dynamic analysis and even state-of-the-art machine learning methods to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}.
 However, obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in Wasm.
 Remarkably, these studies do not consider the existence of obfuscation tools.
 Bahnsali et al. have shown that cryptomining algorithms can evade these techniques through obfuscation \cite{10.1145/3507657.3528560}.
@@ -91,7 +94,7 @@ Bahnsali et al. have shown that cryptomining algorithms can evade these techniqu
 
 According to the discussion above, we identify three key problems to be addressed.
 
-\begin{enumerate}[label=\textbf{PS\arabic*}, ref=C\arabic*]
+\begin{enumerate}[label=\textbf{Ps\arabic*}, ref=C\arabic*]
 
 	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks, specially side-channel attacks. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks.
 	Besides, current defenses are limited to specific attacks or require the alteration of runtimes. 
