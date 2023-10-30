@@ -27,32 +27,38 @@ A notable example of this is the lack of memory isolation in JavaScript, which a
 These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2015, which is the \Wasm(Wasm) language.
 Hence, \Wasm became the fourth official language for the web.
 
-%\msection{\Wasm}
 
-\Wasm was designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}.
-It allows for all programs to be compiled ahead-of-time from source languages like C/C++ and Rust.
-Third-party compilers create \Wasm binaries, potentially including optimizations, as in the case of LLVM.
-The Wasm language defines its Instruction Set Architecture as an abstraction, similar to machine code instructions but independent of CPU architectures \cite{wasm_spec}.
-This design allows web browsers to compile quickly to target architectures through a fast, one-to-one translation process.
+\Wasm is designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}. 
+It enables the ahead-of-time compilation of all programs from source languages such as C/C++ and Rust. 
+Third-party compilers produce \Wasm binaries, which may include optimizations, as is the case of LLVM. 
+The Wasm language abstracts its Instruction Set Architecture, making it akin to machine code instructions but independent of CPU architectures \cite{wasm_spec}. 
+Resembling machine code, \Wasm is already optimized and consists of consecutive binary sections. 
+The contiguous array organization of a \Wasm binary enables efficient processing, allowing compilers to speed up compilation through parallel parsing. 
+Wasm binaries not only validate and compile rapidly but are also quick to transmit over a network.
 
-\todo{One paragraph here about the format of Wasm}
+\Wasm's versatility extends beyond web browsers to backend scenarios. 
+Studies have highlighted the benefits of using WebAssembly as an intermediary layer, such as improved startup times and enhanced memory usage, compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
+In light of these findings, the Bytecode Alliance launched the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}. 
+WASI made possible the execution of \Wasm with a POSIX system interface protocol, thereby enabling Wasm's direct execution in the operating system.
+While \Wasm iss a strong promise to solve decades of persisting issues in the web environment, it also introduces new challenges.
 
-The versatility of WebAssembly extends not just to web browsers, but to backend scenarios as well. 
-Research has demonstrated the advantages of utilizing WebAssembly as an intermediary layer, noting improved startup times and more efficient memory usage when compared to containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
-In response to these findings, the Bytecode Alliance introduced the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}. 
-WASI facilitated the execution of \Wasm\ with a POSIX system interface protocol, thus enabling the direct execution of Wasm in the operating system. 
 
 %In this dissertation, we propose a proactive approach to enhance WebAssembly security through Software Diversification.
 
 \msection{\Wasm security}
 
-\todo{Expand here, maybe separate in two paragraphs}
-
 WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
 However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
-In addition, WebAssembly binaries may be inherently vulnerable due to flaws in their source code \cite{DeRoover2022}. 
-There are also significant risks from side-channel attacks, as demonstrated by various researchers \cite{ret2spec, 10.1145/3488932.3517411, Swivel}. 
-These vulnerabilities are not limited to the web browser environment, as WebAssembly is also used in the backend.
+
+Remarkably, WebAssembly binaries can have inherent vulnerabilities due to source code flaws. 
+For example, the absence of stack-smashing protections like stack canaries in code compiled to WebAssembly could lead to undetected overflows in \Wasm, causing crashes \cite{DeRoover2022} in standalone deployments.
+
+
+Moreover, significant risks exist from side-channel attacks on WebAssembly.
+In browsers, Rokicki et al. revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
+In standalone deployments, Genkin et al. demonstrated the potential for data extraction via cache timing-side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
+Similarly, Maisuradze and Rossow showed speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
+
 
 \msection{Software Monoculture}
 
@@ -84,9 +90,9 @@ This profitable malware does not require exploiting vulnerabilities or stealing 
 
 
 Several techniques employ static analysis, dynamic analysis and even state-of-the-art machine learning methods to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}.
-However, obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in Wasm.
+However, obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in \Wasm.
 Remarkably, these studies do not consider the existence of obfuscation tools.
-Bahnsali et al. have shown that cryptomining algorithms can evade these techniques through obfuscation \cite{10.1145/3507657.3528560}.
+
 
 
 

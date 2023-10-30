@@ -112,8 +112,7 @@ The diversification can be either natural \cite{natural_diversity} or artificial
     Yet, both strategies aim to tackle static reverse engineering of programs.
     In the context of \Wasm, Romano \etal \cite{wobfuscator} proposed an obfuscation technique, wobfuscator, for JavaScript in which part of the code is replaced by calls to complementary \Wasm functions.
     Yet, wobfuscator targets JavaScript code, not \Wasm binaries.
-    BREWasm \cite{BREWasm}, as a generic rewriting tool, showcases how to obfuscate \Wasm binaries. 
-    Similarly, Madvex \cite{madvex} aims to obfuscate \Wasm binaries to achieve malware evasion, being confined to altering solely the code section of \Wasm binaries. 
+    %BREWasm \cite{BREWasm}, as a generic rewriting tool, showcases how to obfuscate \Wasm binaries. 
 \end{strategy}
 
 
@@ -249,9 +248,11 @@ Moreover, machine learning approaches have been utilized to develop evasive malw
 These methods aim to thwart static malware detectors, yet, more advanced techniques focus on evading dynamic detection mostly by employing throttling \cite{Lu2013WeaknessesID, payer2014embracing}.
 
 
-While the term seems counterintuitive, Offensive Software Diversification approaches measure the resilience and accuracy of security systems.
-However, it is almost unexplored area for \Wasm that threatens malware detection accuracy.
-In concrete, only Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrates that cryptomining algorithm's source code can evade previous malware detection methods.
+The term Offensive Software Diversification may appear counterintuitive.
+Yet, such approaches measure the resilience and accuracy of security systems. 
+This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
+Specifically, only Bahnsali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
+More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to achieve malware evasion, but this approach is limited to altering only the code section of \Wasm binaries.
 
 
 \msubsection{Open challenges}
