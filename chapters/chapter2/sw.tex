@@ -227,33 +227,31 @@ Program variants, once generated and verified, may be utilized in two primary sc
 
 \msubsection{Offensive Diversification}
 \label{offensive_definition}
-As Lundquist and colleagues \cite{offensive_div}, we have separated Software Diversification in two facets based on their purpose: Defensive and Offensive Diversification.
-Defensive Software Diversification is the traditional application of previously discussed techniques aimed at enhancing the security and reliability of software systems.
-The core idea is to make it more difficult for attackers to predict the system's behavior and exploit program vulnerabilities. 
-By doing so, even if an attacker manages to compromise one variant, the others may remain secure, thereby limiting the potential impact of the attack.
-Defensive diversification is often complementary with other security measures, such as encryption and intrusion detection systems, to create a multi-layered defense strategy \cite{cryptography4020013}. 
-By making software more unpredictable and less uniform, defensive software diversification aims to preemptively thwart attacks, making it a complementary strategy to other, more reactive, security measures.
-All works previously cited along with this section contribute to defensive diversification.
+Lundquist and colleagues \cite{offensive_div} distinguish Software Diversification into two categories: Defensive and Offensive Diversification. 
+On the one hand, Defensive Software Diversification introduces unpredictability in system behavior. 
+By making software less predictable, defensive software diversification aims to proactively deter attacks, acting as a complementary strategy to other, more reactive, security measures. 
+The majority of previously discussed works in this section contribute to defensive diversification.
+Yet, Software Diversification that aims to create diverse harmful programs is considered Offensive Diversification \cite{fred1986computer}.
 
 
 \begin{strategy}[Offensive Diversification]   
     Offensive Diversification is conceptually equal to Defensive Software Diversification.
-    Yet, in an offensive context, one may apply diversification techniques to malware or other malicious codes to evade detection by security software \cite{8714698, fred1986computer}.
+    Yet, in an offensive context, one may apply diversification techniques to malware or other malicious codes to evade detection by security software \cite{8714698}.
     For example, one might equate Offensive Diversification with Code obfuscation, if its purpose shifts from preventing reverse engineering by malicious actors, to evading detection by malware analysis systems.
     
 \end{strategy}
 
 
-Malicious actors might use the previous discussed diversification strategies to avoid detection, such as genetic programming \cite{castro2019aimed}.
-With time, these techniques to avoid detection have grown in complexity and sophistication \cite{Aghakhani2020WhenMI}.
-For example, Chua \etal \cite{chua} proposed a framework to automatically obfuscate Android applications' source code using method overloading, opaque predicates, try-catch, and switch statement obfuscation, creating several versions of the same malware.
-Also, machine learning approaches have been used to create evading malware \cite{2021arXiv211111487D}, based on a corpus of pre-existing malware \cite{Bostani2021EvadeDroidAP}.
-While most approaches try to break static malware detectors, more sophisticated techniques avoid dynamic detection, usually involving throttling techniques or dynamic anti-analysis checks \cite{Lu2013WeaknessesID, payer2014embracing}. Wang proposes the concept of 
-Accrued Malicious Magnitude (AMM) to identify which malware features should be manipulated to maximize the likelihood of evading detection   \cite{wang2021exposing}.
+Malicious actors may employ previously discussed diversification strategies to evade detection, including genetic programming \cite{castro2019aimed}.
+Over time, these evasion techniques have evolved in both complexity and sophistication \cite{Aghakhani2020WhenMI}.
+Chua \etal \cite{chua}, for instance, suggested a framework for automatically obfuscating the source code of Android applications using method overloading, opaque predicates, try-catch, and switch statement obfuscation, resulting in multiple versions of identical malware.
+Moreover, machine learning approaches have been utilized to develop evasive malware \cite{2021arXiv211111487D}, drawing on a corpus of pre-existing malware \cite{Bostani2021EvadeDroidAP}.
+These methods aim to thwart static malware detectors, yet, more advanced techniques focus on evading dynamic detection mostly by employing throttling \cite{Lu2013WeaknessesID, payer2014embracing}.
 
-While the term seems counterintuitive, Offensive Software Diversification also measures the resilience and accuracy of security systems.
+
+While the term seems counterintuitive, Offensive Software Diversification approaches measure the resilience and accuracy of security systems.
 However, it is almost unexplored area for \Wasm that threatens malware detection accuracy.
-In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrates that cryptomining algorithm's source code can evade previous malware detection methods.
+In concrete, only Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrates that cryptomining algorithm's source code can evade previous malware detection methods.
 
 
 \msubsection{Open challenges}
