@@ -258,3 +258,13 @@ On the other hand, side-channel attacks occur at the machine code level.
 Preserving \Wasm variants is thus essential for successful defensive diversification. 
 If the machine code for the generated variants is preserved, the original \Wasm program's side-channel attack is not effective against the variant.
 
+
+
+
+    
+Cohen \cite{} recognized the value of diversity for offensive purposes in his dissertation in 1986. 
+He has observed virus evolution ultimately dooms static approaches to antivirus detection due to computability limits.
+Concretely, end-user detection for malware tends to rely heavily on static and syntactic analysis in addition to dynamic monitoring because of the higher costs of dynamic and behavioral analysis \cite{offensive_div}.
+This can be especially appreciated for \Wasm malware detection, as discussed in \autoref{background:wasm:analysis}.
+
+
