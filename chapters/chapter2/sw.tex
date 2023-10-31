@@ -8,6 +8,7 @@ As outlined in Baudry \etal's survey \cite{natural_diversity}, software diversif
 Our work specifically contributes to the last two categories.
 This section presents core concepts and related works, emphasizing how they generate diversification and apply it to \Wasm.
 
+\todo{State that the following is a summary of the works of Forrest, Cohen, Jackson and Baudry etal.}
 
 
 \msubsection{Generation of Software Variants}
@@ -155,6 +156,7 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 
 Equivalence checking between program variants is a vital component for any program transformation task, ranging from checking compiler optimizations \cite{LeCompilers} to the artificial synthesis of programs discussed in this chapter. 
 It proves that two pieces of code or programs are functionally equivalent \cite{churchill2019}. 
+\todo{Check this sentence.}
 Cohen \cite{cohen1993operating} simplifies the checking process with the following property: two programs are equivalent if, given identical inputs, they produce identical outputs. 
 We adopt this definition of \emph{functional equivalence} throughout this dissertation. 
 In Software Diversification, equivalence checking seeks to preserve the original functionality of programs while varying observable behaviors. 
@@ -176,7 +178,7 @@ We outline two methods to check variant equivalence: by construction and automat
     The primary limitation for fuzzers is that the process is notably time-consuming and necessitates manual introduction of oracles.
 \end{checking}
 
-\begin{checking}[Automated equivalence checking]
+\begin{checking}[Prove-driven checking]
     \label{check_by_smt}
     In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove equivalence of program variants. 
     The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
@@ -186,6 +188,11 @@ We outline two methods to check variant equivalence: by construction and automat
     Nevertheless, this technique is frequently used for checking no-branching-programs like basic block and peephole replacements \cite{SuperoptimizationScaling}.
 \end{checking}
 
+
+\begin{checking}[AI-driven checking]
+    \label{ai_drove}
+    
+\end{checking}
 
 
 
@@ -225,6 +232,12 @@ Program variants, once generated and verified, may be utilized in two primary sc
     Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
     Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
 \end{strategy}
+
+\msubsection{Software Diversitication Asssesment}
+
+\todo{How to assess diversity? Static diffs, Dynamic Diffs, ngrams on binaries, ngrams on traces, etc.}
+
+\todo{Focus on Size of the Space versus Complexity by Cohen. Large space does not mean a difficult attack. So you need to measure this. For example, same machine code when generating is a problem because it is easy to remove the diversification. Focus then on preservation metric. }
 
 \msubsection{Offensive Diversification}
 \label{offensive_definition}
