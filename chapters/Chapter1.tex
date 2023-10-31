@@ -133,17 +133,14 @@ Their proposal suggested creating program variants while maintaining their funct
 Subsequently, transformations aimed at reducing the predictability of programs' observable behavior have been suggested. 
 
 Software diversification, as demonstrated in previous studies, can effectively remove vulnerabilities. 
-Eichin \etal \cite{36307} presented seminal work in 1989, illustrating the practical benefits of diversification. 
-Specifically, the diversification limited the Morris Worm's exploitation to a handful of machines. 
+For instance, Eichin \etal \cite{36307} presented seminal work in 1989, illustrating the practical benefits of diversification. 
+Specifically, the diversification limited the Morris Worm's exploitation only to a few machines. 
 However, despite extensive research, the use of software diversification in \Wasm remains largely unexplored. 
 Software diversification could bolster \Wasm analysis tools by incorporating diversified program variants, thereby complicating the attackers' task of exploiting overlooked vulnerabilities. 
 These diversified variants, generated proactively for security, could emulate a broad spectrum of real-world conditions, subsequently improving the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
 Moreover, we note that current solutions to mitigate side-channel attacks on \Wasm binaries either target specific attacks or necessitate the modification of runtimes. 
 By generating diversified variants independent of the platform, software diversification could help address potential vulnerabilities in \Wasm binaries. 
 In the context of software diversification, we present the following contributions.
-
-
-\todo{TBD: Add here the case of the redundance rail systems in Sweden in early times instead the Morris Worm.}
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
