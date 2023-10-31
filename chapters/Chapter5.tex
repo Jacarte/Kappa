@@ -100,7 +100,7 @@ Second, this method would inevitably expand the diversification space of WASM-MU
 \end{strategy}
     
 \begin{strategy}[Mitigating Port Contention]
-    Rokicki et al. \cite{10.1145/3488932.3517411} showcased the potential of a covert side-channel attack using port contention in \Wasm code within browsers to violate cross scripting isolation.
+    Rokicki \etal  \cite{10.1145/3488932.3517411} showcased the potential of a covert side-channel attack using port contention in \Wasm code within browsers to violate cross scripting isolation.
     Side-channels exploiting port contention utilize the competition for shared hardware resources to extract sensitive information from processes. 
     The attacker measures the time taken to access these shared resources to deduce data or behavior of a victim process sharing the same resources. 
     Counteracting these attacks is especially difficult as they leverage fundamental features of the hardware design meant to enhance performance. 
@@ -116,7 +116,7 @@ Second, this method would inevitably expand the diversification space of WASM-MU
 \begin{comment}
     
     \wrule{Dataset augmentation:} The \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
-    The study by Hilbig et al. in 2021 found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
+    The study by Hilbig \etal  in 2021 found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
     This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
     The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
 \end{comment}

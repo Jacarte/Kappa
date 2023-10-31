@@ -194,7 +194,7 @@ Compilers can generate \Wasm binaries that implement WASI, which allows executio
 These binaries can then be executed by standalone engines across a variety of environments, including the cloud, servers, and IoT devices \cite{makitalo2021webassembly}.
 Similarly to browsers, these engines often translate \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process.
 Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI.
-In a related development, Singh et al.\cite{WARDuino2019} have created a \Wasm virtual machine specifically designed for Arduino-based devices.
+In a related development, Singh \etal\cite{WARDuino2019} have created a \Wasm virtual machine specifically designed for Arduino-based devices.
 
 
 \msubsection{\Wasm's control-flow}
@@ -285,9 +285,9 @@ Despite progress in \Wasm analysis, numerous challenges remain.
 First, most existing \Wasm research is reactive, focusing on detecting and fixing vulnerabilities already reported. 
 This approach leaves \Wasm binaries and runtime implementations potentially open to unidentified attacks. 
 Second, side-channel attacks present a significant risk. 
-Genkin et al., for example, illustrated how \Wasm could be manipulated to extract data via cache timing-side channels \cite{Genkin2018DrivebyKC}. 
+Genkin \etal, for example, illustrated how \Wasm could be manipulated to extract data via cache timing-side channels \cite{Genkin2018DrivebyKC}. 
 Furthermore, research conducted by Maisuradze and Rossow demonstrated the potential for speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
-Rokicki et al. disclosed the possibility for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
+Rokicki \etal disclosed the possibility for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
 Finally, the binaries themselves may be inherently vulnerable. 
-For example, studies by Lehmann et al. and Stiévenart et al. suggested that flaws in C/C++ source code could infiltrate \Wasm binaries \cite{usenixWasm2020, DeRoover2022}.
+For example, studies by Lehmann \etal and Stiévenart \etal suggested that flaws in C/C++ source code could infiltrate \Wasm binaries \cite{usenixWasm2020, DeRoover2022}.
  

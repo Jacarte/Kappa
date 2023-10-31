@@ -28,7 +28,7 @@ In the sections that follow, we explore how software diversification techniques 
 
 \msubsection{Threat model: speculative side-channel attacks}
 
-To illustrate the threat model concerning \Wasm programs in FaaS platforms, consider the following scenarios. 
+To illustrate the threat model concerning \Wasm programs in FaaS platforms, consider the following scenario. 
 Developers, including potentially malicious actors, have the ability to submit any \Wasm binary to the FaaS platform. 
 A malicious actor could then upload a \Wasm binary that, once compiled to native code, employs Spectre attacks.
 Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredictions, leading to the speculative execution of specific instruction sequences that are not part of the original, sequential execution flow. 
