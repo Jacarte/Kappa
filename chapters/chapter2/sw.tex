@@ -40,11 +40,13 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 
 \begin{strategy}[Rewriting strategy]
     \label{rewriting_strategy}
-    The starting point of creating artificial software diversification is through rewriting rules.
-    A rewriting rule is a pairing of a code segment and its functionally equivalent substitution, which is written manually. 
-    Consider, for instance, Cleemput et al.~\cite{Cleemput2012} and Homescu et al.~\cite{homescu2013profile}, who inject NOP instructions to yield statically varied versions. 
-    Here, the rewriting rule is expressed as \texttt{instr => (nop instr)}, indicating a \texttt{nop} operation preceding the instruction.
-    Rewriting rules may be applied from coarse to fine-grained levels, such as from the program dependencies level \cite{} to instruction level \cite{?}.
+    The creation of artificial software diversification commences with rewriting rules.
+    A rewriting rule refers to a functionally equivalent substitution for a code segment, manually written. 
+    These rules can be applied at varying levels, from coarse to fine-grained. 
+    This can range from the program dependencies level \cite{Harrand1650630} to the instruction level \cite{offensive_div}. 
+    For example, Cleemput et al.~\cite{Cleemput2012} and Homescu et al.~\cite{homescu2013profile} inject NOP instructions to yield statically varied versions at the instruction level. 
+    Here, the rewriting rule is represented as \texttt{instr => (nop instr)}, signifying a \texttt{nop} operation preceding the instruction.
+
 
     %Although the studies by Cleemput et al. and Homescu et al. are easily applicable to \Wasm, this specific strategy may fall under the \emph{non preserved} category since \Wasm typically compiles later. 
     %This implies that JIT compilers could nullify this diversification strategy by merely applying straightforward optimizations.
