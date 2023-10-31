@@ -132,15 +132,18 @@ Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal 
 Their proposal suggested creating program variants while maintaining their functionalities to mitigate potential vulnerabilities.
 Subsequently, transformations aimed at reducing the predictability of programs' observable behavior have been suggested. 
 
+Software diversification, as demonstrated in previous studies, can effectively remove vulnerabilities. 
+Eichin \etal \cite{36307} presented seminal work in 1989, illustrating the practical benefits of diversification. 
+Specifically, the diversification limited the Morris Worm's exploitation to a handful of machines. 
+However, despite extensive research, the use of software diversification in \Wasm remains largely unexplored. 
+Software diversification could bolster \Wasm analysis tools by incorporating diversified program variants, thereby complicating the attackers' task of exploiting overlooked vulnerabilities. 
+These diversified variants, generated proactively for security, could emulate a broad spectrum of real-world conditions, subsequently improving the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
+Moreover, we note that current solutions to mitigate side-channel attacks on \Wasm binaries either target specific attacks or necessitate the modification of runtimes. 
+By generating diversified variants independent of the platform, software diversification could help address potential vulnerabilities in \Wasm binaries. 
+In the context of software diversification, we present the following contributions.
 
-While previous studies on software diversification have illustrated the removal of vulnerabilities, it can consistently serve as a preemptive solution in every instance. 
-Despite the extensive research on software diversification, its application to \Wasm remains largely unexplored. 
-Firstly, software diversification could enhance the capabilities of established \Wasm analysis tools by including diversified program variants, thus complicating the task for attackers to exploit any overlooked vulnerabilities. 
-Generated as a proactive security measure, these diversified variants could mimic a wider range of real-world conditions, consequently increasing the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
-Secondly, we observed that current solutions to reduce side-channel attacks on \Wasm binaries are either limited to specific attacks or require the alteration of runtimes. 
-Software diversification could address yet-to-be-discovered vulnerabilities on \Wasm binaries by creating diversified variants in a manner that is independent of the platform. 
-In the realm of software diversification, we present the following contributions.
 
+\todo{TBD: Add here the case of the redundance rail systems in Sweden in early times instead the Morris Worm.}
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
