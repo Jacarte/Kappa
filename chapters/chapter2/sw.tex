@@ -3,8 +3,6 @@
 \msection{Software diversification}
 \label{sota:sw}
 
-\todo{Redo, key concepts, seminal works, end with a paragraph putting into Wasm context.}
-
 %%ORIGINAL
 Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs. 
 As outlined in Baudry \etal's survey \cite{natural_diversity}, software diversification falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
@@ -232,6 +230,7 @@ Program variants, once generated and verified, may be utilized in two primary sc
     Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
 \end{strategy}
 
+
 \msubsection{Software Diversification Asssessment}
 Assessing software diversification presents a significant challenge. 
 The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks \cite{cohen1993operating}. 
@@ -247,13 +246,11 @@ Hence, a combination of static and dynamic metrics is required for the creation 
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
     Usually, comparing variants means defining a distance metric between programs. 
     For example, the most commonly used metrics for measuring static diversity in generated variants involve edit distances. 
-    At the low-level of bytecode instructions, these metrics include the Jaccard distance between n-grams \cite{ngrams}, the Levenshtein distance \cite{Lev}, and global alignments \cite{CROW}. 
+    At the low-level of bytecode instructions, these metrics include the Jaccard distance between n-grams \cite{ngrams}, the Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
     At the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
-    While these metrics have both strengths and weaknesses, their effectiveness varies. 
-    This variability is contingent upon the level of granularity and the point of application of diversification, whether applied at coarse or fine-grained levels.
-    For example, n-grams of static bytecode instructions effectively operate at the fine-grained level. 
-    Conversely, Gumtree and AST diffing methods excel in assessing high-level diversification. 
-    This discrepancy primarily stems from the fact that low-level representations are usually less abstract.
+    Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
+    They categorize the space of Android applications into malware and goodware. 
+    Then, they create malware variants by employing a static distance metric to approach the goodware group as closely as possible, thus successfully evading malware classifiers.
 \end{strategy}
 
 \begin{strategy}[Dynamic comparison of variants]
@@ -264,8 +261,7 @@ Hence, a combination of static and dynamic metrics is required for the creation 
     Despite source code level differences, the variant and the original program execute identical instructions, leading to similar behaviors modulo input. 
     Assessing Software Diversification primarily aims to demonstrate variant-specific observabilities. 
     While static differences are observable, runtime information holds complementary relevance \cite{yao2018anomaly}. 
-    Therefore, dynamic metrics are essential to assess the diversity of variants during execution. 
-    Many previously mentioned static metrics can be applied to execution traces of program variants. 
+    Therefore, dynamic metrics are essential to assess the diversity of variants. 
     For instance, Forrest \etal \cite{forrest_system_call} were pioneers in classifying program behaviors by analyzing their system call traces using n-grams profiling. 
     Cabrera \etal used a global alignments approach to measure the diversity of JavaScript bytecode traces in the Chrome browser \cite{STRAC}. 
     Fang \etal \cite{8482113} also proposed mitigating JavaScript obfuscation techniques used in malicious code by analyzing dynamic information recorded in V8 bytecode traces. 
@@ -276,19 +272,11 @@ Hence, a combination of static and dynamic metrics is required for the creation 
 In the context of \Wasm, there exist no explicit works on Software Diversification.
 Consequently, previous metrics have not been directly applied to assess diversification in \Wasm binaries.
 However, in other domains, such as the analysis of \Wasm binaries, several studies have employed static metrics.
-For example, VeriWasm quantifies attack-based patterns, postulating that a \Wasm binary is more secure with a lower pattern count \cite{veriwasm}.
+For example, VeriWasm quantifies attack-based patterns, stating that a \Wasm binary is more secure with a lower pattern count \cite{veriwasm}.
 This metric might potentially serve as a guide during variant generation.
 In the field of malware detection, MINOS \cite{MINOS} proposes transforming \Wasm binaries into grayscale images.
 They then employ convolutional neural networks to identify malware, where an increased similarity to a malware image increases the probability of the binary being malware.
-Regarding the dynamic aspect, Wang \etal's study \cite{SEISMIC} profiles \Wasm instructions during runtime to identify malicious behavior.
-
-
-%In our work on Software Diversification for \Wasm, we utilized several metrics. 
-%For example, we employed global alignment metrics for \Wasm binaries to assess the static diversity of generated variants \cite{STRAC,CROW}. 
-%Moreover, we supplement static analysis with trace comparisons during execution. 
-%Specifically, we traced the stack-based operations of \Wasm binaries to evaluate the dynamic diversity of generated variants \cite{STRAC, CROW}. 
-%Moreover, as JIT compilers compile \Wasm binaries to machine code, we compared the machine code traces of generated variants during execution \cite{wasmmutate}.
-
+Regarding the dynamic comparisons, Wang \etal's study \cite{SEISMIC} profiles \Wasm instructions during runtime to identify malicious behavior.
 
 
 \msubsection{Offensive Diversification}
@@ -320,6 +308,7 @@ Yet, such approaches measure the resilience and accuracy of security systems.
 This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
 Specifically, only Bahnsali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
 More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to achieve malware evasion, but this approach is limited to altering only the code section of \Wasm binaries.
+
 
 
 \msubsection{Open challenges}
