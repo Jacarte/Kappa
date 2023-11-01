@@ -236,17 +236,17 @@ Assessing software diversification presents a significant challenge.
 The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks \cite{cohen1993operating}. 
 Ideally, real scenarios would provide the most accurate assessment of diversification, e.g., demonstrating a variant's effectiveness under specific attacks. 
 However, such an approach is not always feasible. 
-First, as previously discussed, Software Diversification is a preemptive strategy, and in most instances, specific attacks might not be replicated. 
-Second, it necessitates the deployment and testing of numerous variants. 
+First, as previously discussed, Software Diversification is a preemptive strategy. 
+Second, it needs the deployment and testing of numerous variants. 
 Hence, a combination of static and dynamic metrics is required for the creation and assessment of software diversification.
 
 \begin{strategy}[Static comparison of variants]
     \label{static_based}
-    Static metrics are utilized to evaluate and identify the diversity of programs without necessitating execution. 
+    Static metrics are used to evaluate and identify the diversity of programs without needing execution. 
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
     Usually, comparing variants means defining a distance metric between programs. 
-    At the low-level of bytecode instructions, these metrics include the Jaccard distance between n-grams \cite{ngrams}, the Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
-    At the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
+    At the low-level of bytecode instructions, for example, these metrics include Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
+    On the other hand, at the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
     Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
     They categorize the space of Android applications into malware and goodware. 
     Then, they create malware variants by employing a static distance metric to approach the goodware group as closely as possible, thus successfully evading malware classifiers.
@@ -265,7 +265,10 @@ Hence, a combination of static and dynamic metrics is required for the creation 
     Cabrera \etal used a global alignments approach to measure the diversity of JavaScript bytecode traces in the Chrome browser \cite{STRAC}. 
     Fang \etal \cite{8482113} also proposed mitigating JavaScript obfuscation techniques used in malicious code by analyzing dynamic information recorded in V8 bytecode traces. 
     While these metrics are primarily used to cluster similar behaviors, they can also be utilized to evaluate the diversity of program variants. 
-    In other words, the larger the difference between two behaviors, the more diverse the variants are during runtime.
+    In other words, the larger the difference between two behaviors, the more diverse the variants are during runtime.      
+    Notice that dynamic assessment has its limitations; it is often expensive to execute the program or sometimes impossible, for example, when user interaction is required which complicates the execution process.
+    Hence, in practice, dynamic assessment of variants is typically conducted during production.
+    Contrarily, malware programs usually do not require user interaction for execution, making it easier to evaluate their diversity in controlled environments prior to real deployment.
 \end{strategy}
 
 In the context of \Wasm, there exist no explicit works on Software Diversification.
