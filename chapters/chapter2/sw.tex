@@ -245,7 +245,6 @@ Hence, a combination of static and dynamic metrics is required for the creation 
     Static metrics are utilized to evaluate and identify the diversity of programs without necessitating execution. 
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
     Usually, comparing variants means defining a distance metric between programs. 
-    For example, the most commonly used metrics for measuring static diversity in generated variants involve edit distances. 
     At the low-level of bytecode instructions, these metrics include the Jaccard distance between n-grams \cite{ngrams}, the Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
     At the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
     Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
