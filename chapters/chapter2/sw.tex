@@ -260,13 +260,14 @@ Hence, a combination of metrics is required for the creation and assessment of s
     While static differences are observable, runtime information holds complementary relevance \cite{yao2018anomaly}. 
     Therefore, dynamic metrics are essential to assess the diversity of variants. 
     For instance, Forrest \etal \cite{forrest_system_call} were pioneers in classifying program behaviors by analyzing their system call traces using n-grams profiling. 
-    Cabrera \etal used a global alignments approach to measure the diversity of JavaScript bytecode traces in the Chrome browser \cite{STRAC}. 
-    Fang \etal \cite{8482113} also proposed mitigating JavaScript obfuscation techniques used in malicious code by analyzing dynamic information recorded in V8 bytecode traces. 
-    While these metrics are primarily used to cluster similar behaviors, they can also be utilized to evaluate the diversity of program variants. 
-    In other words, the larger the difference between two behaviors, the more diverse the variants are during runtime.      
-    Notice that dynamic assessment has its limitations; it is often expensive to execute the program or sometimes impossible, for example, when user interaction is required which complicates the execution process.
-    Hence, in practice, dynamic assessment of variants is typically conducted during production.
-    Contrarily, malware programs usually do not require user interaction for execution, making it easier to evaluate their diversity in controlled environments prior to real deployment.
+    %Koopman and DeVale compare 13 POSIX operating system implementations \cite{comparing_unix} through observing system call traces, demonstrating that by combining them, the failure rate diminishes.
+    Cabrera \etal utilized a global alignments approach to gauge the diversity of JavaScript bytecode traces within the Chrome browser \cite{STRAC}. 
+    Fang \etal proposed a method to counteract JavaScript obfuscation techniques used in malicious code, by analyzing dynamic information captured from V8 bytecode traces \cite{8482113}. 
+    Dynamic metrics are primarily employed to cluster similar behaviors.
+    Yet, they assess the diversity of program variants. i.e., the diversity during runtime is greater when the difference between two behaviors is larger. 
+    Notice that, dynamic assessment can be difficult due to the expense of program execution or the complication of required user interaction. 
+    On the other hand, malware programs, which usually do not require user interaction, are simpler to evaluate in controlled environments before actual deployment.
+
 \end{strategy}
 
 In the context of \Wasm, there exist no explicit works on Software Diversification.

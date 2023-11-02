@@ -1022,7 +1022,7 @@ FUNCTION {presort}
   'sort.key$ :=
 }
 
-ITERATE {presort}
+%ITERATE {presort}
 
 SORT            % by label, sort.label, title---for final label calculation
 
