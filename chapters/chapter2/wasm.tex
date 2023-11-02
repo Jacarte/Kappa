@@ -14,7 +14,6 @@ The W3C publicly announced the \Wasm(Wasm) language in 2015 as the fourth script
 \Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained, and secure.
 
-\todo{Change example to well known: fibo for example}
 
 Moreover, WebAssembly has been evolving outside web browsers since its first announcement.
 Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup time and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
@@ -57,7 +56,7 @@ For instance, functions for interacting with an HTML page's DOM are imported int
     \begin{minipage}[t]{1.0\linewidth}
         \lstset{
             language=Rust,
-            caption={Example C program which includes heap allocation, external function usage, and a function definition featuring a loop, conditional branching, function calls, and memory accesses.  },
+            caption={Example Rust program which includes, external function usage, a function definition featuring a loop, function calls, imported functions, and memory accesses.  },
             label=CExample1,
             breaklines=true, 
             basicstyle=\small\ttfamily,
@@ -72,14 +71,16 @@ For instance, functions for interacting with an HTML page's DOM are imported int
 \end{minipage}
 
 
-In \autoref{CExample1} and \autoref{WASMExample}, we present a C program alongside its corresponding WebAssembly binary. 
-The C function encompasses various elements such as static allocation, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
-The Wasm code shown in \autoref{WASMExample} is displayed in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
-The static memory declared in line 2 of \autoref{CExample1} is allocated within the Wasm binary's linear memory, as illustrated in line 47 of \autoref{WASMExample}.
-The function prototype in line 5 of \autoref{CExample1} is converted into an imported function, as seen in line 8 of \autoref{WASMExample}.
-The main function, spanning lines 7 to 14 in \autoref{CExample1}, is transcribed into a Wasm function covering lines 12 to 38 in \autoref{WASMExample}. Within this function, the translation of various C language constructs into Wasm can be observed.
-For instance, the \texttt{for} loop found in line 8 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
-The loop's breaking condition is converted into a conditional branch, as shown in line 25 of \autoref{WASMExample}.
+In \autoref{CExample1} and \autoref{WASMExample}, we present a Rust program alongside its corresponding WebAssembly binary. 
+The Rust program in \autoref{CExample1} calculates the Fibonacci sequence up to a given number that comes from the host engine.
+The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
+The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
+The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
+The \texttt{fibo} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
+For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
+The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
+In this scenario, the function yields the final set value in the \texttt{local} variable. 
+Note that for optimization purposes, the loop concludes by returning the result value, instead of returning post completion of the loop.
 
 
 There exist several compilers that turn source code into \Wasm binaries. 
