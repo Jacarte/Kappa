@@ -22,3 +22,28 @@
     %\end{lstlisting}
     \end{minipage}
 \end{minipage}
+
+
+ 
+
+\begin{minipage}[hbtp]{0.9\textwidth}
+  
+
+    \begin{minipage}[t]{1.0\linewidth}
+    \lstset{
+        language=WAT,
+        caption={\wasm\ code  for \autoref{CExample1}. The example Wasm code illustrates the translation from C to \wasm in which several high-level language features are translated into multiple \wasm instructions.},
+        style=WATStyle,
+        breaklines=true, 
+        %stepnumber=0,
+        captionpos=b,
+        frame=b,
+        escapeinside={(*@}{@*)},
+        numbers=none,
+        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+        label=WASMExample}
+    %
+    \input{sota/code2/fibo.shortest.wat}
+    %\end{lstlisting}
+    \end{minipage}
+\end{minipage}
