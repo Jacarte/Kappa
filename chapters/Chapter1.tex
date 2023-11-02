@@ -8,33 +8,33 @@
 \chapterprecishere{\input{quotes/cinderella1.tex}\par\raggedleft--- {\small\textup{MR. Cox} \textbf{1893}, Cinderella: Three hundred and forty-five variants \cite{cox1893cinderella}}}
 
 \lettrine[lines=3]{T}{he} first web browser, Nexus, made its appearance in 1990 \cite{nexus}. 
-At its inception, web browsing consisted solely of retrieving and displaying small, static textual web pages. 
-In simpler terms, users could only read page content without any interactive components. 
+At its inception, web browsing consisted solely of retrieving and displaying small, static text pages. 
+In other words, users could only read page content without any interactive components. 
 However, the escalating computing power of devices, the proliferation of the internet, the valuation of internet-based companies and the demand for more engaging user experiences gave rise the concept of executing code in conjunction with web pages. 
 In 1995, the Netscape browser revolutionized this concept by introducing JavaScript \cite{10.1007/978-3-642-14107-2_7}, a programming language that allowed code execution on the client-side.
 Interactive web content immediately highlighted benefits: unlike classical native software, web applications do not require installation, are always up-to-date, and are accessible from any device with a web browser. 
 Significantly, since the advent of Netscape, all browsers offer JavaScript support. 
 In the present day, the majority of web pages incorporate not only HTML but also JavaScript code, which is executed on client computers. 
 Over the past several decades, web browsers have transformed into JavaScript virtual machines. 
-They have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers, like the one displaying this document.
+They have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers.
 
 JavaScript is presently the most widely utilized scripting language in all contemporary web browsers \cite{mulazzani2013fast}.
 However, it is not without limitations due to the inherent characteristics of the language.
-For instance, each JavaScript engine necessitates the parsing and recompiling of the JavaScript code, resulting in substantial overhead.
+For instance, each JavaScript engine needs the parsing and recompiling of the JavaScript code, resulting in substantial overhead.
 Just parsing and compiling JavaScript code consumes the majority of the load times of websites \cite{clark}.
 In addition to performance limitations, JavaScript also has security concerns \cite{10.1145/1190216.1190252}.
 A notable example of this is the lack of memory isolation in JavaScript, which allows extraction of information from other processes \cite{10.1145/3412841.3442001}.
-These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2015, which is the \Wasm(Wasm) language.
+These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2015, which is the \Wasm(Wasm) bytecode.
 Hence, \Wasm became the fourth official language for the web.
 
 
 \Wasm is designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}. 
 It enables the ahead-of-time compilation of all programs from source languages such as C/C++ and Rust. 
-Third-party compilers produce \Wasm binaries, which may be optimized, as is the case of LLVM. 
+Third-party compilers produce \Wasm binaries, as is the case of LLVM. 
 \Wasm bytecode format abstracts its Instruction Set Architecture, making it akin to machine code instructions but independent of CPU architectures \cite{wasm_spec}. 
 Resembling machine code, \Wasm is already optimized and consists of consecutive binary sections. 
 The contiguous array organization of a \Wasm binary enables efficient processing, allowing compilers to speed up compilation through parallel parsing. 
-Wasm binaries not only validate and compile rapidly but are also quick to transmit over a network.
+Wasm binaries not only validate and compile rapidly but are also quick to transmit over a network due to their small sizes.
 
 \Wasm's versatility extends beyond web browsers to backend scenarios. 
 Studies have highlighted the benefits of using WebAssembly as an intermediate layer. 
@@ -42,19 +42,19 @@ These benefits include improved startup times and enhanced memory usage.
 This performance surpasses alternative solutions such as containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 The Bytecode Alliance consequently proposed the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}.
 WASI standardized the execution of \Wasm utilizing a POSIX system interface protocol, thus enabling \Wasm's direct execution in the operating system.
-Despite \Wasm's strong potential to resolve enduring issues in the web environment and its benefits in standalone executions, it introduces new challenges.
 
 \msection{\Wasm security}
 
+%Despite \Wasm's strong potential to resolve enduring issues in the web environment and its benefits in standalone executions, it introduces new challenges.
 WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
 However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
 
 Remarkably, WebAssembly binaries can have inherent vulnerabilities due to source code flaws. 
-For example, the absence of stack-smashing protections like stack canaries in code compiled to WebAssembly could lead to undetected overflows in \Wasm, causing crashes \cite{DeRoover2022} in standalone deployments.
+For example, the absence of stack-smashing protections like stack canaries in code compiled to WebAssembly could lead to undetected overflows in \Wasm, causing crashes in standalone deployments  \cite{DeRoover2022} .
 
 
 Moreover, significant risks exist from side-channel attacks on WebAssembly.
-In browsers, Rokicki \etal revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
+Rokicki \etal revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
 In standalone deployments, Genkin \etal demonstrated the potential for data extraction via cache timing-side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
 Similarly, Maisuradze and Rossow showed speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
 
@@ -65,33 +65,30 @@ Web browsers and JavaScript have evolved significantly in the past thirty years,
 Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
 This situation reflects a software monoculture problem wherein a single flaw could impact multiple applications. 
 The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity. 
-Currently, web pages including WebAssembly binaries are centrally served from main servers. 
+Currently, web pages including WebAssembly binaries are centrally served from main datacenters. 
 Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
-Despite its design for secure execution and sandboxing, Wasm is not immune to vulnerabilities. 
 Therefore, sharing Wasm code through web browsers could also share its vulnerabilities. 
 
 The software monoculture problem exacerbates when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
 Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
 This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
-In simpler terms, the same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
+In other words, the same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
 
 \msection{\Wasm evasion }
 
 
 \Wasm is often used in browsers for computation-intensive activities, including gaming and image processing, but it has also been exploited by malicious actors for cryptojacking \cite{10.1145/3339252.3339261}.
 The popularity of \Wasm for cryptojacking stems from its ability to execute a high volume of hash functions. 
-This task needs substantial computing resources, and \Wasm outperforms JavaScript in speed.
+Since \Wasm outperforms JavaScript in speed, it is the natural option for cryptojacking.
 Besides, \Wasm code's poor readability makes it a convenient tool for obfuscating harmful code.
 Cryptojacking via WebAssembly often involves a malicious JavaScript+\Wasm payload that secretly executes on the victim's browser \cite{9566204}.
-There payloads are commonly found on websites offering illegal downloads, fake websites, online casinos or adult content, using cryptojacking as a means to generate passive income.
+cryptojacking commonly found on websites offering illegal downloads, fake websites, online casinos or adult content, using cryptojacking as a means to generate passive income.
 Because it is hard to detect and remove, cryptojacking can execute on a victim's computer, continuously using resources and generating income for the attacker.
-This profitable malware does not require exploiting vulnerabilities or stealing credentials.
-
 
 
 Several techniques employ static analysis, dynamic analysis and even state-of-the-art machine learning methods to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}.
-However, obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in \Wasm.
-Remarkably, these studies do not consider the existence of obfuscation tools.
+Obfuscation studies have revealed weaknesses in these methods, indicating a largely unexplored threat to malware detection accuracy in \Wasm.
+Yet, these studies do not consider the existence of obfuscation tools.
 
 
 
@@ -138,7 +135,7 @@ Specifically, the diversification limited the Morris Worm's exploitation only to
 However, despite extensive research, the use of software diversification in \Wasm remains largely unexplored. 
 Software diversification could bolster \Wasm analysis tools by incorporating diversified program variants, thereby complicating the attackers' task of exploiting overlooked vulnerabilities. 
 These diversified variants, generated proactively for security, could emulate a broad spectrum of real-world conditions, subsequently improving the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
-Moreover, we note that current solutions to mitigate side-channel attacks on \Wasm binaries either target specific attacks or necessitate the modification of runtimes. 
+Moreover, we note that current solutions to mitigate side-channel attacks on \Wasm binaries either target specific attacks or need the modification of runtimes. 
 By generating diversified variants independent of the platform, software diversification could help address potential vulnerabilities in \Wasm binaries. 
 In the context of software diversification, we present the following contributions.
 
