@@ -1,17 +1,17 @@
 %%
-%% This is file `kthesis.cls',
+%% This is file `kthspik.cls',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% kthesis.dtx  (with options: `classfile,drlic,avhandling')
+%% kthesis.dtx  (with options: `classfile,drlic,spikblad')
 %% 
 %% IMPORTANT NOTICE:
 %% 
 %% For the copyright see the source file.
 %% 
 %% Any modified versions of this file must be renamed
-%% with new filenames distinct from kthesis.cls.
+%% with new filenames distinct from kthspik.cls.
 %% 
 %% For distribution of the original source see the terms
 %% for copying and modification in the file kthesis.dtx.
@@ -21,7 +21,7 @@
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
 \NeedsTeXFormat{LaTeX2e}[2001/01/01]
-\ProvidesClass{kthesis}
+\ProvidesClass{kthspik}
               [2004/12/14 v2.1 Document Class for KTH Theses]
 \newif\if@kthesis@blurb \@kthesis@blurbtrue
 \DeclareOption{noblurb}{\@kthesis@blurbfalse}
@@ -33,20 +33,21 @@
   \settypeblocksize{49pc}{33pc}{*}}
 \def\@kthesis@setpapersize@gfive{%
   \if@kthesis@electronic
-    \setstocksize{239mm}{169mm}
-    \settrimmedsize{239mm}{169mm}{*}
+    \setstocksize{230mm}{160mm}
+    \settrimmedsize{230mm}{160mm}{*}
     \ifpdf
     \else
-      \special{papersize=169mm,239mm}
+      \special{papersize=160mm,230mm}
     \fi
   \else
     \setstocksize{297mm}{210mm}
-    \settrimmedsize{239mm}{169mm}{*}
+    \settrimmedsize{230mm}{160mm}{*}
     \setlength{\trimtop}{\stockheight}
     \addtolength{\trimtop}{-\paperheight}
     \setlength{\trimtop}{0.5\trimtop}
     \setlength{\trimedge}{\stockwidth}
     \addtolength{\trimedge}{-\paperwidth}
+    \setlength{\trimedge}{0.5\trimedge}
     \ifpdf
       \AtBeginDocument{%
         \setlength{\pdfpagewidth}{\stockwidth}
@@ -72,9 +73,7 @@
 \ExecuteOptions{g5paper}
 \ProcessOptions\relax
 \LoadClass[a4paper]{memoir}
-\AtBeginDocument{
-  \RequirePackage{graphics}
-}
+\AtBeginDocument{\RequirePackage{graphics}}
 \@nameuse{@kthesis@setpapersize@\kthesis@trimmedsize}
 \setlrmargins{*}{*}{*}
 \setulmargins{*}{*}{*}
@@ -132,6 +131,7 @@
   \@ifundefined{theisrn}{}{\@maybebullet\theisrn\@bullettrue}%
   \@ifundefined{theisbn}{}{\@maybebullet\theisbn\@bullettrue}%
 }{}
+\pagestyle{kthabstract}
 \newif\if@kthesis@babel \@kthesis@babelfalse
 \AtBeginDocument{%
   \@ifpackagewith{babel}{swedish}%
@@ -139,35 +139,21 @@
 \def\maketitle{%
   \begingroup
   \sffamily
-  \pagestyle{empty}
-  \renewcommand*{\thepage}{title-\arabic{page}}
-  \noindent
-  \parbox[b][0.6\textheight]{\textwidth}{\noindent
-    \scalebox{0.292}{\includegraphics{\thekthlogo}}\par
+  {\centering\noindent
+    \scalebox{0.192}{\includegraphics{\thekthlogo}}\par
+    \vskip1cm
+    \LARGE\bfseries\thetitle\fontsize{165}{170}\par
     \vfill
-    \bfseries\fontsize{32}{37}\selectfont\thetitle\par
-    \vskip0.2cm
+    \normalsize\mdseries\thesubtitle\par
+    \vfill
+    \scalebox{0.192}{\includegraphics{figures/cover.png}}\par
     \large\MakeUppercase{\theauthor}\par
-  }\par
-  \vfill\noindent
-  \parbox[b]{\textwidth}{\noindent\large
+    \vfill
     \thethesistype\par
     \theimprint\par
-  }\par
-  \newpage
-  \hbox{}\vfill
+  }
+  \vfill
   \rmfamily
-  \noindent\begin{tabular}[b]{@{}l@{}}
-    \@ifundefined{thetrita}{}{\thetrita\\}%
-    \@ifundefined{theissn}{}{\theissn\\}%
-    \@ifundefined{theisrn}{}{\theisrn\\}%
-    \@ifundefined{theisbn}{}{\theisbn\\}%
-  \end{tabular}
-  \hfill
-  \noindent\begin{tabular}[b]{@{}r@{}}
-    \theaddress
-  \end{tabular}
-  \par\bigskip
   \if@kthesis@blurb
     \if@kthesis@babel
       \begin{otherlanguage}{swedish}
@@ -186,13 +172,9 @@
     \fi
     \bigskip
   \fi
-  \noindent
-  \copyright \space \theauthor, \thedate
-  \par\bigskip\noindent
-  Tryck: \thepublisher\par
-  \cleardoublepage
+  \newpage
   \endgroup
 }
 \endinput
 %%
-%% End of file `kthesis.cls'.
+%% End of file `kthspik.cls'.
