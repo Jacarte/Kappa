@@ -50,16 +50,16 @@ When converting back to the \Wasm binary format from the intermediate representa
 
 
 In the following example, we demonstrate a rewriting rule within the \texttt{Peephole} meta-rule that utilizes a custom \texttt{rand} operator to expand statically declared constants within any \Wasm program function body. 
-The unfold rewriting rule, as the name suggests, transforms statically declared constants into the sum of two random numbers.
+The unfolding rewriting rule, as the name suggests, transforms statically declared constants into the sum of two random numbers.
 During the generation of the \Wasm variant, the custom \texttt{rand} operator is substituted with a randomly chosen static constant.
 Notice that the condition specified in the last part of the rewriting rule ensures that this predicate is satisfied. 
 
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
-Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{constant_folding}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
+Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
 Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
-The unfold rewriting rule indirectly stresses this segment of memory. 
+The unfolding rewriting rule indirectly stresses this segment of memory. 
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.
 
 

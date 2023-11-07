@@ -10,7 +10,7 @@
 % The announcement of \wasm\ marked the first step into the standardization of bytecode in the web environment. 
 
 % History
-The W3C publicly announced the \Wasm(Wasm) language in 2015 as the fourth scripting language supported in all major web browser vendors.
+The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported in all major web browser vendors.
 \Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained, and secure.
 
@@ -174,7 +174,7 @@ They are accessible only through their index relative to the executing function 
 
 
 \wrule{\Wasm module execution:}
-While a \Wasm binary could be interpreted, the most practical approach is to JIT compile it into machine code.
+While a \Wasm binary could be interpreted, the most practical approach is to JIT compile it into machine code \cite{2023arXiv230513241T}.
 The main reason is that \Wasm is optimized and closely aligned with machine code, leading to swift JIT compilation for execution.
 Browser engines such as V8\toolcite{https://chromium.googlesource.com/v8/v8.git} and SpiderMonkey\toolcite{https://spidermonkey.dev/} utilize this strategy when executing \Wasm binaries in browser clients.
 Once JITed, the \Wasm binary operates within a sandboxed environment, accessing the host environment exclusively through imported functions.
