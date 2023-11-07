@@ -7,7 +7,7 @@
 Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs. 
 As outlined in Baudry \etal's survey \cite{natural_diversity}, software diversification falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
 Our work specifically contributes to the last two categories.
-Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works, emphasizing how they generate diversification and apply it to \Wasm.
+Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works. 
 
 \msubsection{Generation of Software Variants}
 \label{generation}
@@ -147,9 +147,6 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 \end{strategy}
 
 
-\todo{TBD: add one on AI driven ?}
-
-
 \msubsection{Equivalence Checking}
 \label{equivalence:checking}
 
@@ -157,7 +154,7 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 Equivalence checking between program variants is a vital component for any program transformation task, ranging from checking compiler optimizations \cite{LeCompilers} to the artificial synthesis of programs discussed in this chapter. 
 It proves that two pieces of code or programs are functionally equivalent \cite{churchill2019}. 
 We can roughly simplify the checking process with the following property: 
-two programs are deemed equivalent if they generate identical outputs. This equivalence is observed when given identical inputs from a closed collection of inputs \cite{10.1145/2594291.2594334}.
+two programs are deemed equivalent if they generate identical outputs when given identical inputs from a closed collection of inputs \cite{10.1145/2594291.2594334}.
 We adopt this definition of \emph{functional equivalence modulo input} throughout this dissertation. 
 In Software Diversification, equivalence checking seeks to preserve the original functionality of programs while varying observable behaviors. 
 Two programs, for instance, can differ statically and still compute the same result. 
@@ -178,14 +175,14 @@ We outline two methods to check variant equivalence: by construction and prove-d
     The primary limitation for fuzzers is that the process is notably time-consuming and necessitates manual introduction of oracles.
     Recent advances in machine learning have prompted researchers to investigate the use of neural networks for verifying program equivalence.
     One such example is the work of Zhang and colleagues \cite{2023arXiv230514591Z}, which produces reference oracles and test cases by using Large Language Models.
-    Although this method appears effective, it only achieves an accuracy rate of 88\%, which is insufficient for security applications and total verification.
+    Although this method appears effective, it only achieves an accuracy rate of 88\%, which is insufficient for total verification.
 \end{checking}
 
 \begin{checking}[Prove-driven checking]
     \label{check_by_smt}
     In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove equivalence of program variants. 
     The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
-    The SMT solver then checks for counter-examples. 
+    The SMT solver then checks for counter-examples \cite{kesseli2018counterexample}. 
     When it finds a counter-example, there is an input for which the two mathematical formulas yield different outputs. 
     The primary limitation of this technique is that not all algorithms can be translated into a mathematical formula, such as loops. 
     Nevertheless, this technique is frequently used for checking no-branching-programs like basic block and peephole replacements \cite{SuperoptimizationScaling}.
@@ -317,7 +314,7 @@ More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to ac
 As outlined in \autoref{background:wasm:challenges}, our primary motivation for the contributions of this thesis is the open issues within the \Wasm ecosystem. 
 We see potential in employing Software Diversification to address them. 
 Based on our previous discussion, we highlight several open challenges in the realm of Software Diversification for \Wasm. 
-First, \Wasm, being an emerging technology, is still in the process of implementing defensive measures \cite{Stevienart paper here}. 
+First, \Wasm, being an emerging technology, is still in the process of implementing defensive measures. 
 The process of officially adopting a new defensive measure is inherently slow, making software diversification a potentially valuable preemptive strategy. 
 Second, despite the abundance of related work on software diversity, its exploration in the context of \Wasm remains limited. 
 Third, both randomization and multivariant execution have been largely unexplored. 
