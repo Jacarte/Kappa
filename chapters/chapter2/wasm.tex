@@ -31,25 +31,23 @@ The subsequent text in this chapter focuses specifically on \Wasm version 1.0.
 However, the tools, techniques, and methodologies discussed are applicable to future \Wasm versions.
 
 
-
-
-
-%\todo{TBD: Some words about the evergreen method and how to extend Wasm?}
-%\vspace{-1.5cm}
-% How to generate
-%\msubsection{\Wasm's generation and binary format}
-%\todo{Replace by Rust example}
-%\todo{Annotate the Wasm code with the sections offset and length}
-%\todo{Instantiate each one of the previously mentioned concepts}
-%\todo{Improve some metadata, size of the code, etc}
-%\todo{FIX: linerefs}
-
 \msubsection{From source code to \Wasm}
 
 \Wasm programs are compiled from source languages like C/C++, Rust, or Go, which means that it can benefit from the optimizations of the source language compiler.
 The resulting \Wasm program is like a traditional shared library, containing instruction codes, symbols, and exported functions. 
 A host environment is in charge of complementing the Wasm program, such as providing external functions required for execution within the host engine. 
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code in the browser. 
+
+In \autoref{CExample1} and \autoref{WASMExample}, we present a Rust program alongside its corresponding WebAssembly binary. 
+The Rust program in \autoref{CExample1} calculates the Fibonacci sequence up to a given number that comes from the host engine.
+The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
+The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
+The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
+The \texttt{fibo} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
+For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
+The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
+In this scenario, the function yields the final set value in the \texttt{local} variable. 
+Note that for optimization purposes, the loop concludes by returning the result value, instead of returning post completion of the loop.
 
 
 \begin{minipage}[h]{0.9\textwidth}
@@ -71,16 +69,6 @@ For instance, functions for interacting with an HTML page's DOM are imported int
 \end{minipage}
 
 
-In \autoref{CExample1} and \autoref{WASMExample}, we present a Rust program alongside its corresponding WebAssembly binary. 
-The Rust program in \autoref{CExample1} calculates the Fibonacci sequence up to a given number that comes from the host engine.
-The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
-The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
-The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
-The \texttt{fibo} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
-For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
-The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
-In this scenario, the function yields the final set value in the \texttt{local} variable. 
-Note that for optimization purposes, the loop concludes by returning the result value, instead of returning post completion of the loop.
 
 
 There exist several compilers that turn source code into \Wasm binaries. 
@@ -89,7 +77,9 @@ Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Was
 The main advantage of using LLVM is that it provides a modular and state-of-the-art optimization infrastructure for \Wasm binaries.
 Recently, the Kotlin Multiplatform framework \toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, enabling the compilation of Kotlin code to \Wasm.
 
-
+\pagebreak
+\input{chapters/chapter2/wasm_example}
+\pagebreak
 
 A recent trend in the \Wasm ecosystem involves porting various programming languages by converting both the language's engine or interpreter and the source code into a \Wasm program. 
 For example, Javy\toolcite{https://github.com/bytecodealliance/javy} encapsulates JavaScript code within the QuickJS interpreter, demonstrating that direct source code conversion to \Wasm isn't always required. 
@@ -99,7 +89,7 @@ However, packaging the interpreter and the code in one single standalone \Wasm b
 For example, the absence of JIT compilation for the "interpreted" code makes it less suitable for long-running tasks \cite{10.1145/3593434.3593454}. 
 On the other hand, it proves effective for short-running tasks, particularly those executed in Edge-Cloud computing platforms.
 
-\input{chapters/chapter2/wasm_example}
+%
 
 \msubsection{Extending \Wasm}
 
