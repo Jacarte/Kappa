@@ -63,7 +63,7 @@ For it, we remove all built-in optimizations in the LLVM backend that could reve
 CROW inherently introduces a novel transformation strategy called \emph{constant inferring}, which significantly expands the variety of \Wasm program variants. 
 Specifically, CROW identifies segments of code that can be simplified into a single constant assignment, with a particular focus on variables that control branching logic. 
 After applying this \emph{constant inferring} technique, the resulting program diverges substantially from the original program structure. 
-This is crucial for diversification efforts, as one of the primary objectives is to create variants that are as distinct as possible from the original source code \cite{somepaper}. 
+This is crucial for diversification efforts, as one of the primary objectives is to create variants that are as distinct as possible from the original source code. 
 In essence, the more divergent the variant, the more challenging it becomes to trace it back to its original form.
 % This transformation is especially useful for generating \wasm variants that are highly preserved after the JIT compilation of further compilers.
 

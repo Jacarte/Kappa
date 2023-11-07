@@ -19,8 +19,9 @@ case $ARG in
     final)
         pdflatex -interaction=nonstopmode -draftmode  -shell-escape Kappa.tex 
         bibtex Kappa 
-        pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex 
-        echo "Final generated"
+        echo "" > errors.txt
+        pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex  > errors.txt
+        echo "Final generated" 
         ;;
     *)
         echo "Invalid command"
