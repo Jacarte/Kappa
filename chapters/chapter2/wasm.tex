@@ -33,14 +33,14 @@ However, the tools, techniques, and methodologies discussed are applicable to fu
 
 \msubsection{From source code to \Wasm}
 
-\Wasm programs are compiled from source languages like C/C++, Rust, or Go, which means that it can benefit from the optimizations of the source language compiler.
+\Wasm programs are compiled from source languages like C/C++, Rust, or Go ahead of time, which means that \wasm binaries can benefit from the optimizations of the source language compiler.
 The resulting \Wasm program is like a traditional shared library, containing instruction codes, symbols, and exported functions. 
 A host environment is in charge of complementing the Wasm program, such as providing external functions required for execution within the host engine. 
 For instance, functions for interacting with an HTML page's DOM are imported into the Wasm binary when invoked from JavaScript code in the browser. 
 
 In \autoref{CExample1} and \autoref{WASMExample}, we present a Rust program alongside its corresponding WebAssembly binary. 
-The Rust program in \autoref{CExample1} calculates the Fibonacci sequence up to a given number that comes from the host engine.
-The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditional branching, function calls, and memory accesses.
+The Rust program in \autoref{CExample1} iteratively calculates the Fibonacci sequence up to a given number that comes from the host engine.
+The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditionals, function calls, and memory accesses.
 The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
 The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
 The \texttt{fibo} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
@@ -124,7 +124,7 @@ For clarity, we also annotate sections as comments in the Wasm code in \autoref{
 \end{figure}
 
 A \Wasm binary can be processed efficiently due to its organization into a contiguous array of sections. 
-For instance, this structure permits compilers to expedite the compilation process either through parallel parsing or by disregarding \emph{Custom Sections}. 
+For instance, this structure permits compilers to boost the compilation process either through parallel parsing. 
 Moreover, the \emph{Code Section}'s instructions are further compacted through the use of the LEB128\toolcite{https://en.wikipedia.org/wiki/LEB128} encoding. 
 Consequently, Wasm binaries are not only fast to validate and compile, but also swift to transmit over a network.
 
@@ -165,11 +165,11 @@ This division of responsibility is often categorized as \emph{managed} and \emph
 Managed refers to components that are exclusively modified by the host engine at the lowest level, e.g. when the \Wasm binary is JITed, while unmanaged components can also be altered through  \Wasm opcodes.
 First, modules may include multiple linear memory instances, which are contiguous arrays of bytes. 
 These are accessed using 32-bit integers (\texttt{i32}) and are shareable only between the initiating engine and the \Wasm binary. 
-Generally, these linear memories are considered to be unmanaged, e.g., line 21 of \autoref{WASMExample} shows an explicit memory access opcode. 
-Second, there are global instances, which are variables accompanied by values and mutability flags (see example in line 42 of \autoref{WASMExample}). 
+Generally, these linear memories are considered to be unmanaged, e.g., line 28 of \autoref{WASMExample} shows an explicit memory access opcode. 
+Second, there are global instances, which are variables accompanied by values and mutability flags (see example in line 49 of \autoref{WASMExample}). 
 These globals are managed by the host engine, which controls their allocation and memory placement completely oblivious to the \Wasm binary scope. 
 They can only be accessed via their declaration index, prohibiting dynamic addressing. 
-Third, local variables are mutable and specific to a given function instance. 
+Third, local variables are mutable and specific to a given function instance (e.g., line 15 in \autoref{WASMExample}). 
 They are accessible only through their index relative to the executing function and are part of the data managed by the host engine.
 
 
@@ -187,7 +187,6 @@ Compilers can generate \Wasm binaries that implement WASI, which allows executio
 These binaries can then be executed by standalone engines across a variety of environments, including the cloud, servers, and IoT devices \cite{makitalo2021webassembly}.
 Similarly to browsers, these engines often translate \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process.
 Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI.
-In a related development, Singh \etal\cite{WARDuino2019} have created a \Wasm virtual machine specifically designed for Arduino-based devices.
 
 
 \msubsection{\Wasm's control-flow}
@@ -198,15 +197,15 @@ In contrast to conventional assembly code, control-flow structures in Wasm leap 
 Each block may specify the needed execution stack state before execution as well as the resultant execution stack state once its instructions have been executed.
 Typically, the execution stack state is simply the quantity and numeric type of values on the stack. 
 This stack state is used to validate the binary during compilation and to ensure that the stack is in a valid state before the execution of the block's instructions.
-Blocks in Wasm are explicit (see instructions \texttt{block} and \texttt{end} in lines 16 and 34 of \autoref{WASMExample}), delineating where they commence and conclude.
+Blocks in Wasm are explicit (see instructions \texttt{block} and \texttt{end} in lines 16 and 34 of \autoref{WASMExample}), delineating where they start and end.
 By design, a block cannot reference or execute code from external blocks.
 
 
 During runtime, \Wasm break instructions can only jump to one of its enclosing blocks. 
 Breaks, except for those within loop constructions, jump to the block's end and continue to the next immediate instruction. 
-For instance, after line 34 of \autoref{WASMExample}, the execution would proceed to line 35. 
+For instance, after line 31 of \autoref{WASMExample}, the execution would proceed to line 32. 
 Within a loop, the end of a block results in a jump to the block's beginning, thus restarting the loop. 
-For example, if line 30 of \autoref{WASMExample} evaluates as false, the next instruction to be executed in the loop would be line 18. 
+For example, if line 29 of \autoref{WASMExample} evaluates as false, the next instruction to be executed in the loop would be line 18. 
 \autoref{background:wasm:block} provides an example for better understanding, comparing a standard block and a loop block in a Wasm function.
 
 \input{snippets/jumps.tex}
@@ -223,24 +222,21 @@ This is a significant challenge for rewriting tools, as it requires the analysis
 
 The WebAssembly ecosystem's expansion needs robust tools to ensure its security and reliability. 
 Numerous tools, employing various strategies to detect vulnerabilities in \Wasm programs, have been created to meet this need. 
-This paper presents a review of the most relevant tools in this field, focusing on those capable of providing security guarantees for \Wasm binaries.
+This section presents a review of the most relevant tools in this field, focusing on those capable of providing security guarantees for \Wasm binaries.
 
 %%ORIGINAL
-\wrule{Static analysis:} SecWasm\cite{secwasm} uses information control-flow strategies to identify vulnerabilities in \Wasm binaries. 
-Conversely, Wasmati\cite{wasmati} employs code property graphs for this purpose. 
+\wrule{Static analysis:} SecWasm\cite{secwasm} uses information control-flow checking to identify vulnerabilities in \Wasm binaries. 
+Similarly, Wasmati\cite{wasmati} employs code property graphs for this purpose. 
 Wasp\cite{Wasp} leverages concolic execution to identify potential vulnerabilities in \Wasm binaries. 
-VeriWasm\cite{veriwasm}, an offline verifier designed specifically for native x86-64 binaries JITed from \Wasm, adopts a unique approach. 
-While these tools emphasize specific strategies, others adopt a more holistic approach. 
-CT-Wasm\cite{ctwasm}, verifies the implementation of cryptographic algorithms in \Wasm. 
+CT-Wasm\cite{ctwasm}, verifies the constant time implementation of cryptographic algorithms in \Wasm. 
 Similarly, Vivienne applies relational Symbolic Execution (SE) to \Wasm binaries in order to reveal vulnerabilities in cryptographic implementations\cite{Vivienne}. 
+While these tools emphasize specific strategies, others adopt a more holistic approach. 
 For example, both Wassail\cite{wassail} and WasmA\cite{WasmA} provide a comprehensive static analysis framework for \Wasm binaries. 
-However, static analysis tools may have limitations. 
-For instance, a newly, semantically equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{breaking example}.
-If the \Wasm input differs from the input used during sound analysis \cite{sound_analysis}, the vulnerability may go unnoticed. 
+Yet, static analysis tools may have limitations. 
+For instance, a newly, semantically equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{wasmixer}.
 Thus, there may be a lack of subjects to evaluate the effectiveness of these tools.
 
 \wrule{Dynamic analysis:} Dynamic analysis involves tools such as TaintAssembly\cite{taintassembly}, which conducts taint analysis on \Wasm binaries. 
-Fuzzm\cite{fuzzm} identifies vulnerabilities in host engines by conducting property fuzzing through \Wasm binary execution. 
 Furthermore, Stiévenart and colleagues have developed a dynamic approach to slicing \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}.
 This technique aids in debugging, understanding programs, and conducting security analysis.
 However, Wasabi\cite{wasabi} remains the only general-purpose dynamic analysis tool for \Wasm binaries, primarily used for profiling, instrumenting, and debugging \Wasm code. 
@@ -251,8 +247,8 @@ Thus, facing an important limitation on overhead for real-world scenarios.
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
 The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
-However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and fortifying the security of the entire execution runtimes ecosystem. 
-For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries, particularly in Function-as-a-Service (FaaS) platforms such as Fastly. 
+However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and hardening the security of the entire execution runtimes ecosystem. 
+For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries in Function-as-a-Service (FaaS) platforms. 
 Similarly, Kolosick and colleagues \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating thee performance overhead of SFI guarantees implementation.
 Conversely, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 
 WaVe can be employed to detect anomalies in engines running Wasm-WASI programs. 
