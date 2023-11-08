@@ -229,6 +229,9 @@ The final row offers the median number of transformations required for evasion a
     This can be appreciated in the results of the feedback-guided diversification part of \autoref{offensive:results:fast}.
     The feedback-guided diversification setup successfully generates variants that totally evade the detection for 30 out of 33 binaries, it is thus as good as the stochastic setup.
     Remarkably, for 21 binaries out of 30, feedback-guided needs only 40\% of the calls the stochastic diversification setup needs, demonstrating larger efficiency. 
+    Moreover, the lower number of transformations needed to evade detection, compared to the stochastic diversification setup, highlights the efficacy of the feedback-guided diversification setup in studying effective transformations.
+    Consequently, malware detection system developers can leverage feedback-guided diversification to enhance their systems, focusing on identifying specific transformations.
+
 
     %In practice, a potential attacker may be limited by budget on the number of transformations applicable to the malware binary, e.g., the number of queries to VirusTotal. 
     %Additionally, the performance of the resulting binary benefits from this approach.
@@ -246,7 +249,7 @@ The final row offers the median number of transformations required for evasion a
     In contrast, the feedback-guided diversification setup necessitates only 131 iterations. 
     Remarkably, a mere 38 iterations are needed for MINOS. 
     WASM-MUTATE evaded detection for 8 out of 33 binaries in a single iteration. 
-    This result implies a vulnerability in the MINOS model to binary diversification.
+    This result implies the susceptibility of the MINOS model to binary diversification.
 \end{strategy}
     
 %\msubsection{Efficiency and correctness results}

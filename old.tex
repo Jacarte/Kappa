@@ -329,3 +329,10 @@ Such a situation presents a potential threat to the entire ecosystem due to shar
     This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
     The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
 \end{comment}
+
+Fastly, on average, can redeploy a \Wasm binary across its extensive platform of 73 datacenters worldwide in just 13 seconds. 
+The number of datacenters allows for the practical deployment of a unique variant per node using our tools. 
+Despite each computing node potentially hosting a distinct \Wasm variant produced by our tools, a 13-second window might still be vulnerable. 
+To address this potential issue, we employ multivariant binaries, invoking a unique variant with each execution. 
+In conclusion, generating dozens of unique variants every several seconds, each serving as a multivariant binary packaging thousands of other variants is achievable by using our tools.
+Therefore, this exemplifies the application of Defensive Software Diversification to a real-world \Wasm standalone scenario.
