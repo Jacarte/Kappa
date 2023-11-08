@@ -20,7 +20,7 @@ case $ARG in
         pdflatex -interaction=nonstopmode -draftmode  -shell-escape Kappa.tex 
         bibtex Kappa 
         echo "" > errors.txt
-        pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex  > errors.txt
+        pdflatex -interaction=nonstopmode -shell-escape -synctex=1 Kappa.tex 
         echo "Final generated" 
         ;;
     *)
