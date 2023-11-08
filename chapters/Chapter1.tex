@@ -9,7 +9,7 @@
 
 \lettrine[lines=3]{T}{he} first web browser, Nexus, made its appearance in 1990 \cite{nexus}.  
 At its inception, web browsing consisted solely of retrieving and displaying small, static text pages. 
-In other words, users could only read page content without any interactive components. 
+With Nexus, users could access for the first time interlinked hypertext documents, so-called HTML pages. 
 However, the escalating computing power of devices, the proliferation of the internet, the valuation of internet-based companies and the demand for more engaging user experiences gave rise the concept of executing code in conjunction with web pages. 
 In 1995, the Netscape browser revolutionized this concept by introducing JavaScript \cite{10.1007/978-3-642-14107-2_7}, a programming language that allowed code execution on the client-side.
 Interactive web content immediately highlighted benefits: unlike classical native software, web applications do not require installation, are always up-to-date, and are accessible from any device with a web browser. 
@@ -41,56 +41,38 @@ Studies have highlighted the benefits of using WebAssembly as an intermediate la
 The Bytecode Alliance consequently proposed the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}.
 WASI standardized the execution of \Wasm utilizing a POSIX system interface protocol, thus enabling \Wasm's direct execution in the operating system.
 
-\msection{\Wasm security}
-
-%Despite \Wasm's strong potential to resolve enduring issues in the web environment and its benefits in standalone executions, it introduces new challenges.
-WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory. 
-However, there has been less focus on potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020}.
-
-Remarkably, WebAssembly binaries can have inherent vulnerabilities due to source code flaws. 
-For example, the absence of stack-smashing protections like stack canaries in code compiled to WebAssembly could lead to undetected overflows in \Wasm, causing crashes in standalone deployments  \cite{DeRoover2022} .
+\msection{The risks of \Wasm monoculture}
 
 
-Moreover, significant risks exist from side-channel attacks on WebAssembly.
-Rokicki \etal revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
-In standalone deployments, Genkin \etal demonstrated the potential for data extraction via cache timing-side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
-Similarly, Maisuradze and Rossow showed speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
-
-
-\msection{Software Monoculture}
-
-Web browsers and JavaScript have evolved significantly in the past thirty years, leading to numerous implementations. 
+Web browsers and JavaScript have evolved significantly in the past three decades, leading to numerous implementations. 
 Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
 This situation reflects a software monoculture problem wherein a single flaw could impact multiple applications. 
 The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity. 
 Currently, web pages including WebAssembly binaries are centrally served from main datacenters. 
 Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
-Therefore, sharing Wasm code through web browsers could also share its vulnerabilities. 
+Therefore, sharing Wasm code through web browsers could also share its potential vulnerabilities. 
 
-The software monoculture problem exacerbates when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
+The software monoculture problem is exacerbated when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
 Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
 This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
-In other words, the same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
-
-\msection{\Wasm malware evasion }
+The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
 
 
-\Wasm is often used in browsers for computation-intensive activities, including gaming and image processing, but it has also been exploited by malicious actors for cryptojacking \cite{10.1145/3339252.3339261}.
-The popularity of \Wasm for cryptojacking stems from its ability to execute a high volume of hash functions. 
-Since \Wasm outperforms JavaScript in speed, it is the natural option for cryptojacking.
-Besides, \Wasm code's poor readability makes it a convenient tool for obfuscating harmful code.
-Cryptojacking via WebAssembly often involves a malicious JavaScript+\Wasm payload that secretly executes on the victim's browser and generates passive income \cite{9566204}.
-Because it is hard to detect and remove, cryptojacking can execute on a victim's computer, continuously using resources and generating income for the attacker.
+While WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory, it is not exempt from vulnerabilities. 
+For example, potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020} are possible.
+Remarkably, WebAssembly binaries can have inherent vulnerabilities due to source code flaws. 
+For example, the absence of stack-smashing protections, could lead to undetected overflows and crashes in Wasm executions\cite{DeRoover2022}.
+Importantly, significant risks exist from side-channel attacks on WebAssembly.
+Rokicki \etal revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
+In standalone deployments, Genkin \etal demonstrated the potential for data extraction via cache timing-side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
+Similarly, Maisuradze and Rossow showed speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
 
-
+As \Wasm's popularity grows, so does its use in computation-intensive tasks within browsers, such as gaming and image processing.
+Yet, this same capability for efficient computation makes \Wasm an attractive target for misuse by cybercriminals, particularly for cryptojacking \cite{10.1145/3339252.3339261}.
+Moreover, the poor readability of \Wasm code makes it an ideal tool for obfuscating malicious code.
+Due to its difficulty to detect and eliminate, cryptojacking can persistently operate on a victim's computer, continuously using resources and generating income for the attacker \cite{9566204}.
 Several techniques employ static analysis, dynamic analysis and even state-of-the-art machine learning methods to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}.
-Obfuscation studies have revealed weaknesses in several of these methods, indicating a largely unexplored threat to malware detection accuracy in \Wasm.
-Yet, the majority of these studies do not consider the existence of obfuscation tools.
-
-
-
-
-
+Yet, the majority of these studies do not consider the existence of obfuscation tools, highlighting a largely unexplored threat to malware detection accuracy in \Wasm.
 
 
 
@@ -103,10 +85,6 @@ According to the discussion above, we identify three key problems to be addresse
 	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks, specially side-channel threats. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks.
 	Besides, current defenses are limited to specific attacks or require the alteration of runtimes. 
 	
-	\item \label{prob2} \textbf{Software monoculture}: 
-	Identical \Wasm binaries are deployed on multiple nodes and browsers. 
-	Deployment systems, including web browsers, might be also identical. 
-	Such a situation presents a potential threat to the entire ecosystem due to shared vulnerabilities.
 	 
 	\item \label{prob5} \textbf{WebAssembly malware evasion}: \Wasm malware is a serious threat. Current implementated defenses are not sufficient to protect against \Wasm malware, mostly because current defenses ignore malware obfuscation.
 

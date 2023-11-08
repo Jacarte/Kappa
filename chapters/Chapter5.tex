@@ -4,11 +4,11 @@
 
 \chapterprecishere{\input{quotes/dn2.tex}\par\raggedleft--- {\small\textup{Donald Knuth}}}
 
-\lettrine[lines=3]{O}{wing} to the growing adoption of \Wasm, we have focused on the security of \Wasm programs and the potential usages of Software Diversification.
-This thesis introduces a comprehensive set of methods and tools for Software Diversification in \Wasm.
+\lettrine[lines=3]{T}{he} growing adoption of \Wasm requires efficent code analysis and hardening techniques.
+This thesis contributes to this effort with a comprehensive set of methods and tools for Software Diversification in \Wasm.
 It includes the technical contributions of this dissertation: CROW, MEWE, and WASM-MUTATE.
 Additionally, we present specific use cases for exploiting the diversification created for \Wasm programs.
-In this chapter, we initially summarize the technical contributions of this dissertation, including an overview of the empirical findings of our research.
+In this chapter, we summarize the technical contributions of this dissertation, including an overview of the empirical findings of our research.
 Finally, we discuss future research directions in \Wasm Software Diversification.
 
 \section{Summary of technical contributions}
@@ -17,7 +17,7 @@ It uses the LLVM compiler and requires the source code or the LLVM IR representa
 Its core comprises an enumerative synthesis implementation. 
 CROW ensures the functional equivalence of the generated variants by employing SMT solvers for functionality verification.  
 
-MEWE, on the other hand, enhances CROW by using identical core technology to generate program variants. 
+MEWE, on the other hand, reuses the variants generated with CROW to generate program variants. 
 Furthermore, it encapsulates the LLVM IR variants into a \Wasm multivariant binary, facilitating execution path randomization. 
 Both CROW and MEWE are fully automated systems, necessitating only the input source code from users. 
 
@@ -33,6 +33,30 @@ Notably, WASM-MUTATE is currently in use in real-world scenarios to enhance \Was
 
 According to the comparison of our technical contributions discussed in \autoref{tech} and, the results of our use case experiments in \autoref{exploit} we summarize the following empirical findings.
 
+
+\begin{strategy}[Offensive Software Diversification]
+    We illustrate the practical application of Offensive Software Diversification in \Wasm. 
+    Specifically, we automatically diversify 33 \Wasm cryptomalware, generating many variants in mere minutes.
+    These variants effectively evade detection from state-of-the-art malware detection systems.
+    Our research verifies the existence of opportunities for the malware detection community to bolster the automatic detection of cryptojacking WebAssembly malware. 
+    
+\end{strategy}
+
+\begin{strategy}[Defensive Software Diversification]
+    Our techniques bolster overall security by enabling the deployment of unique and diversified \Wasm binaries, potentially employing different variants as needed.
+    Our methods can generate thousands of variants with high preservation in mere minutes.
+    The rapid generation of these variants is possible due to our leveraging of the swift transformation of \Wasm binaries.
+    For instance, WASM-MUTATE can produce variants in seconds with the use of virtually inexpensive random e-graph traversals.
+    Given our ability to generate variants within minutes, it becomes practical to deploy a unique variant per computing node on FaaS platforms in a randomization scenario, as outlined in \autoref{deployment}.
+    We have tested such a scenario with Fastly \cite{MEWE}, including multivariant executions, thus verifying the viability of moving target defense techniques \cite{jackson2011compiler}.
+    Specifically, we use Fastly.
+    On average, Fastly can redeploy a Wasm binary on their platform in 13 seconds.
+    Although each computing node may contain a different \Wasmb variant out of our tools, a 13-second window is sufficient for an attack.
+    Yet, MEWE addresses this issue with multivariant binaries, where each execution involves a different variant.
+    In conclusion, our ability to generate variants rapidly facilitates the deployment of a new variant, including multivariant binaries, for a single \Wasm original program, serving as a practical moving target defense technique.
+\end{strategy}
+
+
 \begin{strategy}[Implications of our implementations]
     CROW and MEWE depend on SMT solvers to prove functional equivalence in their enumerative synthesis implementation, which can be a bottleneck in variant generation. 
     Consequently, WASM-MUTATE outperforms CROW and MEWE by producing unique variants. 
@@ -46,39 +70,12 @@ According to the comparison of our technical contributions discussed in \autoref
 \end{strategy}
 
 
-\begin{strategy}[Offensive Software Diversification]
-    We use WASM-MUTATE to illustrate the practical application of Offensive Software Diversification in \Wasm. 
-    Specifically, we employ WASM-MUTATE in generating \Wasm variants of cryptojacking malware. 
-    These variants effectively evade detection from state-of-the-art malware detection systems like VirusTotal and MINOS.
-    Our research verifies the existence of opportunities for the malware detection community to bolster the automatic detection of cryptojacking WebAssembly malware. 
-    One potential contributing factor to the success of WASM-MUTATE's evasion is a false sense of resilience. 
-    Prior research into the detection of WebAssembly malware has exposed a flawed presumption that obfuscation techniques for \Wasm are absent \cite{Minesweeper, MinerRay, SEISMIC, RAPID, MINOS}, whilst our software diversification tools present a viable solution for enhancing the precision of \Wasm malware detection systems.
-\end{strategy}
-
-\begin{strategy}[Defensive Software Diversification]
-    Our techniques enhance overall security by facilitating the deployment of unique and diversified \Wasm binaries, potentially utilizing different variants as needed. 
-    For instance, WASM-MUTATE generates Wasm binaries that are resistant to Spectre-like attacks. 
-    Given that WASM-MUTATE can generate tens of thousands of variants within minutes, it becomes feasible to deploy a unique variant for each function invocation on FaaS platforms. 
-    This rationale applies equally to both CROW and MEWE. 
-    Our tools can mitigate other side-channel attacks. 
-    For example, CROW also excels at hardening defenses against potential side-channel attacks. 
-    In addition, MEWE tackles high-level timing-based side-channels \cite{morgan2015web}.
-\end{strategy}
-
-
 \section{Future Work}
 
 Along with this dissertation we have highlighted several open challenges related to Software Diversification in \Wasm.
 These challenges open up several directions for future research.
 In the following, we outline some of these directions.
 
-\begin{strategy}[Extending WASM-MUTATE]
-WASM-MUTATE may gain advantages from the enumerative synthesis techniques employed by CROW and MEWE. 
-Specifically, WASM-MUTATE could adopt the transformations generated by these tools as rewriting rules. 
-This approach could enhance WASM-MUTATE in two specific ways. 
-First, it could improve the preservation of the variants generated by WASM-MUTATE. 
-Second, this method would inevitably expand the diversification space of WASM-MUTATE e-graphs.
-\end{strategy}
 
 
 \begin{strategy}[Program Normalization]
@@ -88,6 +85,12 @@ Second, this method would inevitably expand the diversification space of WASM-MU
     Specifically, a practically costless process of pre-compiling Wasm binaries could be employed as a preparatory measure for malware classifiers. 
     In other words, a \wasm binary can first be JITed to machine code, effectively eliminating malware variants. 
     This approach could substantially enhance the efficiency and precision of malware detection systems.
+
+    \todo{Motivation. Why this is important?}
+
+    \todo{One paragraph on SOTA}
+
+    \todo{One paragraph about how I would do it.}
 \end{strategy}
 
 \begin{strategy}[Meta-oracles]
@@ -97,37 +100,12 @@ Second, this method would inevitably expand the diversification space of WASM-MU
     On the other hand, MINOS functions as a binary oracle. 
     This evidence supports the use of multiple malware oracles (meta-oracles) in identifying cryptojacking malware in browsers. 
     In the context of \Wasm, given the existence of numerous and diverse Wasm-specific detection mechanisms, this strategy is both practical and feasible, yet not explored in the literature.
+
+    \todo{Motivation. Why this is important?}
+
+    \todo{One paragraph on SOTA}
+
+    \todo{One paragraph about how I would do it.}
+
 \end{strategy}
     
-\begin{strategy}[Mitigating Port Contention]
-    Rokicki \etal  \cite{10.1145/3488932.3517411} showcased the potential of a covert side-channel attack using port contention in \Wasm code within browsers to violate cross scripting isolation.
-    Side-channels exploiting port contention utilize the competition for shared hardware resources to extract sensitive information from processes. 
-    The attacker measures the time taken to access these shared resources to deduce data or behavior of a victim process sharing the same resources. 
-    Counteracting these attacks is especially difficult as they leverage fundamental features of the hardware design meant to enhance performance. 
-    The success of this attack largely relies on the accurate prediction of Wasm instructions inducing port contention. 
-    To tackle this security concern, \Wasm Software Diversification can be effectively implemented as a browser plugin. 
-    Our tools possess the ability to change the \Wasm instructions acting as port contention predictors with different instructions. 
-    This bears a strong resemblance to the impact on timers and padding discussed earlier in \autoref{exploit:defensive}. 
-    Such a strategy would certainly eradicate the port contention in the particular port utilized for the attack, subsequently hardening browsers against such detrimental activities.
-
-\end{strategy}
-
-
-\begin{comment}
-    
-    \wrule{Dataset augmentation:} The \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
-    The study by Hilbig \etal  in 2021 found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
-    This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
-    The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
-\end{comment}
-
-
-\begin{strategy}[AI and Software Diversification]
-    As discussed in \autoref{tech}, implementing a diversifier at the high language level seems impractical due to the multitude of existing frontends.
-    However, the emergence of Large Language Models (LLMs) and their ability to generate high-level language may address this problem. 
-    Nevertheless, we argue that simply connecting the LLM to the diversifier does not provide a complete solution; studies on preservation must also be conducted.
-    Specifically, high-level diversification might lead to low preservation, thereby challenging the assumption of diversification at the low-level.
-    In the context of \Wasm, considering the wide variety of frontends, utilizing LLMs might be a feasible method for generating Software Diversification.
-    Although preservation poses a problem at a high-level, it could potentially solve the inherited, more challenging issue of transforming programs at the intermediate representation level or \Wasm bytecode itself.
- 
-\end{strategy}

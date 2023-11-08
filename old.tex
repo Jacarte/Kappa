@@ -299,3 +299,33 @@ Vulnerabilities inherent in its memory system, potential for side-channel attack
 Moreover, the current landscape of malware detection in \Wasm is not well-studied.
 This is especially true in the face of advanced obfuscation techniques that hinder the effectiveness of existing detection methods.
 This leaves a critical gap in the defense against \Wasm-targeted cyber threats.
+
+
+
+\item \label{prob2} \textbf{Software monoculture}: 
+Identical \Wasm binaries are deployed on multiple nodes and browsers. 
+Deployment systems, including web browsers, might be also identical. 
+Such a situation presents a potential threat to the entire ecosystem due to shared vulnerabilities.
+
+
+\begin{strategy}[Mitigating Port Contention]
+    Rokicki \etal  \cite{10.1145/3488932.3517411} showcased the potential of a covert side-channel attack using port contention in \Wasm code within browsers to violate cross scripting isolation.
+    Side-channels exploiting port contention utilize the competition for shared hardware resources to extract sensitive information from processes. 
+    The attacker measures the time taken to access these shared resources to deduce data or behavior of a victim process sharing the same resources. 
+    Counteracting these attacks is especially difficult as they leverage fundamental features of the hardware design meant to enhance performance. 
+    The success of this attack largely relies on the accurate prediction of Wasm instructions inducing port contention. 
+    To tackle this security concern, \Wasm Software Diversification can be effectively implemented as a browser plugin. 
+    Our tools possess the ability to change the \Wasm instructions acting as port contention predictors with different instructions. 
+    This bears a strong resemblance to the impact on timers and padding discussed earlier in \autoref{exploit:defensive}. 
+    Such a strategy would certainly eradicate the port contention in the particular port utilized for the attack, subsequently hardening browsers against such detrimental activities.
+
+\end{strategy}
+
+
+\begin{comment}
+    
+    \wrule{Dataset augmentation:} The \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
+    The study by Hilbig \etal  in 2021 found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
+    This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
+    The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
+\end{comment}
