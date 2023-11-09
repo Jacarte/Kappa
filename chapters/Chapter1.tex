@@ -18,75 +18,129 @@ In the present day, the majority of web pages incorporate not only HTML but also
 Over the past several decades, web browsers have transformed into JavaScript virtual machines. 
 They have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers.
 
-JavaScript is presently the most widely utilized scripting language in all contemporary web browsers \cite{mulazzani2013fast}.
-However, it is not without limitations due to the inherent characteristics of the language.
-For instance, each JavaScript engine needs the parsing and recompiling of the JavaScript code, resulting in substantial overhead.
-Just parsing and compiling JavaScript code consumes the majority of the load times of websites \cite{clark}.
-In addition to performance limitations, JavaScript also has security concerns \cite{10.1145/1190216.1190252}.
-A notable example of this is the lack of memory isolation in JavaScript, which allows extraction of information from other processes \cite{10.1145/3412841.3442001}.
-These issues led the Web Consortium (W3C) to standardize a bytecode for the web environment in 2017, which is the \Wasm(Wasm) bytecode.
-Hence, \Wasm became the fourth official language for the web.
+
+Despite being the main scripting language in modern web browsers, JavaScript possesses inherent limitations due to its unique language characteristics \cite{mulazzani2013fast}.
+Each JavaScript engine requires the parsing and recompiling of the JavaScript code, thereby causing substantial overhead.
+In practice, the process of parsing and compiling JavaScript code constitutes the majority of website load times \cite{clark}.
+Additionally, JavaScript presents security issues, including the lack of memory isolation, which potentially enables information extraction from other processes \cite{10.1145/1190216.1190252, 10.1145/3412841.3442001}.
+Numerous attempts have been made to port other languages, offering different guarantees, to the browser execution as alternatives to JavaScript.
+For instance, Java applets emerged on web pages in the late 90s, enabling the execution of Java bytecode on the client side \cite{javaapplet}.
+Likewise, Microsoft attempted twice with ActiveX in 1996 \cite{activex}, and Silverlight in 2007 \cite{silverlight}.
+However, these attempts either failed to persist or experienced low adoption, primarily due to security issues and the absence of consensus among the community of browser vendors.
+
+ 
 
 
-\Wasm is designed with a focus on speed, portability, self-containment, and security \cite{Haas_2017}. 
-It enables the ahead-of-time compilation of all programs from source languages such as C/C++ and Rust. 
-Third-party compilers produce \Wasm binaries, as is the case of LLVM. 
-\Wasm bytecode format abstracts its Instruction Set Architecture, making it akin to machine code instructions but independent of CPU architectures \cite{wasm_spec}. 
-Resembling machine code, \Wasm is already optimized and consists of consecutive binary sections. 
-The contiguous array organization of a \Wasm binary enables efficient processing, allowing compilers to speed up compilation through parallel parsing. 
-Wasm binaries not only validate and compile rapidly but are also quick to transmit over a network due to their small sizes.
+Importantly, in 2014, Alon Zakai and colleagues proposed the Emscripten tool \cite{emscripten}.
+Emscripten employs a strict subset of JavaScript, asm.js, to facilitate the compilation of low-level code such as C to JavaScript.
+Asm.js was included as an LLVM backend \cite{asmjsweb}.
+This strategy offered the advantages of the ahead-of-time optimizations from LLVM, resulting in performance gains on browser clients \cite{asmjs} when compared to standard JavaScript code.
+Asm.js outperformed JavaScript because it restricted language features to those that could be optimized in the LLVM pipeline. 
+Moreover, it eliminated most of the language's dynamic characteristics, limiting it to numerical types, top-level functions, and one large array in memory accessed directly as raw data.
+Asm.js proved that client-side code could be enhanced with the appropriate language design and standardization.
+In response to persistent JavaScript-related issues, the formalization and creation of a formal specification following asm.js laid the groundwork for the emergence of WebAssembly.
+In 2015, the Web Consortium (W3C) standardized WebAssembly as a bytecode for the web environment.
+As a result, WebAssembly bytecode became the fourth official language for the web.
 
-\Wasm's versatility extends beyond web browsers to backend scenarios. 
-Studies have highlighted the benefits of using WebAssembly as an intermediate layer, including improved startup times and enhanced memory usage \cite{pMendkiServerless, 1244493Jacobsson}. 
-The Bytecode Alliance consequently proposed the WebAssembly System Interface (WASI) in 2019 \cite{bytecodealliance, WASI}.
-WASI standardized the execution of \Wasm utilizing a POSIX system interface protocol, thus enabling \Wasm's direct execution in the operating system.
+
+The first distinction from earlier attempts to port non-JavaScript languages to the web lies in \Wasm's initial design. 
+Unlike its predecessors, \Wasm was crafted to supplement JavaScript in the browser as a platform-agnostic, low-level bytecode, rather than to completely replace it. 
+Its primary goal was to replace computing-intensive JavaScript code in contemporary web applications. 
+Additionally, WebAssembly is the inaugural major language that utilized formal specification and verification right from the design inception \cite{Haas_2017, watt2018mechanising, 2023arXiv230513241T}. 
+
+
+Importantly, \Wasm provides a platform for compiling several legacy code applications, like those written in C/C++. 
+For example, LLVM includes \Wasm  as a backend since release 7.1.0 published in May 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}.
+Therefore, the emergence of \Wasm, a swift, low-level, portable bytecode for browsers, has the potential to transform web software as we know it. 
+It paves the way for web applications to undertake roles traditionally reserved for native desktop applications.
+For example, applications such as AutoCAD and Adobe Photoshop have been ported to \Wasm\toolcite{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}. 
+
+
+The \Wasm specification embodies several language design principles that pave the way for its extension beyond the web ecosystem.
+For instance, the architecture of \Wasm guarantees self-containment.
+Inherently, \Wasm binaries are prohibited from accessing memory beyond their own designated space, thereby amplifying security via binary isolation from the remainder of the system.
+Consequently, research has highlighted the benefits of integrating WebAssembly as an intermediate layer in contemporary cloud platforms \cite{pMendkiServerless}.
+In particular, the employment of \Wasm binaries expedites startup times and optimizes memory consumption, outperforming virtualization and containerization \cite{1244493Jacobsson}.
+Furthermore, in comparison to virtual machines and containers, they are more compact in size, highlighting their efficient deployment, especially when network transportation is a consideration.
+The methodology for standalone \Wasm execution was formalized in 2019.
+The Bytecode Alliance unveiled the WebAssembly System Interface (WASI) \cite{bytecodealliance, WASI}.
+WASI standardizes the execution of \Wasm via a POSIX system interface protocol, thereby facilitating the direct execution of \Wasm within the operating system.
+This standardization enables \Wasm to function outside the confines of the browser, extending its use to cloud environments and IoT devices, for example.
+
+The extensive applicability and rapid adoption of \Wasm have prompted requests for additional features. 
+However, these demands do not always align with the initial specifications. 
+For a proposal to reach standard status, it must satisfy particular criteria.
+A new proposal needs a formal specification and a minimum of two independent implementations, e.g., two different \Wasm engines. 
+This approach allows for swift incorporation of new formalizations and features via the so-called "evergreen method", while maintaining the original \Wasm specification intact. 
+Consequently, since the inception of \Wasm, numerous extensions have been proposed for standardization. 
+For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
+After approval, new extensions remain optional, ensuring that the core \Wasm version remains 1.0. 
+The ongoing development of \Wasm provides avenues for research and development. 
+However, it also gives rise to security concerns within the ecosystem, as new threats emerge.
+
 
 \msection{The risks of \Wasm monoculture}
 
 
 Web browsers and JavaScript have evolved significantly in the past three decades, leading to numerous implementations. 
 Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
-This situation reflects a software monoculture problem wherein a single flaw could impact multiple applications. 
+This situation reflects a software monoculture problem wherein a single flaw could impact multiple devices at the same time. 
 The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity. 
 Currently, web pages including WebAssembly binaries are centrally served from main datacenters. 
 Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
 Therefore, sharing Wasm code through web browsers could also share its potential vulnerabilities. 
-
 The software monoculture problem is exacerbated when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
 Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
 This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
 The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
 
 
-While WebAssembly is praised for its security, especially for its design that prevents programs from accessing data beyond their own memory, it is not exempt from vulnerabilities. 
-For example, potential vulnerabilities and attacks within WebAssembly's own memory \cite{usenixWasm2020} are possible.
-Remarkably, WebAssembly binaries can have inherent vulnerabilities due to source code flaws. 
-For example, the absence of stack-smashing protections, could lead to undetected overflows and crashes in Wasm executions\cite{DeRoover2022}.
-Importantly, significant risks exist from side-channel attacks on WebAssembly.
-Rokicki \etal revealed the risk for port contention side-channel attacks on \Wasm binaries in browsers \cite{10.1145/3488932.3517411}. 
-In standalone deployments, Genkin \etal demonstrated the potential for data extraction via cache timing-side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
-Similarly, Maisuradze and Rossow showed speculative execution attacks on \Wasm binaries \cite{ret2spec}. 
+%%IMPROVED
+Generally, a software monoculture facilitates the spread of vulnerabilities.
+Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to vulnerabilities. 
+For instance, vulnerabilities and attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020}. 
+Intriguingly, innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
+For instance, the lack of stack-smashing protections could result in unnoticed overflows and crashes during \Wasm executions\cite{DeRoover2022}. 
+Notably, there are significant risks associated with side-channel attacks on WebAssembly. 
+In standalone deployments, Genkin \etal demonstrated the possibility of data extraction via cache-timing side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
+In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks on \Wasm binaries \cite{ret2spec}.
 
-As \Wasm's popularity grows, so does its use in computation-intensive tasks within browsers, such as gaming and image processing.
-Yet, this same capability for efficient computation makes \Wasm an attractive target for misuse by cybercriminals, particularly for cryptojacking \cite{10.1145/3339252.3339261}.
-Moreover, the poor readability of \Wasm code makes it an ideal tool for obfuscating malicious code.
-Due to its difficulty to detect and eliminate, cryptojacking can persistently operate on a victim's computer, continuously using resources and generating income for the attacker \cite{9566204}.
-Several techniques employ static analysis, dynamic analysis and even state-of-the-art machine learning methods to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}.
-Yet, the majority of these studies do not consider the existence of obfuscation tools, highlighting a largely unexplored threat to malware detection accuracy in \Wasm.
+
+On the other hand, malware can also be deployed through \Wasm binaries. 
+Defenders often assume the existence of a single malware binary variant, while in reality, numerous variants of the same malware might exist. 
+For example, as \Wasm's popularity increases, it is more frequently employed in computation-intensive tasks within browsers, including gaming and image processing. 
+This enhanced capability for efficient computation simultaneously makes \Wasm a desirable target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
+The difficulty in detecting and eliminating cryptojacking allows it to operate persistently on a victim's computer, continually using resources and generating income for the attacker \cite{9566204}. 
+Additionally, the complexity of \Wasm code enhances its suitability for obfuscating malicious code, including JavaScript malicious payloads \cite{wobfuscator}. 
+A variety of techniques, including static analysis, dynamic analysis, and even advanced machine learning methods, are employed to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
+However, most of these studies do not consider the presence of obfuscation tools, which poses a significant, largely unexplored threat to the accuracy of malware detection in \Wasm. 
+Rokicki \etal have also highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
+In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
+
 
 
 
 \msection{Problems statements}
 
-According to the discussion above, we identify three key problems to be addressed.
+To sum up, software monoculture amplifies the dissemination of vulnerabilities. 
+The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running \Wasm binaries could be affected. 
+Conversely, \Wasm malware pose a severe threat. 
+Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of software monoculture scenarios, such as obfuscation. 
+Besides, mitigations might require hardware and operating-level changes, which are not always feasible.
+Last but not least is the lack of Software Diversity research in the context of \Wasm.
+In this dissertation, we tackle the subsequent three problems:
 
-\begin{enumerate}[label=\textbf{Ps\arabic*}, ref=C\arabic*]
+\begin{enumerate}[label=\textbf{P\arabic*}, ref=\textbf{P\arabic*}]
 
-	\item \label{prob4} \textbf{WebAssembly security}: \Wasm ecosystem and binaries are vulnerable to attacks, specially side-channel threats. Existing WebAssembly research mostly reacts to existing vulnerabilities, leaving the potential for unidentified attacks.
-	Besides, current defenses are limited to specific attacks or require the alteration of runtimes. 
+	\item \label{prob4} \textbf{Side-channels and persisting vulnerabilities}: The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.
 	
-	 
-	\item \label{prob5} \textbf{WebAssembly malware evasion}: \Wasm malware is a serious threat. Current implementated defenses are not sufficient to protect against \Wasm malware, mostly because current defenses ignore malware obfuscation.
+	\item \label{prob5} \textbf{\Wasm malware}: 
+	\Wasm malware presents a substantial threat. 
+	The phenomenon of software monoculture makes to assume that malware is typically considered only within the context of the original program.
+
+	
+	\item \label{prob6} \textbf{Inexisting diversification tools for \Wasm}:
+	Software Diversity research in the context of \Wasm is unexplored.
 
 \end{enumerate}
 
@@ -103,47 +157,54 @@ Software Diversification is a security-focused process that involves identifying
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
 Their proposal suggested creating program variants while maintaining their functionalities to mitigate potential vulnerabilities.
 
-Software diversification, as demonstrated in previous studies, can effectively remove vulnerabilities. 
-For instance, Eichin \etal \cite{36307} presented seminal work in 1989, illustrating the practical benefits of diversification. 
-Specifically, the diversification limited the Morris Worm's exploitation only to a few machines. 
-However, despite extensive research, the use of software diversification in \Wasm remains largely unexplored. 
 
 
-Software diversification could bolster \Wasm analysis tools by incorporating diversified program variants, thereby hardening the attackers' task of exploiting vulnerabilities. 
-Generated variants, created proactively for security, could emulate a broad spectrum of real-world conditions, subsequently improving the accuracy of \Wasm analysis tools, including \Wasm malware detectors. 
-Moreover, current solutions to mitigate side-channel attacks on \Wasm binaries either target specific attacks or need the modification of runtimes. 
-Thus, by generating diversified variants independent of the platform, software diversification could help address potential vulnerabilities in \Wasm binaries. 
-In the context of software diversification, we present the following, non-necesarilly orthogonal, contributions.
+
+Software diversification has been proven to effectively remove vulnerabilities, as evidenced by previous studies. 
+For instance, Eichin \etal \cite{36307}, in their seminal 1989 work, highlighted the practical benefits of diversification. 
+They demonstrated that diversification constrained the exploitation of the Morris Worm to a handful of machines. 
+Additionally, software diversification could bolster \Wasm analysis tools by integrating diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
+On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools, including \Wasm malware detectors. 
+Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
+Besides, the diversification process could completely eradicate malware from one variant to the next by removing malicious code from the original program, addressing \ref{prob5}. 
+However, despite the extensive research, the implementation of software diversification in \Wasm is still largely unexplored. 
+In light of this, we offer the following contributions within the context of software diversification (\ref{prob6}), which are not necessarily mutually exclusive.
+
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
-	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research.
-	
-	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
-	
-	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
-	
-	\item \label{defensivecontrib} \wrule{Defensive Diversification:} We assess how generated \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
+
+	\item \label{defensivecontrib} \wrule{Defensive Diversification:} In order to address \ref{prob4}, we assess how generated \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
 	
 	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} 
-	We evaluate the potential for using generated \Wasm program variants for offensive purposes. 
+	In order to address \ref{prob5}, we evaluate the potential for using generated \Wasm program variants for offensive purposes. 
 	Our research includes experiments where we test the resilience of \Wasm analysis tools against these generated variants. 
 	Furthermore, we offer insights into which types of program variants practitioners should prioritize to improve \Wasm analysis tools.
+
+	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4}, \ref{prob5} and \ref{prob6}.
+	
+	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm, addressing \ref{prob6}. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
+	
+	\item \label{generationcontrib} \wrule{Diversity generation:} To address and asses \ref{prob6}, we generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
+	
 
 	
 \end{enumerate}
 
 \begin{table}
 	\centering
-	\begin{tabular}{l | l l l l }
+	\begin{tabular}{l | c c c c }
 		\multicolumn{1}{c|}{Contribution} & \multicolumn{4}{c}{Research papers} 
 		\\
 		&  \ref{crowpaper} & \ref{mewepaper} & \ref{wasmmutatepaper} & \ref{evasionpaper} \\
+		&  \cite{CROW} & \cite{MEWE} & \cite{wasmmutate} & \cite{EVASION} \\
 		\hline
+
+		\ref{defensivecontrib} Defensive diversification   & \checkmark & \checkmark & \checkmark\\
+		\ref{ofensivecontrib} Offensive diversification  & & & & \checkmark\\
+
 		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark \\
 		\ref{therycontrib} Theoretical contribution  & \checkmark &  &  \checkmark &  \\
 		\ref{generationcontrib} Diversity generation   & \checkmark & \checkmark & \checkmark & \checkmark\\
-		\ref{defensivecontrib} Defensive diversification   & \checkmark & \checkmark & \checkmark\\
-		\ref{ofensivecontrib} Offensive diversification  & & & & \checkmark\\
 	\end{tabular}
 	\caption{Mapping between contributions and research papers \label{contrib_map}.}
 	
@@ -154,7 +215,7 @@ In the context of software diversification, we present the following, non-necesa
 This compilation thesis comprises the following research papers.
 In \autoref{contrib_map} we map the contributions to our research papers.
 
-\begin{enumerate}[label={\textbf{P\arabic*}:}, ref={P\arabic*}]
+\begin{enumerate}[label={\textbf{\Roman*}:}, ref={\Roman*}]
 	\item \label{crowpaper} \textbf{CROW: Code randomization for WebAssembly bytecode.} \\ 
 	\textbf{Javier Cabrera-Arteaga}, Orestis Floros, Oscar Vera-Pérez, Benoit Baudry, Martin Monperrus\\
 	\textit{ Measurements, Attacks, and Defenses for the Web (MADWeb 2021), 12 pages} \\

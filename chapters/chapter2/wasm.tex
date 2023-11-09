@@ -89,16 +89,6 @@ However, packaging the interpreter and the code in one single standalone \Wasm b
 For example, the absence of JIT compilation for the "interpreted" code makes it less suitable for long-running tasks \cite{10.1145/3593434.3593454}. 
 On the other hand, it proves effective for short-running tasks, particularly those executed in Edge-Cloud computing platforms.
 
-%
-
-\msubsection{Extending \Wasm}
-
-The broad spectrum of applicability and the rapid adoption of \Wasm has resulted in demands for additional features. 
-However, not all of these demands align with its original specifications.
-Thus, since the introduction of \Wasm, various extensions have been proposed for standardization. 
-For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
-To become a standard, a proposal must fulfill certain criteria, including having a formal specification and at least two independent implementations, e.g., two different engines. 
-Notably, even after adoption, new extensions are optional, e.g., the core \Wasm remains untouched and continues to be referred to as version 1.0. 
 
 
 \msubsection{\Wasm's binary format}
