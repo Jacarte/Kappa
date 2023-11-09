@@ -184,7 +184,7 @@ The communication between the host and the \Wasm module execution is typically f
 While initially intended for browsers, \Wasm has undergone significant evolution, primarily due to WASI\cite{WASI}.
 WASI establishes a standardized POSIX-like interface for interactions between \Wasm modules and host environments.
 Compilers can generate \Wasm binaries that implement WASI, which allows execution in standalone engines.
-These binaries can then be executed by standalone engines across a variety of environments, including the cloud, servers, and IoT devices \cite{makitalo2021webassembly}.
+These binaries can then be executed by standalone engines across a variety of environments, including the cloud, servers, and IoT devices \cite{makitalo2021webassembly, 2023arXiv230513241T}.
 Similarly to browsers, these engines often translate \Wasm into machine code via JIT compilation, ensuring a sandboxed execution process.
 Standalone engines such as WASM3\toolcite{https://github.com/wasm3/wasm3}, Wasmer\toolcite{https://wasmer.io/}, Wasmtime\toolcite{https://github.com/bytecodealliance/wasmtime}, WAVM\toolcite{https://github.com/WAVM/WAVM}, and Sledge\cite{Sledge} have been developed to support both \Wasm and WASI.
 

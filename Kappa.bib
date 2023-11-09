@@ -2178,8 +2178,10 @@ year={2021}
   address="Cham",
   pages="139--163",
   abstract="Binary rewriting is a widely adopted technique in software analysis. WebAssembly (Wasm), as an emerging bytecode format, has attracted great attention from our community. Unfortunately, there is no general-purpose binary rewriting framework for Wasm, and existing effort on Wasm binary modification is error-prone and tedious. In this paper, we present BREWasm, the first general purpose static binary rewriting framework for Wasm, which has addressed inherent challenges of Wasm rewriting including high complicated binary structure, strict static syntax verification, and coupling among sections. We perform extensive evaluation on diverse Wasm applications to show the efficiency, correctness and effectiveness of BREWasm. We further show the promising direction of implementing a diverse set of binary rewriting tasks based on BREWasm in an effortless and user-friendly manner.",
-isbn="978-3-031-44245-2"
+  isbn="978-3-031-44245-2"
 }
+
+
 
 
 
@@ -2986,4 +2988,62 @@ archivePrefix = {arXiv},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
+
+
+
+@inproceedings{selfAPR,
+  author = {Ye, He and Martinez, Matias and Luo, Xiapu and Zhang, Tao and Monperrus, Martin},
+  title = {SelfAPR: Self-Supervised Program Repair with Test Execution Diagnostics},
+  year = {2023},
+  isbn = {9781450394758},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3551349.3556926},
+  doi = {10.1145/3551349.3556926},
+  abstract = {Learning-based program repair has achieved good results in a recent series of papers. Yet, we observe that the related work fails to repair some bugs because of a lack of knowledge about 1) the application domain of the program being repaired, and 2) the fault type being repaired. In this paper, we solve both problems by changing the learning paradigm from supervised training to self-supervised training in an approach called SelfAPR. First, SelfAPR generates training samples on disk by perturbing a previous version of the program being repaired, enforcing the neural model to capture project-specific knowledge. This is different from the previous work based on mined past commits. Second, SelfAPR executes all training samples and extracts and encodes test execution diagnostics into the input representation, steering the neural model to fix the kind of fault. This is different from the existing studies that only consider static source code as input. We implement SelfAPR and evaluate it in a systematic manner. We generate 1 039 873 training samples obtained by perturbing 17 open-source projects. We evaluate SelfAPR on 818 bugs from Defects4J, SelfAPR correctly repairs 110 of them, outperforming all the supervised learning repair approaches.},
+  booktitle = {Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering},
+  articleno = {92},
+  numpages = {13},
+  location = {Rochester, MI, USA},
+  series = {ASE '22}
+}
+
+  
+@ARTICLE{2021arXiv210311882S,
+       author = {{Srikant}, Shashank and {Liu}, Sijia and {Mitrovska}, Tamara and {Chang}, Shiyu and {Fan}, Quanfu and {Zhang}, Gaoyuan and {O'Reilly}, Una-May},
+        title = "{Generating Adversarial Computer Programs using Optimized Obfuscations}",
+      journal = {arXiv e-prints},
+     keywords = {Computer Science - Machine Learning, Computer Science - Programming Languages, Computer Science - Software Engineering},
+         year = 2021,
+        month = mar,
+          eid = {arXiv:2103.11882},
+        pages = {arXiv:2103.11882},
+          doi = {10.48550/arXiv.2103.11882},
+archivePrefix = {arXiv},
+       eprint = {2103.11882},
+ primaryClass = {cs.LG},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv210311882S},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@article{10.1109/TSE.2023.3240118,
+  author = {Zhang, Weiwei and Guo, Shengjian and Zhang, Hongyu and Sui, Yulei and Xue, Yinxing and Xu, Yun},
+  title = {Challenging Machine Learning-Based Clone Detectors via Semantic-Preserving Code Transformations},
+  year = {2023},
+  issue_date = {May 2023},
+  publisher = {IEEE Press},
+  volume = {49},
+  number = {5},
+  issn = {0098-5589},
+  url = {https://doi.org/10.1109/TSE.2023.3240118},
+  doi = {10.1109/TSE.2023.3240118},
+  abstract = {Software clone detection identifies similar or identical code snippets. It has been an active research topic that attracts extensive attention over the last two decades. In recent years, machine learning (ML) based detectors, especially deep learning-based ones, have demonstrated impressive capability on clone detection. It seems that this longstanding problem has already been tamed owing to the advances in ML techniques. In this work, we would like to challenge the robustness of the recent ML-based clone detectors through code semantic-preserving transformations. We first utilize fifteen simple code transformation operators combined with commonly-used heuristics (i.e., Random Search, Genetic Algorithm, and Markov Chain Monte Carlo) to perform equivalent program transformation. Furthermore, we propose a deep reinforcement learning-based sequence generation (DRLSG) strategy to effectively guide the search process of generating clones that could escape from the detection. We then evaluate the ML-based detectors with the pairs of original and generated clones. We realize our method in a framework named CloneGen (stands for Clone Generator). CloneGen In evaluation, we challenge the three state-of-the-art ML-based detectors and four traditional detectors with the code clones after semantic-preserving transformations via the aid of CloneGen. Surprisingly, our experiments show that, despite the notable successes achieved by existing clone detectors, the ML models inside these detectors still cannot distinguish numerous clones produced by the code transformations in CloneGen. In addition, adversarial training of ML-based clone detectors using clones generated by CloneGen can improve their robustness and accuracy. Meanwhile, compared with the commonly-used heuristics, the DRLSG strategy has shown the best effectiveness in generating code clones to decrease the detection accuracy of the ML-based detectors. Our investigation reveals an explicable but always ignored robustness issue of the latest ML-based detectors. Therefore, we call for more attention to the robustness of these new ML-based detectors.},
+  journal = {IEEE Trans. Softw. Eng.},
+  month = {may},
+  pages = {3052–3070},
+  numpages = {19}
+}
+
+  
 

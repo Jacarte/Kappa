@@ -103,42 +103,61 @@ In the following, we outline two concrete directions.
 
 
 
-\begin{strategy}[Program Normalization]
+\begin{strategy}[Mitigating malware evasion]
 
     Malware detection is a well-known and challenging issue \cite{cohen1987computer}. 
     The problem intensifies when considering malware in the context of software monoculture, especially when the malware is assumed to be identically replicated across victims. 
     We have successfully used Software Diversification to evade malware detection. 
     This shows that, if applicable, the reality of malware monoculture can be exploited by attackers using Software Diversification for offensive purposes. 
-    In previous discussions, we highlighted the use of feedback-guided diversification in identifying specific transformations to which an implementation is susceptible. 
-    However, we have found another approach to mitigate malware evasion. 
-    Specifically, instead of generating variants to evade detection, we propose to canonize variants to a primer program.
+    In previous discussions, we mentioned the application of feedback-guided diversification to discern particular transformations susceptible to implementation. 
+    In future works, we plan to explore this approach further.
 
-    
-    \todo{One paragraph on SOTA}
+    In addition, our current work elucidates the potential effectiveness of program normalization in enhancing the accuracy of malware detection systems. 
+    By comparing the canonical program with an existing dataset of malware, we could rapidly and efficiently detect malware.
+    Specifically, we could employ a practically costless process of pre-compiling Wasm binaries as a preparatory measure for malware classifiers. 
+    For instance, a \wasm binary could first be JITed to machine code to effectively reduce the malware variant space. 
+    This method could significantly boost the efficiency and precision of malware detection systems. 
+    Yet, it heavily relies on the low preservation of the generated variants, i.e., highly preserver malware variants might be difficult to normalize, and thus to detect.
+    Be believe such issue could be solved by data augmentation techniques.
+
+    Dataset augmentation has been demonstrated to enhance the precision of classification models \cite{2021arXiv210311882S, selfAPR, 10.1109/TSE.2023.3240118}.
+    Therefore, our tools could be utilized to produce a wide array of known malware variants.
+    Such variants could serve to augment the dataset employed in the training of malware detection systems.
+    This could potentially rectify the inherent issue of the high preservation of malware variants.
+    Specifically, although the canonical program may not be located within a reasonable time for a highly preserved malware variant, a closely related variant may have already been incorporated into the augmented dataset.
+    In summary, this method could bolster the robustness of the detection systems, thereby making them more resistant to evasion techniques.
 
 
-    Our current work provides insights into the potential effectiveness of this approach. 
-    Specifically, a practically costless process of pre-compiling Wasm binaries could be employed as a preparatory measure for malware classifiers. 
-    In other words, a \wasm binary can first be JITed to machine code, effectively eliminating malware variants. 
-    This approach could substantially enhance the efficiency and precision of malware detection systems.
-
-    
-    \todo{One paragraph about how I would do it.}
-\end{strategy}
-
-\begin{strategy}[Meta-oracles]
-    \label{meta-oracles}
-    Our experiment results in \autoref{offensive_app}  indicate that VirusTotal surpasses MINOS in detecting \Wasm cryptojacking. 
-    The primary factor contributing to this is VirusTotal's utilization of a broader range of antivirus vendors, which employs various detection strategies. 
-    On the other hand, MINOS functions as a binary oracle. 
-    This evidence supports the use of multiple malware oracles (meta-oracles) in identifying cryptojacking malware in browsers. 
-    In the context of \Wasm, given the existence of numerous and diverse Wasm-specific detection mechanisms, this strategy is both practical and feasible, yet not explored in the literature.
-
-    \todo{Motivation. Why this is important?}
-
-    \todo{One paragraph on SOTA}
-
-    \todo{One paragraph about how I would do it.}
 
 \end{strategy}
+
+
     
+\begin{strategy}[Fine-tune Diversification]
+As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
+On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
+For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification. 
+This issue is viewed as a search space exploration problem, e.g., the space can be divided to enhance the diversification process. 
+The primary advantage of this division is the reduction of the search space, consequently accelerating and refining the diversification process. 
+We aim to delve further into this approach, potentially using feedback-guided based on specific code patterns to disrupt, e.g., embedded timers. 
+This strategy could be applied to other situations, such as mitigating specific side-channels like port contention \cite{10.1145/3488932.3517411}.
+
+We anticipate several challenges in the context of \Wasm. 
+Practically, one should balance critical dimensions: the number of variants, the generation speed of the variants, the preservation of the variants, the diversification objectives, and the performance of the generated variants. 
+For instance, high preservation might inadvertently allow vulnerable code to persist. 
+Even though we can generate more resilient variants, the compiler's role in mitigating initial vulnerabilities is essential.
+In concrete, we could generate variants with disrupted malicious code patterns, but the compiler could still generate vulnerable code by reversing it. 
+High preservation could therefore potentially impede the removal of potential security weaknesses during the compilation process.
+
+In future research, we aim to examine the application of feedback-guided diversification by incorporating these dimensions into the feedback loop. 
+For instance, we may use a variety of \Wasm JIT compilers\cite{2023arXiv230513241T} to assess the preservation of the generated variants. 
+Furthermore, the influence of specific code patterns may guide the diversification process. 
+In the context of \Wasm, we might utilize the broad and growing range of analysis tools to strengthen feedback.
+For instance, we could employ MINOS \cite{MINOS} for rapid binary classification and VeriWasm\cite{veriwasm} for identifying security smell patterns.
+In other words, we envision meta-oracles capable of providing feedback on the strength of the diversification process.
+The integration of such feedback into the creation of the \Wasm variants awaits exploration.
+
+
+
+
+\end{strategy}

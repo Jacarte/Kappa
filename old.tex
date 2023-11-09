@@ -336,3 +336,20 @@ Despite each computing node potentially hosting a distinct \Wasm variant produce
 To address this potential issue, we employ multivariant binaries, invoking a unique variant with each execution. 
 In conclusion, generating dozens of unique variants every several seconds, each serving as a multivariant binary packaging thousands of other variants is achievable by using our tools.
 Therefore, this exemplifies the application of Defensive Software Diversification to a real-world \Wasm standalone scenario.
+
+
+\begin{strategy}[Meta-oracles]
+    \label{meta-oracles}
+    Our experiment results in \autoref{offensive_app}  indicate that VirusTotal surpasses MINOS in detecting \Wasm cryptojacking. 
+    The primary factor contributing to this is VirusTotal's utilization of a broader range of antivirus vendors, which employs various detection strategies. 
+    On the other hand, MINOS functions as a binary oracle. 
+    This evidence supports the use of multiple malware oracles (meta-oracles) in identifying cryptojacking malware in browsers. 
+    In the context of \Wasm, given the existence of numerous and diverse Wasm-specific detection mechanisms, this strategy is both practical and feasible, yet not explored in the literature.
+
+    \todo{Motivation. Why this is important?}
+
+    \todo{One paragraph on SOTA}
+
+    \todo{One paragraph about how I would do it.}
+
+\end{strategy}
