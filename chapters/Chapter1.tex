@@ -127,8 +127,7 @@ The effect of exploiting a single vulnerability in \Wasm could prove catastrophi
 Conversely, \Wasm malware pose a severe threat. 
 Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of software monoculture scenarios, such as obfuscation. 
 Besides, mitigations might require hardware and operating-level changes, which are not always feasible.
-Last but not least is the lack of Software Diversity research in the context of \Wasm.
-In this dissertation, we tackle the subsequent three problems:
+In this dissertation, we tackle the subsequent two problems:
 
 \begin{enumerate}[label=\textbf{P\arabic*}, ref=\textbf{P\arabic*}]
 
@@ -137,10 +136,6 @@ In this dissertation, we tackle the subsequent three problems:
 	\item \label{prob5} \textbf{\Wasm malware}: 
 	\Wasm malware presents a substantial threat. 
 	The phenomenon of software monoculture makes to assume that malware is typically considered only within the context of the original program.
-
-	
-	\item \label{prob6} \textbf{Inexisting diversification tools for \Wasm}:
-	Software Diversity research in the context of \Wasm is unexplored.
 
 \end{enumerate}
 
@@ -168,7 +163,8 @@ On the other hand, by proactively creating variants for security purposes, a bro
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
 Besides, the diversification process could completely eradicate malware from one variant to the next by removing malicious code from the original program, addressing \ref{prob5}. 
 However, despite the extensive research, the implementation of software diversification in \Wasm is still largely unexplored. 
-In light of this, we offer the following contributions within the context of software diversification (\ref{prob6}), which are not necessarily mutually exclusive.
+This latter leads to another problem statement: \textbf{P3 Software Diversity research in the context of \Wasm is unexplored}.
+In light of this, we offer the following contributions within the context of software diversification, which are not necessarily mutually exclusive.
 
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
@@ -180,11 +176,11 @@ In light of this, we offer the following contributions within the context of sof
 	Our research includes experiments where we test the resilience of \Wasm analysis tools against these generated variants. 
 	Furthermore, we offer insights into which types of program variants practitioners should prioritize to improve \Wasm analysis tools.
 
-	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4}, \ref{prob5} and \ref{prob6}.
+	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4}, \ref{prob5} and \textbf{P3}.
 	
-	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm, addressing \ref{prob6}. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
+	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm, addressing \textbf{P3}. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
 	
-	\item \label{generationcontrib} \wrule{Diversity generation:} To address and asses \ref{prob6}, we generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
+	\item \label{generationcontrib} \wrule{Diversity generation:} To address and asses \textbf{P3}, we generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
 	
 
 	
