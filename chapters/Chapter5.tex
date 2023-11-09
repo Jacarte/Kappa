@@ -28,20 +28,6 @@ Consequently, our binary-based approach can produce variants at a scale at least
 The binary-based method can generate variants by transforming any segment of the \wasm binary.
 However, the preservation of the generated variants is lower than the compiler-based approach.
 
-%%ORIGINAL
-
-We have developed three publicly accessible, open-source tools: CROW, MEWE, and WASM-MUTATE. 
-CROW and MEWE follow a compiler-based approach, while WASM-MUTATE employs a binary-based method. 
-These tools automate the diversification process, thereby enhancing practicality for deployment. 
-Currently, WASM-MUTATE is improving \Wasm compilers\toolcite{https://github.com/bytecodealliance/wasm-tools} in real-world contexts. 
-Our tools serve as complements to each other, providing combined utility. 
-For example, when the source code for a \Wasm binary is inaccessible, WASM-MUTATE provides an efficient solution for generating code variants. 
-On the other hand, for scenarios that require high preservation of variants, CROW and MEWE are particularly suitable.
-Last but not least, one can employ CROW and MEWE to generate a set of variants, which subsequently serve as rewriting rules for WASM-MUTATE. 
-Furthermore, when practitioners require swift generation of variants, they could utilize WASM-MUTATE, accepting a decrease in preservation of the variants.
-
-
-%%IMPROVED
 We have developed three open-source tools that are publicly accessible: CROW, MEWE, and WASM-MUTATE. 
 CROW and MEWE utilize a compiler-based approach, whereas WASM-MUTATE employs a method based on binary. 
 These tools automate the process of diversification, thereby increasing their practicality for deployment. 
