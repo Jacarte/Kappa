@@ -6,15 +6,15 @@
 
 \lettrine[lines=3]{T}{he} growing adoption of \Wasm requires efficent code analysis and hardening techniques.
 This thesis contributes to this effort with a comprehensive set of methods and tools for Software Diversification in \Wasm.
-It includes the technical contributions of this dissertation: CROW, MEWE, and WASM-MUTATE.
+We introduce three technical contributions in this dissertation: CROW, MEWE, and WASM-MUTATE.
 Additionally, we present specific use cases for exploiting the diversification created for \Wasm programs.
 In this chapter, we summarize the technical contributions of this dissertation, including an overview of the empirical findings of our research.
 Finally, we discuss future research directions in \Wasm Software Diversification.
 
 \section{Summary of technical contributions}
 
-This thesis expands the field of Software Diversification within \Wasm by introducing two distinct methods: compiler-based and binary-based approaches. 
-Taking source code or LLVM bitcode as input, the compiler-based method generates \Wasm variants.
+This thesis expands the field of Software Diversification within \Wasm by implementing two distinct methods: compiler-based and binary-based approaches. 
+Taking source code and LLVM bitcode as input, the compiler-based method generates \Wasm variants.
 It uses enumerative synthesis and SMT solvers to produce numerous functionally equivalent variants. 
 Importantly, these generated variants can be converted into multivariant binaries, thus enabling execution path randomization. 
 Our compiler-based approach specializes in producing high-preservation variants, indicating that considerable effort is necessary to revert these variants to their initial program. 
@@ -95,7 +95,8 @@ In the following, we outline two concrete directions.
     The problem intensifies when considering malware in the context of software monoculture, especially when the malware is assumed to be identically replicated across victims. 
     We have successfully used Software Diversification to evade malware detection. 
     This shows that, if applicable, the reality of malware monoculture can be exploited by attackers using Software Diversification for offensive purposes. 
-    In previous discussions, we mentioned the application of feedback-guided diversification to discern particular transformations susceptible to implementation. 
+    In previous discussions, we have detailed the benefits of feedback-guided diversification. 
+    This method aids in discerning specific transformations for which defense systems are more or less effective.
     In future works, we plan to explore this approach further.
 
     In addition, our current work elucidates the potential effectiveness of program normalization in enhancing the accuracy of malware detection systems. 
@@ -103,8 +104,8 @@ In the following, we outline two concrete directions.
     Specifically, we could employ a practically costless process of pre-compiling Wasm binaries as a preparatory measure for malware classifiers. 
     For instance, a \wasm binary could first be JITed to machine code to effectively reduce the malware variant space. 
     This method could significantly boost the efficiency and precision of malware detection systems. 
-    Yet, it heavily relies on the low preservation of the generated variants, i.e., highly preserver malware variants might be difficult to normalize, and thus to detect.
-    Be believe such issue could be solved by data augmentation techniques.
+    Yet, it heavily relies on the low preservation of the generated variants, i.e., highly preserved malware variants might be difficult to normalize, and thus to detect.
+    We believe such an issue could be solved by data augmentation techniques.
 
     Dataset augmentation has been demonstrated to enhance the precision of classification models \cite{2021arXiv210311882S, selfAPR, 10.1109/TSE.2023.3240118}.
     Therefore, our tools could be utilized to produce a wide array of known malware variants.
@@ -122,8 +123,11 @@ In the following, we outline two concrete directions.
 \begin{strategy}[Feedback-guided Diversification]
 As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
 On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
-For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification. 
-This issue is viewed as a search space exploration problem, e.g., the space can be divided to enhance the diversification process. 
+For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
+
+
+This issue can e seen as a search space exploration problem.
+The space can be divided to better focus the diversification process. 
 The primary advantage of this division is the reduction of the search space, consequently accelerating and refining the diversification process. 
 We aim to delve further into this approach, potentially using feedback-guided based on specific code patterns to disrupt, e.g., embedded timers. 
 This strategy could be applied to other situations, such as mitigating specific side-channels like port contention \cite{10.1145/3488932.3517411}.
@@ -139,7 +143,7 @@ In future research, we aim to examine the application of feedback-guided diversi
 For instance, we may use a variety of \Wasm JIT compilers\cite{2023arXiv230513241T} to assess the preservation of the generated variants. 
 Furthermore, the influence of specific code patterns may guide the diversification process. 
 In the context of \Wasm, we might utilize the broad and growing range of analysis tools to strengthen feedback.
-For instance, we could employ MINOS \cite{MINOS} for rapid binary classification and VeriWasm\cite{veriwasm} for identifying security smell patterns.
+For instance, we could employ MINOS \cite{MINOS} for rapid binary classification and VeriWasm\cite{veriwasm} for counting security smell patterns.
 In other words, we envision meta-oracles capable of providing feedback on the strength of the diversification process.
 The integration of such feedback into the creation of the \Wasm variants awaits exploration.
 
