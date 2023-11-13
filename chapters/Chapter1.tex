@@ -15,8 +15,7 @@ In 1995, the Netscape browser revolutionized this concept by introducing JavaScr
 Interactive web content immediately highlighted benefits: unlike classical native software, web applications do not require installation, are always up-to-date, and are accessible from any device with a web browser. 
 Significantly, since the advent of Netscape, all browsers offer JavaScript support. 
 In the present day, the majority of web pages incorporate not only HTML but also JavaScript code, which is executed on client computers. 
-Over the past several decades, web browsers have transformed into JavaScript virtual machines. 
-They have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers.
+Consequently, over the past several decades, web browsers have evolved into intricate systems capable of running comprehensive applications, such as video and audio players, animation creators, and PDF document renderers.
 
 
 Despite being the main scripting language in modern web browsers, JavaScript possesses inherent limitations due to its unique language characteristics \cite{mulazzani2013fast}.
@@ -51,21 +50,20 @@ Additionally, WebAssembly is the inaugural major language that utilized formal s
 
 Importantly, \Wasm provides a platform for compiling several legacy code applications, like those written in C/C++. 
 For example, LLVM includes \Wasm  as a backend since release 7.1.0 published in May 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}.
-Therefore, the emergence of \Wasm, a swift, low-level, portable bytecode for browsers, has the potential to transform web software as we know it. 
+Therefore, the emergence of \Wasm, a fast, low-level, portable bytecode for browsers, has the potential to transform web software as we know it. 
 It paves the way for web applications to undertake roles traditionally reserved for native desktop applications.
-For example, applications such as AutoCAD and Adobe Photoshop have been ported to \Wasm\toolcite{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}. 
+For example, applications such as AutoCAD and Adobe Photoshop have been ported to \Wasm \footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}}. 
 
 
 The \Wasm specification embodies several language design principles that pave the way for its extension beyond the web ecosystem.
 For instance, the architecture of \Wasm guarantees self-containment.
-Inherently, \Wasm binaries are prohibited from accessing memory beyond their own designated space, thereby amplifying security via binary isolation from the remainder of the system.
+Inherently, \Wasm binaries are prohibited from accessing memory beyond their own designated space, thereby amplifying security via memory isolation.
 Consequently, research has highlighted the benefits of integrating WebAssembly as an intermediate layer in contemporary cloud platforms \cite{pMendkiServerless}.
-In particular, the employment of \Wasm binaries expedites startup times and optimizes memory consumption, outperforming virtualization and containerization \cite{1244493Jacobsson}.
-Furthermore, in comparison to virtual machines and containers, they are more compact in size, highlighting their efficient deployment, especially when network transportation is a consideration.
-The methodology for standalone \Wasm execution was formalized in 2019.
-The Bytecode Alliance unveiled the WebAssembly System Interface (WASI) \cite{bytecodealliance, WASI}.
-WASI standardizes the execution of \Wasm via a POSIX system interface protocol, thereby facilitating the direct execution of \Wasm within the operating system.
-This standardization enables \Wasm to function outside the confines of the browser, extending its use to cloud environments and IoT devices, for example.
+In particular, the employment of \Wasm binaries improves startup times and optimizes memory consumption, outperforming virtualization and containerization \cite{1244493Jacobsson}.
+Furthermore, compared to virtual machines and containers, \Wasm programs are more compact, highlighting their efficient deployment, especially when network transportation is a consideration.
+The methodology for standalone \Wasm execution was formalized in 2019 when the Bytecode Alliance proposed the WebAssembly System Interface (WASI) \cite{bytecodealliance, WASI}.
+WASI standardizes the execution of \Wasm via a POSIX-like interface protocol, thereby facilitating the execution of \Wasm closer operating system.
+This standardization enables \Wasm to function outside web browsers, extending its use to cloud environments and IoT devices.
 
 The extensive applicability and rapid adoption of \Wasm have prompted requests for additional features. 
 However, these demands do not always align with the initial specifications. 
@@ -84,15 +82,15 @@ However, it also gives rise to security concerns within the ecosystem, as new th
 
 Web browsers and JavaScript have evolved significantly in the past three decades, leading to numerous implementations. 
 Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
-This situation reflects a software monoculture problem wherein a single flaw could impact multiple devices at the same time. 
-The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity. 
-Currently, web pages including WebAssembly binaries are centrally served from main datacenters. 
+This situation reflects a software monoculture problem wherein a single flaw could impact multiple devices at the same time \cite{goth2003addressing}. 
+The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity\cite{lala2009monoculture}. 
+Currently, web pages including WebAssembly binaries are centrally served from main datacenters \cite{STRAC}. 
 Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
 Therefore, sharing Wasm code through web browsers could also share its potential vulnerabilities. 
 The software monoculture problem is exacerbated when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
 Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
 This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
-The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack.
+The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack \cite{CVE}.
 
 
 %%IMPROVED
@@ -107,14 +105,13 @@ In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks
 
 
 On the other hand, malware can also be deployed through \Wasm binaries. 
-Defenders often assume the existence of a single malware binary variant, while in reality, numerous variants of the same malware might exist. 
 For example, as \Wasm's popularity increases, it is more frequently employed in computation-intensive tasks within browsers, including gaming and image processing. 
 This enhanced capability for efficient computation simultaneously makes \Wasm a desirable target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
 The difficulty in detecting and eliminating cryptojacking allows it to operate persistently on a victim's computer, continually using resources and generating income for the attacker \cite{9566204}. 
 Additionally, the complexity of \Wasm code enhances its suitability for obfuscating malicious code, including JavaScript malicious payloads \cite{wobfuscator}. 
-A variety of techniques, including static analysis, dynamic analysis, and even advanced machine learning methods, are employed to detect \Wasm crytomalware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
+A variety of techniques, including static analysis, dynamic analysis, and even advanced machine learning methods, are employed to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
 However, most of these studies do not consider the presence of obfuscation tools, which poses a significant, largely unexplored threat to the accuracy of malware detection in \Wasm. 
-Rokicki \etal have also highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
+Remarkably, Rokicki \etal have also highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
 In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
 
 
@@ -134,8 +131,8 @@ In this dissertation, we tackle the subsequent two problems:
 	\item \label{prob4} \textbf{Side-channels and persisting vulnerabilities}: The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.
 	
 	\item \label{prob5} \textbf{\Wasm malware}: 
-	\Wasm malware presents a substantial threat. 
-	The phenomenon of software monoculture makes to assume that malware is typically considered only within the context of the original program.
+	\Wasm malware presents a substantial threat.
+	The phenomenon of software monoculture leads to the assumption that malware is typically considered unique, without variants.
 
 \end{enumerate}
 
@@ -150,7 +147,7 @@ In this dissertation, we tackle the subsequent two problems:
 This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problem statements via Software Diversification.
 Software Diversification is a security-focused process that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
-Their proposal suggested creating program variants while maintaining their functionalities to mitigate potential vulnerabilities.
+Their proposal suggested creating program variants, while maintaining their functionalities, to mitigate potential vulnerabilities.
 
 
 
@@ -161,9 +158,8 @@ They demonstrated that diversification constrained the exploitation of the Morri
 Additionally, software diversification could bolster \Wasm analysis tools by integrating diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
 On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools, including \Wasm malware detectors. 
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
-Besides, the diversification process could completely eradicate malware from one variant to the next by removing malicious code from the original program, addressing \ref{prob5}. 
+Besides, the diversification process could completely disable malware from one variant to the next by removing malicious code from the original program, addressing both \ref{prob4} and \ref{prob5}. 
 However, despite the extensive research, the implementation of software diversification in \Wasm is still largely unexplored. 
-This latter leads to another problem statement: \textbf{P3 Software Diversity research in the context of \Wasm is unexplored}.
 In light of this, we offer the following contributions within the context of software diversification, which are not necessarily mutually exclusive.
 
 
@@ -176,11 +172,11 @@ In light of this, we offer the following contributions within the context of sof
 	Our research includes experiments where we test the resilience of \Wasm analysis tools against these generated variants. 
 	Furthermore, we offer insights into which types of program variants practitioners should prioritize to improve \Wasm analysis tools.
 
-	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4}, \ref{prob5} and \textbf{P3}.
+	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4} and \ref{prob5}.
 	
-	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm, addressing \textbf{P3}. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
+	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
 	
-	\item \label{generationcontrib} \wrule{Diversity generation:} To address and asses \textbf{P3}, we generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
+	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
 	
 
 	
