@@ -16,7 +16,7 @@ It is designed to be fast, portable, self-contained, and secure.
 
 
 Moreover, WebAssembly has been evolving outside web browsers since its first announcement.
-Some works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup time and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
+Previous works demonstrated that using WebAssembly as an intermediate layer is better in terms of startup time and memory usage than containerization and virtualization \cite{pMendkiServerless, 1244493Jacobsson}. 
 Consequently, in 2019, the Bytecode Alliance proposed WebAssembly System Interface (WASI) \cite{WASI}. 
 WASI pioneered the execution of \Wasm\ with a POSIX system interface protocol, making it possible to execute Wasm closer to the underlying operating system. 
 Therefore, it standardizes the adoption of \Wasm\ in heterogeneous platforms \cite{bryant2020webassembly}, i.e., IoT and Edge computing \cite{9640153, wen2020wasmachine}.
@@ -125,6 +125,8 @@ The \Wasm's runtime characterizes the behavior of \Wasm programs during executio
 This section describes the main components of the \Wasm runtime, namely the execution stack, functions, memory model, and execution process. 
 These components are crucial for understanding both the \Wasm's control-flow and the analysis of \Wasm binaries.
 
+\todo{Introduce here SFI by design}
+
 
 \wrule{Execution Stack:} At runtime, \Wasm engines instantiate a \Wasm module. 
 This module is a runtime representation of a loaded and initialized \Wasm binary described in \autoref{background:wasm:binary}. 
@@ -206,6 +208,8 @@ For example, in the left-most part of the previously discussed listing, a break 
 This design hardens the rewriting of \Wasm binaries.
 For instance, if an outer block is removed, the depth of the break instructions within nested blocks must be updated to reflect the new enclosing block depth.
 This is a significant challenge for rewriting tools, as it requires the analysis of the control-flow graph to determine the enclosing block depth for each break instruction.
+
+\todo{Introduce CFI by design here !}
 
 \msubsection{Security and Reliability for WebAssembly}
 \label{background:wasm:analysis}
