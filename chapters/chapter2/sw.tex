@@ -32,17 +32,14 @@ The diversification can be either natural \cite{natural_diversity} or artificial
 
 
 \msubsection{Automatic generation of software variants}
-\label{generation}
+\label{artificial_diversity}
 
+The concept of automatic software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
+Artificial software diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
+These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
+Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent code.
+This dissertation focuses on artificial software diversification, as it is more practical, systematic, and scalable than natural diversity.
 
-\begin{strategy}[Artificial Diversity]
-    \label{artificial_diversity}
-    The concept of artificial software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
-    Artificial software diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
-    These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
-    Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent code.
-    This dissertation focuses on artificial software diversification, as it is more practical, systematic, and scalable than natural diversity.
-\end{strategy}
 
 \begin{strategy}[Rewriting strategy]
     \label{rewriting_strategy}
