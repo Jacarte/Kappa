@@ -84,10 +84,10 @@ However, only Firefox, Chrome, Safari, and Edge are typically utilized on device
 Web page resources, including those containing WebAssembly binaries, are primarily served from centralized datacenters \cite{STRAC}. 
 This situation creates a highly predictable ecosystem, where potential attackers can predict ecosystem behavior, from the browser to the code it executes. 
 This predictability may be exploited to launch large-scale attacks, as predictability inherently increases the chances of successful attacks \cite{MTDNationalCyberLaep}. 
-For example, if one-quarter of all devices operate the same code in the same browser, a single flaw could impact millions of devices simultaneously \cite{goth2003addressing}. 
-This issue is magnified when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
+For example, if one-quarter of all devices operate the same code in the same browser, a single flaw could impact millions of devices in the same way \cite{goth2003addressing}. 
+This issue is exacerbated when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
 In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second. 
-This suggests that if one \Wasm binary in an edge network is vulnerable, every node would be identically vulnerable due to the binary replication on each node. 
+This suggests that a single vulnerable \Wasm binary in an edge network node could render every node identically susceptible due to the binary replication occurring on each node.
 A potential attacker could compromise all edge nodes concurrently, implying that a single distributed \Wasm binary could trigger a global attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
  
 
@@ -95,8 +95,8 @@ A potential attacker could compromise all edge nodes concurrently, implying that
 
 % Because both malware detection and side channel attacks depends on knowing in adva'ce the behavior of your target
 
-In the context of \Wasm, we devise two scenarios where predictability is crucial.
-First, the predictability of execution ecosystems and \Wasm binaries themselves facilitates side-channel and memory attacks.
+We devise two scenarios where predictability affects \Wasm ecosystems.
+First, the predictability of execution engines and \Wasm binaries themselves facilitates side-channel and memory attacks.
 Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to such vulnerabilities. 
 For example, Rokicki \etal highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
 In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
@@ -108,10 +108,10 @@ In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks
 
 Second, the defenses for identifying and addressing vulnerabilities are generally predictable. 
 In particular, this predictability can be manipulated by malicious actors to create programs aimed at deceiving these defense mechanisms. 
-Importantly, malware can also be distributed via \Wasm binaries. 
-For instance, the capability of \Wasm for efficient computation makes it an appealing target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
+For example, malware can be distributed via \Wasm binaries. 
+The capability of \Wasm for efficient computation makes it an appealing target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
 The challenge in identifying and eliminating cryptojacking enables it to function persistently on a victim's computer, constantly utilizing resources and generating income for the attacker \cite{9566204}.  
-Several techniques, such as static analysis, dynamic analysis, and even sophisticated machine learning methods, are applied to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
+Several techniques, such as static analysis, dynamic analysis, and even sophisticated machine learning methods, are successfully applied to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
 However, most of these research works do not consider the predictability of an attacker knowing that a \Wasm program is not treated as obfuscated.
 
 
@@ -122,7 +122,7 @@ However, most of these research works do not consider the predictability of an a
 
 To sum up, predictability and potential vulnerabilities form a harmful combination. 
 This principle does not exclude \Wasm and its ecosystem.
-The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running \Wasm binaries could be affected. 
+The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running the same \Wasm binaries could be affected. 
 Conversely, \Wasm malware pose a severe threat. 
 Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of predictable scenarios, such as obfuscation. 
 Besides, mitigations might require hardware and operating-level changes, which are not always feasible.
@@ -147,18 +147,20 @@ In this dissertation, we tackle the subsequent two problems:
 \msection{Software Diversification}
 
 This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problem statements via Software Diversification.
-Software Diversification is a security-focused process that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
+Software Diversification is a preemptive security strategy that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
-Their proposal suggested creating different and unpredictable program variants, while maintaining their functionalities, to mitigate potential vulnerabilities.
+Their proposal recommended the creation of diverse program variants, maintaining their original functionalities. 
+The aim of Software Diversification is to lessen potential vulnerabilities by enhancing their behaviour unpredictability.
+
 
 
 
 Studies have demonstrated that software diversification effectively removes vulnerabilities. 
-Eichin \etal, in their seminal work of 1989, underscored the practical benefits of diversification \cite{36307}. 
+Eichin \etal, in work in 1989, underscored the practical benefits of diversification \cite{36307}. 
 They illustrated how diversification limited the exploitation of the Morris Worm to a few machines. 
 From an attacker's perspective, the diversity of target systems rendered them unpredictable.
-Additionally, software diversification could bolster \Wasm analysis tools by integrating diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
-On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools, including \Wasm malware detectors. 
+For \Wasm, Software Diversification could bolster browsers and standalone engines by providing diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
+On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools. 
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
 Besides, the diversification process could completely disable malware from one variant to the next by removing malicious code from the original program, addressing both \ref{prob4} and \ref{prob5}. 
 However, despite the extensive research, the implementation of software diversification in \Wasm is still largely unexplored. 
