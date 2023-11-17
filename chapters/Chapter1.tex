@@ -89,25 +89,24 @@ This issue is magnified when considering the adoption of \Wasm by edge-cloud com
 In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second. 
 This suggests that if one \Wasm binary in an edge network is vulnerable, every node would be identically vulnerable due to the binary replication on each node. 
 A potential attacker could compromise all edge nodes concurrently, implying that a single distributed \Wasm binary could trigger a global attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
-Predictability and potential vulnerabilities form a harmful combination. 
-This principle does not exclude \Wasm.
+ 
 
 
 
 % Because both malware detection and side channel attacks depends on knowing in adva'ce the behavior of your target
 
 In the context of \Wasm, we devise two scenarios where predictability is crucial.
-First, the predictability of execution ecosystems and \Wasm binaries themselves facilitates memory and side-channel attacks.
+First, the predictability of execution ecosystems and \Wasm binaries themselves facilitates side-channel and memory attacks.
 Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to such vulnerabilities. 
 For example, Rokicki \etal highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
 In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
-For instance, attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020} as innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
+Moreover, attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020} as innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
 Besides, the lack of stack-smashing protections could result in unnoticed overflows and crashes during \Wasm executions\cite{DeRoover2022}. 
 In standalone deployments, Genkin \etal demonstrated the possibility of data extraction via cache-timing side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
 In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks on \Wasm binaries \cite{ret2spec}.
 
 
-Second, the defenses established to identify and address vulnerabilities are also predictable. 
+Secondly, the defenses for identifying and addressing vulnerabilities are generally predictable. 
 In particular, this predictability can be manipulated by malicious actors to create programs aimed at deceiving these defense mechanisms. 
 Importantly, malware can also be distributed via \Wasm binaries. 
 For instance, the capability of \Wasm for efficient computation makes it an appealing target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
@@ -121,7 +120,8 @@ However, most of these research works do not consider the predictability of an a
 
 \msection{Problems statements}
 
-To sum up, predictable ecosystems make it easier to exploit vulnerabilities for potential attackers. 
+To sum up, predictability and potential vulnerabilities form a harmful combination. 
+This principle does not exclude \Wasm and its ecosystem.
 The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running \Wasm binaries could be affected. 
 Conversely, \Wasm malware pose a severe threat. 
 Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of predictable scenarios, such as obfuscation. 
