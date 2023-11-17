@@ -7,7 +7,7 @@
 
 \chapterprecishere{\input{quotes/cinderella1.tex}\par\raggedleft--- {\small\textup{MR. Cox} \textbf{1893}, Cinderella: Three hundred and forty-five variants \cite{cox1893cinderella}}}
 
-\todo{Add pure links as footnotes. Fix Lic thesis.}
+\todo{Fix Lic thesis.}
 \todo{Fix the order of the papers by the first apparison of them.}
 
 
@@ -25,20 +25,20 @@ Consequently, over the past several decades, web browsers have evolved into intr
 
 Despite being the main scripting language in modern web browsers, JavaScript possesses inherent limitations due to its unique language characteristics \cite{mulazzani2013fast}.
 Each JavaScript engine requires the parsing and recompiling of the JavaScript code, thereby causing substantial overhead.
-In practice, the process of parsing and compiling JavaScript code constitutes the majority of website load times \cite{clark}.
+In practice, the process of parsing and compiling JavaScript code constitutes the majority of website load times \toolcite{https://hacks.mozilla.org/2017/02/what-makes-webassembly-fast}.
 Additionally, JavaScript presents security issues, including the lack of memory isolation, which potentially enables information extraction from other processes \cite{10.1145/1190216.1190252, 10.1145/3412841.3442001}.
 Numerous attempts have been made to port other languages, offering different guarantees, to the browser execution as alternatives to JavaScript.
-For instance, Java applets emerged on web pages in the late 90s, enabling the execution of Java bytecode on the client side \cite{javaapplet}.
-Likewise, Microsoft attempted twice with ActiveX in 1996 \cite{activex}, and Silverlight in 2007 \cite{silverlight}.
+For instance, Java applets emerged on web pages in the late 90s, enabling the execution of Java bytecode on the client side \toolcite{https://www.oracle.com/java/technologies/javase/9-deprecated-features.html}.
+Likewise, Microsoft attempted twice with ActiveX in 1996 \toolcite{https://web.archive.org/web/20090828024117/http://www.microsoft.com/presspass/press/1996/mar96/activxpr.mspx}, and Silverlight in 2007 \toolcite{https://www.microsoft.com/silverlight/}.
 However, these attempts either failed to persist or experienced low adoption, primarily due to security issues and the absence of consensus among the community of browser vendors.
 
  
 
 
-Importantly, in 2014, Alon Zakai and colleagues proposed the Emscripten tool \cite{emscripten}.
+Importantly, in 2014, Alon Zakai and colleagues proposed the Emscripten tool \toolcite{https://emscripten.org/}.
 Emscripten employs a strict subset of JavaScript, asm.js, to facilitate the compilation of low-level code such as C to JavaScript.
-Asm.js was included as an LLVM backend \cite{asmjsweb}.
-This strategy offered the advantages of the ahead-of-time optimizations from LLVM, resulting in performance gains on browser clients \cite{asmjs} when compared to standard JavaScript code.
+Asm.js was included as an LLVM backend \toolcite{http://asmjs.org/spec/latest/}.
+This strategy offered the advantages of the ahead-of-time optimizations from LLVM, resulting in performance gains on browser clients \toolcite{ttps://hacks.mozilla.org/2015/03/asm-speedups-everywhere/} when compared to standard JavaScript code.
 Asm.js outperformed JavaScript because it restricted language features to those that could be optimized in the LLVM pipeline. 
 Moreover, it eliminated most of the language's dynamic characteristics, limiting it to numerical types, top-level functions, and one large array in memory accessed directly as raw data.
 Asm.js proved that client-side code could be enhanced with the appropriate language design and standardization.
@@ -66,7 +66,7 @@ Inherently, \Wasm binaries are prohibited from accessing memory beyond their own
 Consequently, research has highlighted the benefits of integrating WebAssembly as an intermediate layer in contemporary cloud platforms \cite{pMendkiServerless}.
 In particular, the employment of \Wasm binaries improves startup times and optimizes memory consumption, outperforming virtualization and containerization \cite{1244493Jacobsson}.
 Furthermore, compared to virtual machines and containers, \Wasm programs are more compact, highlighting their efficient deployment, especially when network transportation is a consideration.
-The methodology for standalone \Wasm execution was formalized in 2019 when the Bytecode Alliance proposed the WebAssembly System Interface (WASI) \cite{bytecodealliance, WASI}.
+The methodology for standalone \Wasm execution was formalized in 2019 when the Bytecode Alliance proposed the WebAssembly System Interface (WASI) \toolcite{https://github.com/WebAssembly/WASI}.
 WASI standardizes the execution of \Wasm via a POSIX-like interface protocol, thereby facilitating the execution of \Wasm closer operating system.
 This standardization enables \Wasm to function outside web browsers, extending its use to cloud environments and IoT devices.
 
@@ -95,7 +95,7 @@ Therefore, sharing Wasm code through web browsers could also share its potential
 The software monoculture problem is exacerbated when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
 Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
 This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
-The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack \cite{CVE}.
+The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
 
 \todo{Introduce here the concepts of SFI and CFI}
 
