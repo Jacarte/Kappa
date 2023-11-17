@@ -7,10 +7,6 @@
 
 \chapterprecishere{\input{quotes/cinderella1.tex}\par\raggedleft--- {\small\textup{MR. Cox} \textbf{1893}, Cinderella: Three hundred and forty-five variants \cite{cox1893cinderella}}}
 
-\todo{Fix Lic thesis.}
-\todo{Fix the order of the papers by the first apparison of them.}
-
-
 
 \lettrine[lines=3]{T}{he} first web browser, Nexus, made its appearance in 1990 \cite{nexus}.  
 At its inception, web browsing consisted solely of retrieving and displaying small, static text pages. 
@@ -50,7 +46,7 @@ As a result, WebAssembly bytecode became the fourth official language for the we
 The first distinction from earlier attempts to port non-JavaScript languages to the web lies in \Wasm's initial design. 
 Unlike its predecessors, \Wasm was crafted to supplement JavaScript in the browser as a platform-agnostic, low-level bytecode, rather than to completely replace it. 
 Its primary goal was to replace computing-intensive JavaScript code in contemporary web applications. 
-Additionally, WebAssembly is the inaugural major language that utilized formal specification and verification right from the design inception \cite{Haas_2017, watt2018mechanising, 2023arXiv230513241T}. 
+Additionally, WebAssembly is the inaugural major language that utilized formal specification and verification right from the design inception \cite{Haas_2017, watt2018mechanising}. 
 
 
 Importantly, \Wasm provides a platform for compiling several legacy code applications, like those written in C/C++. 
@@ -62,7 +58,7 @@ For example, applications such as AutoCAD and Adobe Photoshop have been ported t
 
 The \Wasm specification embodies several language design principles that pave the way for its extension beyond the web ecosystem.
 For instance, the architecture of \Wasm guarantees self-containment.
-Inherently, \Wasm binaries are prohibited from accessing memory beyond their own designated space, thereby amplifying security via memory isolation.
+Inherently, \Wasm binaries are prohibited from accessing memory beyond their own designated space, thereby amplifying security via Software Fault Isolation (SFI)  policies \cite{10.1145/3498688}.
 Consequently, research has highlighted the benefits of integrating WebAssembly as an intermediate layer in contemporary cloud platforms \cite{pMendkiServerless}.
 In particular, the employment of \Wasm binaries improves startup times and optimizes memory consumption, outperforming virtualization and containerization \cite{1244493Jacobsson}.
 Furthermore, compared to virtual machines and containers, \Wasm programs are more compact, highlighting their efficient deployment, especially when network transportation is a consideration.
@@ -75,59 +71,60 @@ However, these demands do not always align with the initial specifications.
 For a proposal to reach standard status, it must satisfy particular criteria.
 A new proposal needs a formal specification and a minimum of two independent implementations, e.g., two different \Wasm engines. 
 This approach allows for swift incorporation of new formalizations and features via the so-called "evergreen method", while maintaining the original \Wasm specification intact. 
-Consequently, since the inception of \Wasm, numerous extensions have been proposed for standardization. 
+Since the inception of \Wasm, numerous extensions have been proposed for standardization. 
 For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
 After approval, new extensions remain optional, ensuring that the core \Wasm version remains 1.0. 
 The ongoing development of \Wasm provides avenues for research and development. 
 However, it also gives rise to security concerns within the ecosystem, as new threats emerge.
 
 
-\msection{The risks of \Wasm monoculture}
+\msection{Predictability in \Wasm ecosystems}
+Over the past three decades, web browsers and JavaScript have significant evolution, leading to myriad implementations. 
+However, only Firefox, Chrome, Safari, and Edge are typically utilized on devices. 
+Web page resources, including those containing WebAssembly binaries, are primarily served from centralized datacenters \cite{STRAC}. 
+This situation creates a highly predictable ecosystem, where potential attackers can predict ecosystem behavior, from the browser to the code it executes. 
+This predictability may be exploited to launch large-scale attacks, as predictability inherently increases the chances of successful attacks \cite{MTDNationalCyberLaep}. 
+For example, if one-quarter of all devices operate the same code in the same browser, a single flaw could impact millions of devices simultaneously \cite{goth2003addressing}. 
+This issue is magnified when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
+In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second. 
+This suggests that if one \Wasm binary in an edge network is vulnerable, every node would be identically vulnerable due to the binary replication on each node. 
+A potential attacker could compromise all edge nodes concurrently, implying that a single distributed \Wasm binary could trigger a global attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
+Predictability and potential vulnerabilities form a harmful combination. 
+This principle does not exclude \Wasm.
 
 
-Web browsers and JavaScript have evolved significantly in the past three decades, leading to numerous implementations. 
-Yet, only Firefox, Chrome, Safari, and Edge are commonly used on devices.
-This situation reflects a software monoculture problem wherein a single flaw could impact multiple devices at the same time \cite{goth2003addressing}. 
-The concept of monoculture is borrowed from biology and symbolizes an ecosystem at risk of extinction due to shared vulnerabilities and lack of diversity\cite{lala2009monoculture}. 
-Currently, web pages including WebAssembly binaries are centrally served from main datacenters \cite{STRAC}. 
-Thus, this monoculture issue is also applicable to the \Wasm code served to web browsers. 
-Therefore, sharing Wasm code through web browsers could also share its potential vulnerabilities. 
-The software monoculture problem is exacerbated when considering the edge-cloud computing platforms and their adoption of \Wasm to provide services.
-Specifically, in addition to browser clients, thousands of edge devices running \Wasm as backend services could be affected by shared vulnerabilities. 
-This scenario suggests that if one node in an edge network is vulnerable, all the others would be vulnerable in the exact same way since the same binary is replicated on each node. 
-The same attacker payload could compromise all edge nodes simultaneously, meaning that a single distributed Wasm binary could trigger a worldwide attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
 
-\todo{Introduce here the concepts of SFI and CFI}
+% Because both malware detection and side channel attacks depends on knowing in adva'ce the behavior of your target
 
-Generally, a software monoculture facilitates the spread of vulnerabilities.
-Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to vulnerabilities. 
-For instance, vulnerabilities and attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020}. 
-Intriguingly, innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
-For instance, the lack of stack-smashing protections could result in unnoticed overflows and crashes during \Wasm executions\cite{DeRoover2022}. 
-Notably, there are significant risks associated with side-channel attacks on WebAssembly. 
+In the context of \Wasm, we devise two scenarios where predictability is crucial.
+First, the predictability of execution ecosystems and \Wasm binaries themselves facilitates memory and side-channel attacks.
+Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to such vulnerabilities. 
+For example, Rokicki \etal highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
+In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
+For instance, attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020} as innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
+Besides, the lack of stack-smashing protections could result in unnoticed overflows and crashes during \Wasm executions\cite{DeRoover2022}. 
 In standalone deployments, Genkin \etal demonstrated the possibility of data extraction via cache-timing side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
 In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks on \Wasm binaries \cite{ret2spec}.
 
 
-On the other hand, malware can also be deployed through \Wasm binaries. 
-For example, as \Wasm's popularity increases, it is more frequently employed in computation-intensive tasks within browsers, including gaming and image processing. 
-This enhanced capability for efficient computation simultaneously makes \Wasm a desirable target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
-The difficulty in detecting and eliminating cryptojacking allows it to operate persistently on a victim's computer, continually using resources and generating income for the attacker \cite{9566204}. 
-Additionally, the complexity of \Wasm code enhances its suitability for obfuscating malicious code, including JavaScript malicious payloads \cite{wobfuscator}. 
-A variety of techniques, including static analysis, dynamic analysis, and even advanced machine learning methods, are employed to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
-However, most of these studies do not consider the presence of obfuscation tools, which poses a significant, largely unexplored threat to the accuracy of malware detection in \Wasm. 
-Remarkably, Rokicki \etal have also highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
-In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
+Second, the defenses established to identify and address vulnerabilities are also predictable. 
+In particular, this predictability can be manipulated by malicious actors to create programs aimed at deceiving these defense mechanisms. 
+Importantly, malware can also be distributed via \Wasm binaries. 
+For instance, the capability of \Wasm for efficient computation makes it an appealing target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
+The challenge in identifying and eliminating cryptojacking enables it to function persistently on a victim's computer, constantly utilizing resources and generating income for the attacker \cite{9566204}.  
+Several techniques, such as static analysis, dynamic analysis, and even sophisticated machine learning methods, are applied to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
+However, most of these research works do not consider the predictability of an attacker knowing that a \Wasm program is not treated as obfuscated.
+
 
 
 
 
 \msection{Problems statements}
 
-To sum up, software monoculture amplifies the dissemination of vulnerabilities. 
+To sum up, predictable ecosystems make it easier to exploit vulnerabilities for potential attackers. 
 The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running \Wasm binaries could be affected. 
 Conversely, \Wasm malware pose a severe threat. 
-Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of software monoculture scenarios, such as obfuscation. 
+Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of predictable scenarios, such as obfuscation. 
 Besides, mitigations might require hardware and operating-level changes, which are not always feasible.
 In this dissertation, we tackle the subsequent two problems:
 
@@ -137,7 +134,7 @@ In this dissertation, we tackle the subsequent two problems:
 	
 	\item \label{prob5} \textbf{\Wasm malware}: 
 	\Wasm malware presents a substantial threat.
-	The phenomenon of software monoculture leads to the assumption that malware is typically considered unique, without variants.
+	Predictability leads to the assumption that malware is typically considered unique.
 
 \end{enumerate}
 
@@ -152,14 +149,14 @@ In this dissertation, we tackle the subsequent two problems:
 This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problem statements via Software Diversification.
 Software Diversification is a security-focused process that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
-Their proposal suggested creating program variants, while maintaining their functionalities, to mitigate potential vulnerabilities.
+Their proposal suggested creating different and unpredictable program variants, while maintaining their functionalities, to mitigate potential vulnerabilities.
 
 
 
-
-Software diversification has been proven to effectively remove vulnerabilities, as evidenced by previous studies. 
-For instance, Eichin \etal \cite{36307}, in their seminal 1989 work, highlighted the practical benefits of diversification. 
-They demonstrated that diversification constrained the exploitation of the Morris Worm to a handful of machines. 
+Studies have demonstrated that software diversification effectively removes vulnerabilities. 
+Eichin \etal, in their seminal work of 1989, underscored the practical benefits of diversification \cite{36307}. 
+They illustrated how diversification limited the exploitation of the Morris Worm to a few machines. 
+From an attacker's perspective, the diversity of target systems rendered them unpredictable.
 Additionally, software diversification could bolster \Wasm analysis tools by integrating diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
 On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools, including \Wasm malware detectors. 
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 

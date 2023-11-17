@@ -30,17 +30,27 @@
 % \setcounter{chapter}{0}
 \getenv[\ADDCONTRIB]{ADDCONTRIB}
 
-\chapter{Superoptimization of WebAssembly Bytecode}
+\chapter{WebAssembly Diversification for Malware Evasion}
 
-\textbf{Javier Cabrera-Arteaga}, Shrinish Donde, Jian Gu, Orestis Floros, Lucas Satabin, Benoit Baudry, Martin Monperrus\\
-\emph{Conference Companion of the 4th International Conference on Art, Science, and Engineering of Programming (Programming 2021), MoreVMs}\\\\
-\url{https://doi.org/10.1145/3397537.3397567}\\
-
-% Add Abstract
+\textbf{Javier Cabrera-Arteaga}, Tim Toady, Martin Monperrus, Benoit Baudry\\
+\emph{Computers \& Security, Volume 131, 2023}\\\\
+\url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}\\\\
 
 \ifthenelse{\equal{\ADDCONTRIB}{True}}%
-    {\includepdf[pages=1-5]{papers/souper.pdf}} % 
+    {\includepdf[pages=1-16]{papers/evasion.pdf}} % 
     {} %
+    
+
+\chapter{Wasm-mutate: Fast and Effective Binary Diversification for
+WebAssembly}
+\textbf{Javier Cabrera-Arteaga}, Nick Fitzgerald, Martin Monperrus, Benoit Baudry\\
+\emph{Submitted to Computers \& Security}\\\\
+%\url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}\\\\
+
+\ifthenelse{\equal{\ADDCONTRIB}{True}}%
+    {\includepdf[pages=1-18]{papers/wasm-mutate.pdf}} % 
+    {} %
+
 
 % Add paper here
 \chapter{CROW: Code Diversification for WebAssembly}
@@ -63,27 +73,17 @@
     {\includepdf[pages=1-12]{papers/mewe_final.pdf}} % 
     {} %
     
-\chapter{WebAssembly Diversification for Malware Evasion}
+  \chapter{Superoptimization of WebAssembly Bytecode}
 
-\textbf{Javier Cabrera-Arteaga}, Tim Toady, Martin Monperrus, Benoit Baudry\\
-\emph{Computers \& Security, Volume 131, 2023}\\\\
-\url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}\\\\
-
-\ifthenelse{\equal{\ADDCONTRIB}{True}}%
-    {\includepdf[pages=1-16]{papers/evasion.pdf}} % 
-    {} %
-    
-
-\chapter{Wasm-mutate: Fast and Effective Binary Diversification for
-WebAssembly}
-\textbf{Javier Cabrera-Arteaga}, Nick Fitzgerald, Martin Monperrus, Benoit Baudry\\
-\emph{Submitted to Computers \& Security}\\\\
-%\url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}\\\\
-
-\ifthenelse{\equal{\ADDCONTRIB}{True}}%
-    {\includepdf[pages=1-18]{papers/wasm-mutate.pdf}} % 
-    {} %
-
+  \textbf{Javier Cabrera-Arteaga}, Shrinish Donde, Jian Gu, Orestis Floros, Lucas Satabin, Benoit Baudry, Martin Monperrus\\
+  \emph{Conference Companion of the 4th International Conference on Art, Science, and Engineering of Programming (Programming 2021), MoreVMs}\\\\
+  \url{https://doi.org/10.1145/3397537.3397567}\\
+  
+  % Add Abstract
+  
+  \ifthenelse{\equal{\ADDCONTRIB}{True}}%
+      {\includepdf[pages=1-5]{papers/souper.pdf}} % 
+      {} %
     
 \chapter{Scalable Comparison of JavaScript V8 Bytecode Traces}
 
