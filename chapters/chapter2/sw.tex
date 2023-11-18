@@ -5,12 +5,12 @@
 
 %%ORIGINAL
 Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs. 
-As outlined in Baudry \etal's survey \cite{natural_diversity}, Software Diversitication falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
+As outlined in Baudry \etal's survey \cite{natural_diversity}, Software Diversification falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
 Our work specifically contributes to the last two categories.
 Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works. 
 
 
-Software variants are functionally equivalent versions of an original program, created through Software Diversitication at different stages of the software lifecycle, such as the source code or machine code levels. 
+Software variants are functionally equivalent versions of an original program, created through Software Diversification at different stages of the software lifecycle, such as the source code or machine code levels. 
 %\todo{Two sentences about when: Design and implementation, Compilation and linking, post Installation, and load time.}
 The diversification can be either natural \cite{natural_diversity} or atumatic \cite{offensive_div}.
 
@@ -32,15 +32,15 @@ Thus, systematic and artificial diversification approaches are better.
 \label{artificial_diversity}
 
 The concept of automatic software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
-Artificial Software Diversitication, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
+Artificial Software Diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
 These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
 Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent code.
-This dissertation focuses on artificial Software Diversitication, as it is more practical, systematic, and scalable than natural diversity.
+This dissertation focuses on artificial Software Diversification, as it is more practical, systematic, and scalable than natural diversity.
 
 
 \begin{strategy}[Rewriting strategy]
     \label{rewriting_strategy}
-    The creation of artificial Software Diversitication commences with rewriting rules.
+    The creation of artificial Software Diversification commences with rewriting rules.
     A rewriting rule refers to a functionally equivalent substitution for a code segment, manually written. 
     These rules can be applied at varying levels, from coarse to fine-grained. 
     This can range from the program dependencies level \cite{Harrand1650630} to the instruction level \cite{offensive_div}. 
@@ -231,7 +231,7 @@ Program variants, once generated and verified, may be utilized in two primary sc
 
 
 \msubsection{Measuring Software Diversification}
-Measuring Software Diversitication presents a significant challenge. 
+Measuring Software Diversification presents a significant challenge. 
 The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks \cite{cohen1993operating}. 
 Ideally, real scenarios would provide the most accurate measurement of diversification, e.g., demonstrating a variant's effectiveness under specific attacks. 
 However, such an approach is not always feasible, e.g., as previously discussed, Software Diversification is a preemptive strategy. 
@@ -284,7 +284,7 @@ Regarding the dynamic comparisons, Wang \etal's study \cite{SEISMIC} profiles \W
 
 Lundquist and colleagues \cite{offensive_div} distinguish Software Diversification into two categories: Defensive and Offensive Diversification. 
 On the one hand, Defensive Software Diversification introduces unpredictability in system behavior. 
-By making software less predictable, defensive Software Diversitication aims to proactively deter attacks, acting as a complementary strategy to other, more reactive, security measures. 
+By making software less predictable, defensive Software Diversification aims to proactively deter attacks, acting as a complementary strategy to other, more reactive, security measures. 
 The majority of previously discussed works in this section contribute to defensive diversification.
 Yet, Software Diversification that aims to create diverse harmful programs is considered Offensive Diversification \cite{fred1986computer}.
 
@@ -318,11 +318,16 @@ As outlined in \autoref{background:wasm:challenges}, our primary motivation for 
 We see potential in employing Software Diversification to address them. 
 Based on our previous discussion, we highlight several open challenges in the realm of Software Diversification for \Wasm. 
 First, \Wasm, being an emerging technology, is still in the process of implementing defensive measures. 
-The process of officially adopting a new defensive measure is inherently slow, making Software Diversitication a potentially valuable preemptive strategy. 
+The process of officially adopting a new defensive measure is inherently slow, making Software Diversification a potentially valuable preemptive strategy. 
 Second, despite the abundance of related work on software diversity, its exploration in the context of \Wasm remains limited. 
-\todo{Second point needs to be stronger. Motivate with another sentence. Make it an explicit contribution. This thesis sis the first to investigate Software Diversity in depth for the emerging Wasm ecosystem. Same for third, why it needs to be explored.}
-Third, both randomization and multivariant execution have been largely unexplored. 
-Lastly, the works on malware detection discussed in \autoref{background:wasm:analysis} suggest that offensive diversification could be useful in measuring the resilience and accuracy of security systems for \Wasm.
+This thesis is first to investigate Software Diversity in depth for the emerging \Wasm ecosystem.
+Third, both randomization and multivariant execution remain largely unexplored within the \Wasm context. 
+The deployment of Software Diversification in \Wasm poses unique challenges. 
+\Wasm ecosystems are remarkably dynamic. 
+Web browsers and FaaS platforms serve as prime examples. 
+In these environments, \Wasm binaries are served millions of times simultaneously to the former, while new \Wasm binaries are cold-spawned and executed upon each user request in the latter. 
+Thus, designing practical Software Diversification for \Wasm requires careful consideration of the deployment environment. 
+Last but not least, research on malware detection, as discussed in \autoref{background:wasm:analysis}, suggests that offensive diversification may assist in evaluating the resilience and accuracy of \Wasm's security systems.
 
 
 
