@@ -19,7 +19,7 @@ For example, Firefox and Chrome web browsers demonstrate natural diversity due t
 This logic extends to operating systems, database engines, virtual machines, and application servers \cite{natural_diversity}. 
 Natural diversity significantly aids in system security, as different variants are not susceptible to the same vulnerabilities \cite{781031, 10.5555/1009382.1009753}. 
 Unlike N-Version programming \cite{6312924}, natural diversity organically emerges over decades. 
-In other words, while it does not require the allocation of additional human efforts, natural diversity cannot be artificially generated. 
+In other words, while it does not require the allocation of additional human efforts, natural diversity cannot be automatically generated. 
 This is because it is a side effect of the software development process.
 Given that \Wasm is a relatively new technology, natural diversity is presently not a feasible option. 
 Hence, for \Wasm, feasible options are systematic and automatic diversification approaches.
@@ -33,12 +33,11 @@ The concept of automatic software variants starts with Randell's 1975 work \cite
 Artificial Software Diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
 These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
 Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent code.
-This dissertation focuses on artificial Software Diversification, as it is more practical, systematic, and scalable than natural diversity.
 
 
 \begin{strategy}[Rewriting strategy]
     \label{rewriting_strategy}
-    The creation of artificial Software Diversification commences with rewriting rules.
+    The atomatic creation of Software Diversification commences with rewriting rules.
     A rewriting rule refers to a functionally equivalent substitution for a code segment, manually written. 
     These rules can be applied at varying levels, from coarse to fine-grained. 
     This can range from the program dependencies level \cite{Harrand1650630} to the instruction level \cite{offensive_div}. 
