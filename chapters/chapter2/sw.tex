@@ -10,22 +10,19 @@ Our work specifically contributes to the last two categories.
 Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works. 
 
 
-Software variants are functionally equivalent versions of an original program, created through Software Diversification at different stages of the software lifecycle, such as the source code or machine code levels. 
-%\todo{Two sentences about when: Design and implementation, Compilation and linking, post Installation, and load time.}
-The diversification can be either natural \cite{natural_diversity} or atumatic \cite{offensive_div}.
 
-Natural diversity denotes the innate process wherein humans create software variants using various programming languages, compilers, and operating systems \cite{natural_diversity}, all adhering to the same initial functional requirements.
-\todo{Innovation, money, requirements.}
-\todo{Interoperable as possible while offer distinct and subtle differences.}
-For instance, Firefox and Chrome web browsers exemplify natural diversity, given their practical differences, they serve the same purpose.
-Natural diversity plays a crucial role in securing systems, as different variants are not susceptible to identical vulnerabilities.
-Creating natural software variants demands a significant amount of human effort and time. 
-\todo{We are not talking about N-variant development.}
-\todo{Natural use of dependencies. Paper of Cesar about how many dependencies everyone shares.}
-\todo{There is a natural force that breaks diversity. Same dependencies, etc.}
-This makes it impractical for new ecosystems such as \Wasm.
-%On the other hand, humans are not always the best at creating diverse software variants since they think alike \cite{feud}.
-Thus, systematic and artificial diversification approaches are better.
+Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from source code (coarce-grained) to machine code levels (fine-grained). 
+Diversification may be natural \cite{natural_diversity} or automatic \cite{offensive_div}. 
+Natural diversity refers to the side effect of humans creating software variants using different programming languages, compilers, and operating systems \cite{natural_diversity}, all of which adhere to the initial requirements. 
+The software market and competition typically address the creation of natural diversity. 
+For example, Firefox and Chrome web browsers demonstrate natural diversity due to their practical differences in implementation and performance, despite serving the same purpose. 
+This logic extends to operating systems, database engines, virtual machines, and application servers \cite{natural_diversity}. 
+Natural diversity significantly aids in system security, as different variants are not susceptible to the same vulnerabilities \cite{781031, 10.5555/1009382.1009753}. 
+Unlike N-Version programming \cite{6312924}, natural diversity emerges organically. 
+In practical terms, natural diversity cannot be artificially generated, as it is a side effect of the software development process. 
+However, considering that \Wasm is a relatively new technology, natural diversity is not currently a feasible option. 
+Therefore, in the case of \Wasm, systematic and automatic diversification approaches are the feasible options.
+
 
 
 \msubsection{Automatic generation of software variants}
@@ -318,7 +315,7 @@ As outlined in \autoref{background:wasm:challenges}, our primary motivation for 
 We see potential in employing Software Diversification to address them. 
 Based on our previous discussion, we highlight several open challenges in the realm of Software Diversification for \Wasm. 
 First, \Wasm, being an emerging technology, is still in the process of implementing defensive measures. 
-The process of officially adopting a new defensive measure is inherently slow, making Software Diversification a potentially valuable preemptive strategy. 
+The process of officially adopting a new defensive measure is inherently slow, making Software Diversification a potentially valuable strategy. 
 Second, despite the abundance of related work on software diversity, its exploration in the context of \Wasm remains limited. 
 This thesis is first to investigate Software Diversity in depth for the emerging \Wasm ecosystem.
 Third, both randomization and multivariant execution remain largely unexplored within the \Wasm context. 
