@@ -11,17 +11,18 @@ Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite
 
 
 
-Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from source code (coarce-grained) to machine code levels (fine-grained). 
+Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from dependencies (coarce-grained) to machine code levels (fine-grained). 
 Diversification may be natural \cite{natural_diversity} or automatic \cite{offensive_div}. 
 Natural diversity refers to the side effect of humans creating software variants using different programming languages, compilers, and operating systems \cite{natural_diversity}, all of which adhere to the initial requirements. 
 The software market and competition typically address the creation of natural diversity. 
 For example, Firefox and Chrome web browsers demonstrate natural diversity due to their practical differences in implementation and performance, despite serving the same purpose. 
 This logic extends to operating systems, database engines, virtual machines, and application servers \cite{natural_diversity}. 
 Natural diversity significantly aids in system security, as different variants are not susceptible to the same vulnerabilities \cite{781031, 10.5555/1009382.1009753}. 
-Unlike N-Version programming \cite{6312924}, natural diversity emerges organically. 
-In practical terms, natural diversity cannot be artificially generated, as it is a side effect of the software development process. 
-However, considering that \Wasm is a relatively new technology, natural diversity is not currently a feasible option. 
-Therefore, in the case of \Wasm, systematic and automatic diversification approaches are the feasible options.
+Unlike N-Version programming \cite{6312924}, natural diversity organically emerges over decades. 
+In other words, while it does not require the allocation of additional human efforts, natural diversity cannot be artificially generated. 
+This is because it is a side effect of the software development process.
+Given that \Wasm is a relatively new technology, natural diversity is presently not a feasible option. 
+Hence, for \Wasm, feasible options are systematic and automatic diversification approaches.
 
 
 
