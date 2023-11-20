@@ -68,7 +68,7 @@ This standardization enables \Wasm to function outside web browsers, extending i
 
 The extensive applicability and rapid adoption of \Wasm have prompted requests for additional features. 
 However, these demands do not always align with the initial specifications. 
-For a proposal to reach standard status, it must satisfy particular criteria.
+For extending \Wasm with a new proposal, it must satisfy particular criteria.
 A new proposal needs a formal specification and a minimum of two independent implementations, e.g., two different \Wasm engines. 
 This approach allows for swift incorporation of new formalizations and features via the so-called "evergreen method", while maintaining the original \Wasm specification intact. 
 Since the inception of \Wasm, numerous extensions have been proposed for standardization. 
@@ -85,7 +85,8 @@ Web page resources, including those containing WebAssembly binaries, are primari
 This situation creates a highly predictable ecosystem, where potential attackers can predict ecosystem behavior, from the browser to the code it executes. 
 This predictability may be exploited to launch large-scale attacks, as predictability inherently increases the chances of successful attacks \cite{MTDNationalCyberLaep}. 
 For example, if one-quarter of all devices operate the same code in the same browser, a single flaw could impact millions of devices in the same way \cite{goth2003addressing}. 
-This issue is exacerbated when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
+
+The aforementioned issue is exacerbated when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
 In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second. 
 This suggests that a single vulnerable \Wasm binary in an edge network node could render every node identically susceptible due to the binary replication occurring on each node.
 A potential attacker could compromise all edge nodes concurrently, implying that a single distributed \Wasm binary could trigger a global attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
@@ -123,14 +124,14 @@ However, most of these research works do not consider the predictability of an a
 To sum up, predictability and potential vulnerabilities form a harmful combination. 
 This principle does not exclude \Wasm and its ecosystem.
 The effect of exploiting a single vulnerability in \Wasm could prove catastrophic, given all devices running the same \Wasm binaries could be affected. 
-Conversely, \Wasm malware pose a severe threat. 
+On the other hand, \Wasm malware pose a severe threat. 
 Present defenses may not adequately protect against them, as they have not been designed to manage situations outside of predictable scenarios, such as obfuscation. 
 Besides, mitigations might require hardware and operating-level changes, which are not always feasible.
 In this dissertation, we tackle the subsequent two problems:
 
 \begin{enumerate}[label=\textbf{P\arabic*}, ref=\textbf{P\arabic*}]
 
-	\item \label{prob4} \textbf{Side-channels and persisting vulnerabilities}: The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.
+	\item \label{prob4} \textbf{Side-channels and vulnerabilities}: The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.
 	
 	\item \label{prob5} \textbf{\Wasm malware}: 
 	\Wasm malware presents a substantial threat.
@@ -146,8 +147,8 @@ In this dissertation, we tackle the subsequent two problems:
 
 \msection{Software Diversification}
 
-This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problem statements via Software Diversification.
-Software Diversification is a preemptive security strategy that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
+This dissertation introduces tools, strategies, and methodologies designed to address the previously enunciated problems via Software Diversification.
+Software Diversification is a security strategy that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
 Their proposal recommended the creation of diverse program variants, maintaining their original functionalities. 
 The aim of Software Diversification is to lessen potential vulnerabilities by enhancing their behaviour unpredictability.
@@ -160,16 +161,14 @@ Eichin \etal, in work in 1989, underscored the practical benefits of diversifica
 They illustrated how diversification limited the exploitation of the Morris Worm to a few machines. 
 From an attacker's perspective, the diversity of target systems rendered them unpredictable.
 For \Wasm, Software Diversification could bolster browsers and standalone engines by providing diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
-On the other hand, by proactively creating variants for security purposes, a broad range of real-world conditions can be emulated, enhancing the precision of \Wasm analysis tools. 
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
-Besides, the diversification process could completely disable malware from one variant to the next by removing malicious code from the original program, addressing both \ref{prob4} and \ref{prob5}. 
-However, despite the extensive research, the implementation of Software Diversification in \Wasm is still largely unexplored. 
+However, the implementation of Software Diversification in \Wasm is still largely unexplored. 
 In light of this, we offer the following contributions within the context of Software Diversification, which are not necessarily mutually exclusive.
 
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 
-	\item \label{defensivecontrib} \wrule{Defensive Diversification:} In order to address \ref{prob4}, we assess how generated \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
+	\item \label{defensivecontrib} \wrule{Defensive Diversification:} In order to address \ref{prob4}, we assess how diversified \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
 	
 	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} 
 	In order to address \ref{prob5}, we evaluate the potential for using generated \Wasm program variants for offensive purposes. 
@@ -180,7 +179,7 @@ In light of this, we offer the following contributions within the context of Sof
 	
 	\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
 	
-	\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
+	%\item \label{generationcontrib} \wrule{Diversity generation:} We generate \Wasm program variants. The variants are functionally equivalent to the original program, yet behaviorally diverse.
 	
 
 	
@@ -200,9 +199,9 @@ In light of this, we offer the following contributions within the context of Sof
 
 		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark \\
 		\ref{therycontrib} Theoretical contribution  & \checkmark &  &  \checkmark &  \\
-		\ref{generationcontrib} Diversity generation   & \checkmark & \checkmark & \checkmark & \checkmark\\
+		%\ref{generationcontrib} Diversity generation   & \checkmark & \checkmark & \checkmark & \checkmark\\
 	\end{tabular}
-	\caption{Mapping between contributions and research papers \label{contrib_map}.}
+	\caption{Mapping between contributions and research papers. \label{contrib_map}}
 	
 \end{table}
 
