@@ -24,7 +24,7 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 \msubsection{Enumerative synthesis}
 
 The cornerstone of CROW's exploration mechanism is its code replacement generation strategy, which is inspired by the superdiversifier methodology proposed by Jacob \etal \cite{jacob2008superdiversifier}. 
-The search space for generating variants is delineated through an enumerative synthesis process (see \mnameref{enumerative_synthesis}{generation}), which systematically produces all possible code replacements for each instruction in the original program. 
+The search space for generating variants is delineated through an enumerative synthesis process (see \mnameref{enumerative_synthesis}{artificial_diversity}), which systematically produces all possible code replacements for each instruction in the original program. 
 If a code replacement is identified to perform identically to the original program, it is reported as a functionally equivalent variant.
 This equivalence is confirmed using a theorem solver for rigorous verification.
 
