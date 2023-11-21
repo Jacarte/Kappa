@@ -223,6 +223,7 @@ def spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, words2
                 ))
                 obj['places'] = []
                 #print(m.offsetInContext, m.offset)
+                print(text)
                 print(m)
                 print()
                 globalx, globaly, _, _ = rect
