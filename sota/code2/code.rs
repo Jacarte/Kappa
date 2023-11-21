@@ -24,7 +24,7 @@ pub fn main() {
     // Get the input from the user
     let ith = get_input();
     // Calculate the fibonacci
-    let fib = fibo(get_input());
+    let fib = fibonacci(get_input());
     // Print the result in the host imported function
     log(&format!("{}",fib));
 }
