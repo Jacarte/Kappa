@@ -32,10 +32,12 @@ jobs:
           apt-get install -y curl
           pdflatex -draftmode  -interaction=nonstopmode -shell-escape Kappa.tex || true
           sleep 30
-          bibtex Kappa || true
+          bibtex Kappa.aux || true
           sleep 30
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
-          sleep 30
+          sleep 15
+          pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
+          sleep 15
 
           cp Kappa.pdf Kappa.nocontrib.pdf
         env:
@@ -57,10 +59,12 @@ jobs:
         run: |
           pdflatex -draftmode -interaction=nonstopmode -shell-escape Kappa.tex || true
           sleep 30
-          bibtex Kappa || true
+          bibtex Kappa.aux || true
           sleep 30
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
-          sleep 30
+          sleep 15
+          pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
+          sleep 15
 
           # Fix with usasb
           #pip3 install pikepdf
