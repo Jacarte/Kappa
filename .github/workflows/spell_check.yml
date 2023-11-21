@@ -24,9 +24,10 @@ jobs:
           apt-get update
           apt-get install -y curl
           pdflatex -interaction=nonstopmode -shell-escape Kappa.tex || true
-          sleep 10
+          sleep 30
           bibtex Kappa || true
-          sleep 10
+          bibtex Kappa || true
+          sleep 30
           pdflatex -shell-escape -interaction=nonstopmode Kappa.tex || true
           sleep 30
         env:

@@ -5,7 +5,7 @@ extern "C" {
     fn log(s: &str);
     fn get_input() -> usize; }
 
-fn fibo(n: usize) -> i32 {
+fn fibonacci(n: usize) -> i32 {
     // Iterative fibonacci
     // Create a vector of size n+1
     let mut fibo_result = vec![0; n + 1];

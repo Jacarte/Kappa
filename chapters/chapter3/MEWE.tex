@@ -31,7 +31,7 @@ Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ eng
 \begin{figure*}
   \centering
   \includegraphics[height=3.2in]{diagrams/MEWE.pdf}
-  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Finally, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. Figure partially taken from \cite{Lic}. }
+  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Finally, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. }
   \label{workflow}
 \end{figure*}
 
@@ -63,7 +63,7 @@ The original program includes three functions. \tool generates 43 variants for t
 \begin{figure}[h]
   \centering
 \includegraphics[width=.75\linewidth]{diagrams/CFG.png}
-\caption{Example of two static call graphs. At the top, is the original call graph, and at the bottom, is the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow). Figure taken from \cite{Lic}.
+\caption{Example of two static call graphs. At the top, is the original call graph, and at the bottom, is the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow).
 }
 \label{multivariant}
 \end{figure}

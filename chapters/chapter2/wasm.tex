@@ -43,7 +43,7 @@ The Rust program in \autoref{CExample1} iteratively calculates the Fibonacci seq
 The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditionals, function calls, and memory accesses.
 The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
 The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
-The \texttt{fibo} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
+The \texttt{fibonacci} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
 For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
 The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
 In this scenario, the function yields the final set value in the \texttt{local} variable. 
@@ -256,11 +256,11 @@ Much like static and dynamic analysis tools, these tools may suffer from a lack 
 %%ORIGINAL
 \wrule{\Wasm malware:} Since the introduction of \Wasm, the Web has consistently experienced an increase in cryptomalware. 
 This rise primarily stems from the shift of mining algorithms from CPUs to \Wasm, a transition driven by notable performance benefits \cite{musch2019new}.
-Tools such as MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} employ static analysis with machine learning techniques to detect browser-based cryptomalwares.
+Tools such as MineSweeper\cite{Minesweeper}, MinerRay\cite{MinerRay}, and MINOS\cite{MINOS} employ static analysis with machine learning techniques to detect browser-based cryptomalware.
 In addition, SEISMIC\cite{SEISMIC}, RAPID\cite{RAPID}, and OUTGuard\cite{Outguard} leverage dynamic analysis techniques to achieve a similar objective.
 Moreover, VirusTotal\toolcite{https://www.virustotal.com}, a tool incorporating over 60 commercial antivirus systems as black-boxes, is capable of detecting cryptomalware in \Wasm binaries.
 However, obfuscation studies have exposed their shortcomings, revealing an almost unexplored area for \Wasm that threatens malware detection accuracy.
-In concrete, Bahnsali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
+In concrete, Bhansali \etal seminal work\cite{10.1145/3507657.3528560} demonstrate that cryptomining algorithm's source code can evade previous techniques through the use of obfuscation techniques.
 
 
 

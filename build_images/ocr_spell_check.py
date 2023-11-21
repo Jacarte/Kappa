@@ -8,7 +8,7 @@ import pytesseract
 import json
 
 import language_tool_python
-tool = language_tool_python.LanguageTool('en-US')
+tool = language_tool_python.LanguageTool('en-UK')
 
 OUT = os.path.abspath(os.path.dirname(__file__))
 
