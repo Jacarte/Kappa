@@ -34,6 +34,12 @@ jobs:
           ADDCONTRIB: "False"  
           # Avoid widows, this helps the OCR for preventing the "CASING" error
           NOWIDOW: "True"
+      
+      - name: Upload assets to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Kappa.pdf 
+          path: Kappa.pdf 
 
       - name: Spell checking report
         run: |

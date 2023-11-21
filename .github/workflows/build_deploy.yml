@@ -41,6 +41,12 @@ jobs:
         env:
           ADDCONTRIB: "False"  
 
+      - name: Upload assets to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Kappa.pdf 
+          path: Kappa.pdf 
+
       # If the build works, do the spell check
       - name: Split by chapter
         run: |
@@ -66,6 +72,12 @@ jobs:
           ADDCONTRIB: "True" 
 
       
+      - name: Upload assets to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Kappa.full.pdf 
+          path: Kappa.contrib.pdf
+
       - name: Deploy document
         run: |
           
