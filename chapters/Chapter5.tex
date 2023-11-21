@@ -14,14 +14,12 @@ Finally, we discuss future research directions in \Wasm Software Diversification
 \section{Summary of technical contributions}
 
 
-\todo{Mention that CROW can only affect peephole and deterministic code.}
-
 This thesis expands the field of Software Diversification within \Wasm by implementing two distinct methods: compiler-based and binary-based approaches. 
 Taking source code and LLVM bitcode as input, the compiler-based method generates \Wasm variants.
 It uses enumerative synthesis and SMT solvers to produce numerous functionally equivalent variants. 
 Importantly, these generated variants can be converted into multivariant binaries, thus enabling execution path randomization. 
-Our compiler-based approach specializes in producing high-preservation variants, indicating that considerable effort is necessary to revert these variants to their initial program. 
-However, a bottleneck in the variant generation process, specifically the use of SMT solvers for functional verification, undermines it when compared with the binary-based method. 
+Our compiler-based approach specializes in producing high-preservation variants.
+However, the use of SMT solvers for functional verification lowers the diversification speed when compared with the binary-based method. 
 Furthermore, this method can only modify the code and function sections of \Wasm binaries.
 
 On the other hand, the method based on binary utilizes random e-graph traversals to create variants. 
@@ -34,7 +32,7 @@ However, the preservation of the generated variants is lower than the compiler-b
 We have developed three open-source tools that are publicly accessible: CROW, MEWE, and WASM-MUTATE. 
 CROW and MEWE utilize a compiler-based approach, whereas WASM-MUTATE employs a method based on binary. 
 These tools automate the process of diversification, thereby increasing their practicality for deployment. 
-At present, WASM-MUTATE is enhancing \Wasm compilers\toolcite{https://github.com/bytecodealliance/wasm-tools} in real-world situations. 
+At present, WASM-MUTATE is integrated in the wasmtime project\toolcite{https://github.com/bytecodealliance/wasm-tools} to improve testing. 
 Our tools are complementary, providing combined utility. 
 For instance, when the source code for a \Wasm binary is unavailable, WASM-MUTATE offers an efficient solution for the generation of code variants. 
 On the other hand, CROW and MEWE are particularly suited for scenarios that require a high level of variant preservation.
@@ -47,25 +45,24 @@ Moreover, when practitioners need to quickly generate variants, they could emplo
 \section{Summary of empirical findings}
 
 We demonstrate the practical application of Offensive Software Diversification in \Wasm.
-In particular, we diversify 33 \Wasm cryptomalwares automatically, generating numerous variants in just a few minutes.
+In particular, we diversify 33 \Wasm cryptomalwares automatically, generating numerous variants.
 These variants successfully evade detection by state-of-the-art malware detection systems.
 Our research confirms the existence of opportunities for the malware detection community to strengthen the automatic detection of cryptojacking WebAssembly malware.
-Specifically, developers can improve the detection of \Wasm malware by using multiple malware oracles, or meta-oracles.
+Specifically, developers can improve the detection of \Wasm malware by using multiple malware oracles.
 Additionally, these practitioners could employ feedback-guided diversification to identify specific transformations their implementation is susceptible to.
 For instance, our study found that the addition of arbitrary custom sections to \Wasm binaries is a highly effective transformation for evading detection.
-In practice, no \Wasm engine uses custom sections, so injecting them does not impact the performance of the \Wasm binary.
-Developers could enhance their detection systems' robustness by normalizing the \Wasm binaries, removing custom sections.
+In practice, no \Wasm engine uses custom sections, so injecting them does not impact the performance of the \Wasm binary. 
 This logic also applies to other transformations, such as adding unreachable code, another effective method for evading detection.
 
-
-On the other side of the coin, our techniques enhance overall security from a Defensive Software Diversification perspective.
+% Breaking side-channels
+Moreover, our techniques enhance overall security from a Defensive Software Diversification perspective.
 We facilitate the deployment of unique, diversified and hardened \Wasm binaries.
 As previously demonstrated, \Wasm variants produced by our tools exhibit improved resistance to side-channel attacks.
 Our tools generate variants by modifying malicious code patterns such as embedded timers used to conduct timing side-channel attacks.
 Simultaneously, they can produce variants that introduce noise into the execution side-channels of the original program, concurrently altering the memory layout of the JITed code generated by the host engine.
 
 
-Our methods remarkably generate thousands of variants in mere minutes. 
+To sum up, our methods remarkably generate tens of thousands of variants in minutes. 
 The swift production of these variants is due to the rapid transformation of \Wasm binaries. 
 This swift generation of variants is particularly advantageous in highly dynamic scenarios such as FaaS and CDN platforms. 
 We have empirically tested the effectiveness of moving target defense techniques\cite{jackson2011compiler} on the Fastly edge computing platform. 
@@ -92,32 +89,29 @@ In the following, we outline two concrete directions.
 
 
 
-\begin{strategy}[Improving \Wasm malware detection]
+\begin{strategy}[Improving \Wasm malware detection via canonicalization]
 
-    Malware detection is a well-known and challenging issue \cite{cohen1987computer}. 
-    The problem intensifies when considering malware detection to be predictable, especially when the malware is assumed to be identically replicated across victims. 
-    We have successfully used Software Diversification to evade malware detection. 
-    This shows that, if applicable, predictability can be exploited by attackers using Software Diversification for offensive purposes. 
-    In previous discussions, we have detailed the benefits of feedback-guided diversification. 
-    This method aids in discerning specific transformations for which defense systems are more or less effective.
-    In future works, we plan to explore this approach further.
+    Malware detection is a well-known problem in the field of computer security, as outlined in works like Cohen's 1987 study on computer viruses \cite{cohen1987computer}. 
+    This issue is exacerbated in environments where predictability is high and malware is expected to be replicated identically across multiple victims. 
+    In such scenarios, attackers can exploit this predictability to their advantage. 
+    For example, malicious actors could craft functionally equivalent malware to evade detection by malware detection systems.
+    Indeed, our research has shown that employing Software Diversification can be an effective method for evading malware detection systems. 
+    This technique involves creating varied versions of a program, thereby reducing its predictability and making detection more challenging. 
+   
 
-    In addition, our current work elucidates the potential effectiveness of program normalization in enhancing the accuracy of malware detection systems. 
-    By comparing the canonical program with an existing dataset of malware, we could rapidly and efficiently detect malware.
-    Specifically, we could employ a practically costless process of pre-compiling Wasm binaries as a preparatory measure for malware classifiers. 
-    For instance, a \wasm binary could first be JITed to machine code to effectively reduce the malware variant space. 
-    This method could significantly boost the efficiency and precision of malware detection systems. 
-    Yet, it heavily relies on the low preservation of the generated variants, i.e., highly preserved malware variants might be difficult to normalize, and thus to detect.
-    We believe such an issue could be solved by data augmentation techniques.
-
-    Dataset augmentation has been demonstrated to enhance the precision of classification models \cite{2021arXiv210311882S, selfAPR, 10.1109/TSE.2023.3240118}.
-    Therefore, our tools could be utilized to produce a wide array of known malware variants.
-    Such variants could serve to augment the dataset employed in the training of malware detection systems.
-    This could potentially rectify the inherent issue of the high preservation of malware variants.
-    Specifically, although the canonical program may not be located within a reasonable time for a highly preserved malware variant, a closely related variant may have already been incorporated into the augmented dataset.
-    In summary, this method could bolster the robustness of the detection systems, thereby making them more resistant to evasion techniques.
+    In response to this challenge, our future research focuses on the potential effectiveness of program normalization in enhancing the accuracy of malware detection systems. 
+    This approach involves transforming a program into a standardized, or "canonical," form before comparing it against a known dataset of malware signatures. 
+    By doing this, we aim to rapidly and efficiently identify malicious programs. A key strategy we explore is the pre-compiling of \Wasm binaries, which can be done at a minimal cost. 
+    For example, a Wasm binary might first be JIT compiled to machine code. 
+    This step effectively reduces the number of malware variants that need to be considered, making it easier for classifiers to identify malicious software.
 
 
+    However, this method is not without its challenges. 
+    It relies heavily on the degree to which malware variants can be normalized.
+    If a malware variant is highly preserved, meaning it maintains its original form and structure even after compiling to machine code, it might be difficult to normalize and subsequently detect. 
+    This limitation suggests that while program normalization can significantly improve the efficiency and precision of malware detection systems, it is not a foolproof solution. 
+    The ability to detect highly preserved malware variants remains an area for further research.
+    
 
 \end{strategy}
 
@@ -127,29 +121,15 @@ In the following, we outline two concrete directions.
 As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
 On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
 For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
+We can conceptualize this problem as an issue of search space exploration. 
+By dividing the diversification search space, we can more efficiently focus the diversification process. 
+The main benefit of this division is a narrowed search space, which can speed up and refine the process of diversification. 
 
 
-This issue can e seen as a search space exploration problem.
-The space can be divided to better focus the diversification process. 
-The primary advantage of this division is the reduction of the search space, consequently accelerating and refining the diversification process. 
-We aim to delve further into this approach, potentially using feedback-guided based on specific code patterns to disrupt, e.g., embedded timers. 
-This strategy could be applied to other situations, such as mitigating specific side-channels like port contention \cite{10.1145/3488932.3517411}.
-
-We anticipate several challenges in the context of \Wasm. 
-Practically, one should balance critical dimensions: the number of variants, the generation speed of the variants, the preservation of the variants, the diversification objectives, and the performance of the generated variants. 
-For instance, high preservation might inadvertently allow vulnerable code to persist. 
-Even though we can generate more resilient variants, the compiler's role in mitigating initial vulnerabilities is essential.
-In concrete, we could generate variants with disrupted malicious code patterns, but the compiler could still generate vulnerable code by reversing it. 
-High preservation could therefore potentially impede the removal of potential security weaknesses during the compilation process.
-
-In future research, we aim to examine the application of feedback-guided diversification by incorporating these dimensions into the feedback loop. 
-For instance, we may use a variety of \Wasm JIT compilers\cite{2023arXiv230513241T} to assess the preservation of the generated variants. 
-Furthermore, the influence of specific code patterns may guide the diversification process. 
-In the context of \Wasm, we might utilize the broad and growing range of analysis tools to strengthen feedback.
-For instance, we could employ MINOS \cite{MINOS} for rapid binary classification and VeriWasm\cite{veriwasm} for counting security smell patterns.
-In other words, we envision meta-oracles capable of providing feedback on the strength of the diversification process.
-The integration of such feedback into the creation of the \Wasm variants awaits exploration.
-
+We intend to research into the previously mentioned concept. 
+Our strategy could potentially incorporate feedback-directed methods that rely on specific code patterns, such as the disruption of embedded timers, to combat these problems. 
+This method might also be modified to lessen the impact of particular types of side-channel attacks, such as port contention \cite{10.1145/3488932.3517411}. 
+For instance, one might count the number of instructions that result in port contention and use this data to choose or eliminate variants with a high or low count of instructions leading to port contention.
 
 
 

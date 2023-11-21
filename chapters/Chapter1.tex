@@ -101,7 +101,7 @@ First, the predictability of execution engines and \Wasm binaries themselves fac
 Despite the praise for WebAssembly's security, particularly its design that prohibits programs from accessing data beyond their own memory, it is not immune to such vulnerabilities. 
 For example, Rokicki \etal highlighted the potential risk of port contention side-channel attacks using \Wasm malware in browsers \cite{10.1145/3488932.3517411}. 
 In such cases, mitigations often involve hardware and operating-level changes, which are not always feasible.
-Moreover, attacks within the memory of WebAssembly itself are feasible\cite{usenixWasm2020} as innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
+Moreover, attacks within the memory of WebAssembly itself are feasible\cite{10296897, usenixWasm2020} as innate vulnerabilities can exist in WebAssembly binaries due to flaws in the source code. 
 Besides, the lack of stack-smashing protections could result in unnoticed overflows and crashes during \Wasm executions\cite{DeRoover2022}. 
 In standalone deployments, Genkin \etal demonstrated the possibility of data extraction via cache-timing side channels in \Wasm \cite{Genkin2018DrivebyKC}. 
 In a similar vein, Maisuradze and Rossow exhibited speculative execution attacks on \Wasm binaries \cite{ret2spec}.
@@ -131,11 +131,10 @@ In this dissertation, we tackle the subsequent two problems:
 
 \begin{enumerate}[label=\textbf{P\arabic*}, ref=\textbf{P\arabic*}]
 
-	\item \label{prob4} \textbf{Side-channels and vulnerabilities}: The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.
+	\item \label{prob4} \textbf{The \Wasm ecosystem and binaries are susceptible to attacks, especially those from side-channel threats.}
 	
-	\item \label{prob5} \textbf{\Wasm malware}: 
-	\Wasm malware presents a substantial threat.
-	Predictability leads to the assumption that malware is typically considered unique.
+	\item \label{prob5} \textbf{\Wasm malware presents a substantial threat.
+	Predictability leads to the assumption that malware is typically considered unique.}
 
 \end{enumerate}
 
@@ -239,7 +238,7 @@ In \autoref{contrib_map} we map the contributions to our research papers.
 	
 	\item \label{wasmmutatepaper}\textbf{Wasm-mutate: Fast and efficient Software Diversification for WebAssembly. }\\ 
 	\textbf{Javier Cabrera-Arteaga}, Nicholas Fitzgerald, Martin Monperrus, Benoit Baudry\\
-	\textit{Submitted to Computers \& Security, 17 pages} \\
+	\textit{Submitted to Computers \& Security, under revision, 17 pages} \\
 	\url{https://arxiv.org/pdf/2309.07638.pdf}
 
 	\wrule{Summary:}
