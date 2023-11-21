@@ -327,6 +327,8 @@ def process_pdf(pdffile, ignore):
                             break
 
                     text = text.replace(" .", ".")
+                    text = text.replace("- ", "-")
+                    text = text.replace("https: ", "https:")
                     text = text.strip()
                     
                         
