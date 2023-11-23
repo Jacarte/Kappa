@@ -13,15 +13,15 @@ This thesis aims to enhance the security of the \Wasm ecosystem through the intr
 Software Diversification is a strategy designed to augment the cost of exploitation by rendering the software less predictable.
 By automatically generating numerous variants of a program, we can decrease predictability within ecosystems.
 These variants harden observable properties typically utilized to carry out attacks.
-For instance, we can generate variants of a program with diverse memory layouts and control-flow graphs, thereby strengthening code analysis, execution traces, and execution times.
+For instance, we can generate variants of a program with diverse memory layouts and control-flow graphs, thereby strengthening code analysis, dynamic analysis and side-channels.
 Yet, in the context of \Wasm, Software Diversification has not been explored.
 
 
 
 We present three pioneering tools to the community: CROW, MEWE, and WASM-MUTATE. 
 Each tool is specifically designed to address a unique aspect of Software Diversification. 
-Moreover, these tools synergistically enhance each other. 
-We furnish empirical evidence that Software Diversification is applicable to \Wasm programs in two distinct manners: Offensive and Defensive Software Diversification. 
+Moreover, these tools complement each other. 
+We provide empirical evidence that Software Diversification could be applied to \Wasm programs in two distinct manners: Offensive and Defensive Software Diversification. 
 Our investigation into Offensive Software Diversification in \Wasm reveals potential avenues for improving the detection of \Wasm malware. 
 In contrast, our experiments in Defensive Software Diversification demonstrate that \Wasm programs can be strengthened against side-channel attacks, specifically against the Spectre attack.
 
