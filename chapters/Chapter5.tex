@@ -89,7 +89,7 @@ In the following, we outline two concrete directions.
 
 
 
-\begin{strategy}[Improving \Wasm malware detection via canonicalization]
+\subsection{Improving \Wasm malware detection via canonicalization}
 
     Malware detection is a well-known problem in the field of computer security, as outlined in works like Cohen's 1987 study on computer viruses \cite{cohen1987computer}. 
     This issue is exacerbated in environments where predictability is high and malware is expected to be replicated identically across multiple victims. 
@@ -119,11 +119,9 @@ In the following, we outline two concrete directions.
     The ability to detect highly preserved malware variants remains an area for further research.
     
 
-\end{strategy}
-
 
     
-\begin{strategy}[Feedback-guided Diversification]
+\subsection{Code pattern feedback-guided Diversification}
 As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
 On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
 For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
@@ -138,11 +136,3 @@ This method might also be modified to lessen the impact of particular types of s
 For instance, one might count the number of instructions that result in port contention and use this data to choose or eliminate variants with a high or low count of instructions leading to port contention.
 
 
-
-\begin{comment}%%ORIGINAL
-
-
-
-\end{comment}
-
-\end{strategy}
