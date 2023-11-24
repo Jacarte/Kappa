@@ -4,7 +4,7 @@
 
 \chapterprecishere{\input{quotes/dn2.tex}\par\raggedleft--- {\small\textup{Donald Knuth}}}
 
-\lettrine[lines=3]{T}{he} growing adoption of \Wasm requires efficent code analysis and hardening techniques.
+\lettrine[lines=3]{T}{he} growing adoption of \Wasm requires efficent hardening techniques.
 This thesis contributes to this effort with a comprehensive set of methods and tools for Software Diversification in \Wasm.
 We introduce three technical contributions in this dissertation: CROW, MEWE, and WASM-MUTATE.
 Additionally, we present specific use cases for exploiting the diversification created for \Wasm programs.
@@ -51,7 +51,6 @@ Our research confirms the existence of opportunities for the malware detection c
 Specifically, developers can improve the detection of \Wasm malware by using multiple malware oracles.
 Additionally, these practitioners could employ feedback-guided diversification to identify specific transformations their implementation is susceptible to.
 For instance, our study found that the addition of arbitrary custom sections to \Wasm binaries is a highly effective transformation for evading detection.
-In practice, no \Wasm engine uses custom sections, so injecting them does not impact the performance of the \Wasm binary. 
 This logic also applies to other transformations, such as adding unreachable code, another effective method for evading detection.
 
 % Breaking side-channels
@@ -65,7 +64,9 @@ Simultaneously, they can produce variants that introduce noise into the executio
 To sum up, our methods remarkably generate tens of thousands of variants in minutes. 
 The swift production of these variants is due to the rapid transformation of \Wasm binaries. 
 This swift generation of variants is particularly advantageous in highly dynamic scenarios such as FaaS and CDN platforms. 
-We have empirically tested the effectiveness of moving target defense techniques\cite{jackson2011compiler} on the Fastly edge computing platform. 
+In this work, we do not discuss this case in depth. 
+Yet, we have empirically tested the effectiveness of moving target defense techniques \cite{jackson2011compiler}. 
+These tests were conducted on the Fastly edge computing platform.
 In this scenario, we incorporate multivariant executions\cite{MEWE}. 
 Fastly can redeploy a \Wasm binary across its 73 datacenters worldwide in 13 seconds on average. 
 This enables the practical deployment of a unique variant per node using our tools. 
@@ -91,32 +92,41 @@ In the following, we outline two concrete directions.
 
 \subsection{Improving \Wasm malware detection via canonicalization}
 
-    Malware detection is a well-known problem in the field of computer security, as outlined in works like Cohen's 1987 study on computer viruses \cite{cohen1987computer}. 
-    This issue is exacerbated in environments where predictability is high and malware is expected to be replicated identically across multiple victims. 
-    In such scenarios, attackers can exploit this predictability to their advantage. 
-    For example, malicious actors could craft functionally equivalent malware to evade detection by malware detection systems.
-    Indeed, our research has shown that employing Software Diversification can be an effective method for evading malware detection systems. 
-    This technique involves creating varied versions of a program, thereby reducing its predictability and making detection more challenging. 
-   
-        
-    Our future research plans to tackle this challenge by evaluating the potential effectiveness of program normalization in refining the precision of malware detection systems. 
-    The strategy we suggest involves transforming a program into a standardized or "canonical" form before juxtaposing it with a recognized dataset of malware signatures \cite{seideman2023transformation}. 
-    We plan to examine two strategies. 
-    First, we aim to employ WASM-MUTATE for program normalization. 
-    By reusing the e-graph data structures to use the shortest possible replacements, we can secure the canonical representation of the input program. 
-    Although normalization methods are not new, previous studies have grounded malware detection on the normalization of lifted code \cite{Huang2017BinSequenceFA, 6234404, 10.1007/978-3-030-78120-0_5}. 
-    In other words, malware requires examination through a platform-agnostic representation. 
-    This issue does not occur in \Wasm, given that its binary format is innately platform-agnostic. 
-    Thus, we can directly normalize the \Wasm binary, obviating the need for lifting. 
-    Second, we can pre-compile \Wasm binaries, an operation that incurs a minimal cost. 
-    For example, a Wasm binary could initially be JIT compiled into machine code. 
-    Overall, either of these two strategies aims to substantially reduce the number of malware variants that need consideration, thereby easing the task of classifiers in detecting harmful software. 
+Malware detection is a well-known problem in the field of computer security, as outlined in works like Cohen's 1987 study on computer viruses \cite{cohen1987computer}. 
+This issue is exacerbated in environments where predictability is high and malware is expected to be replicated identically across multiple victims. 
+In such scenarios, attackers can exploit this predictability to their advantage. 
+For example, malicious actors could craft functionally equivalent malware to evade detection by malware detection systems.
+Indeed, our research has shown that employing Software Diversification can be an effective method for evading malware detection systems. 
+This technique involves creating varied versions of a program, thereby reducing its predictability and making detection more challenging. 
 
-    However, these methods are not without its challenges. 
-    They rely heavily on the degree to which malware variants can be normalized.
-    If a malware variant is highly preserved, meaning it maintains its original form and structure even after compiling to machine code, it might be difficult to normalize and subsequently detect. 
-    This limitation suggests that while program normalization can significantly improve the efficiency and precision of malware detection systems, it is not a foolproof solution. 
-    The ability to detect highly preserved malware variants remains an area for further research.
+
+In our future research, we plan to tackle the challenge of refining the precision of malware detection systems. 
+We aim to achieve this by evaluating the effectiveness of program normalization \cite{seideman2023transformation}. 
+This strategy involves transforming a program into a standardized or "canonical" form \cite{Huang2017BinSequenceFA}.
+A malware detection system in a pre-existing database is more likely to detect the canonical form.
+Just as a program can be transformed into multiple functionally equivalent variants, the inverse process is also possible. 
+In simple terms, two functionally equivalent programs can be transformed into the same original program. 
+
+
+
+We plan to examine two strategies. 
+First, we aim to employ WASM-MUTATE for program normalization. 
+By reusing the e-graph data structures to use the shortest possible replacements, we can secure the canonical representation of the input program. 
+Although normalization methods are not new, previous studies have grounded malware detection on the normalization of lifted code \cite{ 6234404, 10.1007/978-3-030-78120-0_5}. 
+\Wasm does not need to be lifted, given that its binary format is innately platform-agnostic. 
+Thus, we can directly normalize the \Wasm binary.
+Secondly, we can pre-compile \Wasm binaries at a minimal cost. 
+Specifically, a \Wasm binary could initially undergo JIT compilation into machine code. 
+Overall, either of these two strategies aims to substantially reduce the number of malware variants that need consideration, thereby easing the task of classifiers in detecting harmful software. 
+
+However, these methods are not without its challenges. 
+First, a normalization process is notably complex. 
+The complexity of normalizing a program is comparable to that of optimizing a program. 
+Both tasks are computing-intensive and require substantial resources.
+Second, canonicalization methods rely heavily on the degree to which malware variants can be normalized.
+If a malware variant is highly preserved, meaning it maintains its original form and structure even after compiling to machine code, it might be difficult to normalize and subsequently detect. 
+This limitation suggests that while program normalization can significantly improve the efficiency and precision of malware detection systems, it is not a silver-bullet solution. 
+The ability to detect highly preserved malware variants remains an area for further research.
     
 
 
@@ -125,14 +135,17 @@ In the following, we outline two concrete directions.
 As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
 On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
 For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
-We can conceptualize this problem as an issue of search space exploration. 
+We can conceptualize this problem as an issue of diversification space exploration. 
 By dividing the diversification search space, we can more efficiently focus the diversification process. 
 The main benefit of this division is a narrowed search space, which can speed up and refine the process of diversification. 
 
 
 We intend to research into the previously mentioned concept. 
-Our strategy could potentially incorporate feedback-directed methods that rely on specific code patterns, such as the disruption of embedded timers, to combat these problems. 
-This method might also be modified to lessen the impact of particular types of side-channel attacks, such as port contention \cite{10.1145/3488932.3517411}. 
-For instance, one might count the number of instructions that result in port contention and use this data to choose or eliminate variants with a high or low count of instructions leading to port contention.
+Our strategy could potentially incorporate feedback-directed methods that rely on specific code patterns, such as the disruption of embedded timers, to better combat side-channel attacks. 
+For example, port contention side-channel \cite{10.1145/3488932.3517411} attacks can be preventing by using Software Diversification. 
+One might count the number of instructions that result in port contention and use this data to choose or eliminate variants with a high or low count of instructions leading to port contention.
+Feedback-guided code pattern approaches need a comprehensive study of the mechanisms underlying various attack vectors, and the exact impact of different code transformations on them. 
+The delicate adjustment of these methods to maintain a balance between general and specific security objectives poses a significant challenge. 
+Continuous research and development are required to optimize and validate their effectiveness in a variety of scenarios.
 
 
