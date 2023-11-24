@@ -136,7 +136,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     The process of enumerative synthesis commences with a piece of input program, typically a basic block.
     Incrementally, using a defined grammar, it generates all programs of size $n$.
     A generated program is then checked for equivalence to the original program, either by using a test suite or a theorem solver.
-    If the generated variant is proved, it is added to the variants collection.
+    If the generated variant is proved, it is added to the variant's collection.
     The procedure continues until all potential programs have been explored.
     This approach proves especially effective when the solution space is relatively small or can be navigated efficiently.
     Jacob and colleagues \cite{jacob2008superdiversifier} implemented this strategy for x86 programs.

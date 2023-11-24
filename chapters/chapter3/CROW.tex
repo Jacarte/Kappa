@@ -169,7 +169,7 @@ We disable all optimizations in the \wasm\ backend that could reverse the CROW t
 \label{section:crow:example}
 %In \autoref{section:crow} we describe the main components and contributions of CROW. In this section we instantiate the workflow presented in \autoref{workflow} from the input of an example C code to the generation of a pool of \wasm\ program variants.
 
-Let us illustrate how CROW works with the example code in \autoref{CExample}. The \texttt{f} function calculates the value of $2 * x + x$ where \texttt{x} is the input for the function.  CROW compiles this source code and generates the intermediate LLVM bitcode in the left most part of \autoref{example:crow:original:llvm}. CROW potentially finds two integer returning instructions to look for variants, as the right-most part of \autoref{example:crow:original:llvm} shows.
+Let us illustrate how CROW works with the example code in \autoref{CExample}. The \texttt{f} function calculates the value of $2 * x + x$ where \texttt{x} is the input for the function.  CROW compiles this source code and generates the intermediate LLVM bitcode in the left most part of \autoref{example:crow:original:llvm}. CROW potentially finds two integers returning instructions to look for variants, as the right-most part of \autoref{example:crow:original:llvm} shows.
 
 % snippet of code showing the detection of code blocks
 \input{snippets/llvm_code_blocks.tex}
