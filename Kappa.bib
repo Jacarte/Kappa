@@ -3806,3 +3806,34 @@ isbn="978-3-030-78120-0"
   biburl       = {https://dblp.org/rec/conf/ndss/SchnitzlerKBP23.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
+
+@inproceedings{10.1145/2610384.2610415,
+  author = {Baudry, Benoit and Allier, Simon and Monperrus, Martin},
+  title = {Tailored Source Code Transformations to Synthesize Computationally Diverse Program Variants},
+  year = {2014},
+  isbn = {9781450326452},
+  url = {https://doi.org/10.1145/2610384.2610415},
+  doi = {10.1145/2610384.2610415},
+  abstract = {The predictability of program execution provides attackers a rich source of knowledge who can exploit it to spy or remotely control the program. Moving target defense ad- dresses this issue by constantly switching between many di- verse variants of a program, which reduces the certainty that an attacker can have about the program execution. The ef- fectiveness of this approach relies on the availability of a large number of software variants that exhibit dierent ex- ecutions. However, current approaches rely on the natural diversity provided by o-the-shelf components, which is very limited. In this paper, we explore the automatic synthe- sis of large sets of program variants, called sosies. Sosies provide the same expected functionality as the original pro- gram, while exhibiting dierent executions. They are said to be computationally diverse. This work addresses two objectives: comparing dierent transformations for increasing the likelihood of sosie synthe- sis (densifying the search space for sosies); demonstrating computation diversity in synthesized sosies. We synthesized 30 184 sosies in total, for 9 large, real-world, open source ap- plications. For all these programs we identied one type of program analysis that systematically increases the density of sosies; we measured computation diversity for sosies of 3 programs and found diversity in method calls or data in more than 40\% of sosies. This is a step towards controlled massive unpredictability of software.},
+  pages = {149–159},
+  numpages = {11},
+  keywords = {Software Diversity, Program Transformation},
+  series = {ISSTA 2014}
+}
+
+@article{10.1007/s10710-013-9195-8,
+  author = {Schulte, Eric and Fry, Zachary P. and Fast, Ethan and Weimer, Westley and Forrest, Stephanie},
+  title = {Software Mutational Robustness},
+  year = {2014},
+  issue_date = {September 2014},
+  volume = {15},
+  number = {3},
+  issn = {1389-2576},
+  url = {https://doi.org/10.1007/s10710-013-9195-8},
+  doi = {10.1007/s10710-013-9195-8},
+  abstract = {Neutral landscapes and mutational robustness are believed to be important enablers of evolvability in biology. We apply these concepts to software, defining mutational robustness to be the fraction of random mutations to program code that leave a program's behavior unchanged. Test cases are used to measure program behavior and mutation operators are taken from earlier work on genetic programming. Although software is often viewed as brittle, with small changes leading to catastrophic changes in behavior, our results show surprising robustness in the face of random software mutations. The paper describes empirical studies of the mutational robustness of 22 programs, including 14 production software projects, the Siemens benchmarks, and four specially constructed programs. We find that over 30 \% of random mutations are neutral with respect to their test suite. The results hold across all classes of programs, for mutations at both the source code and assembly instruction levels, across various programming languages, and bear only a limited relation to test suite coverage. We conclude that mutational robustness is an inherent property of software, and that neutral variants (i.e., those that pass the test suite) often fulfill the program's original purpose or specification. Based on these results, we conjecture that neutral mutations can be leveraged as a mechanism for generating software diversity. We demonstrate this idea by generating a population of neutral program variants and showing that the variants automatically repair latent bugs. Neutral landscapes also provide a partial explanation for recent results that use evolutionary computation to automatically repair software bugs.},
+  month = {sep},
+  pages = {281–312},
+  numpages = {32},
+  keywords = {Mutation testing, Proactive diversity, Genetic programming, Mutational robustness, Neutral landscapes, N-version programming}
+}

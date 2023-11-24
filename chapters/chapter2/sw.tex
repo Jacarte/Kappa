@@ -157,24 +157,35 @@ two programs are deemed equivalent if they generate identical outputs when given
 We adopt this definition of \emph{functional equivalence modulo input} throughout this dissertation. 
 In Software Diversification, equivalence checking seeks to preserve the original functionality of programs while varying observable behaviors. 
 Two programs, for instance, can differ statically and still compute the same result. 
-We outline two methods to check variant equivalence: by construction and prove-driven equivalence checking.
+We outline three methods to check variant equivalence: by construction, check modulo tests and prove-driven equivalence checking.
 
 
-\begin{checking}[Equivalence checking by construction]
+\begin{checking}[Equivalence by construction]
     \label{check_by_construction}
-    The equivalence property is often guaranteed by construction. 
-    Cleemput \etal \cite{Cleemput2012} and Homescu \etal \cite{homescu2013profile}, for example, design their transformation strategies to generate semantically equivalent program variants. 
-    However, developer errors can occur in this process, necessitating further validation. 
+    The equivalence property can be guaranteed by construction.
+    As previously mentioned, Cleemput \etal \cite{Cleemput2012} and Homescu \etal \cite{homescu2013profile} exemplify transformation strategies that generate semantically equivalent program variants. 
+    These variants are equivalent by construction. 
+    In their case, NOP instructions produce statically different variants. 
+    NOP operations, interleaved by any other type of original instruction, serve as a functionally equivalent replacement. 
+    However, developer errors may occur during this process, necessitating further validation.
     The test suite of the original program can serve as a check for the variant. 
-    If the program variant passes the test suite \cite{harrand2020java}, it can be considered equivalent to the original. 
-    However, this technique is limited by the need for a preexisting test suite and does not give guarantees. 
-    An alternative method for checking program equivalence involves the use of fuzzers \cite{zalewski2017american}.
-    Fuzzers randomly generate inputs that yield different observable behaviors. 
-    If two inputs produce a different output in the variant, the variant and the original program are not equivalent. 
-    The primary limitation for fuzzers is that the process is notably time-consuming and necessitates manual introduction of oracles.
-    Recent advances in machine learning have prompted researchers to investigate the use of neural networks for verifying program equivalence.
-    One such example is the work of Zhang and colleagues \cite{2023arXiv230514591Z}, which produces reference oracles and test cases by using Large Language Models.
-    Although this method appears effective, it only achieves an accuracy rate of 88\%, which is insufficient for total verification.
+\end{checking}
+
+\begin{checking}[Checking modulo tests]
+    \label{check_by_tests}
+
+    The process of checking modulo tests involves utilizing a test suite to confirm the equivalence of program variants \cite{10.1007/s10710-013-9195-8, 10.1145/2610384.2610415}. 
+    When a program variant successfully passes the test suite, it is determined equivalent to the original. 
+    It is reasonable to assume that projects prioritizing quality and security are likely to have a robust test suite that facilitates this type of equivalence verification.
+    However, this technique's effectiveness is bounded by the necessity for a preexisting test suite. 
+    Yet, as an alternative, fuzzers can be used to automatically generate tests \cite{zalewski2017american}.
+    Fuzzers operate by randomly generating inputs that lead to different observable behaviors. 
+    If a variant produces a different output from two identical inputs, it is not equivalent to the original program. 
+    Fuzzers' primary drawback is their time-consuming nature and the requirement for manually introducing oracles.
+    Recent advancements in the field of machine learning have led researchers to explore the application of neural networks in verifying program equivalence.
+    Zhang and his team's work provides an example of this, where Large Language Models are used to generate reference oracles and test cases \cite{2023arXiv230514591Z}.
+    Despite its effectiveness, this method attains an accuracy rate of just 88\%, which falls short of providing complete verification.
+
 \end{checking}
 
 \begin{checking}[Formal checking]
@@ -203,7 +214,7 @@ Program variants, once generated and verified, may be utilized in two primary sc
     They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
     Similarly, Singhal and colleagues, propose Cornucopia \cite{cornucopia}.
     Cornucopia generates multiple variants of a program by using different compiler flag combinations.
-    Aga and colleagues \cite{aga2019smokestack}, contributing to this discussion, propose the generation of program variants through the randomization of its data layout in memory. 
+    Aga and colleagues propose the generation of program variants through the randomization of its data layout in memory\cite{aga2019smokestack}. 
     This method allows each variant to operate on the same data in memory but at different memory offsets. 
     Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
     In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
@@ -315,10 +326,11 @@ More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to ac
 As outlined in \autoref{background:wasm:challenges}, our primary motivation for the contributions of this thesis is the open issues within the \Wasm ecosystem. 
 We see potential in employing Software Diversification to address them. 
 Based on our previous discussion, we highlight several open challenges in the realm of Software Diversification for \Wasm. 
-First, \Wasm, being an emerging technology, is still in the process of implementing defensive measures. 
-The process of officially adopting a new defensive measure is inherently slow, making Software Diversification a potentially valuable strategy. 
+First, \Wasm, being an emerging technology, is in the process of implementing defensive measures. 
+In addition, while measures for \Wasm can be standardized, the implementation of these standards across the ecosystem is naturally slow. 
+Therefore, applying Software Diversification directly to the generation of \Wasm binaries, according to any given specification, could serve as a valuable strategy to lessen the impact of vulnerabilities.
 Second, despite the abundance of related work on software diversity, its exploration in the context of \Wasm remains limited. 
-This thesis is first to investigate Software Diversity in depth for the emerging \Wasm ecosystem.
+This thesis is the first to investigate Software Diversity in depth for the emerging \Wasm ecosystem.
 Third, both randomization and multivariant execution remain largely unexplored within the \Wasm context. 
 The deployment of Software Diversification in \Wasm poses unique challenges. 
 \Wasm ecosystems are remarkably dynamic. 
