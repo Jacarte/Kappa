@@ -250,7 +250,7 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     \label{static_based}
     Static metrics are used to measure diversity of programs without needing execution. 
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
-    Usually, comparing variants means defining a distance metric between programs. 
+    Usually, comparing variants means defining a distance metric between programs \cite{10.1145/2814270.2814319}. 
     At the low-level of bytecode instructions, for example, these metrics include Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
     On the other hand, at the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
     Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
