@@ -69,7 +69,7 @@ In this scenario, we incorporate multivariant executions\cite{MEWE}.
 Fastly can redeploy a \Wasm binary across its 73 datacenters worldwide in 13 seconds on average. 
 This enables the practical deployment of a unique variant per node using our tools. 
 However, a 13-second window may still pose a risk despite each node potentially hosting a distinct \Wasm variant. 
-To mitigate this, we use multivariant binaries, invoking a unique variant with each execution. 
+To mitigate this, one could use multivariant binaries, invoking a unique variant with each execution. 
 Our tools can generate dozens of unique variants every few seconds, each serving as a multivariant binary packaging thousands of other variants. 
 This illustrates the real-world application of Defensive Software Diversification to a \Wasm standalone scenario.
 
