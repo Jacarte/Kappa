@@ -364,3 +364,32 @@ Therefore, this exemplifies the application of Defensive Software Diversificatio
     %Specifically, although the canonical program may not be located within a reasonable time for a highly preserved malware variant, a closely related %variant may have already been incorporated into the augmented dataset.
     %In summary, this method could bolster the robustness of the detection systems, thereby making them more resistant to evasion techniques.
 
+
+    \todo{We keep it.}
+    \todo{Change title. Refine it. Twice as long. Why we want efficiency ? Reasons to be efficient. Objective on top of diversification technique. Notion of Being precise. Different constraints, gas based. Examples: evasion.}
+    
+    On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
+    For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
+    We can conceptualize this problem as an issue of diversification space exploration. 
+    By dividing the diversification search space, we can more efficiently focus the diversification process. 
+    The main benefit of this division is a narrowed search space, which can speed up and refine the process of diversification. 
+    
+    
+    We intend to research into the previously mentioned concept. 
+    Our strategy could potentially incorporate feedback-directed methods that rely on specific code patterns, such as the disruption of embedded timers, to better combat side-channel attacks. 
+    For example, port contention side-channel \cite{10.1145/3488932.3517411} attacks can be preventing by using Software Diversification. 
+    One might count the number of instructions that result in port contention and use this data to choose or eliminate variants with a high or low count of instructions leading to port contention.
+    Feedback-guided code pattern approaches need a comprehensive study of the mechanisms underlying various attack vectors, and the exact impact of different code transformations on them. 
+    The delicate adjustment of these methods to maintain a balance between general and specific security objectives poses a significant challenge. 
+    Continuous research and development are required to optimize and validate their effectiveness in a variety of scenarios.
+    
+    
+    \subsection{Oneshot Diversification}
+    
+    our methods remarkably generate tens of thousands of variants in minutes. 
+    
+    
+    \todo{In the context of Wasm. More constraints}
+    \todo{Rotatio time is important in some cases.}
+    \url{https://dblp.org/pid/l/MichaelELocasto.html}
+    
