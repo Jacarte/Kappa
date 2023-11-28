@@ -130,7 +130,7 @@ The ability to detect highly preserved malware variants remains an area for furt
     
 
 
-\subsection{\Wasm dataset augmentation}
+\subsection{Data augmentation for machine learning on \Wasm programs}
 In comparison to more established environments, the \Wasm ecosystem is relatively new. 
 According to a recent study by Hilbig \etal, the global count of \Wasm binaries is approximately 20,000  \cite{Hilbig2021AnES}. 
 This number is minuscule when contrasted with the massive repositories of 1.5 million and 1.7 million packages in npm and PyPI, respectively. 
@@ -138,6 +138,8 @@ Intriguingly, this study also discloses that half of these \Wasm binaries origin
 This scarcity of \Wasm datasets presents considerable obstacles for machine learning analysis tools, which typically necessitate substantial data volumes for efficacious training and calibration. 
 Software Diversification can be used as a key strategy, simulating a wide spectrum of potential software behaviors and scenarios. 
 This objective can be achieved through strategic \Wasm dataset augmentation.
+
+\todo{Cite paper from Ye last week thread}
 
 Augmentation of program datasets has proven effective in enhancing the accuracy of classification models \cite{2021arXiv210311882S, selfAPR, 10.1109/TSE.2023.3240118}.
 It exposes edge cases and rare conditions, thus enabling the development of better defenses against unforeseen challenges.
@@ -147,7 +149,9 @@ Our future plans include leveraging our tools to bolster the training of models 
 Our methodologies aim to substantially increase the volume of samples available for model training, thereby enhancing the overall effectiveness and reliability of the \Wasm ecosystem.
 
     
-\subsection{Code pattern feedback-guided Diversification}
+\subsection{Task-specific Diversification}
+\todo{We keep it.}
+\todo{Change title. Refine it. Twice as long. Why we want efficiency ? Reasons to be efficient. Objective on top of diversification technique. Notion of Being precise. Different constraints, gas based. Examples: evasion.}
 As presented in \autoref{exploit}, feedback-guided diversification can facilitate the identification of specific transformations aiding particular objectives such as malware evasion and side-channel protection. 
 On the contrary, stochastic diversification may generate variants that do not align with the specific objective. 
 For instance, our approaches have shown less impact on ret2spec and pht side-channel attacks compared to btb attacks when using stochastic diversification.
@@ -164,3 +168,8 @@ Feedback-guided code pattern approaches need a comprehensive study of the mechan
 The delicate adjustment of these methods to maintain a balance between general and specific security objectives poses a significant challenge. 
 Continuous research and development are required to optimize and validate their effectiveness in a variety of scenarios.
 
+
+\subsection{Oneshot Diversification}
+\todo{In the context of Wasm. More constraints}
+\todo{Rotatio time is important in some cases.}
+\url{https://dblp.org/pid/l/MichaelELocasto.html}

@@ -28,7 +28,6 @@ For instance, Java applets emerged on web pages in the late 90s, enabling the ex
 Likewise, Microsoft attempted twice with ActiveX in 1996 \toolcite{https://web.archive.org/web/20090828024117/http://www.microsoft.com/presspass/press/1996/mar96/activxpr.mspx}, and Silverlight in 2007 \toolcite{https://www.microsoft.com/silverlight/}.
 However, these attempts either failed to persist or experienced low adoption, primarily due to security issues and the absence of consensus among the community of browser vendors.
 
- 
 
 
 Importantly, in 2014, Alon Zakai and colleagues proposed the Emscripten tool \toolcite{https://emscripten.org/}.
@@ -167,14 +166,14 @@ In light of this, we offer the following contributions within the context of Sof
 
 \begin{enumerate}[label=\textbf{C\arabic*}, ref=C\arabic*]
 
-	\item \label{defensivecontrib} \wrule{Defensive Diversification:} In order to address \ref{prob4}, we assess how diversified \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
+	\item \label{defensivecontrib} \wrule{Defensive Diversification Technique:} In order to address \ref{prob4}, we assess how diversified \Wasm program variants could be used for defensive purposes. We provide empirical insights about the practical usage of the generated variants in preventing attacks.
 	
-	\item \label{ofensivecontrib} \wrule{Offensive Diversification:} 
+	\item \label{ofensivecontrib} \wrule{Offensive Diversification Technique:} 
 	In order to address \ref{prob5}, we evaluate the potential for using generated \Wasm program variants for offensive purposes. 
 	Our research includes experiments where we test the resilience of \Wasm analysis tools against these generated variants. 
 	Furthermore, we offer insights into which types of program variants practitioners should prioritize to improve \Wasm analysis tools.
 
-	\item \label{methodcontrib} \wrule{Experimental contribution:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4} and \ref{prob5}.
+	\item \label{methodcontrib} \wrule{Extensive experimental results:} For each proposed technique we provide an artifact implementation and conduct experiments to assess its capabilities. The artifacts are publicly available. The protocols and results of assessing the artifacts provide guidance for future research on \ref{prob4} and \ref{prob5}.
 	
 	%\item \label{therycontrib} \wrule{Theoretical contribution:} We propose a theoretical foundation in order to generate and improve Software Diversification for \Wasm. We provide a formal definition of \Wasm program variants and their diversity. We also provide a formal definition of \Wasm program diversity generation.
 	
@@ -193,10 +192,10 @@ In light of this, we offer the following contributions within the context of Sof
 		&  \cite{CROW} & \cite{MEWE} & \cite{wasmmutate} & \cite{EVASION} \\
 		\hline
 
-		\ref{defensivecontrib} Defensive diversification   & \checkmark & \checkmark & \checkmark\\
-		\ref{ofensivecontrib} Offensive diversification  & & & & \checkmark\\
+		\ref{defensivecontrib} Defensive diversification technique  & \checkmark & \checkmark & \checkmark\\
+		\ref{ofensivecontrib} Offensive diversification technique & & & & \checkmark\\
 
-		\ref{methodcontrib} Experimental contribution & \checkmark & \checkmark & \checkmark & \checkmark \\
+		\ref{methodcontrib} Extensive experimental results & \checkmark & \checkmark & \checkmark & \checkmark \\
 		%\ref{therycontrib} Theoretical contribution  & \checkmark &  &  \checkmark &  \\
 		%\ref{generationcontrib} Diversity generation   & \checkmark & \checkmark & \checkmark & \checkmark\\
 	\end{tabular}
