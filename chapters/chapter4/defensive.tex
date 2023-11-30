@@ -198,7 +198,7 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
    % Do those results hold only for Spectre?
     Beyond Spectre, one can use WASM-MUTATE to mitigate other side-channel attacks. 
     For instance, port contention attacks \cite{10.1145/3488932.3517411} rely on the execution of specific instructions for a successful attack. 
-    Not only WASM-MUTATE, but also our other tools, can alter those instructions, thereby mitigating the attack. 
+    Not only WASM-MUTATE but also our other tools, can alter those instructions, thereby mitigating the attack. 
     The effectiveness of WASM-MUTATE, coupled with its ability to generate numerous variants, establishes it as an apt tool for mitigating side-channel attacks.
     Consider, for example, applying this on a global FaaS platform scale. 
     In this scenario, one could deploy a unique, hardened variant for each machine and even for every fresh \Wasm spawned per user request.

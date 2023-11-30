@@ -25,7 +25,7 @@ Then, pieces of the original program are randomly substituted by the result of r
 Notice that, the output of one applied transformation can be chained again as an input \Wasm binary, enabling the generation of many variants, leading us to enunciate the notion of \emph{Stacked transformation}
 
 \begin{definition}{Stacked transformation:}\label{stack_transform}
-    Given an original input \Wasm binary $I$ and a diversifier $D$, stacked transformations are defined as the application of $D$ over the binary $I$ multiple times, i.e., $D(D(D(...(I))))$.  Notice that, the number of stacked transformations are the number of times the diversifier $D$ is applied.
+    Given an original input \Wasm binary $I$ and a diversifier $D$, stacked transformations are defined as the application of $D$ over the binary $I$ multiple times, i.e., $D(D(D(...(I))))$.  Notice that, the number of stacked transformations is the number of times the diversifier $D$ is applied.
 \end{definition}
 
 
@@ -57,7 +57,7 @@ Notice that the condition specified in the last part of the rewriting rule ensur
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
-Although this rewriting approach may seem simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
+Although this rewriting approach may seem simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
 Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
 The unfolding rewriting rule indirectly stresses this segment of memory. 
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.
@@ -76,7 +76,7 @@ For instance, e-graphs solve the problem of providing the best code out of sever
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
 In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a functionally equivalent code variant}. 
 
-We exploit such property to fastly generate diverse \Wasm variants.
+We exploit such property to rapidly generate diverse \Wasm variants.
 We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield functionally equivalent program variants, as detailed in \autoref{peephole:mutator}. 
 This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
 Within the algorithm, a random e-node is selected from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
@@ -120,7 +120,7 @@ Let us illustrate how \tool generates variant programs by using the before enunc
 Here, we use Algorithm \ref{peephole:mutator} with a maximum depth of 1.
 In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
 In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
-The former rule, grants the ability to append a \texttt{nop} instruction to any subexpression, a well-known low-level diversification strategy \cite{homescu2013profile}. 
+The former rule grants the ability to append a \texttt{nop} instruction to any subexpression, a well-known low-level diversification strategy \cite{homescu2013profile}. 
 Conversely, the latter rule adds zero to any numeric value.
 
 

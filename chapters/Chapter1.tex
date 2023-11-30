@@ -11,7 +11,7 @@
 \lettrine[lines=3]{T}{he} first web browser, Nexus, made its appearance in 1990 \cite{nexus}.  
 At its inception, web browsing consisted solely of retrieving and displaying small, static text pages. 
 With Nexus, users could access for the first time interlinked hypertext documents, so-called HTML pages. 
-However, the escalating computing power of devices, the proliferation of the internet, the valuation of internet-based companies, and the demand for more engaging user experiences gave rise the concept of executing code in conjunction with web pages. 
+However, the escalating computing power of devices, the proliferation of the internet, the valuation of internet-based companies, and the demand for more engaging user experiences gave rise to the concept of executing code in conjunction with web pages. 
 In 1995, the Netscape browser revolutionized this concept by introducing JavaScript \cite{10.1007/978-3-642-14107-2_7}, a programming language that allowed code execution on the client-side.
 Interactive web content immediately highlighted benefits: unlike classical native software, web applications do not require installation, are always up-to-date, and are accessible from any device with a web browser. 
 Significantly, since the advent of Netscape, all browsers offer JavaScript support. 
@@ -33,7 +33,7 @@ However, these attempts either failed to persist or experienced low adoption, pr
 Importantly, in 2014, Alon Zakai and colleagues proposed the Emscripten tool \toolcite{https://emscripten.org/}.
 Emscripten employs a strict subset of JavaScript, asm.js, to facilitate the compilation of low-level code such as C to JavaScript.
 Asm.js was included as an LLVM backend \toolcite{http://asmjs.org/spec/latest/}.
-This strategy offered the advantages of the ahead-of-time optimizations from LLVM, resulting in performance gains on browser clients \toolcite{ttps://hacks.mozilla.org/2015/03/asm-speedups-everywhere/} when compared to standard JavaScript code.
+This strategy offered the advantages of the ahead-of-time optimizations from LLVM, resulting in performance gains on browser clients \toolcite{https://hacks.mozilla.org/2015/03/asm-speedups-everywhere/} when compared to standard JavaScript code.
 Asm.js outperformed JavaScript because it restricted language features to those that could be optimized in the LLVM pipeline. 
 Moreover, it eliminated most of the language's dynamic characteristics, limiting it to numerical types, top-level functions, and one large array in memory accessed directly as raw data.
 Asm.js proved that client-side code could be enhanced with the appropriate language design and standardization.
@@ -49,7 +49,7 @@ Additionally, WebAssembly is the inaugural major language that used formal speci
 
 
 Importantly, \Wasm provides a platform for compiling several legacy code applications, like those written in C/C++. 
-For example, LLVM includes \Wasm  as a backend since release 7.1.0 published in May 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}.
+For example, LLVM includes \Wasm as a backend since release 7.1.0 published in May 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}.
 Therefore, the emergence of \Wasm, a fast, low-level, portable bytecode for browsers, has the potential to transform web software as we know it. 
 It paves the way for web applications to undertake roles traditionally reserved for native desktop applications.
 For example, applications such as AutoCAD and Adobe Photoshop have been ported to \Wasm \footnote{\url{https://twitter.com/Adobe/status/1453034805004685313?s=20&t=Zf1N7-WmzecA0K4V8R69lw}}. 
@@ -69,7 +69,7 @@ The extensive applicability and rapid adoption of \Wasm have prompted requests f
 However, these demands do not always align with the initial specifications. 
 For extending \Wasm with a new proposal, it must satisfy particular criteria.
 A new proposal needs a formal specification and, at least two implementations, e.g., two different \Wasm engines. 
-This approach allows for swift incorporation of new formalization and features via the so-called "evergreen method", while maintaining the original \Wasm specification intact. 
+This approach allows for swift incorporation of new formalization and features via the so-called "evergreen method" while maintaining the original \Wasm specification intact. 
 Since the inception of \Wasm, numerous extensions have been proposed for standardization. 
 For instance, the SIMD proposal enables the execution of vectorized instructions in \Wasm. 
 After approval, new extensions remain optional, ensuring that the core \Wasm version remains 1.0. 
@@ -78,7 +78,7 @@ However, it also gives rise to security concerns within the ecosystem, as new th
 
 
 \msection{Predictability in \Wasm ecosystems}
-Over the past three decades, web browsers and JavaScript have significant evolution, leading to myriad implementations. 
+Over the past three decades, web browsers and JavaScript have had significant evolution, leading to myriad implementations. 
 However, only Firefox, Chrome, Safari, and Edge are typically used on devices. 
 Web page resources, including those containing WebAssembly binaries, are primarily served from centralized datacenters \cite{STRAC}. 
 This situation creates a highly predictable ecosystem, where potential attackers can predict ecosystem behavior, from the browser to the code it executes. 
@@ -93,7 +93,6 @@ A potential attacker could compromise all edge nodes concurrently, implying that
 
 
 
-% Because both malware detection and side channel attacks depends on knowing in adva'ce the behavior of your target
 
 We devise two scenarios where predictability affects \Wasm ecosystems.
 First, the predictability of execution engines and \Wasm binaries themselves facilitates side-channel and memory attacks.
@@ -111,7 +110,7 @@ In particular, this predictability can be manipulated by malicious actors to cre
 For example, malware can be distributed via \Wasm binaries. 
 The capability of \Wasm for efficient computation makes it an appealing target for misuse by cybercriminals, especially for cryptojacking \cite{10.1145/3339252.3339261}. 
 The challenge in identifying and eliminating cryptojacking enables it to function persistently on a victim's computer, constantly utilizing resources and generating income for the attacker \cite{9566204}.  
-Several techniques, such as static analysis, dynamic analysis, and even sophisticated machine learning methods, are successfully applied to detect \Wasm malware \cite{Minesweeper,MinerRay,MINOS,SEISMIC,RAPID,Outguard}. 
+Several techniques, such as static analysis, dynamic analysis, and even sophisticated machine learning methods, are successfully applied to detect \Wasm malware \cite{Minesweeper, MinerRay, MINOS, SEISMIC, RAPID, Outguard}. 
 However, most of these research works do not consider the predictability of an attacker knowing that a \Wasm program is not treated as obfuscated.
 
 
@@ -155,7 +154,7 @@ The aim of Software Diversification is to lessen potential vulnerabilities by en
 
 
 Studies have demonstrated that Software Diversification effectively removes vulnerabilities. 
-Eichin \etal, in work in 1989, underscored the practical benefits of diversification \cite{36307}. 
+Eichin \etal underscored the practical benefits of diversification \cite{36307} early in 1989. 
 They illustrated how diversification limited the exploitation of the Morris Worm to a few machines. 
 From an attacker's perspective, the diversity of target systems rendered them unpredictable.
 For \Wasm, Software Diversification could bolster browsers and standalone engines by providing diversified program variants, making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
@@ -255,7 +254,7 @@ In \autoref{contrib_map} we map the contributions to our research papers.
 
 	\wrule{Summary:}  \Wasm, while enhancing rich applications in browsers, also proves efficient in developing cryptojacking malware. 
 	Protective measures against cryptomalware have not factored in the potential use of evasion techniques by attackers. 
-	This paper delves into the potential of automatic binary diversification in aiming WebAssembly cryptojacking detectors' evasion. 
+	This paper delves into the potential of automatic binary diversification in aiming \Wasm cryptojacking detectors' evasion. 
 	We provide proof that our diversification tools can generate variants of WebAssembly cryptojacking that successfully evade VirusTotal and MINOS. 
 	We further demonstrate that these generated variants introduce minimal performance overhead, thus verifying binary diversification as an effective evasion technique.
 

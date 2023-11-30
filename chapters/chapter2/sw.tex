@@ -11,7 +11,7 @@ Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite
 
 
 
-Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from dependencies (coarce-grained) to machine code levels (fine-grained).
+Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from dependencies (coarse-grained) to machine code levels (fine-grained).
 The main goal of Software Diversification is to increase the cost of exploitation by making software less predictable. 
 Diversification may be natural \cite{natural_diversity} or automatic \cite{offensive_div}. 
 Natural diversity refers to the side effect of humans creating software variants using different programming languages, compilers, and operating systems \cite{natural_diversity}, all of which adhere to the initial requirements. 
@@ -70,7 +70,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     In their approach, each de-inlined code transforms into semantically equivalent functions that are randomly selected at runtime to replace the original code calculation. 
     On the same topic, Bhatkar \etal \cite{bhatkar2005efficient} extended their previous approach \cite{bhatkar03}, replacing function calls with indirect pointer calls in C source code, allowing post-binary reordering of function calls. 
     In the \Wasm context, the most analogous work is wobfuscator \cite{wobfuscator}.
-    Wobfuscator, a JavaScript obfuscator, substitutes JavaScript code with \Wasm code, e.g., numeric calcula.
+    Wobfuscator, a JavaScript obfuscator, substitutes JavaScript code with \Wasm code, e.g., numeric calculi.
     This strategy effectively uses the interleaving of calls between JavaScript and \Wasm to provide JavaScript variants.
 \end{strategy}
 
@@ -93,7 +93,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
 \begin{strategy}[ISA Randomization and Simulation]
     \label{isa_rand}
 
-    This strategy involves using a key to cypher the original program binary into another encoded binary. 
+    This strategy involves using a key to cipher the original program binary into another encoded binary. 
     Once encoded, the program can only be decoded at the target client, or it can be interpreted in the encoded form using a custom virtual machine implementation. 
     This technique is strong against attacks involving code inspection. 
     Kc \etal \cite{Kc03}, and Barrantes \etal \cite{barrantes2003randomized} proposed seminal works on instruction-set randomization 
@@ -117,18 +117,6 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
 
 
 
-%% BREWasm
-%BREWasm \cite{rewritingtool2023} offers a comprehensive static binary rewriting framework for \Wasm and can be considered to be the most similar to \tool. 
-%For instance, it can be used to model a diversification engine.
-%It parses a Wasm binary into objects, rewrites them using fine-grained APIs, integrates these APIs to provide high-level ones, and re-encodes the updated objects back into a valid Wasm binary. 
-%The effectiveness and efficiency of BREWasm have been demonstrated through various Wasm applications and case studies on code obfuscation, software testing, program repair, and software optimization. 
-%\todo{I do not understand the following 2 sentences. What are the main differences between \tool and BREWasm? in their input? in their output? in their purpose? in their technical approach? }
-%The implementation of BREWasm follows a completely different technical approach.
-%In comparison with our work, the authors pointed out that our tool employs lazy parsing of Wasm. 
-%\todo{not clear: did the authors of brewasm mention something about our tool? is brewasm evaluated against security cases?}
-%Although they perceived this as a limitation, it is eagerly implemented to accelerate the generation of \wasm binaries.
-%Additionally, our tool leverages the parser and encoder of wasmtime, a standalone compiler and interpreter for Wasm, thereby boosting its reliability and lowering its error-prone nature.
-
 \begin{strategy}[Enumerative synthesis]
     \label{enumerative_synthesis}
     Enumerative synthesis is a fully automated and systematic approach to generate program variants.
@@ -136,7 +124,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     The process of enumerative synthesis commences with a piece of input program, typically a basic block.
     Incrementally, using a defined grammar, it generates all programs of size $n$.
     A generated program is then checked for equivalence to the original program, either by using a test suite or a theorem solver.
-    If the generated variant is proved, it is added to the variant's collection.
+    If the generated variant is proven, it is added to the variant's collection.
     The procedure continues until all potential programs have been explored.
     This approach proves especially effective when the solution space is relatively small or can be navigated efficiently.
     Jacob and colleagues \cite{jacob2008superdiversifier} implemented this strategy for x86 programs.
@@ -190,7 +178,7 @@ We outline three methods to check variant equivalence: by construction, check mo
 
 \begin{checking}[Formal checking]
     \label{check_by_smt}
-    In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove equivalence of program variants. 
+    In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove the equivalence of program variants. 
     The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
     The SMT solver then checks for counter-examples \cite{kesseli2018counterexample}. 
     When it finds a counter-example, there is an input for which the two mathematical formulas yield different outputs. 
@@ -227,7 +215,7 @@ Program variants, once generated and verified, may be used in two primary scenar
     Then, the multivariant binary executes its embedded program variants at runtime. 
     These embedded variants can either execute in parallel to check for inconsistencies, or as a single program to randomize execution paths \cite{bhatkar03}. 
     Bruschi and colleagues extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
-    At the same time, Salamat \etal modifies a standard library to generate 32-bit Intel variants. 
+    At the same time, Salamat \etal modify a standard library to generate 32-bit Intel variants. 
     These variants have a stack that grows in the opposite direction, allowing for the detection of memory inconsistencies \cite{salamat2007stopping}. 
     Davi and colleagues propose Isomeron, an approach for execution-path randomization \cite{davi2015isomeron}. 
     Isomeron operates by simultaneously loading the original program and a variant. 
@@ -248,7 +236,7 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
 
 \begin{strategy}[Static comparison of variants]
     \label{static_based}
-    Static metrics are used to measure diversity of programs without needing execution. 
+    Static metrics are used to measure the diversity of programs without needing execution. 
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
     Usually, comparing variants means defining a distance metric between programs \cite{10.1145/2814270.2814319}. 
     At the low-level of bytecode instructions, for example, these metrics include Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
@@ -268,7 +256,6 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     While static differences are observable, runtime information holds complementary relevance \cite{yao2018anomaly}. 
     Therefore, dynamic metrics are essential to assess the diversity of variants. 
     For instance, Forrest \etal \cite{forrest_system_call} were pioneers in classifying program behaviors by analyzing their system call traces using n-grams profiling. 
-    %Koopman and DeVale compare 13 POSIX operating system implementations \cite{comparing_unix} through observing system call traces, demonstrating that by combining them, the failure rate diminishes.
     Cabrera \etal used a global alignments approach to gauge the diversity of JavaScript bytecode traces within the Chrome browser \cite{STRAC}. 
     Fang \etal proposed a method to counteract JavaScript obfuscation techniques used in malicious code, by analyzing dynamic information captured from V8 bytecode traces \cite{8482113}. 
     Dynamic metrics are primarily employed to cluster similar behaviors.
@@ -318,7 +305,7 @@ These methods aim to thwart static malware detectors, yet, more advanced techniq
 The term Offensive Software Diversification may seem counterintuitive.
 Yet, such approaches measure the resilience and accuracy of security systems. 
 This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
-Specifically, only Bhansali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
+Specifically, only Bhansali \etal seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
 More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to achieve malware evasion, but this approach is limited to altering only the code section of \Wasm binaries.
 
 
@@ -340,14 +327,4 @@ Web browsers and FaaS platforms serve as prime examples.
 In these environments, \Wasm binaries are served millions of times simultaneously to the former, while new \Wasm binaries are cold-spawned and executed upon each user request in the latter. 
 Thus, designing practical Software Diversification for \Wasm requires careful consideration of the deployment environment. 
 Last but not least, research on malware detection, as discussed in \autoref{background:wasm:analysis}, suggests that offensive diversification may assist in evaluating the resilience and accuracy of \Wasm's security systems.
-
-
-
-
-
-% Besides, the process of diversifying a \Wasm program can be conceptualized as a three-stage procedure: parsing the program, transforming it, and finally re-encoding it back into \wasm. 
-%Our review of the literature has revealed several studies that have employed parsing and encoding components for \wasm binaries across various domains as discussed in \autoref{background:wasm:analysis}. 
-%This indicates that these works accept a \wasm binary as an input and output a unique \wasm binary. 
-%When the transformation stage introduces randomized mutations to the original program, the aforementioned tools could potentially be built as diversifiers.
-%However, we have not found any work that evaluates the impact of such tools as diversifiers.
 

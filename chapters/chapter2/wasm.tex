@@ -1,14 +1,5 @@
 \msection{\Wasm}
 \label{sota:wasm}
-%% For the intro
- % In 2014, Alon Zakai and colleagues proposed Emscripten \cite{emscripten}. 
-% Emscripten used a strict subset of JavaScript, asm.js, to allow low-level code such as C to be compiled to JavaScript. 
-% Asm.js was faster than JavaScript because it limited the language features to those that can be optimized in the LLVM pipeline. 
-% Notably, Asm.js demonstrated that client-code could be improved with the right language design and standardization.
-% Wasm marked the breaking point of several failed attempts of porting code but JavaScript to the web browser \cite{javaapplet,activex,silverlight}.
-% Previous alternatives largely failed to gain traction, primarily due to security concerns and a lack of consensus among browser vendors.
-% The announcement of \wasm\ marked the first step into the standardization of bytecode in the web environment. 
-
 % History
 The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported by all major web browser vendors.
 \Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
@@ -26,7 +17,7 @@ Therefore, it standardizes the adoption of \Wasm\ in heterogeneous platforms \ci
 Currently, \Wasm serves a variety of functions in browsers, ranging from gaming to cryptomining \cite{Hilbig2021AnES}. 
 Other applications include text processing, visualization, media processing, programming language testing, online gambling, bar code and QR code fast reading, hashing, and PDF viewing. 
 On the backend, \Wasm notably excels in short-running tasks. 
-As such, it is particularly suitable for Function as a Service (FaaS) platforms like Cloudflare and Fastly.
+As such, it is particularly suitable for Function-as-a-Service (FaaS) platforms like Cloudflare and Fastly.
 The subsequent text in this chapter focuses specifically on \Wasm version 1.0. 
 However, the tools, techniques, and methodologies discussed are applicable to future \Wasm versions.
 
@@ -47,7 +38,7 @@ The \texttt{fibonacci} function, spanning lines 7 to 20 in \autoref{CExample1}, 
 For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
 The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
 In this scenario, the function yields the final set value in the \texttt{local} variable. 
-Note that for optimization purposes, the loop concludes by returning the result value, instead of returning post completion of the loop.
+Note that for optimization purposes, the loop concludes by returning the result value, instead of returning post-completion of the loop.
 
 
 \begin{minipage}[h]{0.9\textwidth}
@@ -123,7 +114,7 @@ Consequently, Wasm binaries are not only fast to validate and compile, but also 
 
 The \Wasm's runtime characterizes the behavior of \Wasm programs during execution. 
 This section describes the main components of the \Wasm runtime, namely the execution stack, functions, memory model, and execution process. 
-These components are crucial for understanding both the \Wasm's control-flow and the analysis of \Wasm binaries.
+These components are crucial for understanding both the \Wasm's control flow and the analysis of \Wasm binaries.
 
 
 \wrule{Execution Stack:} At runtime, \Wasm engines instantiate a \Wasm module. 
@@ -141,10 +132,10 @@ Instead, these types are abstracted into primitive types during compilation and 
 \wrule{Functions:} At runtime, \Wasm functions are closures over the module instance, grouping locals and function bodies.
 Locals are typed variables that are local to a specific function invocation.
 A function body is a sequence of instructions that are executed when the function is called.
-Each instruction either reads from the execution stack, writes to the execution stack, or modifies the control-flow of the function.
+Each instruction either reads from the execution stack, writes to the execution stack, or modifies the control flow of the function.
 Recalling the example \Wasm binary previously showed, the local variable declarations and typed instructions that are evaluated using the stack can be appreciated between Line 12 and Line 38 in \autoref{WASMExample}. 
 Each instruction reads its operands from the stack and pushes back the result. 
-Notice that, numeric instructions are annotated with its corresponding type.
+Notice that, numeric instructions are annotated with their corresponding type.
 In the case of \autoref{WASMExample}, the result value of the main function is the calculation of the last instruction, \texttt{i32.add} in line 38. 
 As the listing also shows, instructions are annotated with a numeric type.
 

@@ -9,3 +9,5 @@ non-necesarilly
 multivariant
 coarce-grained
 canonicalization
+cryptomalware
+superdiversification
