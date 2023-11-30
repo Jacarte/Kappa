@@ -22,7 +22,7 @@
             position: absolute;
             z-index: 1000;
             opacity: 0;
-            width: 500px;
+            width: 100px;
             word-wrap: break-word;
             padding: 0;
             margin: 0; 
@@ -30,21 +30,17 @@
             height: 20px !important;
         }
         .warning.ai-replace {
-            background: rgba(255, 255, 120, 0.5) !important;
-            padding: 0;
-            margin: 0;
-            height: unset !important;
-            max-height: 500px;
+            background: rgba(255, 255, 120, 0.8) !important;
         }
         .warning.ai-remove {
             background: rgba(255, 120, 255, 0.5)!important;
-            padding: 0;
-            margin: 0;
-            height: unset !important;
-            max-height: 500px;
+        }
+        .warning.ai-insert {
+            background: rgba(120, 255, 120, 0.5)!important;
         }
         .warning:hover {
             opacity: 1;
+            width: 600px;
             background: rgba(125, 255, 255, 0.8);
             padding: 0;
             margin: 0;
@@ -64,6 +60,9 @@
         }
         .high.ai-replace {
             border: 3px solid yellowgreen !important;
+        }
+        .high.ai-insert {
+            border: 3px solid orange !important;
         }
         .high:hover {
             position: absolute;
@@ -120,7 +119,10 @@
                                 <p>{{ match.message }}
                                 </p>
                                 </hr>
-                                
+                                <h4>Happy suggestion</h4>
+                                <p>{{ match.happy }}
+                                </p>
+                                </hr>
                                 <p>{{ match.text }}</p>
                                 
 

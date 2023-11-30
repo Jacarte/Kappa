@@ -13,7 +13,7 @@ import language_tool_python
 tool = language_tool_python.LanguageTool('en-UK', config={ 'cacheSize': 1000, 'pipelineCaching': True })
 
 model = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
-beam_settings =  TTSettings(num_beams=5, min_length=1, max_length=100000)
+beam_settings =  TTSettings(num_beams=5, min_length=1, max_length=10000000)
 
 OUT = os.path.abspath(os.path.dirname(__file__))
 
@@ -89,7 +89,7 @@ def get_levensthein_edit_path(original, corrected):
     edit_path = get_edit_path(distances, tokens_original, tokens_corrected)
     
     return edit_path
-    
+
 
 def get_by_template(imagefile, templatefile, th=0.6):
     img_rgb = cv2.imread(imagefile)
@@ -270,18 +270,25 @@ def get_terms(text):
     
 def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, words2ignore = []):
 
-    grammar = f"grammar: {text}"
-    happy_suggestions = model.generate_text(grammar, beam_settings)
-    happy_suggestions = happy_suggestions.text
-    edit_distance = get_levensthein_edit_path(text, happy_suggestions)
+    # TODO split the text by lines
+    lines = text.split("\n")
+
+    suggested = ""
+    for l in lines:
+
+        grammar = f"grammar: {l}"
+        happy_suggestions = model.generate_text(grammar, beam_settings)
+        happy_suggestions = happy_suggestions.text
+       
+        suggested += happy_suggestions + "\n"
+
+    edit_distance = get_levensthein_edit_path(text, suggested)
     print(edit_distance)
     print("=====================================")
-    print(happy_suggestions)
+    print(suggested)
     print("-------------------------------------")
     print(text)
     print("=====================================")
-
-
     boxes = len(tesseractdata['level'])
     obs = []
     hashes = set()
@@ -290,9 +297,9 @@ def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, wor
 
         for original, i, corrected in edit_distance:
             obj = dict(
-                        # Unique id
-                        matches = []
-                        )
+                    # Unique id
+                    matches = []
+                )
         
             tpe="replace"
             category = "ai-replace"
@@ -301,18 +308,23 @@ def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, wor
                 tpe = "delete"
                 category = "ai-remove"
                 replacements = []
+            if original == "":
+                tpe = "insert"
+                category = "ai-insert"
+                replacements = [corrected]
 
             chunk = original
             if chunk.lower() not in words2ignore:
                 obj['matches'].append(dict(
-                    message=f"{tpe} {original}",
+                    message=f"{tpe} {original} by {corrected}",
                     replacements=replacements,
                     ruleId="AI",
                     offsetInContext=text.index(original),
                     category=category,
-                    offset=text.index(original),
+                    offset=0,
                     errorLength=len(original),
-                    text=text
+                    text=text,
+                    happy=suggested
                 ))
                 obj['places'] = []
                 globalx, globaly, _, _ = rect
@@ -321,7 +333,6 @@ def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, wor
                 scores = []
                 for i in range(boxes):
                     texti = tesseractdata['text'][i]
-                    print(texti, chunk)
                     score = get_score(texti, chunk)
                     scores.append((score, i, tesseractdata['width'][i], tesseractdata['height'][i]))
 
@@ -333,12 +344,6 @@ def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, wor
 
                 # Draw all rectangles with the same score
                 for sc, i, w, h in scores:
-                    if w < 80:
-                        continue
-                    if h < 10:
-                        continue
-                    if sc != scores[0][0]:
-                        break
                     x, y, w, h = tesseractdata['left'][i], tesseractdata['top'][i], tesseractdata['width'][i], tesseractdata['height'][i]
                     cv2.rectangle(imagedata, (x + globalx - margin, y + globaly - margin), (x + w  + globalx + margin, y + h + globaly + margin), (255,36,12), 2)
 
@@ -461,6 +466,7 @@ def process_pdf(pdffile, ignore):
 
     STEP=5
     DPI=250
+    TEXT_CACHE = set()
     for page in range(1, maxPages+1, STEP):
         print("Processing pages", page, min(page + STEP - 1, maxPages))
         images = convert_from_path(pdffile, dpi=DPI, first_page=page, last_page=min(page + STEP - 1, maxPages))
@@ -481,7 +487,7 @@ def process_pdf(pdffile, ignore):
                 imagedata = cv2.imread(name)
 
                 # Detect missing references
-
+                ROI_COUNT = 0
                 for roi, s, rect in squares:
                     # Comment this, it is debugging
                     data = pytesseract.image_to_data(roi,output_type='dict')#, config=custom_config)
@@ -506,9 +512,17 @@ def process_pdf(pdffile, ignore):
                     text = text.replace(" .", ".")
                     text = text.replace("- ", "-")
                     text = text.replace(" )", ")")
+                    text = text.replace(" ]", "]")
+                    text = text.replace(" }", "}")
                     text = text.replace("( ", "(")
                     text = text.replace("https: ", "https:")
                     text = text.strip()
+
+                    if text in TEXT_CACHE:
+                        print("Text already in cache")
+                        continue
+
+                    TEXT_CACHE.add(text)
                     
                         
                     # Call language tool or any other
@@ -525,7 +539,8 @@ def process_pdf(pdffile, ignore):
                     REPORTPAGE += obs_ai
                     REPORTPAGE += obs
                     print("Report count", len(REPORTPAGE))
-                    
+                    ROI_COUNT += 1
+
 
                 if len(REPORTPAGE) > 0:
                     cv2.imwrite(f"{OUT}/rois/annotated_{pagen}.png", imagedata)
