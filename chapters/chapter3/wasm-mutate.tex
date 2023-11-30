@@ -17,7 +17,7 @@ In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tool
 
 \autoref{fig:wasm-mutate} illustrates the workflow of \tool, which initiates with a WebAssembly binary as its input. 
 The first step involves parsing this binary to create suitable abstractions, e.g. an intermediate representation.
-Subsequently, \tool utilizes predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
+Subsequently, \tool uses predefined rewriting rules to construct an e-graph for the initial program, encapsulating all potential equivalent codes derived from the rewriting rules. 
 The assurance of functional equivalence is rooted in the inherent properties of the individual rewrite rules employed.
 Then, pieces of the original program are randomly substituted by the result of random e-graph traversals, resulting in a variant that maintains functional equivalence to the original binary. 
 
@@ -49,7 +49,7 @@ When converting back to the \Wasm binary format from the intermediate representa
 % Remarkably, custom operators highlight the versatility of \tool as a general-purpose binary rewriting engine.
 
 
-In the following example, we demonstrate a rewriting rule within the \texttt{Peephole} meta-rule that utilizes a custom \texttt{rand} operator to expand statically declared constants within any \Wasm program function body. 
+In the following example, we demonstrate a rewriting rule within the \texttt{Peephole} meta-rule that uses a custom \texttt{rand} operator to expand statically declared constants within any \Wasm program function body. 
 The unfolding rewriting rule, as the name suggests, transforms statically declared constants into the sum of two random numbers.
 During the generation of the \Wasm variant, the custom \texttt{rand} operator is substituted with a randomly chosen static constant.
 Notice that the condition specified in the last part of the rewriting rule ensures that this predicate is satisfied. 
