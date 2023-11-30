@@ -38,7 +38,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
 
 \begin{strategy}[Rewriting strategy]
     \label{rewriting_strategy}
-    The automatic creation of Software Diversification commences with rewriting rules.
+    The automatic creation of Software Diversification begins with creating rewriting rules.
     A rewriting rule refers to a functionally equivalent substitution for a code segment, manually written. 
     These rules can be applied at varying levels, from coarse to fine-grained. 
     This can range from the program dependencies level \cite{Harrand1650630} to the instruction level \cite{offensive_div}. 
@@ -202,7 +202,7 @@ We outline three methods to check variant equivalence: by construction, check mo
 
 \msubsection{Variants deployment}
 \label{deployment}
-Program variants, once generated and verified, may be utilized in two primary scenarios: Randomization or Multivariant Execution (MVE) \cite{jackson}. 
+Program variants, once generated and verified, may be used in two primary scenarios: Randomization or Multivariant Execution (MVE) \cite{jackson}. 
 
 
 \begin{strategy}[Randomization]
@@ -243,7 +243,7 @@ Program variants, once generated and verified, may be utilized in two primary sc
 Measuring Software Diversification presents a significant challenge. 
 The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks by making systems less predictable \cite{cohen1993operating}. 
 Ideally, real scenarios would provide the most accurate measurement of diversification, e.g., demonstrating a variant's effectiveness under specific attacks. 
-However, such an approach is not always feasible, e.g., as previously discussed, Software Diversification is a preemptive strategy. 
+However, such an approach is not always feasible, i.e., Software Diversification is a preventive strategy. 
 Hence, a combination of static and dynamic metrics is required for measuring Software Diversification.
 
 \begin{strategy}[Static comparison of variants]
@@ -269,7 +269,7 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     Therefore, dynamic metrics are essential to assess the diversity of variants. 
     For instance, Forrest \etal \cite{forrest_system_call} were pioneers in classifying program behaviors by analyzing their system call traces using n-grams profiling. 
     %Koopman and DeVale compare 13 POSIX operating system implementations \cite{comparing_unix} through observing system call traces, demonstrating that by combining them, the failure rate diminishes.
-    Cabrera \etal utilized a global alignments approach to gauge the diversity of JavaScript bytecode traces within the Chrome browser \cite{STRAC}. 
+    Cabrera \etal used a global alignments approach to gauge the diversity of JavaScript bytecode traces within the Chrome browser \cite{STRAC}. 
     Fang \etal proposed a method to counteract JavaScript obfuscation techniques used in malicious code, by analyzing dynamic information captured from V8 bytecode traces \cite{8482113}. 
     Dynamic metrics are primarily employed to cluster similar behaviors.
     Following the same logic, the diversity is greater when the difference between behaviors is larger. 
@@ -311,11 +311,11 @@ Malicious actors may employ previously discussed diversification strategies to e
 For instance, in the Web context, Weihang \etal propose to randomly transform HTML elements of web pages to evade advertisement blockers \cite{webranz}.
 Over time, evasion techniques have evolved in both complexity and sophistication \cite{Aghakhani2020WhenMI}.
 Chua \etal \cite{chua}, for instance, suggested a framework for automatically obfuscating the source code of Android applications using method overloading, opaque predicates, try-catch, and switch statement obfuscation, resulting in multiple versions of identical malware.
-Moreover, machine learning approaches have been utilized to develop evasive malware \cite{2021arXiv211111487D}, drawing on a corpus of pre-existing malware \cite{Bostani2021EvadeDroidAP}.
+Moreover, machine learning approaches have been used to develop evasive malware \cite{2021arXiv211111487D}, drawing on a corpus of pre-existing malware \cite{Bostani2021EvadeDroidAP}.
 These methods aim to thwart static malware detectors, yet, more advanced techniques focus on evading dynamic detection mostly by employing throttling \cite{Lu2013WeaknessesID, payer2014embracing}.
 
 
-The term Offensive Software Diversification may appear counterintuitive.
+The term Offensive Software Diversification may seem counterintuitive.
 Yet, such approaches measure the resilience and accuracy of security systems. 
 This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
 Specifically, only Bhansali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 

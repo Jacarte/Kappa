@@ -27,7 +27,7 @@ We have observed several interesting phenomena when aggregating the empirical da
 This can be appreciated in the fourth, fifth and sixth columns of \autoref{comp:table:tools}.
 We have observed that WASM-MUTATE generates more unique variants in one hour than CROW and MEWE in at least one order of magnitude.
 This is mainly because of three reasons.
-First, CROW and MEWE rely on SMT solvers to prove functionally equivalence, placing a bottleneck when generating variants.
+First, CROW and MEWE rely on SMT solvers to prove functional equivalence, placing a bottleneck when generating variants.
 Second, CROW and MEWE generation capabilities are limited by the \emph{overlapping} phenomenon discussed in \autoref{section:crow:example}.
 Third, WASM-MUTATE can generate variants in any part of the \wasm binary, while CROW and MEWE are limited to the code and function sections.
 

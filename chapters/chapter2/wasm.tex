@@ -10,7 +10,7 @@
 % The announcement of \wasm\ marked the first step into the standardization of bytecode in the web environment. 
 
 % History
-The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported in all major web browser vendors.
+The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported by all major web browser vendors.
 \Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
 It is designed to be fast, portable, self-contained, and secure.
 
@@ -71,7 +71,7 @@ Note that for optimization purposes, the loop concludes by returning the result 
 
 
 
-There exist several compilers that turn source code into \Wasm binaries. 
+There are several compilers that turn source code into \Wasm binaries. 
 For example, LLVM compiles to \Wasm as a backend option since its 7.1.0 release in early 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
 The main advantage of using LLVM is that it provides a modular and state-of-the-art optimization infrastructure for \Wasm binaries.
@@ -219,7 +219,7 @@ CFI is a security mechanism that limits a program's control flow to a specified 
 Thus, even when a \Wasm program originates from potentially untrustworthy sources, CFI policy theoretically guarantees the prevention of arbitrary jumps to random code locations.
 
 
-\msubsection{Security and Reliability for WebAssembly}
+\msubsection{Security and reliability for WebAssembly}
 \label{background:wasm:analysis}
 
 The WebAssembly ecosystem's expansion needs robust tools to ensure its security and reliability. 
@@ -249,7 +249,7 @@ Thus, facing an important limitation on overhead for real-world scenarios.
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
 The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
-However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and hardening the security of the entire execution runtimes ecosystem. 
+However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, protecting the security of the entire execution runtimes ecosystem. 
 For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries in Function-as-a-Service (FaaS) platforms. 
 Similarly, Kolosick and colleagues \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating the performance overhead of SFI guarantees implementation.
 In addition, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 

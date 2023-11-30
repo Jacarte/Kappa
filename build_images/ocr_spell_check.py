@@ -316,7 +316,7 @@ def ai_spell_check(ID, text, imagedata,pagen, tesseractdata, rect, relative, wor
             chunk = original
             if chunk.lower() not in words2ignore:
                 obj['matches'].append(dict(
-                    message=f"{tpe} {original} by {corrected}",
+                    message=f"{tpe} '{original}' by '{corrected}'",
                     replacements=replacements,
                     ruleId="AI",
                     offsetInContext=text.index(original),

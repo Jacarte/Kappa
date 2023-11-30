@@ -2,7 +2,7 @@
 \msection{\tool: Fast and Effective Binary Diversification for WebAssembly}
 \label{tech::wasmmutate}
 
-In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out from a WebAssembly binary input. 
+In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
 Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
@@ -57,7 +57,7 @@ Notice that the condition specified in the last part of the rewriting rule ensur
 
 \input{snippets/snippets-wasm-mutate/structure_transform/container.tex}
 
-Although this rewriting approach may appear simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
+Although this rewriting approach may seem simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses on the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
 Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
 The unfolding rewriting rule indirectly stresses this segment of memory. 
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.
@@ -79,7 +79,7 @@ In \too omitting the cost function from the extraction strategy leads us to a si
 We exploit such property to fastly generate diverse \Wasm variants.
 We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield functionally equivalent program variants, as detailed in \autoref{peephole:mutator}. 
 This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
-Within the algorithm, a random e-node is chosen from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
+Within the algorithm, a random e-node is selected from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
 Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line 3). 
 Following this, the subexpressions are built (line 10) for each child node, culminating in the return of the complete expression (line 11).
 
@@ -141,7 +141,7 @@ In the figure, we highlight various stages of Algorithm \ref{peephole:mutator} i
 The algorithm initiates at the e-class with the instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
 At \step{2}, it randomly selects an equivalent node within the e-class, in this instance taking the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
 As the traversal advances, it follows on the left operand of the previously chosen node, settling on the \texttt{i64.const 0} node within the same e-class \step{3}.
-Then, the right operand of the \texttt{i64.add} node is choosen, selecting the \texttt{container} \step{4} operator yielding:
+Then, the right operand of the \texttt{i64.add} node is selected, selecting the \texttt{container} \step{4} operator yielding:
 {\texttt{expr = i64.or (i64.const 0 container ( r nop ))}}.
 The algorithm chooses the right operand of the \texttt{container} \step{5}, which correlates to the initial instruction e-node highlighted in \step{6}, culminating in the final expression:
 {\texttt{expr = i64.or (i64.const 0 container( i64.const 1 nop))\ i64.const 1}}.

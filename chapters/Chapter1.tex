@@ -45,7 +45,7 @@ As a result, WebAssembly bytecode became the fourth official language for the we
 The first distinction from earlier attempts to port non-JavaScript languages to the web lies in \Wasm's initial design. 
 Unlike its predecessors, \Wasm was crafted to supplement JavaScript in the browser as a platform-agnostic, low-level bytecode, rather than to completely replace it. 
 Its primary goal was to replace computing-intensive JavaScript code in contemporary web applications. 
-Additionally, WebAssembly is the inaugural major language that utilized formal specification and verification right from the design inception \cite{Haas_2017, watt2018mechanising}. 
+Additionally, WebAssembly is the inaugural major language that used formal specification and verification right from the design inception \cite{Haas_2017, watt2018mechanising}. 
 
 
 Importantly, \Wasm provides a platform for compiling several legacy code applications, like those written in C/C++. 
@@ -79,7 +79,7 @@ However, it also gives rise to security concerns within the ecosystem, as new th
 
 \msection{Predictability in \Wasm ecosystems}
 Over the past three decades, web browsers and JavaScript have significant evolution, leading to myriad implementations. 
-However, only Firefox, Chrome, Safari, and Edge are typically utilized on devices. 
+However, only Firefox, Chrome, Safari, and Edge are typically used on devices. 
 Web page resources, including those containing WebAssembly binaries, are primarily served from centralized datacenters \cite{STRAC}. 
 This situation creates a highly predictable ecosystem, where potential attackers can predict ecosystem behavior, from the browser to the code it executes. 
 This predictability may be exploited to launch large-scale attacks, as predictability inherently increases the chances of successful attacks \cite{MTDNationalCyberLaep}. 
@@ -149,7 +149,7 @@ This dissertation introduces tools, strategies, and methodologies designed to ad
 Software Diversification is a security strategy that involves identifying, developing, and deploying program variants of a given original program \cite{okhravi2013survey}.
 Pioneers in this field, Cohen \etal \cite{cohen1993operating} and Forrest \etal \cite{595185}, proposed enhancing software diversity through code transformations. 
 Their proposal recommended the creation of diverse program variants, maintaining their original functionalities. 
-The aim of Software Diversification is to lessen potential vulnerabilities by enhancing their behaviour unpredictability.
+The aim of Software Diversification is to lessen potential vulnerabilities by enhancing their behavior unpredictability.
 
 
 
@@ -158,7 +158,7 @@ Studies have demonstrated that Software Diversification effectively removes vuln
 Eichin \etal, in work in 1989, underscored the practical benefits of diversification \cite{36307}. 
 They illustrated how diversification limited the exploitation of the Morris Worm to a few machines. 
 From an attacker's perspective, the diversity of target systems rendered them unpredictable.
-For \Wasm, Software Diversification could bolster browsers and standalone engines by providing diversified program variants, thereby making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
+For \Wasm, Software Diversification could bolster browsers and standalone engines by providing diversified program variants, making it harder for attackers to exploit vulnerabilities, addressing \ref{prob4}. 
 Furthermore, it could increase the accuracy of \Wasm malware detectors and \Wasm analysis tools in general, addressing \ref{prob5}. 
 However, the implementation of Software Diversification in \Wasm is still largely unexplored. 
 In light of this, we offer the following contributions within the context of Software Diversification, which are not necessarily mutually exclusive.
