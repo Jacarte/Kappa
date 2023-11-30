@@ -454,7 +454,7 @@ def process_pdf(pdffile, ignore):
     words2ignore = open(ignore, 'r').readlines()
     words2ignore = [l.lower().strip().replace("\n", "").replace("\\\\", "\\") for l in words2ignore]
     info = pdfinfo_from_path(pdffile, userpw=None, poppler_path=None)
-    maxPages = info["Pages"]
+    maxPages = info["Pages"]-15
 
     print("Pages", maxPages)
     pagen = 0
@@ -465,7 +465,7 @@ def process_pdf(pdffile, ignore):
     ID = 0
 
     STEP=5
-    DPI=250
+    DPI=300
     TEXT_CACHE = set()
     for page in range(1, maxPages+1, STEP):
         print("Processing pages", page, min(page + STEP - 1, maxPages))
@@ -562,3 +562,5 @@ def process_pdf(pdffile, ignore):
 
 if __name__ == '__main__':
     process_pdf(sys.argv[1], sys.argv[2])
+
+
