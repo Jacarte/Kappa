@@ -200,7 +200,7 @@ For example, if line 29 of \autoref{WASMExample} evaluates as false, the next in
 
 Each break instruction includes the depth of the enclosing block as an operand. 
 This depth is used to identify the target block for the break instruction. 
-For example, in the left-most part of the previously discussed listing, a break instruction with a depth of 1 would jump past two enclosing blocks.
+For example, in the leftmost part of the previously discussed listing, a break instruction with a depth of 1 would jump past two enclosing blocks.
 This design hardens the rewriting of \Wasm binaries.
 For instance, if an outer block is removed, the depth of the break instructions within nested blocks must be updated to reflect the new enclosing block depth.
 This is a significant challenge for rewriting tools, as it requires the analysis of the control-flow graph to determine the enclosing block depth for each break instruction.

@@ -119,11 +119,11 @@ define internal i32 @foo(i32 %0) {
     \end{minipage}%
     
     \noindent\rule{\linewidth}{0.4pt}
-    \captionof{lstlisting}{Dispatcher function embedded in the multivariant binary of the original function in the rightmost green node in \autoref{multivariant}. The code is commented for the sake of understanding. }\label{listing:multivariant_template}
+    \captionof{lstlisting}{Dispatcher function embedded in the multivariant binary of the original function in the rightmost green node in \autoref{multivariant}. The code is commented on for the sake of understanding. }\label{listing:multivariant_template}
 \end{minipage}
 \end{minipage}
 
-In  \autoref{listing:multivariant_template}, we illustrate the LLVM construction for the function dispatcher corresponding to the right most green node of \autoref{multivariant}.
+In  \autoref{listing:multivariant_template}, we illustrate the LLVM construction for the function dispatcher corresponding to the rightmost green node of \autoref{multivariant}.
 Notice that, the dispatcher function is constructed using the same signature as the original function. 
 It first calls the random generator, which returns a value used to invoke a specific function variant (see line 6 in \autoref{listing:multivariant_template}). 
 We utilize a switch-case structure in the dispatchers to prevent indirect calls, which are vulnerable to speculative execution-based attacks \cite{Narayan2021Swivel} (see lines 12 to 19 in \autoref{listing:multivariant_template}), i.e., the choice of a switch-case also avoids having multiple function definitions with the same signature, which could increase the attack surface in case the function signature is vulnerable \cite{johnson2021}.

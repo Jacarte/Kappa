@@ -11,3 +11,4 @@ coarce-grained
 canonicalization
 cryptomalware
 superdiversification
+wasmtime

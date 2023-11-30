@@ -6,7 +6,7 @@ In this section, we compare CROW, MEWE, and WASM-MUTATE, highlighting their key 
 These distinctions are summarized in \autoref{comp:table:tools}. 
 The table is organized into columns that represent attributes of each tool: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary for diversification, the strength of the generated variants, and the security applications of these variants. 
 Each row in the table corresponds to a specific tool. 
-The \emph{Variant strength} accounts for the capability of each tool on generating variants that are preserved after the JIT compilation of V8 and wasmtime in average.
+The \emph{Variant strength} accounts for the capability of each tool on generating variants that are preserved after the JIT compilation of V8 and wasmtime on average.
 For example, a higher value of the \emph{Variant strength} indicates that the generated variants are not reversed by JIT compilers, ensuring that the diversification is preserved in an end-to-end scenario of a \Wasm program, i.e. from the source code to its final execution.
 Notice that, the data and insights presented in the table are sourced from the respective papers of each tool and, from the previous discussion in this chapter.
 
@@ -62,7 +62,7 @@ High preservation is especially important where the preservation of the diversif
             WASM-MUTATE &  \textbf{Wasm binary} & hand-made rewriting rules, e-graph random traversals & \textbf{> 10k}  & \textbf{All \Wasm sections}  & 76\% & Hinders signature-based identification, and cache timing side-channel attacks. \\
             
         \end{tabular}
-        \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are: the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, the strength of the generated variants, and the security applications of these variants. 
+        \caption{Comparing CROW, MEWE and WASM-MUTATE. The table columns are the tool's name, input format, core diversification strategy, number of variants generated within an hour, targeted sections of the \Wasm binary, the strength of the generated variants, and the security applications of these variants. 
         The \emph{Variant strength} accounts for the capability of each tool on generating variants that are preserved after the JIT compilation of V8 and wasmtime in average.
         Our three technical contributions are complementary tools that can be combined.
         \label{comp:table:tools}}
