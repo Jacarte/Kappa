@@ -468,11 +468,11 @@ def process_pdf(pdffile, ignore):
 
     STEP=5
     DPI=300
-    TEXT_CACHE = set()
     for page in range(1, maxPages+1, STEP):
         print("Processing pages", page, min(page + STEP - 1, maxPages))
         images = convert_from_path(pdffile, dpi=DPI, first_page=page, last_page=min(page + STEP - 1, maxPages))
 
+        TEXT_CACHE = set()
         for image in images:
             try:
                 # Save temp
