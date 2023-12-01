@@ -33,7 +33,7 @@ In \autoref{CExample1} and \autoref{WASMExample}, we present a Rust program alon
 The Rust program in \autoref{CExample1} iteratively calculates the Fibonacci sequence up to a given number that comes from the host engine.
 The code in the program encompasses various elements such as vector allocations, external function usage, and a function definition that includes a loop, conditionals, function calls, and memory accesses.
 The Wasm code shown in \autoref{WASMExample} is simplified in its textual format, known as WAT\footnote{The WAT text format is primarily designed for human readability and for low-level manual editing.}.
-The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
+The function prototype in lines 4 and 5 of \autoref{CExample1} are converted into an imported function, as seen in lines 8 and 9 of \autoref{WASMExample}.
 The \texttt{fibonacci} function, spanning lines 7 to 20 in \autoref{CExample1}, is compiled into a Wasm function covering lines 14 to 31 in \autoref{WASMExample}. Within this function, the translation of various Rust language constructs into Wasm can be observed.
 For instance, the \texttt{for} loop found in line 14 of \autoref{CExample1} is mapped to a block structure in lines 17 to 31 of \autoref{WASMExample}. 
 The breaking condition of the loop is transformed into a conditional branch, as depicted in line 23 of \autoref{WASMExample}. 
@@ -240,7 +240,7 @@ Thus, facing an important limitation on overhead for real-world scenarios.
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
 The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
-However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, protecting the security of the entire execution runtimes ecosystem. 
+However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and protecting the security of the entire execution runtimes ecosystem. 
 For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries in Function-as-a-Service (FaaS) platforms. 
 Similarly, Kolosick and colleagues \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating the performance overhead of SFI guarantees implementation.
 In addition, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 

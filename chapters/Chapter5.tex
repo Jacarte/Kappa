@@ -25,7 +25,7 @@ Furthermore, this method can only modify the code and function sections of \Wasm
 On the other hand, the method based on binary uses random e-graph traversals to create variants. 
 This approach eliminates the need for modifications to existing compilers, ensuring compatibility with all existing \Wasm binaries. 
 Additionally, it offers a swift, efficient and novel method for generating variants through inexpensive random e-graph traversals. 
-Consequently, our binary-based approach can produce variants at a scale at least one order of magnitude larger than our compiler-based approach. 
+Consequently, our binary-based approach can produce variants at a scale of at least one order of magnitude larger than our compiler-based approach. 
 The binary-based method can generate variants by transforming any segment of the \wasm binary.
 However, the preservation of the generated variants is lower than the compiler-based approach.
 
@@ -66,7 +66,7 @@ In this work, we do not discuss this case in depth.
 Yet, we have empirically tested the effectiveness of moving target defense techniques \cite{jackson2011compiler}. 
 These tests were conducted on the Fastly edge computing platform.
 In this scenario, we incorporate multivariant executions\cite{MEWE}. 
-Fastly can redeploy a \Wasm binary across its 73 datacenters worldwide in 13 seconds on average. 
+Fastly can redeploy a \Wasm binary across its 73 data centers worldwide in 13 seconds on average. 
 This enables the practical deployment of a unique variant per node using our tools. 
 However, a 13-second window may still pose a risk despite each node potentially hosting a distinct \Wasm variant. 
 To mitigate this, one could use multivariant binaries, invoking a unique variant with each execution. 
@@ -98,7 +98,7 @@ Moreover, it might expose edge cases and rare conditions, thus enabling the deve
 In the case of malware evasion, this approach might harden the robustness of detection systems.
 Furthermore, this strategy might facilitate the identification and reduction of biases within \Wasm program datasets. 
 Finally, our tools provide comprehensive details on the variant generation process. 
-This allows to define and use more precise metrics between programs and variants to train a model for variant detection \cite{li2023rethinking}. 
+This allows us to define and use more precise metrics between programs and variants to train a model for variant detection \cite{li2023rethinking}. 
 For instance, with the e-graphs in WASM-MUTATE, we can easily establish a metric to measure the distance between two programs. 
 To sum up, we plan to harness our tools to enhance the training of models within the \Wasm ecosystem. 
 

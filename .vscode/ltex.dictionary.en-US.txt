@@ -12,3 +12,6 @@ canonicalization
 cryptomalware
 superdiversification
 wasmtime
+cryptomining
+entrypoint
+superoptimization
