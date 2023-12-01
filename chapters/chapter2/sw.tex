@@ -108,7 +108,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
 \begin{strategy}[Code obfuscation]
     \label{obfusscation}
     Code obfuscation can be seen as a simplification of \emph{ISA randomization}. 
-    The main difference between encoding and obfuscating code is that the former requires the final target to know the encoding key while the latter executes as is in any client. 
+    The main difference between encoding and obfuscating code is that the former requires the final target to know the encoding key while the latter executes as is in any client \cite{10.1145/3176258}. 
     Yet, both strategies aim to tackle static reverse engineering of programs.
     In the context of \Wasm, Romano \etal \cite{wobfuscator} proposed an obfuscation technique, wobfuscator, for JavaScript in which part of the code is replaced by calls to complementary \Wasm functions.
     Yet, wobfuscator targets JavaScript code, not \Wasm binaries.
@@ -240,8 +240,8 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     The fundamental concept entails comparing variant source codes or binary codes to determine how diverse they are. 
     Usually, comparing variants means defining a distance metric between programs \cite{10.1145/2814270.2814319}. 
     At the low-level of bytecode instructions, for example, these metrics include Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
-    On the other hand, at the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree}. 
-    Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
+    On the other hand, at the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree} or machine learning inference \cite{203634}. 
+    As an example of measuring the diversification, Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
     They categorize the space of Android applications into malware and goodware. 
     Then, they create malware variants by employing a static distance metric to approach the goodware group as closely as possible, thus successfully evading malware classifiers.
 \end{strategy}
