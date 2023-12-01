@@ -227,15 +227,13 @@ While these tools emphasize specific strategies, others adopt a more holistic ap
 For example, both Wassail\cite{wassail} and WasmA\cite{WasmA} provide a comprehensive static analysis framework for \Wasm binaries. 
 Yet, static analysis tools may have limitations. 
 For instance, a newly, semantically equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{wasmixer}.
-Thus, there may be a lack of subjects to evaluate the effectiveness of these tools.
 
 \wrule{Dynamic analysis:} Dynamic analysis involves tools such as TaintAssembly\cite{taintassembly}, which conducts taint analysis on \Wasm binaries. 
 Furthermore, Stiévenart and colleagues have developed a dynamic approach to slicing \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}.
 This technique aids in debugging, understanding programs, and conducting security analysis.
 However, Wasabi\cite{wasabi} remains the only general-purpose dynamic analysis tool for \Wasm binaries, primarily used for profiling, instrumenting, and debugging \Wasm code. 
-Similar to static analysis, these tools typically analyze software behavior during execution, making them inherently reactive. 
+These tools typically analyze software behavior during execution, making them inherently reactive. 
 In other words, they can only identify vulnerabilities or performance issues while pseudo-executing input \Wasm programs.
-Thus, facing an important limitation on overhead for real-world scenarios. 
 
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
