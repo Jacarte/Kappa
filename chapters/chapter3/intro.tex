@@ -11,8 +11,8 @@ This architecture is illustrated in the leftmost part of \autoref{fig:approach_l
 \end{figure}
 
 Software Diversification can be integrated at various stages of this compilation process. 
-However, applying diversification at the frontend has its limitations, as it would need a unique diversification mechanism for each language compatible with the frontend component. 
-Conversely, diversification at later compiler stages, such as the optimizer or backend, offers a more practical alternative.
+However, applying diversification at the frontend has limitations, as it would need a unique diversification mechanism for each language compatible with the frontend component. 
+Diversification at later compiler stages, such as the optimizer or backend, offers a more practical alternative.
 This makes the latter stages of the compilers an ideal point for introducing practical \wasm diversification techniques.
 Our compiler-based strategies, represented in red and green in \autoref{fig:approach_landscape}, introduce a diversifier component into the optimizer/transformer and backend stages. 
 This optimization/transformer component generates variants in the intermediate representation of a compiler, thereby creating artificial software diversity for \Wasm. 
