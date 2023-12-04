@@ -2,7 +2,7 @@
 \label{sota:wasm}
 % History
 The W3C publicly announced the \Wasm(Wasm) language in 2017 as the fourth scripting language supported by all major web browser vendors.
-\Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017} in 2017 and extended by Rossberg \etal in 2018 \cite{10.1145/3282510}. 
+\Wasm\ is a binary instruction format for a stack-based virtual machine and was officially consolidated by the work of Haas \etal \cite{Haas_2017}. 
 It is designed to be fast, portable, self-contained, and secure.
 
 
@@ -67,6 +67,7 @@ For example, LLVM compiles to \Wasm as a backend option since its 7.1.0 release 
 Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
 The main advantage of using LLVM is that it provides a modular and state-of-the-art optimization infrastructure for \Wasm binaries.
 Recently, the Kotlin Multiplatform framework \toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, enabling the compilation of Kotlin code to \Wasm.
+Similarly, the Cheerp project initiative proposes a JVM fully ported to \Wasm, supporting Java applications and legacy applets in the browser \toolcite{https://labs.leaningtech.com/blog/cheerpj-3-deep-dive}. 
 
 \pagebreak
 \input{chapters/chapter2/wasm_example}
@@ -238,11 +239,11 @@ In other words, they can only identify vulnerabilities or performance issues whi
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
 The techniques discussed previously are primarily focused on reactive analysis of \Wasm binaries.
-However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and protecting the security of the entire execution runtimes ecosystem. 
-For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries in Function-as-a-Service (FaaS) platforms. 
+However, there exist approaches to harden \Wasm binaries, enhancing their secure execution, and therefore protecting the security of the entire execution ecosystem. 
+For instance, Swivel\cite{Swivel} proposes a compiler-based strategy designed to eliminate speculative attacks on \Wasm binaries in Function-as-a-Service (FaaS) platforms by linearizing the machine code from compiling a \Wasm binary. 
 Similarly, Kolosick and colleagues \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating the performance overhead of SFI guarantees implementation.
 In addition, WaVe\cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 
-WaVe can be employed to detect anomalies in engines running Wasm-WASI programs. 
+WaVe can be employed to detect anomalies in engine implementations running Wasm-WASI programs. 
 Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
 
 
