@@ -141,7 +141,7 @@ This procedure entails systematic alterations to the original program.
 The objective is to ensure that each software copy is distinctive from all others. 
 Contrary to randomization, oneshot diversification usually happens during the software's distribution or installation phase. 
 The term "oneshot" describes the diversification's static nature following its one-time implementation per installation.
-Once used, the diversified program is never used again. 
+Once used, the diversified program is discarded. 
 In summary, oneshot diversification bolsters security and heightens reliability by diminishing the predictability of software.
 We therefore plan to investigate the feasibility of one-shot diversification in \Wasm. 
 However, we foresee several challenges, particularly the optimization of our previously presented tools.
@@ -149,7 +149,7 @@ However, we foresee several challenges, particularly the optimization of our pre
 
 In the context of \Wasm, this process presents particularly challenging aspects since it is highly dynamic.
 For instance, within a browser context, we need to ensure the \Wasm binary varies not only per browser instance but also per tab process (webpage tab).
-In the backend, we must guarantee that the \Wasm binary is unique per server instance and per request \cite{Sledge, Swivel, 10.1145/3572848.3577436}.
+In the backend, we must guarantee that the \Wasm binary is unique per cold spawn \cite{Sledge, Swivel}.
 Hence, it becomes necessary to ensure that the diversification process is both rapid and efficient, capable of generating a vast number of variants within a brief timespan.
 Specifically, this entails producing millions of unique and diverse variants every second.
 
