@@ -16,7 +16,7 @@ Therefore, it standardizes the adoption of \Wasm\ in heterogeneous platforms \ci
 %%IMPROVED
 Currently, \Wasm serves a variety of functions in browsers, ranging from gaming to cryptomining \cite{Hilbig2021AnES}. 
 Other applications include text processing, visualization, media processing, programming language testing, online gambling, bar code and QR code fast reading, hashing, and PDF viewing. 
-On the backend, \Wasm notably excels in short-running tasks. 
+On the backend, \Wasm notably excels in short-running tasks \cite{10034550, 10.1145/3526059.3533618}. 
 As such, it is particularly suitable for Function-as-a-Service (FaaS) platforms like Cloudflare and Fastly.
 The subsequent text in this chapter focuses specifically on \Wasm version 1.0. 
 However, the tools, techniques, and methodologies discussed apply to future \Wasm versions.
@@ -78,7 +78,7 @@ For example, Javy\toolcite{https://github.com/bytecodealliance/javy} encapsulate
 If an interpreter for a specific language can be compiled to \Wasm, it allows for the bundling of both the interpreter and the language into a single, isolated \Wasm binary. 
 Similarly, Blazor\toolcite{https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor} facilitates the execution of .NET Common Intermediate Language (CIL) in \Wasm binaries for browser-based applications. 
 However, packaging the interpreter and the code in one single standalone \Wasm binary is still immature and faces challenges.
-For example, the absence of JIT compilation for the "interpreted" code makes it less suitable for long-running tasks \cite{10.1145/3593434.3593454}. 
+For example, the absence of JIT compilation for the "interpreted" code makes it less suitable for long-running tasks \cite{10.1145/3487552.3487827, 10.1145/3593434.3593454}. 
 On the other hand, it proves effective for short-running tasks, particularly those executed in Edge-Cloud computing platforms.
 
 

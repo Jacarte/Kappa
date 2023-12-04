@@ -3944,3 +3944,86 @@ archivePrefix = {arXiv},
   url = {https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/banescu},
   month = aug
 }
+
+@InProceedings{10.1007/978-3-642-00730-9_10,
+  author="De Sutter, Bjorn
+  and Anckaert, Bertrand
+  and Geiregat, Jens
+  and Chanet, Dominique
+  and De Bosschere, Koen",
+  editor="Lee, Pil Joong
+  and Cheon, Jung Hee",
+  title="{Instruction} {Set} {Limitation} in {Support} of {Software} {Diversity}",
+  year="2009",
+  pages="152--165",
+  abstract="This paper proposes a novel technique, called instruction set limitation, to strengthen the resilience of software diversification against collusion attacks. Such attacks require a tool to match corresponding program fragments in different, diversified program versions. The proposed technique limits the types of instructions occurring in a program to the most frequently occurring types, by replacing the infrequently used types as much as possible by more frequently used ones. As such, this technique, when combined with diversification techniques, reduces the number of easily matched code fragments. The proposed technique is evaluated against a powerful diversification tool for Intel's x86 and an optimized matching process on a number of SPEC 2006 benchmarks.",
+  isbn="978-3-642-00730-9"
+}
+
+
+@inproceedings{10.1145/3572848.3577436,
+  author = {Chadha, Mohak and Krueger, Nils and John, Jophin and Jindal, Anshul and Gerndt, Michael and Benedict, Shajulin},
+  title = {Exploring the Use of WebAssembly in HPC},
+  year = {2023},
+  isbn = {9798400700156},
+  url = {https://doi.org/10.1145/3572848.3577436},
+  doi = {10.1145/3572848.3577436},
+  abstract = {Containerization approaches based on namespaces offered by the Linux kernel have seen an increasing popularity in the HPC community both as a means to isolate applications and as a format to package and distribute them. However, their adoption and usage in HPC systems faces several challenges. These include difficulties in unprivileged running and building of scientific application container images directly on HPC resources, increasing heterogeneity of HPC architectures, and access to specialized networking libraries available only on HPC systems. These challenges of container-based HPC application development closely align with the several advantages that a new universal intermediate binary format called WebAssembly (Wasm) has to offer. These include a lightweight userspace isolation mechanism and portability across operating systems and processor architectures. In this paper, we explore the usage of Wasm as a distribution format for MPI-based HPC applications. To this end, we present MPIWasm, a novel Wasm embedder for MPI-based HPC applications that enables high-performance execution of Wasm code, has low-overhead for MPI calls, and supports high-performance networking interconnects present on HPC systems. We evaluate the performance and overhead of MPIWasm on a production HPC system and AWS Graviton2 nodes using standardized HPC benchmarks. Results from our experiments demonstrate that MPIWasm delivers competitive native application performance across all scenarios. Moreover, we observe that Wasm binaries are 139.5x smaller on average as compared to the statically-linked binaries for the different standardized benchmarks.},
+  booktitle = {Proceedings of the 28th ACM SIGPLAN Annual Symposium on Principles and Practice of Parallel Programming},
+  pages = {92–106},
+  numpages = {15},
+  keywords = {WebAssembly, wasm, HPC, MPI, wasmer},
+  series = {PPoPP '23}
+}
+
+  
+
+@ARTICLE{10034550,
+
+  author={Hoque, Mohammed Nurul and Harras, Khaled A.},
+
+  journal={IEEE Communications Standards Magazine}, 
+
+  title={{WebAssembly} for {Edge} {Computing}: {Potential} and {Challenges}}, 
+
+  year={2022},
+
+  volume={6},
+
+  number={4},
+
+  pages={68-73},
+
+  doi={10.1109/MCOMSTD.0001.2000068}}
+
+
+
+@inproceedings{10.1145/3526059.3533618,
+  author = {M\'{e}n\'{e}trey, J\"{a}mes and Pasin, Marcelo and Felber, Pascal and Schiavoni, Valerio},
+  title = {{WebAssembly} as a {Common} {Layer} for the {Cloud-Edge} {Continuum}},
+  year = {2022},
+  isbn = {9781450393102},
+  url = {https://doi.org/10.1145/3526059.3533618},
+  doi = {10.1145/3526059.3533618},
+  abstract = {Over the last decade, the cloud computing landscape has transformed from centralised architecture made of large data centres to a distributed and heterogeneous architecture embracing edge and IoT processing units. This shift has created the so-called cloud-edge continuum, which closes the gap between the large datacentres and the end-user devices. Existing solutions are, however, dominated by proprietary silos and incompatible technologies, built around dedicated devices and run-time stacks. In this position paper, we motivate the need for interoperable solutions that would run seamlessly across hardware devices and software environments, while achieving good performance and a high level of security-a critical requirement for code and data processed off-premises. We argue that the technology provided by WebAssembly running on modern virtual machines and shielded within trusted execution environments, combined with a core set of services and support libraries, allows us to meet both goals. We also present preliminary results from a prototype built with these technologies and deployed on the cloud-edge continuum.},
+  booktitle = {Proceedings of the 2nd Workshop on Flexible Resource and Application Management on the Edge},
+  pages = {3–8},
+  numpages = {6},
+  keywords = {wasi, trusted execution environments, arm trustzone, cloud-edge continuum, intel sgx, webassembly},
+  series = {FRAME '22}
+}
+
+@inproceedings{10.1145/3487552.3487827,
+  author = {Yan, Yutian and Tu, Tengfei and Zhao, Lijian and Zhou, Yuchen and Wang, Weihang},
+  title = {{Understanding} the {Performance} of {Webassembly} {Applications}},
+  year = {2021},
+  isbn = {9781450391290},
+  url = {https://doi.org/10.1145/3487552.3487827},
+  doi = {10.1145/3487552.3487827},
+  abstract = {WebAssembly is the newest language to arrive on the web. It features a compact binary format, making it fast to be loaded and decoded. While WebAssembly is generally expected to be faster than JavaScript, there have been mixed results in proving which code is faster. Little research has been done to comprehend WebAssembly's performance benefit. In this paper, we conduct a systematic study to understand the performance of WebAssembly applications and compare it with JavaScript. Our measurements were performed on three sets of subject programs with diverse settings. Among others, our findings include: (1) WebAssembly compilers are commonly built atop LLVM, where their optimizations are not tailored for WebAssembly. We show that these optimizations often become ineffective for WebAssembly, leading to counter-intuitive results. (2) JIT optimization has a significant impact on JavaScript performance. However, no substantial performance increase was observed for WebAssembly with JIT. (3) The performance of WebAssembly and JavaScript varies substantially depending on the execution environment. (4) WebAssembly uses significantly more memory than its JavaScript counterparts. We hope that our findings can help WebAssembly tooling developers identify optimization opportunities. We also report the challenges encountered when compiling C benchmarks to WebAssembly and discuss our solutions.},
+  booktitle = {Proceedings of the 21st ACM Internet Measurement Conference},
+  pages = {533–549},
+  numpages = {17},
+  keywords = {webassembly, justin-time compilation, web page performance, browser performance},
+  series = {IMC '21}
+}

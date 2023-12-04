@@ -138,7 +138,7 @@ Overall, either of these two strategies aims to substantially reduce the number 
 \subsection{Oneshot Diversification}
 Oneshot diversification denotes the automatic creation of a unique software program variant with each installation or distribution. 
 This procedure entails systematic alterations to the original program. 
-The objective is to confirm that each software copy is distinctive from all others. 
+The objective is to ensure that each software copy is distinctive from all others. 
 Contrary to randomization, oneshot diversification usually happens during the software's distribution or installation phase. 
 The term "oneshot" describes the diversification's static nature following its one-time implementation per installation.
 Once used, the diversified program is never used again. 
@@ -149,7 +149,7 @@ However, we foresee several challenges, particularly the optimization of our pre
 
 In the context of \Wasm, this process presents particularly challenging aspects since it is highly dynamic.
 For instance, within a browser context, we need to ensure the \Wasm binary varies not only per browser instance but also per tab process (webpage tab).
-In the backend, we must guarantee that the \Wasm binary is unique per server instance and per request.
+In the backend, we must guarantee that the \Wasm binary is unique per server instance and per request \cite{Sledge, Swivel, 10.1145/3572848.3577436}.
 Hence, it becomes necessary to ensure that the diversification process is both rapid and efficient, capable of generating a vast number of variants within a brief timespan.
 Specifically, this entails producing millions of unique and diverse variants every second.
 
@@ -160,6 +160,6 @@ For example, as shown in \autoref{exploit}, feedback-guided diversification can 
 Therefore, while we diversify, we need to be able to discard those variants that offer fewer benefits based on custom feedback functions.
 For example, this process might require the inclusion of concepts like performance impact, variant's distribution, and variant's management. 
 Performance impact, in particular, needs careful evaluation, given that WebAssembly is often used for applications sensitive to performance. 
-Furthermore, distributing and managing diversified WebAssembly modules could become complex, especially due to the lack of a standard for \Wasm module management or registry.
+Furthermore, distributing and managing diversified WebAssembly modules could become complex, especially due to the lack of a standard for \Wasm module management or registry \cite{10.1145/3526059.3533618}.
 Besides, this complexity includes managing updates and ensuring compatibility across all diversified instances.
 
