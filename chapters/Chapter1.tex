@@ -86,7 +86,7 @@ This predictability may be exploited to launch large-scale attacks, as predictab
 For example, if one-quarter of all devices operate the same code in the same browser, a single flaw could impact millions of devices in the same way \cite{goth2003addressing}. 
 
 The aforementioned issue is exacerbated when considering the adoption of \Wasm by edge-cloud computing platforms to provide services. 
-In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second. 
+In addition to browser clients, thousands of edge devices operate millions of identical \Wasm instantiations per second \cite{10034550}. 
 This suggests that a single vulnerable \Wasm binary in an edge network node could render every node identically susceptible due to the binary replication occurring on each node.
 A potential attacker could compromise all edge nodes concurrently, implying that a single distributed \Wasm binary could trigger a global attack \toolcite{https://www.fastly.com/blog/defense-in-depth-stopping-a-wasm-compiler-bug-before-it-became-a-problem}.
  
