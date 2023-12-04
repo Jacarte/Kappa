@@ -147,7 +147,7 @@ We therefore plan to investigate the feasibility of one-shot diversification in 
 However, we foresee several challenges, particularly the optimization of our previously presented tools.
 
 
-In the context of \Wasm, this process presents particularly challenging aspects since it is highly dynamic.
+In the context of \Wasm, this process presents particularly challenging aspects since it is highly dynamic \cite{10034550}.
 For instance, within a browser context, we need to ensure the \Wasm binary varies not only per browser instance but also per tab process (webpage tab).
 In the backend, we must guarantee that the \Wasm binary is unique per cold spawn \cite{Sledge, Swivel}.
 Hence, it becomes necessary to ensure that the diversification process is both rapid and efficient, capable of generating a vast number of variants within a brief timespan.
