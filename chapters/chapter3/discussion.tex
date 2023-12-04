@@ -86,15 +86,15 @@ Additionally, our tools generate a diverse array of code variants that are highl
 This implies that these variants, each with their unique \Wasm code, retain their distinct characteristics even after being translated into machine code by JIT compilers. 
 This high level of preservation significantly mitigates the risks associated with side-channel attacks that target specific machine code instructions, such as port contention attacks \cite{10.1145/3488932.3517411}.
 For instance, if a \Wasm binary is transformed in such a manner that its resulting machine code instructions differ from the original, it becomes more challenging for a side-channel attack. 
-Conversely, if the compiler translates the variant into machine code that closely resembles the original, the side-channel attack could still exploit those instructions to extract information about the original \Wasm binary.
+On the other hand, if the compiler translates the variant into machine code that closely resembles the original, the side-channel attack could still exploit those instructions to extract information about the original \Wasm binary.
 
-Altering the layout of a \Wasm program inherently influences its managed memory during runtime (see \autoref{background:wasm:execution}).
-This phenomenon is especially important for CROW and MEWE, given that they do not directly address the \Wasm memory model.
-Significantly, CROW and MEWE considerably alter the managed memory by modifying the layout of the \Wasm program.
+The layout alteration of a \Wasm program intrinsically impacts its managed memory during runtime. 
+This impact bears significant relevance for CROW and MEWE as they do not directly address the \Wasm memory model. 
+Nevertheless, by modifying the \Wasm program layout, CROW and MEWE effect considerable changes in the managed memory.
 For example, the \emph{constant inferring} transformations significantly alter the layout of program variants, affecting unmanaged memory elements such as the returning address of a function.
-Furthermore, WASM-MUTATE not only affects managed memory through changes in the \Wasm program layout.
-It also adds rewriting rules to transform unmanaged memory instructions.
-Memory alterations, either to the unmanaged or managed memories, have substantial security implications, by eliminating potential cache timing side-channels \cite{Swivel}.
+Furthermore, WASM-MUTATE not only affects managed memory through changes in the \Wasm program layout as CROW and MEWE do.
+It also adds explicit rewriting rules to transform unmanaged memory instructions.
+Overall, memory alterations, either to the unmanaged or managed memories, have substantial security implications, by eliminating potential cache timing side-channels \cite{Swivel}.
 
 
 Last but not least, our technical contributions enhance security against web timing-based attacks \cite{morgan2015web, DBLP:conf/ndss/SchnitzlerKBP23} by creating variants that exhibit a wide range of execution times, including faster variants compared to the original program. 

@@ -3,7 +3,7 @@
 \label{tech::wasmmutate}
 
 In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
-Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming parts of the original binary. 
+Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming any section of the original \Wasm binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
 \begin{figure}[h!]
@@ -59,7 +59,7 @@ Notice that the condition specified in the last part of the rewriting rule ensur
 
 Although this rewriting approach may seem simplistic, especially because compilers often eliminate it through \emph{Constant Folding} optimization \cite{2023arXiv230513241T}, it stresses the spill/reload component of the compiler when the \Wasm binary is JITed to machine code.
 Spill/reloads occur when the compiler runs out of physical registers to store intermediate calculations, resorting to specific memory locations for temporary storage. 
-The unfolding rewriting rule indirectly stresses this segment of memory. 
+The unfolding rewriting rule indirectly stresses this segment of memory when applied many times to the input \Wasm binary. 
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.
 
 
@@ -67,12 +67,16 @@ Notably, with this specific rewriting rule, we have found a CVE in the wasmtime 
 
 
 We developed \tool leveraging e-graphs, a specific graph data structure for representing and applying rewriting rules \cite{10.1145/3571207}. 
+In an e-graph, there are two types of nodes: e-nodes and e-classes. 
+An e-node represents either an operator or an operand involved in the rewriting rule, while an e-class denotes the equivalence classes among e-nodes by grouping them, i.e., an e-class is a virtual node compound of a collection of e-nodes. 
+Thus, e-classes contain at least one e-node.
+Edges within the graph establish operator-operand equivalence relations between e-nodes and e-classes.
 In the context of \tool, e-graphs are constructed from the input \Wasm program and the implemented rewriting rules (we detail the e-graph construction process in Section 3 of \cite{wasmmutate}).
 
 % General use of case
 Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
 This methodology ensures the functional equivalence of the derived code \cite{e-graph}. 
-For instance, e-graphs solve the problem of providing the best code out of several optimization rules \cite{10.1145/1480881.1480915}.
+For instance, e-graphs address the challenge of generating the optimal code from multiple optimization rules, regardless of their application sequence \cite{10.1145/1480881.1480915}.
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
 In \too omitting the cost function from the extraction strategy leads us to a significant property: \emph{any path navigated through the e-graph yields a functionally equivalent code variant}. 
 
@@ -121,7 +125,7 @@ Here, we use Algorithm \ref{peephole:mutator} with a maximum depth of 1.
 In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
 In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
 The former rule grants the ability to append a \texttt{nop} instruction to any subexpression, a well-known low-level diversification strategy \cite{homescu2013profile}. 
-Conversely, the latter rule adds zero to any numeric value.
+The latter rule adds zero to any numeric value.
 
 
 \input{snippets/snippets-wasm-mutate/peephole/peep_example}
@@ -156,7 +160,7 @@ Consequently, increasing the depth parameter in \autoref{peephole:mutator} would
 \begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
   \tool uses hand-made rewriting rules and random traversals over e-graphs to provide a binary-based solution for \Wasm diversification. \\
   \tool is fully presented in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
-  \emph{Under review at Computers \& Security}
+  \emph{Submitted to Computers \& Security, under revision. }
  \url{https://arxiv.org/pdf/2309.07638.pdf}.
   \\\\
   \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the Bytecode Alliance organization \toolcite{https://bytecodealliance.org/}. The Bytecode Alliance is dedicated to creating secure new software foundations, building on standards such as WebAssembly and WASI.
