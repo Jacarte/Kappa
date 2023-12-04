@@ -24,20 +24,16 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 \msubsection{Enumerative synthesis}
 
 The cornerstone of CROW's exploration mechanism is its code replacement generation strategy, which is inspired by the superdiversifier methodology proposed by Jacob \etal \cite{jacob2008superdiversifier}. 
-The search space for generating variants is delineated through an enumerative synthesis process (see \mnameref{enumerative_synthesis}{artificial_diversity}), which systematically produces all possible code replacements for each instruction in the original program. 
-If a code replacement is identified to perform identically to the original program, it is reported as a functionally equivalent variant.
+The search space for generating variants is delineated through an enumerative synthesis process (see \mnameref{enumerative_synthesis}{artificial_diversity}), which systematically produces all possible code replacements for each data flow graph that can be constructed from the original program. 
+If a code replacement is identified to function identically to the original program, it is reported as a functionally equivalent variant.
 This equivalence is confirmed using a theorem solver for rigorous verification.
 
-Concretely, CROW is developed by extending the enumerative synthesis implementation found in Souper \cite{Sasnauskas2017Souper:Superoptimizer}, an LLVM-based superoptimizer. 
-Specifically, CROW constructs a Data Flow Graph for each LLVM instruction that returns an integer. 
-Subsequently, it generates all viable expressions derived from a selected subset of the LLVM Intermediate Representation language for each DFG.
+CROW is developed by extending the enumerative synthesis implementation found in Souper \cite{Sasnauskas2017Souper:Superoptimizer}, an LLVM-based superoptimizer. 
+Specifically, CROW constructs a Data Flow Graph(DFG) for each LLVM instruction that returns an integer. 
+Subsequently, it generates all viable expressions derived from a selected subset of the LLVM Intermediate Representation.
 The enumerative synthesis process incrementally generates code replacements, starting with the simplest expressions (those composed of a single instruction) and gradually increasing in complexity. 
 The exploration process continues either until a timeout occurs or the size of the generated replacements exceeds a predefined threshold.
 
-
-Notice that the search space increases exponentially with the size of the language used for enumerative synthesis. 
-To mitigate this issue, we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend, effectively reducing the searching space. 
-For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
 
 % Boosting the geneation of variants
 CROW is carefully designed to boost the generation of variants as much as possible.
@@ -46,24 +42,25 @@ Instead of preventing the generation of commutative operations during the search
 Second, CROW applies code transformations independently. 
 For instance, if a suitable replacement is identified that can be applied at $N$ different locations in the original program, CROW will generate $2^N$ distinct program variants, i.e., the power set of applying the transformation or not to each location. 
 This approach leads to a combinatorial explosion in the number of available program variants, especially as the number of possible replacements increases.
+Third, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations
+
+Notice that, the search space increases exponentially with the size of the language used for enumerative synthesis. 
+To mitigate this issue, we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend, effectively reducing the searching space. 
+For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
 
 % The full spectrumg
 Leveraging the ascending nature of its enumerative synthesis process, CROW is capable of creating variants that may outperform the original program in both size and efficiency. 
 For instance, the first functionally equivalent transformation identified is typically the most optimal in terms of code size. 
 This approach offers developers a range of performance options, allowing them to balance between diversification and performance without compromising the latter.
 
-
-The last stage at CROW involves a custom Wasm LLVM backend, which generates the \wasm programs.
-For it, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations.
-
-\vspace{-2cm}
+\vspace{-1cm}
 
 \msubsection{Constant inferring}
 \label{CROW:constant_inferring}
-CROW inherently introduces a novel transformation strategy called \emph{constant inferring}, which significantly expands the variety of \Wasm program variants. 
+CROW inherently introduces a transformation strategy called \emph{constant inferring}, which significantly expands the variety of \Wasm program variants. 
 Specifically, CROW identifies segments of code that can be simplified into a single constant assignment, with a particular focus on variables that control branching logic. 
 After applying this \emph{constant inferring} technique, the resulting program diverges substantially from the original program structure. 
-This is crucial for diversification efforts, as one of the primary objectives is to create variants that are as distinct as possible from the original source code. 
+This is crucial for diversification efforts, as one of the primary objectives is to create variants that are as distinct as possible from the original code (see \autoref{measuring_diversification}). 
 In essence, the more divergent the variant, the more challenging it becomes to trace it back to its original form.
 % This transformation is especially useful for generating \wasm variants that are highly preserved after the JIT compilation of further compilers.
 
@@ -144,7 +141,7 @@ CROW deals with this case, generating the program in \autoref{inferring}. It inf
     In theory, this value can also be inferred by unrolling the loop the correct number of times with the LLVM toolchain.
     However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.}. 
 Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
-The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}
+The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}.
 %  Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}
 
 

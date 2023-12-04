@@ -4,7 +4,7 @@
 
 \renewcommand{\tool}{MEWE\xspace}
 % Overview
-This section describes MEWE \cite{MEWE}. 
+This section describes MEWE \cite{MEWE}, our second technical contribution. 
 \tool synthesizes diversified function variants by using CROW.
 It then provides execution-path randomization in a Multivariant Execution (MVE) \cite{bhatkar03}.
 Execution path randomization is a technique that randomizes the execution path of a program at runtime, i.e. at each invocation of a function, a different variant is executed.
@@ -19,12 +19,12 @@ It then merges LLVM IR variants into a Wasm multivariant.
 In the figure, we highlight the two components of MEWE, \emph{Multivariant Generation} and the \emph{Mixer}.
 In the \emph{Multivariant Generation} process, 
 MEWE gathers the LLVM IR variants created by CROW.
-The Mixer component, on the other hand, links the multivariant binary and creates a new entrypoint for the binary called \emph{entrypoint tampering}.
-The tampering is needed in case the output of CROW are variants of the original entrypoint, e.g. the \emph{main} function.
+The Mixer component, on the other hand, links the multivariant binary and creates a new entrypoint for the binary.
+Creating a new entrypoint is needed in case the output of CROW are variants of the original entrypoint, e.g. the \emph{main} function.
 Concretely, it wraps the dispatcher for the entrypoint variants as a new function for the final Wasm binary and is declared as the application entrypoint.
 The random generator is needed to perform the execution-path randomization.
 For the random generator, we rely on WASI's specification \cite{WASI} for the random behavior of the dispatchers. 
-However, its exact implementation is dependent on the platform on which the binary is deployed. 
+However, its exact implementation is dependent on the host engine on which the binary is executed. 
 Finally, using the same custom Wasm LLVM backend as CROW, we generate a standalone multivariant \wasm\ binary.
 Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ engine. 
 
@@ -122,13 +122,6 @@ define internal i32 @foo(i32 %0) {
     \captionof{lstlisting}{Dispatcher function embedded in the multivariant binary of the original function in the rightmost green node in \autoref{multivariant}. The code is commented on for the sake of understanding. }\label{listing:multivariant_template}
 \end{minipage}
 \end{minipage}
-
-In  \autoref{listing:multivariant_template}, we illustrate the LLVM construction for the function dispatcher corresponding to the rightmost green node of \autoref{multivariant}.
-Notice that, the dispatcher function is constructed using the same signature as the original function. 
-It first calls the random generator, which returns a value used to invoke a specific function variant (see line 6 in \autoref{listing:multivariant_template}). 
-We utilize a switch-case structure in the dispatchers to prevent indirect calls, which are vulnerable to speculative execution-based attacks \cite{Narayan2021Swivel} (see lines 12 to 19 in \autoref{listing:multivariant_template}), i.e., the choice of a switch-case also avoids having multiple function definitions with the same signature, which could increase the attack surface in case the function signature is vulnerable \cite{johnson2021}.
-In addition, MEWE can inline function variants inside the dispatcher instead of defining them again (see line 16 in \autoref{listing:multivariant_template}).
-Remarkably, we trade security over performance since dispatcher functions that perform indirect calls, instead of a switch-case,  could improve the performance of the dispatchers as indirect calls have constant time.
 
 
 %\msubsection{MEWE's Mixer}
