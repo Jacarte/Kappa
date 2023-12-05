@@ -71,7 +71,7 @@ The original program includes three functions. \tool generates 43 variants for t
 In \autoref{listing:multivariant_template}, we demonstrate how MEWE constructs the function dispatcher, corresponding to the rightmost green node in \autoref{multivariant}, which handles three created variants including the original. 
 The dispatcher function retains the same signature as the original function. Initially, the dispatcher invokes a random number generator, the output of which is used to select a specific function variant for execution (as seen on line 6 in \autoref{listing:multivariant_template}). 
 To enhance security, we employ a switch-case structure within the dispatcher, mitigating vulnerabilities associated with speculative execution-based attacks \cite{Narayan2021Swivel} (refer to lines 12 to 19 in \autoref{listing:multivariant_template}). 
-This approach also eliminates the need for multiple function definitions with identical signatures, thereby reducing the potential attack surface in cases where the function signature itself is vulnerable \cite{johnson2021}.
+This approach also eliminates the need for multiple function definitions with identical signatures, thereby reducing the potential attack surface in cases where the function signature itself is vulnerable \cite{veriwasm}.
 Additionally, MEWE can inline function variants directly into the dispatcher, obviating the need for redundant definitions (as illustrated on line 16 in \autoref{listing:multivariant_template}). 
 Remarkably, we prioritize security over performance, i.e., while using indirect calls in place of a switch-case could offer constant-time performance benefits, we implement switch-case structures.
 

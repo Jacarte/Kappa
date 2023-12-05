@@ -69,8 +69,8 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     Similarly, Crane \etal~\cite{crane2015thwarting} de-inlined basic blocks of code as an LLVM pass. 
     In their approach, each de-inlined code transforms into semantically equivalent functions that are randomly selected at runtime to replace the original code calculation. 
     On the same topic, Bhatkar \etal \cite{bhatkar2005efficient} extended their previous approach \cite{bhatkar03}, replacing function calls with indirect pointer calls in C source code, allowing post-binary reordering of function calls. 
-    In the \Wasm context, the most analogous work is wobfuscator \cite{wobfuscator}.
-    Wobfuscator, a JavaScript obfuscator, substitutes JavaScript code with \Wasm code, e.g., numeric calculi.
+    In the \Wasm context, the most analogous work is Wobfuscator \cite{wobfuscator}.
+    Wobfuscator, a JavaScript obfuscator, substitutes pieces of JavaScript code with \Wasm code, e.g., numeric calculi.
     This strategy effectively uses the interleaving of calls between JavaScript and \Wasm to provide JavaScript variants.
 \end{strategy}
 
@@ -141,7 +141,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
 Equivalence checking between program variants is a vital component for any program transformation task, ranging from checking compiler optimizations \cite{LeCompilers} to the artificial synthesis of programs discussed in this chapter. 
 It proves that two pieces of code or programs are functionally equivalent \cite{churchill2019}. 
 We can roughly simplify the checking process with the following property: 
-two programs are deemed equivalent if they generate identical outputs when given identical inputs from a closed collection of inputs \cite{10.1145/2594291.2594334}.
+two programs are deemed equivalent if they generate identical outputs when given identical inputs from a closed collection of inputs \cite{10.1145/2814270.2814319}.
 We adopt this definition of \emph{functional equivalence modulo input} throughout this dissertation. 
 In Software Diversification, equivalence checking seeks to preserve the original functionality of programs while varying observable behaviors. 
 Two programs, for instance, can differ statically and still compute the same result. 
