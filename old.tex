@@ -393,3 +393,117 @@ Therefore, this exemplifies the application of Defensive Software Diversificatio
     \todo{Rotatio time is important in some cases.}
     \url{https://dblp.org/pid/l/MichaelELocasto.html}
     
+%%ORIGINAL
+    
+WebAssembly, acknowledged as the fourth officially accepted Web language, stands out for its efficiency and emphasis on security. 
+Yet, its rapidly growing ecosystem of compilers and tools lack of robust software diversification systems. 
+We present \tool, a diversification engine designed specifically for WebAssembly. 
+Our engine fulfills several crucial criteria: 
+1) It can rapidly create semantically identical but behaviorally diverse WebAssembly variants, 
+2) It can be applied universally to any WebAssembly programs, regardless of the source programming language, and 
+3) It possesses the ability to counter side-channels. 
+By utilizing an e-graph data structure, \tool demonstrates both speed and effectiveness.
+We assess \tool by experimenting with 404 programs, including real-world programs.
+Our experiments revealed that \tool is capable of generating tens of thousands of unique and efficient WebAssembly variants in minutes.
+Importantly, \tool can protect \wasm binaries from timing side-channel attacks, particularly those of the Spectre type.
+
+%%IMPROVED
+WebAssembly, recognized as the fourth officially endorsed Web language, distinguishes itself through its efficiency and focus on security. 
+However, its swiftly expanding ecosystem of compilers and tools lacks robust software diversification systems. 
+We introduce \tool, a diversification engine specifically designed for WebAssembly. 
+Our engine meets several essential criteria: 
+1) It can quickly generate semantically identical, yet behaviorally diverse, WebAssembly variants, 
+2) It can be universally applied to any WebAssembly programs, irrespective of the source programming language, and 
+3) It has the capability to counter side-channels. 
+By leveraging an e-graph data structure, \tool exhibits both speed and efficacy.
+We evaluate \tool by conducting experiments on 404 programs, which include real-world applications.
+Our tests disclosed that \tool can produce tens of thousands of unique and efficient WebAssembly variants within minutes.
+Significantly, \tool can safeguard \wasm binaries against timing side-channel attacks, especially those of the Spectre type.
+
+
+
+
+%%ORIGINAL
+We have also added well-known commutative rewriting rules.
+In the following 3 rewriting rules, we have exemplified them.
+As previously discussed, notice that the type of the subexpressions can be set to any of the original 4 primitive data types.
+
+%%IMPROVED
+We have also incorporated well-known commutative rewriting rules. 
+These three rules provide examples. 
+As discussed earlier, observe that the subexpressions' type can be designated to any of the original four primitive data types.
+
+
+
+%%ORIGINAL
+
+As we previously mentioned, our work is built on well established diversification strategies.
+In the following rewriting rules we exemplify how we port two well-known strategies.
+The leftmost part shows how we inect \texttt{nop} instructions.
+The rightmost part shows how we "unfold" constants.
+For the latter, static defined constants are replaced by the addition of two numbers.
+The addition of the two number replacements, computes the original constant at runtime.
+
+%%IMPROVED
+As previously mentioned, our work is built on well-established diversification strategies. 
+In the subsequent rewriting rules, we exemplify the porting of two well-known strategies. 
+The leftmost part illustrates the injection of \texttt{nop} instructions. 
+Conversely, the rightmost part demonstrates the unfolding of constants. 
+In the latter case, statically defined constants are substituted by the sum of two numbers. 
+This sum computes the original constant at runtime.
+
+%%ORIGINAL
+
+
+Overall, the rewriting rules shown can be applied commutatively. 
+For example, the part on the left-hand side (LHS) can be the part on the right-hand side (RHS) and vice-versa. 
+Notice that, in general, the peephole rewriting rules could be easily reversed by compilers since they are simple enough.
+This latter allows us to manually verify them.
+While the compiler could reverse them, we have notice that, for \Wasm, there is threshold in which the compiler, for the sake of fast compilation prevents optimizations.
+
+%%IMPROVED
+The demonstrated rewriting rules can be applied commutatively. 
+For instance, the left-hand side (LHS) can interchangeably function as the right-hand side (RHS), and vice versa. 
+It should be noted that peephole rewriting rules, in general, can be effortlessly reversed by compilers due to their simplicity. 
+This simplicity enables manual verification. 
+Although the compiler has the ability to reverse these rules, it has been observed that, for \Wasm, a threshold exists beyond which the compiler prevents optimizations to maintain fast compilation.
+
+
+%%ORIGINAL
+
+The demonstrated rewriting rules can be applied commutatively. 
+For instance, the left-hand side (LHS) can interchangeably function as the right-hand side (RHS), and vice versa. 
+Therefore, notice how the number of practical rewriting simply increases by two.
+Note also that peephole rewriting rules, in general, can be effortlessly reversed by compilers due to their simplicity. 
+This simplicity enables manual verification. 
+Although the compiler can reverse these rules, it has been observed that, by using an e-graph, this becomes way more difficult to achieve.
+The main reason is the interleaving the rewriting rules in the e-graph.
+
+%%IMPROVED
+The established rewriting rules can be employed commutatively. 
+For example, the left-hand side (LHS) can function interchangeably as the right-hand side (RHS), and the reverse is also valid. 
+Consequently, observe the doubling of practical rewriting occurrences. 
+Remark that due to their inherent simplicity, compilers can easily reverse general peephole rewriting rules.  
+This straightforwardness facilitates manual verification. 
+Despite the ability of the compiler to reverse these rules, it becomes significantly more challenging when utilizing an e-graph. 
+The primary cause of this difficulty is the interleaving of the rewriting rules within the e-graph.
+
+
+
+%%ORIGINAL
+We answer our research questions with a corpora of four curated corpus.
+Our corpora contains a total \revision{ of 441 programs (303 + 134 + 4).}
+The metadata of these programs is summarized in \autoref{tab:corpus}.
+Each row in the table corresponds to the programs in use for each research question. 
+The columns provide information on the following: the program's source, the number of programs, the research question addressed, and the mean number of instructions for the programs. 
+Additionally, a short note highlights the main property of the programs in the last column. 
+For instance, the notes in the last two rows indicate the attacks to which the programs are susceptible.
+
+%%IMPROVED
+We use a collection of programs comprised of four curated corpora to address our research questions. 
+Our corpora contains a total of 441 programs, divided as 303, 134, and 4. 
+\autoref{tab:corpus} summarizes the metadata of these programs. 
+Each row in the table represents the programs utilized for a specific research question. 
+The columns provide details on the program's source, the number of programs, the research question addressed, and the mean number of instructions for each program. 
+A brief note in the last column emphasizes the main properties of the programs. 
+For example, the notes in the final two rows denote the types of attacks the programs are vulnerable to.
