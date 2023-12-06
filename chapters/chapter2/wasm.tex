@@ -65,6 +65,8 @@ There are several compilers that turn source code into \Wasm binaries.
 For example, LLVM compiles to \Wasm as a backend option since its 7.1.0 release in early 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
 The main advantage of using LLVM is that it provides a modular and state-of-the-art optimization infrastructure for \Wasm binaries.
+Today, Emscripten\toolcite{https://emscripten.org/docs/tools_reference/emcc.html} is the most frequently used tool for porting C/C++ code to the Web as a drop-in replacement for a standard compiler like gcc or clang.
+The main advantage of Emscripten is that it provides a complete toolchain for compiling C/C++ code to \Wasm, including the automatic generation of the external functions for interacting with a Web host environment.
 Recently, the Kotlin Multiplatform framework \toolcite{https://kotlinlang.org/docs/wasm-overview.html} has incorporated \Wasm as a compilation target, enabling the compilation of Kotlin code to \Wasm.
 Similarly, the Cheerp\toolcite{https://labs.leaningtech.com/blog/cheerpj-3-deep-dive} project proposes a Java Virtual Machine(JVM) fully ported to \Wasm, supporting Java applications and legacy applets in the browser. 
 
