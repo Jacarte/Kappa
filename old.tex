@@ -148,8 +148,8 @@ CROW, MEWE, and WASM-MUTATE generate variants that potentially improve the origi
 Therefore, users of our tools could decide to use or not worst performant variants in their deployments.
 
 
-\wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like WANA\cite{wana}, and EOSAFE\cite{eosafe} are employed to unearth vulnerabilities in \Wasm smart contracts. 
-Dynamic analysis tools in this sphere include EOSFuzzer\cite{EOSFuzzer} and wasai\cite{wasai}.
+\wrule{Smart Contract Analysis} In the field of smart contracts, static analysis tools like WANA \cite{wana}, and EOSAFE \cite{eosafe} are employed to unearth vulnerabilities in \Wasm smart contracts. 
+Dynamic analysis tools in this sphere include EOSFuzzer \cite{EOSFuzzer} and wasai \cite{wasai}.
 Similarly, Manticore\toolcite{https://github.com/trailofbits/manticore/tree/master/manticore} supports the symbolic execution of \wasm smart contracts. 
 
 
@@ -186,10 +186,10 @@ Another interesting thing would be to see if there is difference in the detector
 \todo{Motivate the use case with the following sota}
 
 \wrule{Binary rewriting tools and obfuscators} The landscape for tools that can modify, obfuscate, or enhance \Wasm binaries for various has increased. 
-For instance, BREWasm\cite{BREWasm} provides a comprehensive static binary rewriting framework specifically designed for \Wasm. 
-Wobfuscator\cite{wobfuscator} takes a different approach, serving as an opportunistic obfuscator for Wasm-JS browser applications. 
-Madvex\cite{madvex} focuses on modifying \Wasm binaries to evade malware detection, with its approach being limited to alterations in the code section of a \Wasm binary. 
-Additionally, WASMixer\cite{wasmixer} obfuscates WebAssembly binaries, by including memory access encryption, control-flow flattening, and the insertion of opaque predicates.
+For instance, BREWasm \cite{BREWasm} provides a comprehensive static binary rewriting framework specifically designed for \Wasm. 
+Wobfuscator \cite{wobfuscator} takes a different approach, serving as an opportunistic obfuscator for Wasm-JS browser applications. 
+Madvex \cite{madvex} focuses on modifying \Wasm binaries to evade malware detection, with its approach being limited to alterations in the code section of a \Wasm binary. 
+Additionally, WASMixer \cite{wasmixer} obfuscates WebAssembly binaries, by including memory access encryption, control-flow flattening, and the insertion of opaque predicates.
 
 
 \todo{ The malware evasion paper}
@@ -325,9 +325,9 @@ Such a situation presents a potential threat to the entire ecosystem due to shar
 \begin{comment}
     
     \wrule{Dataset augmentation:} The \Wasm ecosystem is still in its infancy compared to more mature programming environments. 
-    The study by Hilbig \etal  in 2021 found only 8,000 unique \Wasm binaries globally\cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
+    The study by Hilbig \etal  in 2021 found only 8,000 unique \Wasm binaries globally \cite{Hilbig2021AnES}, a fraction of the 1.5 million and 1.7 million packages available in npm and PyPI, respectively. 
     This limited dataset poses challenges for machine learning-based analysis tools, which require extensive data for effective training. 
-    The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed\cite{usenixWasm2020}. 
+    The scarcity of \Wasm programs also exacerbates the problem of software monoculture, increasing the risk of compromised \Wasm programs being consumed \cite{usenixWasm2020}. 
 \end{comment}
 
 Fastly, on average, can redeploy a \Wasm binary across its extensive platform of 73 datacenters worldwide in just 13 seconds. 
@@ -507,3 +507,16 @@ Each row in the table represents the programs utilized for a specific research q
 The columns provide details on the program's source, the number of programs, the research question addressed, and the mean number of instructions for each program. 
 A brief note in the last column emphasizes the main properties of the programs. 
 For example, the notes in the final two rows denote the types of attacks the programs are vulnerable to.
+
+
+%%ORIGINAL
+For example, if the \emph{Remove Dead Code} meta-rule implementation wrongly removes an imported function that is later called,  the variant does not pass the static validation, neither the compilation of the binary.
+
+%%IMPROVED
+For example, consider a scenario where the \emph{Remove Dead Code} meta-rule implementation erroneously removes an imported function. If this function is later called, the variant will fail the static validation. Consequently, the compilation of the binary will also not succeed.
+
+For example, if the \emph{Remove Dead Code} meta-rule implementation wrongly removes an imported function that is later called,  the variant does not pass the static validation, neither the compilation of the binary.
+
+%%IMPROVED
+For example, if the \emph{Remove Dead Code} meta-rule implementation erroneously removes an imported function, which is later called, the variant fails the static validation. 
+The compilation of the binary also does not pass.
