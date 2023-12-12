@@ -21,6 +21,7 @@ As such, it is particularly suitable for Function-as-a-Service (FaaS) platforms 
 The subsequent text in this chapter focuses specifically on \Wasm version 1.0. 
 However, the tools, techniques, and methodologies discussed apply to future \Wasm versions.
 
+\vspace{-2cm}
 \msubsection{From source code to \Wasm}
 
 \Wasm programs are compiled from source languages like C/C++, Rust, or Go ahead of time, which means that \wasm binaries can benefit from the optimizations of the source language compiler.
@@ -60,7 +61,7 @@ Note that for optimization purposes, the loop concludes by returning the result 
 
 
 
-
+\vspace{-0.3cm}
 There are several compilers that turn source code into \Wasm binaries. 
 For example, LLVM compiles to \Wasm as a backend option since its 7.1.0 release in early 2019\toolcite{https://github.com/llvm/llvm-project/releases/tag/llvmorg-7.1.0}, supporting a diverse set of frontend languages like C/C++, Rust, Go, and AssemblyScript\footnote{A subset of the TypeScript language}.
 Significantly, a study by Hilbig \cite{Hilbig2021AnES} reveals that 70\% of \Wasm binaries are generated using LLVM-based compilers. 
