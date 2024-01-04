@@ -213,8 +213,9 @@ Thus, even when a \Wasm program originates from potentially untrustworthy source
 \label{background:wasm:analysis}
 
 The WebAssembly ecosystem's expansion needs robust tools to ensure its security and reliability. 
-Numerous tools, employing various strategies to detect vulnerabilities in \Wasm programs, have been created to meet this need. 
-This section presents a review of the most relevant tools in this field, focusing on those capable of providing security guarantees for \Wasm binaries.
+Numerous tools, employing various strategies to detect vulnerabilities in \Wasm programs, have been created to meet this need.%%ORIGINAL
+This section reviews the most relevant works in this field. 
+We group them by the technique they employ. 
 
 %%ORIGINAL
 \wrule{Static analysis:} SecWasm \cite{secwasm} uses information control-flow checking to identify secrecy leaking in \Wasm binaries. 
@@ -224,15 +225,15 @@ CT-Wasm \cite{ctwasm}, verifies the constant time implementation of cryptographi
 Similarly, Vivienne applies relational symbolic execution to \Wasm binaries in order to reveal vulnerabilities in cryptographic implementations \cite{Vivienne}. 
 While these tools emphasize specific strategies, others adopt a more holistic approach. 
 For example, both Wassail \cite{wassail} and WasmA \cite{WasmA} provide a comprehensive static analysis framework for \Wasm binaries. 
-Static analysis tools may have limitations. 
-For instance, a newly, functionally equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{wasmixer}.
+%Static analysis tools may have limitations. 
+%For instance, a newly, functionally equivalent \Wasm binary may be generated from the same source code bypassing or breaking the static analysis \cite{wasmixer}.
 
 \wrule{Dynamic analysis:} Dynamic analysis involves tools such as TaintAssembly \cite{taintassembly}, which conducts taint analysis on \Wasm binaries. 
 Furthermore, Stiévenart \etal have developed a dynamic approach to slicing \Wasm programs based on Observational-Based Slicing (ORBS)\cite{slicing, slicing2}.
 This technique aids in debugging, understanding programs, and conducting security analysis.
 However, Wasabi \cite{wasabi} remains the only general-purpose dynamic analysis tool for \Wasm binaries, primarily used for profiling, instrumenting, and debugging \Wasm code. 
 These tools typically analyze software behavior during execution, making them inherently reactive. 
-In other words, they can only identify vulnerabilities or performance issues while executing input \Wasm programs.
+%In other words, they can only identify vulnerabilities or performance issues while executing input \Wasm programs.
 
 %%ORIGINAL
 \wrule{Protecting \Wasm binaries and runtimes:}
@@ -242,7 +243,7 @@ For instance, Swivel \cite{Swivel} proposes a compiler-based strategy designed t
 Similarly, Kolosick \etal \cite{10.1145/3498688} modify the Lucet compiler to use zero-cost transitions, eliminating the performance overhead of SFI guarantees implementation.
 In addition, WaVe \cite{wave} introduces a mechanized engine for \Wasm that facilitates differential testing. 
 WaVe can be employed to detect anomalies in engine implementations running Wasm-WASI programs. 
-Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
+%Much like static and dynamic analysis tools, these tools may suffer from a lack of \Wasm inputs, which could affect the measurement of their effectiveness.
 
 
 

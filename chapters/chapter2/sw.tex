@@ -4,14 +4,16 @@
 \label{sota:sw}
 
 %%ORIGINAL
-Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs, so-called software variants. 
+Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs.
+Along with this work, we refer to those programs as software variants.
 As outlined in Baudry \etal's survey \cite{natural_diversity}, Software Diversification falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
 Our work specifically contributes to the last two categories.
-Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works. 
+Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works.
+Notice that, we do not regard program variants from Software Product Lines \cite{10.1145/2580950} as instances of software diversification.
+The primary reason is that, by design, Software Product Lines do not produce functionally equivalent programs. 
 
 
-
-Software variants refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from dependencies (coarse-grained) to machine code levels (fine-grained).
+Software variants in our context refer to functionally equivalent versions of an original program, produced through Software Diversification at various stages of the software lifecycle, from dependencies (coarse-grained) to machine code levels (fine-grained).
 The main goal of Software Diversification is to increase the cost of exploitation by making software less predictable. 
 Diversification may be natural \cite{natural_diversity} or automatic \cite{offensive_div}. 
 Natural diversity refers to the side effect of humans creating software variants using different programming languages, compilers, and operating systems \cite{natural_diversity}, all of which adhere to the initial requirements. 
@@ -176,13 +178,19 @@ We outline three methods to check variant equivalence: by construction, check mo
 
 \end{checking}
 
+\vspace{1em}
+
 \begin{checking}[Formal verification]
     \label{check_by_smt}
-    In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove the equivalence of program variants. 
-    The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
-    The SMT solver then checks for counter-examples \cite{kesseli2018counterexample}. 
-    When it finds a counter-example, there is an input for which the two mathematical formulas yield different outputs. 
-    The primary limitation of this technique is that not all algorithms can be translated into a mathematical formula, such as loops. 
+    In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use automated theorem provers.
+    Theorem provers rely on SMT solvers \cite{SMT_solver} to prove the equivalence of program variants. 
+    The central idea for theorem provers is to convert the two code variants into mathematical formulas. 
+    The core component, the SMT solver, then checks for counter-examples that satisfy the negation of the mathematical formulas \cite{kesseli2018counterexample}.
+    When it finds a counter-example, it uncovers an input for which the two mathematical formulas yield different outputs. 
+    The primary limitation of this technique resides in the conversion process.    
+    All algorithms can be translated into a mathematical formula. 
+    However, under certain theories such as loops for linear arithmetic, the satisfiability query may be undecidable. 
+    As a result, SMT solvers cannot make a decision.
     Nevertheless, this technique is frequently used for checking no-jump-programs like basic block and peephole replacements \cite{SuperoptimizationScaling}.
 \end{checking}
 
