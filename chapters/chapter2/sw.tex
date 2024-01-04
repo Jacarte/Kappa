@@ -4,7 +4,7 @@
 \label{sota:sw}
 
 %%ORIGINAL
-Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs so-called software variants. 
+Software diversification involves the synthesis, reuse, distribution, and execution of different, functionally equivalent programs, so-called software variants. 
 As outlined in Baudry \etal's survey \cite{natural_diversity}, Software Diversification falls into five usage categories: reusability \cite{pohl2005software},performance \cite{10.1145/2025113.2025133}, fault tolerance \cite{1659219}, software testing \cite{Chen2010AdaptiveRT}, and security \cite{cohen1993operating}. 
 Our work specifically contributes to the last two categories.
 Based on the works of Cohen \etal \cite{cohen1993operating}, Forrest \etal \cite{595185}, Jackson \etal \cite{jackson} and Baudry \etal \cite{natural_diversity}, this section presents core concepts and related works. 
@@ -20,7 +20,7 @@ For example, Firefox and Chrome web browsers demonstrate natural diversity due t
 This logic extends to operating systems, database engines, virtual machines, and application servers \cite{natural_diversity}. 
 Natural diversity significantly aids in system security, as different variants are not susceptible to the same vulnerabilities \cite{781031, 10.5555/1009382.1009753}. 
 Unlike N-Version programming \cite{6312924}, natural diversity organically emerges over decades. 
-In other words, while it does not require the allocation of additional human efforts, natural diversity cannot be automatically generated. 
+In other words, while it does not require the allocation of additional human effort, natural diversity cannot be automatically generated. 
 This is because it is a side effect of the software development process.
 Given that \Wasm is a relatively new technology, natural diversity is presently not a feasible option. 
 Hence, for \Wasm, feasible options are systematic and automatic diversification approaches.
@@ -32,7 +32,7 @@ Hence, for \Wasm, feasible options are systematic and automatic diversification 
 
 The concept of automatic software variants starts with Randell's 1975 work \cite{10.1145/390016.808467}, which put forth the notion of artificial fault-tolerant instruction blocks. 
 Artificial Software Diversification, as proposed by Cohen and Forrest in the 1990s \cite{cohen1993operating, 595185}, gets its development through rewriting strategies. 
-These strategies consist of rule sets for modifying software components to create functionally equivalent, yet distinct, programs. 
+These strategies consist of sets of rewriting rules for modifying software components to create functionally equivalent, yet distinct, programs. 
 Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr2, instr3, ...)}, where \texttt{instr} represents the original code and \texttt{(instr2, instr3, ...)} denotes the functionally equivalent code.
 
 
@@ -43,7 +43,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     These rules can be applied at varying levels, from coarse to fine-grained. 
     This can range from the program dependencies level \cite{Harrand1650630} to the instruction level \cite{offensive_div}. 
     For example, Cleemput et al.~\cite{Cleemput2012} and Homescu et al.~\cite{homescu2013profile} inject NOP instructions to yield statically varied versions at the instruction level. 
-    Here, the rewriting rule is represented as \texttt{instr => (nop instr)}, signifying a \texttt{nop} operation preceding the instruction.
+    Here, the rewriting rule is represented as \texttt{instr => (nop instr)}, signifying an insertion of a \texttt{nop} operation preceding the instruction.
 
 
     %Although the studies by Cleemput et al. and Homescu et al. are easily applicable to \Wasm, this specific strategy may fall under the \emph{non preserved} category since \Wasm typically compiles later. 
@@ -68,8 +68,8 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     Cohen \cite{cohen1993operating} primarily illustrated this concept by inserting random jumps in programs. Pettis and Hansen \cite{pettisochhansen} suggested splitting basic blocks and functions for the PA-RISC architecture, inserting jumps between splits.
     Similarly, Crane \etal~\cite{crane2015thwarting} de-inlined basic blocks of code as an LLVM pass. 
     In their approach, each de-inlined code transforms into semantically equivalent functions that are randomly selected at runtime to replace the original code calculation. 
-    On the same topic, Bhatkar \etal \cite{bhatkar2005efficient} extended their previous approach \cite{bhatkar03}, replacing function calls with indirect pointer calls in C source code, allowing post-binary reordering of function calls. 
-    In the \Wasm context, the most analogous work is Wobfuscator \cite{wobfuscator}.
+    On the same topic, Bhatkar \etal~\cite{bhatkar2005efficient} extended their previous approach \cite{bhatkar03}, replacing function calls with indirect pointer calls in C source code, allowing post-binary reordering of function calls. 
+    In the \Wasm context, thesimilar work is Wobfuscator \cite{wobfuscator}.
     Wobfuscator, a JavaScript obfuscator, substitutes pieces of JavaScript code with \Wasm code, e.g., numeric calculi.
     This strategy effectively uses the interleaving of calls between JavaScript and \Wasm to provide JavaScript variants.
 \end{strategy}
@@ -96,7 +96,7 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     This strategy involves using a key to cipher the original program binary into another encoded binary. 
     Once encoded, the program can only be decoded at the target client, or it can be interpreted in the encoded form using a custom virtual machine implementation. 
     This technique is strong against attacks involving code inspection. 
-    Kc \etal \cite{Kc03}, and Barrantes \etal \cite{barrantes2003randomized} proposed seminal works on instruction-set randomization 
+    Kc \etal \cite{Kc03}, and Barrantes \etal~\cite{barrantes2003randomized} proposed seminal works on instruction-set randomization 
     to create a unique mapping between artificial CPU instructions and real ones.
     On the same topic, Chew and Song \cite{Chew02mitigatingbuffer} target operating system randomization. They randomize the interface between the operating system and the user applications.
     Courouss{\'e} \etal~\cite{courousse2016runtime} implement an assembly-like DSL to generate equivalent code at runtime in order to increase protection against side-channel attacks. 
@@ -124,10 +124,10 @@ Rewriting strategies typically take the form of tuples: \texttt{instr1 => (instr
     The process of enumerative synthesis commences with a piece of input program, typically a basic block.
     Incrementally, using a defined grammar, it generates all programs of size $n$.
     A generated program is then checked for equivalence to the original program, either by using a test suite or a theorem solver.
-    If the generated variant is proven, it is added to the variant's collection.
+    If the generated variant is proven equivalent, it is added to the variant's collection.
     The procedure continues until all potential programs have been explored.
     This approach proves especially effective when the solution space is relatively small or can be navigated efficiently.
-    Jacob and colleagues \cite{jacob2008superdiversifier} implemented this strategy for x86 programs.
+    Jacob \etal \cite{jacob2008superdiversifier} implemented this strategy for x86 programs.
     They named this technique superdiversification, drawing parallels to superoptimization \cite{Massalin1987}.
     Since this strategy fully explores a program's solution space, it contains the aforementioned strategies as special cases.
     The application of enumerative synthesis to \Wasm has not been explored. 
@@ -145,7 +145,7 @@ two programs are deemed equivalent if they generate identical outputs when given
 We adopt this definition of \emph{functional equivalence modulo input} throughout this dissertation. 
 In Software Diversification, equivalence checking seeks to preserve the original functionality of programs while varying observable behaviors. 
 Two programs, for instance, can differ statically and still compute the same result. 
-We outline three methods to check variant equivalence: by construction, check modulo tests and prove-driven equivalence checking.
+We outline three methods to check variant equivalence: by construction, check modulo tests and proof-driven equivalence checking.
 
 
 \begin{checking}[Equivalence by construction]
@@ -163,9 +163,9 @@ We outline three methods to check variant equivalence: by construction, check mo
     \label{check_by_tests}
 
     The process of checking modulo tests involves utilizing a test suite to confirm the equivalence of program variants \cite{10.1007/s10710-013-9195-8, 10.1145/2610384.2610415}. 
-    When a program variant successfully passes the test suite, it is determined equivalent to the original. 
-    It is reasonable to assume that projects prioritizing quality and security are likely to have a robust test suite that facilitates this type of equivalence verification.
-    However, this technique's effectiveness is bounded by the necessity for a preexisting test suite. 
+    When a program variant successfully passes the test suite, it is deemed equivalent to the original. 
+    It is reasonable to assume that projects prioritizing quality and security are likely to have a robust test suite that facilitates this type of equivalence checking.
+    However, this technique's effectiveness is limited by the necessity for a preexisting test suite. 
     Yet, as an alternative, fuzzers can be used to automatically generate tests \cite{zalewski2017american}.
     Fuzzers operate by randomly generating inputs that lead to different observable behaviors. 
     If a variant produces a different output from two identical inputs, it is not equivalent to the original program. 
@@ -176,7 +176,7 @@ We outline three methods to check variant equivalence: by construction, check mo
 
 \end{checking}
 
-\begin{checking}[Formal checking]
+\begin{checking}[Formal verification]
     \label{check_by_smt}
     In the absence of a test suite or a technique that inherently implements the equivalence property, the works mentioned earlier use theorem solvers (SMT solvers) \cite{SMT_solver} to prove the equivalence of program variants. 
     The central idea for SMT solvers is to convert the two code variants into mathematical formulas. 
@@ -196,13 +196,13 @@ Program variants, once generated and verified, may be used in two primary scenar
 \begin{strategy}[Randomization]
     \label{randomization}
     In the context of our work, the term \emph{Randomization} denotes a program's ability to present different variants to different clients. 
-    In this setup, a program, chosen from a collection of variants (referred to as the program's variant pool), is assigned to a random client during each deployment. 
+    In this setup, a program, randomly chosen from a collection of variants (referred to as the program's variant pool), is assigned to a the client during each deployment. 
     Jackson \etal \cite{jackson} define the variant pool in Randomization as herd immunity, as vulnerable binaries can only affect a segment of the client community. 
-    El-Khalil and colleagues \cite{ElKhalil2004} suggest employing a custom compiler to generate varying binaries from the compilation process. 
+    El-Khalil \etal \cite{ElKhalil2004} suggest employing a custom compiler to generate varying binaries from the compilation process. 
     They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
-    Similarly, Singhal and colleagues, propose Cornucopia \cite{cornucopia}.
+    Similarly, Singhal \etal, propose Cornucopia \cite{cornucopia}.
     Cornucopia generates multiple variants of a program by using different compiler flag combinations.
-    Aga and colleagues propose the generation of program variants through the randomization of its data layout in memory\cite{aga2019smokestack}. 
+    Aga \etal propose the generation of program variants through the randomization of its data layout in memory\cite{aga2019smokestack}. 
     This method allows each variant to operate on the same data in memory but at different memory offsets. 
     Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
     In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
@@ -214,14 +214,14 @@ Program variants, once generated and verified, may be used in two primary scenar
     Each multivariant binary is randomly deployed to a client.
     Then, the multivariant binary executes its embedded program variants at runtime. 
     These embedded variants can either execute in parallel to check for inconsistencies, or as a single program to randomize execution paths \cite{bhatkar03}. 
-    Bruschi and colleagues extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
-    At the same time, Salamat \etal modify a standard library to generate 32-bit Intel variants. 
+    Bruschi \etal extend the concept of executing two variants in parallel, introducing non-overlapping and randomized memory layouts \cite{bruschi2007diversified}. 
+    At the same time, Salamat \etal~modify a standard library to generate 32-bit Intel variants. 
     These variants have a stack that grows in the opposite direction, allowing for the detection of memory inconsistencies \cite{salamat2007stopping}. 
-    Davi and colleagues propose Isomeron, an approach for execution-path randomization \cite{davi2015isomeron}. 
+    Davi \etal propose Isomeron, an approach for execution-path randomization \cite{davi2015isomeron}. 
     Isomeron operates by simultaneously loading the original program and a variant. 
     It then uses a coin flip to determine which copy of the program to execute next at the function call level. 
     Previous works have highlighted the benefits of limiting execution to only two variants in a multivariant environment. 
-    Agosta and colleagues, as well as Crane and colleagues, used more than two generated programs in the multivariant composition, thereby randomizing software control flow at runtime \cite{agosta2015meet, crane2015thwarting}. 
+    Agosta \etal, as well as Crane \etal, used more than two generated programs in the multivariant composition, thereby randomizing software control flow at runtime \cite{agosta2015meet, crane2015thwarting}. 
     Both strategies have proven effective in enhancing security by addressing known vulnerabilities, such as Just-In-Time Return-Oriented Programming (JIT-ROP) attacks \cite{jackson2011compiler} and power side-channel attacks \cite{amarilli2011can}. 
     Lastly, only Voulimeneas \etal \cite{voulimeneas2021dmvx} have recently proposed a multivariant execution system that enhances security by parallelizing the execution of variants across different machines.
 \end{strategy}
@@ -230,9 +230,9 @@ Program variants, once generated and verified, may be used in two primary scenar
 \msubsection{Measuring Software Diversification}
 \label{measuring_diversification}
 Measuring Software Diversification presents a significant challenge. 
-The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks by making systems less predictable \cite{cohen1993operating}. 
+The size of the variant space does not necessarily correlate with a variant's capacity to fulfill an objective such as hardening attacks by making systems less predictable~\cite{cohen1993operating}. 
 Ideally, real scenarios would provide the most accurate measurement of diversification, e.g., demonstrating a variant's effectiveness under specific attacks. 
-However, such an approach is not always feasible, i.e., Software Diversification is a preventive strategy. 
+However, such an approach is not always feasible, since Software Diversification is a preventive strategy. 
 Hence, a combination of static and dynamic metrics is required for measuring Software Diversification.
 
 \begin{strategy}[Static comparison of variants]
@@ -242,7 +242,7 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     Usually, comparing variants means defining a distance metric between programs \cite{10.1145/2814270.2814319} where the more different the programs are, the greater the distance. 
     At the low-level of bytecode instructions, for example, these metrics include counting instructions \cite{10.1007/978-3-642-00730-9_10}, Levenshtein distance \cite{DBLP:journals/corr/abs-2111-09934}, and global alignments \cite{CROW}. 
     On the other hand, at the high-level of source code, these metrics often rely on Abstract Syntax Tree (AST) diffing, such as GUMtree-based distances \cite{gumtree} or machine learning inference \cite{203634}. 
-    As an example of measuring the diversification, Bostani \etal \cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
+    As an example of measuring the diversification, Bostani \etal~\cite{Bostani2021EvadeDroidAP} illustrate the use of static distances in guiding the generation process of variants. 
     They categorize the space of Android applications into malware and goodware. 
     Then, they create malware variants by employing a static distance metric to approach the goodware group as closely as possible, thus successfully evading malware classifiers.
 \end{strategy}
@@ -254,7 +254,7 @@ Hence, a combination of static and dynamic metrics is required for measuring Sof
     Take the addition of \texttt{nop} operations to a program as an instance. 
     Despite source code level differences, the variant and the original program execute identical instructions, leading to similar behaviors modulo input. 
     Measuring Software Diversification primarily aims to demonstrate variant-specific observabilities. 
-    While static differences are observable, runtime information holds complementary relevance \cite{yao2018anomaly}. 
+    While static differences are usually observable, runtime information holds complementary relevance \cite{yao2018anomaly}. 
     Therefore, dynamic metrics are essential to assess the diversity of variants. 
     For instance, Forrest \etal \cite{forrest_system_call} were pioneers in classifying program behaviors by analyzing their system call traces using n-grams profiling. 
     Cabrera \etal used a global alignments approach to gauge the diversity of JavaScript bytecode traces within the Chrome browser \cite{STRAC}. 
@@ -279,7 +279,7 @@ Regarding the dynamic comparisons, Wang \etal's study \cite{SEISMIC} profiles \W
 \msubsection{Offensive or Defensive assessment of diversification}
 \label{offensive_definition}
 
-Lundquist and colleagues \cite{offensive_div} distinguish Software Diversification into two categories: Defensive and Offensive Diversification. 
+Lundquist \etal~\cite{offensive_div} distinguish Software Diversification into two categories: Defensive and Offensive Diversification. 
 On the one hand, Defensive Software Diversification introduces unpredictability in system behavior. 
 By making software less predictable, defensive Software Diversification aims to proactively deter attacks, acting as a complementary strategy to other, more reactive, security measures. 
 The majority of previously discussed works in this section contribute to defensive diversification.
@@ -306,14 +306,14 @@ These methods aim to thwart static malware detectors, yet, more advanced techniq
 The term Offensive Software Diversification may seem counterintuitive.
 Yet, such approaches measure the resilience and accuracy of security systems. 
 This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
-Specifically, only Bhansali \etal seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
+Specifically, only Bhansali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
 More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to achieve malware evasion, but this approach is limited to altering only the code section of \Wasm binaries.
 
 
 
 \msection{Open challenges for Software Diversification}
 \label{sota:openchallenges}
-As outlined in \autoref{background:wasm:challenges}, our primary motivation for the contributions of this thesis is the open issues within the \Wasm ecosystem. 
+As outlined in \autoref{background:wasm:challenges}, our primary motivation for the contributions of this thesis are the open issues within the \Wasm ecosystem. 
 We see potential in employing Software Diversification to address them. 
 Based on our previous discussion, we highlight several open challenges in the realm of Software Diversification for \Wasm. 
 First, \Wasm, being an emerging technology, is in the process of implementing defensive measures. 

@@ -35,7 +35,7 @@ Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredi
 By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to another \Wasm instance (including itself by violating Control Flow Integrity) or even the host process. 
 Therefore, this poses a significant risk for the overall execution system.
 
-Narayan and colleagues \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
+Narayan \etal \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
 
 \begin{enumerate}
     \item The Spectre Branch Target Buffer (btb) attack exploits the branch target buffer by predicting the target of an indirect jump, thereby rerouting speculative control flow to an arbitrary target.
@@ -55,7 +55,7 @@ The green-highlighted section in \autoref{fig:defense_model} illustrates how Sof
 The core idea is to generate unique and diverse \Wasm variants that can be randomized at the time of deployment. 
 For this use case, we employ WASM-MUTATE as our tool for Software Diversification.
 
-To empirically demonstrate that Software Diversification can indeed mitigate Spectre vulnerabilities, we reuse the \Wasm attack scenarios proposed by Narayan and colleagues in their work on Swivel \cite{Swivel}. 
+To empirically demonstrate that Software Diversification can indeed mitigate Spectre vulnerabilities, we reuse the \Wasm attack scenarios proposed by Narayan \etal in their work on Swivel \cite{Swivel}. 
 Swivel is a compiler-based strategy designed to counteract Spectre attacks on \Wasm binaries by linearizing their control flow during machine code compilation. 
 Our approach differs from theirs in that it is binary-based, compiler-agnostic, and platform-agnostic; we do not propose altering the deployment or toolchain of FaaS platforms. 
 
