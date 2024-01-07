@@ -5,15 +5,15 @@ Despite the emphasis on security since its design and specification, \Wasm remai
 Furthermore, \Wasm has been manipulated to disseminate malware, particularly in cases of browser cryptojacking. 
 
 Web page resources, including those containing WebAssembly binaries, are predominantly served from centralized data centers in the modern digital landscape. 
-Thousands of edge devices, in conjunction with browser clients, operate millions of identical \Wasm instantiations every second. 
+In conjunction with browser clients, thousands of edge devices operate millions of identical \Wasm instantiations every second. 
 This phenomenon creates a highly predictable ecosystem, wherein potential attackers can anticipate behavior either in browsers or backend nodes. 
 Such predictability escalates the potential impact of vulnerabilities within these ecosystems, paving the way for high-impact side-channel and memory attacks. 
-For instance, a flaw in a web browser, instigated by a defective \Wasm program, holds the potential to affect millions of users.
+For instance, a flaw in a web browser, triggered by a defective \Wasm program, holds the potential to affect millions of users.
 
 
-This thesis aims to bolster the security within the \Wasm ecosystem through the introduction of Software Diversification methods and tools. 
-Software Diversification is a strategy designed to augment the costs of exploiting vulnerabilities by making software unpredictable.
-The unpredictability within ecosystems can be diminished by automatically generating various program variants. 
+This work aims to harden the security within the \Wasm ecosystem through the introduction of Software Diversification methods and tools. 
+Software Diversification is a strategy designed to augment the costs of exploiting vulnerabilities by making software less predictable.
+The unpredictability within ecosystems can be diminished by automatically generating different, yet functionally equivalent, program variants. 
 These variants strengthen observable properties that are typically used to launch attacks, and in many instances, can completely eliminate such vulnerabilities. 
 
 
