@@ -22,7 +22,7 @@ Our compiler-based approach specializes in producing high-preservation variants.
 However, the use of SMT solvers for functional verification lowers the diversification speed when compared with the binary-based method. 
 Furthermore, this method can only modify the code and function sections of \Wasm binaries.
 
-On the other hand, the method based on binary uses random e-graph traversals to create variants. 
+Moreover, our binary-based strategy uses random e-graph traversals to create variants. 
 This approach eliminates the need for modifications to existing compilers, ensuring compatibility with all existing \Wasm binaries. 
 Additionally, it offers a swift, efficient and novel method for generating variants through inexpensive random e-graph traversals. 
 Consequently, our binary-based approach can produce variants at a scale of at least one order of magnitude larger than our compiler-based approach. 
@@ -62,7 +62,7 @@ Simultaneously, they can produce variants that introduce noise into the executio
 Remarkably, we ensure the rapid transformation of \Wasm binaries, creating thousands of variants in a matter of minutes. 
 This swift generation of variants is particularly advantageous in highly dynamic scenarios such as FaaS and CDN platforms. 
 In this work, we do not discuss this case in depth. 
-Yet, we have empirically tested the effectiveness of moving target defense techniques \cite{jackson2011compiler}. 
+Yet, we have empirically tested the effectiveness of moving target defense techniques~\cite{MEWE}. 
 These tests were conducted on the Fastly edge computing platform.
 In this scenario, we incorporate multivariant executions\cite{MEWE}. 
 Fastly can redeploy a \Wasm binary across its 73 data centers worldwide in 13 seconds on average. 
@@ -99,7 +99,7 @@ Furthermore, this strategy might facilitate the identification and reduction of 
 Finally, our tools provide comprehensive details on the variant generation process. 
 This allows us to define and use more precise metrics between programs and variants to train a model for variant detection \cite{li2023rethinking}. 
 For instance, with the e-graphs in WASM-MUTATE, we can easily establish a metric to measure the distance between two programs. 
-To sum up, we plan to harness our tools to enhance the training of models within the \Wasm ecosystem. 
+To sum up, harnessing our tools to enhance the training of models within the \Wasm ecosystem might be a promising research area. 
 
 
 \vspace{-0.3cm}
@@ -113,22 +113,21 @@ Indeed, our research has shown that employing Software Diversification can be an
 This technique involves creating varied versions of a program, thereby reducing its predictability and making detection more challenging. 
 
 
-In our future research, we plan to tackle the challenge of refining the precision of malware detection systems. 
-We aim to achieve this by evaluating the effectiveness of program normalization \cite{seideman2023transformation}. 
-This strategy involves transforming a program into a standardized or "canonical" form \cite{Huang2017BinSequenceFA}.
+A future research area could be to tackle the challenge of refining the precision of malware detection systems. 
+This can be achieved by evaluating the effectiveness of program normalization \cite{seideman2023transformation}. 
+This strategy might involve transforming a program into a standardized or "canonical" form \cite{Huang2017BinSequenceFA}.
 A malware detection system in a pre-existing database is more likely to detect the canonical form.
 Just as a program can be transformed into multiple functionally equivalent variants, the inverse process is also possible. 
-In simple terms, two functionally equivalent programs can be transformed into the same original program. 
+In other words, two functionally equivalent programs can be transformed into the same original program. 
 
 
-
-We plan to examine two strategies. 
-First, we aim to employ WASM-MUTATE for program normalization. 
-By reusing the e-graph data structures to use the shortest possible replacements, we can secure the canonical representation of the input program. 
+Two concrete strategies could be explored. 
+First, employing WASM-MUTATE for program normalization. 
+By reusing the e-graph data structures to use the shortest possible replacements, one can secure the canonical representation of the input program. 
 Although normalization methods are not new, previous studies have grounded malware detection on the normalization of lifted code \cite{ 6234404, 10.1007/978-3-030-78120-0_5}. 
 \Wasm does not need to be lifted, given that its binary format is innately platform-agnostic. 
-Thus, we can directly normalize the \Wasm binary.
-Secondly, we can pre-compile \Wasm binaries at a minimal cost. 
+Thus, one can directly normalize the \Wasm binary.
+Secondly, one can pre-compile \Wasm binaries at a minimal cost. 
 Specifically, a \Wasm binary could initially undergo JIT compilation into machine code. 
 Overall, either of these two strategies aims to substantially reduce the number of malware variants that need consideration, thereby easing the task of classifiers in detecting harmful software. 
 
