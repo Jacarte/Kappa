@@ -31,7 +31,7 @@ Once generated, the multivariant \wasm\ binary can be deployed to any \wasm\ eng
 \begin{figure*}
   \centering
   \includegraphics[height=3.2in]{diagrams/MEWE.pdf}
-  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Finally, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. }
+  \caption{Overview of \tool workflow. It takes as input an LLVM binary. It first generates a set of functionally equivalent variants for each function in the binary using CROW. Then, MEWE generates an LLVM multivariant binary composed of all the function variants. Then, the Mixer includes the behavior in charge of selecting a variant when a function is invoked. Finally, the \tool mixer composes the LLVM multivariant binary with a random number generation library and tampers the original application entrypoint. The final process produces a \wasm\ multivariant binary ready to be deployed. }
   \label{workflow}
 \end{figure*}
 
@@ -43,7 +43,7 @@ A dispatcher function is a synthetic function in charge of choosing a variant at
 With the introduction of the dispatcher function,  \tool turns the original call graph into a multivariant call graph, defined as follows. 
 
 
-\begin{definition}{Multivariant Call Graph (MCG):}\label{def:EP}
+\begin{definition}[Multivariant Call Graph (MCG)]\label{def:EP}
   A multivariant call graph is a call graph $\langle N, E \rangle$ where the nodes in $N$ represent all the functions in the binary and an edge $(f_1,f_2) \in E$ represents a possible invocation of $f_2$ by $f_1$  \cite{ryder1979}. The nodes in $N$ have three possible types: a function present in the original program,  a generated function variant, or a dispatcher function.
 \end{definition}
 

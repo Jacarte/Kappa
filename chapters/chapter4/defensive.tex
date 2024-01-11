@@ -92,7 +92,7 @@ The names of these programs and the specific attacks we examine are available in
 For each of these four binaries, we generate up to 1000 random stacked transformations (see \autoref{stack_transform}) using 100 distinct seeds, resulting in a total of 100,000 variants for each original binary. 
 At every 100th stacked transformation for each binary and seed, we assess the impact of diversification on the Spectre attacks by measuring the attack bandwidth for data exfiltration. 
 
-\begin{definition}{Attack bandwidth:}\label{metric:ber}
+\begin{definition}[Attack bandwidth]\label{metric:ber}
     Given data $D=\{b_0, b1, ..., b_C\}$ being exfiltrated in time $T$ and $K = {k_0, k_1, ..., k_N}$ the collection of correct data bytes, the bandwidth metric is defined as:
     $$
         \frac{|b_i\text{ such that } b_i \in K|}{T}

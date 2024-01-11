@@ -2,7 +2,7 @@
 \msection{\tool: Fast and Effective Binary Diversification for WebAssembly}
 \label{tech::wasmmutate}
 
-In this section, we introduce our third technical contribution, \tool \cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
+In this section, we introduce our third technical contribution, \tool~\cite{wasmmutate}, a tool that generates thousands of functionally equivalent variants out of a WebAssembly binary input. 
 Leveraging rewriting rules and e-graphs \cite{e-graph} for software diversification, \tool synthesizes program variants by transforming any section of the original \Wasm binary. 
 In \autoref{fig:approach_landscape}, we highlight \tool as the blue squared tooling.
 
@@ -24,7 +24,7 @@ Then, pieces of the original program are randomly substituted by the result of r
 \tool applies one transformation at a time.
 Notice that, the output of one applied transformation can be chained again as an input \Wasm binary, enabling the generation of many variants, leading us to enunciate the notion of \emph{Stacked transformation}
 
-\begin{definition}{Stacked transformation:}\label{stack_transform}
+\begin{definition}[Stacked transformation]\label{stack_transform}
     Given an original input \Wasm binary $I$ and a diversifier $D$, stacked transformations are defined as the application of $D$ over the binary $I$ multiple times, i.e., $D(D(D(...(I))))$.  Notice that, the number of stacked transformations is the number of times the diversifier $D$ is applied.
 \end{definition}
 
@@ -35,7 +35,7 @@ Notice that, the output of one applied transformation can be chained again as an
 \tool contains a comprehensive set of 135 rewriting rules.
 In this context, a rewriting rule is a tuple \texttt{(LHS, RHS, Cond)} where \texttt{LHS} specifies the segment of binary targeted for replacement, \texttt{RHS} describes its functionally equivalent substitute, and \texttt{Cond} outlines the conditions that must be met for the replacement to take place, e.g. enhancing type constraints.
 \tool groups these rewriting rules into meta-rules depending on their target inside a \wasm binary, ranging from high-level changes affecting binary section structure to low-level modifications within the code section. 
-This section focuses on the biggest meta-rule implemented in \tool, the \texttt{Peephole} meta-rule \footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
+This section focuses on the biggest meta-rule implemented in \tool, the \texttt{Peephole} meta-rule\footnote{For an in-depth explanation of the remaining meta-rules, refer to \cite{wasmmutate}.}. 
 
 % Determinism
 Rewriting rules inside the \emph{Peephole} meta-rule, operate over the data flow graph of instructions within a function body, representing the lowest level of rewriting.  
@@ -63,7 +63,7 @@ The unfolding rewriting rule indirectly stresses this segment of memory when app
 Notably, with this specific rewriting rule, we have found a CVE in the wasmtime standalone engine \cite{CVE}.
 
 
-\msubsection{E-Graphs traversals}
+\msubsection{E-Graph traversal}
 
 
 We developed \tool leveraging e-graphs, a specific graph data structure for representing and applying rewriting rules \cite{10.1145/3571207}. 
@@ -74,7 +74,7 @@ Edges within the graph establish operator-operand equivalence relations between 
 In the context of \tool, e-graphs are constructed from the input \Wasm program and the implemented rewriting rules (we detail the e-graph construction process in Section 3 of \cite{wasmmutate}).
 
 % General use of case
-Willsey et al. highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
+Willsey et al.~highlight the potential for high flexibility in extracting code fragments from e-graphs, a process that can be recursively orchestrated through a cost function applied to e-nodes and their respective operands.
 This methodology ensures the functional equivalence of the derived code \cite{e-graph}. 
 For instance, e-graphs address the challenge of generating the optimal code from multiple optimization rules, regardless of their application sequence \cite{10.1145/1480881.1480915}.
 To extract the "optimal" code from an e-graph, one might commence the extraction at a specific e-node, subsequently selecting the AST with the minimal size from the available options within the corresponding e-class's operands.
@@ -84,7 +84,7 @@ We exploit such property to rapidly generate diverse \Wasm variants.
 We propose and implement an algorithm that facilitates the random traversal of an e-graph to yield functionally equivalent program variants, as detailed in \autoref{peephole:mutator}. 
 This algorithm operates by taking an e-graph, an e-class node (starting with the root's e-class), and a parameter specifying the maximum extraction depth of the expression, to prevent infinite recursion.
 Within the algorithm, a random e-node is selected from the e-class (as seen in lines 5 and 6), setting the stage for a recursive continuation with the offspring of the selected e-node (refer to line 8). 
-Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line 3). 
+Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line~3). 
 Following this, the subexpressions are built (line 10) for each child node, culminating in the return of the complete expression (line 11).
 
 
@@ -120,7 +120,7 @@ Following this, the subexpressions are built (line 10) for each child node, culm
 % \todo{FIX cross refs}
 
 % Example of a random e-graph traversal 
-Let us illustrate how \tool generates variant programs by using the before enunciated algorithm.
+Let us illustrate how \tool generates variant programs by using the algorithm enunciated previously.
 Here, we use Algorithm \ref{peephole:mutator} with a maximum depth of 1.
 In \autoref{example:peeporig} a hypothetical original Wasm binary is illustrated.
 In this context, a potential user has set two pivotal rewriting rules: \texttt{(x, container (x nop),)} and \texttt{(x, x i32.add 0, x instanceof i32)}.
@@ -131,17 +131,11 @@ The latter rule adds zero to any numeric value.
 \input{snippets/snippets-wasm-mutate/peephole/peep_example}
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\linewidth]{figures/e-graph-traversal2.pdf}
-    \caption{e-graph built for rewriting the first instruction of \autoref{example:peeporig}. }
-  \label{e-graph3}
-\end{figure}
-
-
-
 Leveraging the code presented in \autoref{example:peeporig} alongside the defined rewriting rules, we build the e-graph, simplified in \autoref{e-graph3}.
 In the figure, we highlight various stages of Algorithm \ref{peephole:mutator} in the context of the scenario previously described. 
+
+
+
 The algorithm initiates at the e-class with the instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
 At \step{2}, it randomly selects an equivalent node within the e-class, in this instance taking the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
 As the traversal advances, it follows on the left operand of the previously chosen node, settling on the \texttt{i64.const 0} node within the same e-class \step{3}.
@@ -151,8 +145,16 @@ The algorithm chooses the right operand of the \texttt{container} \step{5}, whic
 {\texttt{expr = i64.or (i64.const 0 container( i64.const 1 nop))\ i64.const 1}}.
 As we proceed to the encoding phases, the \texttt{container} operator is ignored as a real Wasm instruction, finally resulting in the program in \autoref{example:peepapplied}.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figures/e-graph-traversal2.pdf}
+  \caption{E-graph built for rewriting the first instruction of \autoref{example:peeporig}. }
+\label{e-graph3}
+\end{figure}
+
 Notice that, within the e-graph showcased in \autoref{e-graph3}, the container node maintains equivalence across all e-classes. 
 Consequently, increasing the depth parameter in \autoref{peephole:mutator} would potentially escalate the number of viable variants infinitely.
+
 
 %s\todo{Augment this last paragraph.}
 

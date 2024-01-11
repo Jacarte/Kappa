@@ -12,7 +12,7 @@ This architecture is illustrated in the leftmost part of \autoref{fig:approach_l
 
 Software Diversification can be integrated at various stages of this compilation process. 
 However, applying diversification at the frontend has limitations, as it would need a unique diversification mechanism for each language compatible with the frontend component. 
-This makes the latter stages of the compilers an ideal point for introducing practical \wasm diversification techniques.
+This makes the later stages of the compilers an ideal point for introducing practical \wasm diversification techniques.
 
 Our compiler-based strategies, represented in red and green in \autoref{fig:approach_landscape}, introduce a diversifier component into the transformer and backend stages. 
 This transformer component generates variants in the intermediate representation of a compiler, thereby creating artificial software diversity for \Wasm. 
@@ -23,7 +23,6 @@ Our binary-based strategy, WASM-MUTATE, represented in blue in \autoref{fig:appr
 
 Within this chapter, we introduce three technical contributions: CROW, MEWE, and WASM-MUTATE.
 We also compare these contributions, highlighting their complementary nature.
-Additionally, we provide the artifacts for our contributions to promote open research and reproducibility of our main takeaways.
-
+Remarkably, we provide the artifacts for our contributions to advocate for open research and reproducibility of our main takeaways.
 
 \renewcommand{\tool}{CROW\xspace}

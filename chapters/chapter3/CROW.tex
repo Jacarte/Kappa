@@ -23,7 +23,7 @@ The final step involves the custom Wasm LLVM backend, which compiles the crafted
 %\emph{Exploration}
 \msubsection{Enumerative synthesis}
 
-The cornerstone of CROW's exploration mechanism is its code replacement generation strategy, which is inspired by the superdiversifier methodology proposed by Jacob \etal \cite{jacob2008superdiversifier}. 
+The cornerstone of CROW's exploration mechanism is its code replacement generation strategy, which is inspired by the superdiversifier methodology proposed by Jacob \etal~\cite{jacob2008superdiversifier}. 
 The search space for generating variants is delineated through an enumerative synthesis process (see \mnameref{enumerative_synthesis}{artificial_diversity}), which systematically produces all possible code replacements for each data flow graph that can be constructed from the original program. 
 If a code replacement is identified to function identically to the original program, it is reported as a functionally equivalent variant.
 This equivalence is confirmed using a theorem solver for rigorous verification.
@@ -44,9 +44,9 @@ For instance, if a suitable replacement is identified that can be applied at $N$
 This approach leads to a combinatorial explosion in the number of available program variants, especially as the number of possible replacements increases.
 Third, we remove all built-in optimizations in the LLVM backend that could reverse Wasm variants, i.e., we disable all optimizations in the \wasm\ backend that could reverse the CROW transformations
 
-Notice that, the search space increases exponentially with the size of the language used for enumerative synthesis. 
-To mitigate this issue, we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend, effectively reducing the searching space. 
-For example, creating an expression having the  \texttt{freeze} LLVM instructions will increase the searching space for instruction without a Wasm's opcode in the end.
+Notice that, the search space increases exponentially with the number of language instructions used for enumerative synthesis. 
+To mitigate this issue, we prevent CROW from synthesizing instructions without correspondence in the \wasm\ backend.
+For example, removing LLVM instructions without corresponding \Wasm instructions effectively reduces the search space.
 
 % The full spectrumg
 Leveraging the ascending nature of its enumerative synthesis process, CROW is capable of creating variants that may outperform the original program in both size and efficiency. 
@@ -137,11 +137,11 @@ int babbage() {
 }
 
 % llvm-opt: rool unroll
-CROW deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached \footnote{
+CROW deals with this case, generating the program in \autoref{inferring}. It infers the value of \texttt{current} in Line 2 such that the Babbage condition is reached\footnote{
     In theory, this value can also be inferred by unrolling the loop the correct number of times with the LLVM toolchain.
     However, standard LLVM tools cannot unroll the \texttt{\textbf{while}}-loop because the loop count is too large.}. 
 Therefore, the condition in the loop will always be false. Then, the loop is dead code and is removed in the final compilation. 
-The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in C language, this process inside CROW is performed directly in LLVM IR.}.
+The new program in \autoref{inferring} is remarkably smaller and faster than the original code. Therefore, it offers differences both statically and at runtime\footnote{ Notice that for the sake of illustration, we show both codes in the C language; this process inside CROW is performed directly in LLVM IR.}.
 %  Also, notice that the two programs in the example follow the definition of \emph{functional equivalence} discussed in \autoref{sota:sota}.}
 
 
