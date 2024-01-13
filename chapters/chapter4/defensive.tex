@@ -26,6 +26,7 @@ This architecture inherently isolates \Wasm binary executions from each other as
 However, while \Wasm is engineered with a strong focus on security and isolation, it is not entirely immune to vulnerabilities such as Spectre attacks \cite{Spectre,Narayan2021Swivel} (\step{4} in \autoref{fig:edge_model}). 
 In the sections that follow, we explore how software diversification techniques can be employed to harden \Wasm binaries against such attacks.
 
+\vspace{-2mm}
 \msubsection{Threat model: speculative side-channel attacks}
 
 To illustrate the threat model concerning \Wasm programs in FaaS platforms, consider the following scenario. 
@@ -35,6 +36,7 @@ Spectre attacks exploit hardware-based prediction mechanisms to trigger mispredi
 By taking advantage of this speculative execution, an attacker can potentially access sensitive information stored in the memory allocated to another \Wasm instance (including itself by violating Control Flow Integrity) or even the host process. 
 Therefore, this poses a significant risk for the overall execution system.
 
+\vspace{-0.3mm}
 Narayan \etal \cite{Narayan2021Swivel} have categorized potential Spectre attacks on \Wasm binaries into three distinct types, each corresponding to a specific hardware predictor being exploited and a particular FaaS scenario: Branch Target Buffer Attacks,  Return Stack Buffer Attacks, and Pattern History Table Attacks defined as follows:
 
 \begin{enumerate}
@@ -62,7 +64,7 @@ Our approach differs from theirs in that it is binary-based, compiler-agnostic, 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\linewidth]{figures/edge_protected.pdf}
+    \includegraphics[width=0.8\linewidth]{figures/edge_protected.pdf}
     \caption{Diversifying \Wasm binaries to mitigate Spectre attacks in FaaS platforms.}
     \label{fig:defense_model}
 \end{figure}
@@ -163,6 +165,7 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
 
 \input{snippets/spectre/timer}
 
+\vspace{2mm}
 \begin{strategy}[Padding speculated instructions]
     CPUs have a limit on the number of instructions they can cache. 
     WASM-MUTATE injects instructions to exceed this limit, effectively disabling the speculative execution of memory accesses.
@@ -193,6 +196,7 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
 
 %\todo{Do those results hold only for Spectre? do they generalize to other attacks? do you recommend binary diversification for any Wasm build pipeline as an hardening technique? how far are we from that?}
 
+%\vspace{1cm}
 \begin{tcolorbox}[title=Reflection,boxrule=1pt,arc=.2em,boxsep=1.0mm]
 
    % Do those results hold only for Spectre?
@@ -221,12 +225,12 @@ If we consider the results in \autoref{comp:table:tools}, generating a variant w
 
 
 % \subsection{Deoptimization}
-
+%\vspace{1cm}
 \begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     WASM-MUTATE crafts \Wasm binaries that are resilient to Spectre-like attacks. 
     %By integrating a software diversification layer into \Wasm binaries deployed on Function-as-a-Service (FaaS) platforms, security can be significantly bolstered. 
     %This approach allows for the deployment of unique and diversified \Wasm binaries, potentially utilizing a distinct variant for each cloud node, thereby enhancing the overall security.
-    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
+    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal ``WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly''
     \emph{submitted to Computers \& Security, under revision, 2023}
     \url{https://arxiv.org/pdf/2309.07638.pdf}. 
 \end{tcolorbox}

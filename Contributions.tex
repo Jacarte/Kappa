@@ -3,29 +3,29 @@
 % Each chapter is a paper
 % chapter tiltes formatting
 \titleformat{\chapter}[display]
-  {\LARGE}
+  {\Large}
   {\renewcommand{\thechapter}{{\color{gray}P}\arabic{chapter}}\hspace*{0.5em}
   %\colorbox{blacm}
   {}}
   {-1ex}
   {%\color{black}\titlerule
-  \vspace{0ex}\Huge\MakeUppercase{#1}}
-  [\vspace{.5ex}
+  \vspace{-0.5cm}\huge\MakeUppercase{#1}}
+  [\vspace{.0ex}
   \color{black}
   \titlerule
   ]
 % chapter tiltes spacing
 \titlespacing*{\chapter}{0pt}{20pt}{80pt}
 
-\renewcommand{\thechapter}{}\hspace*{-0.5em}
+\renewcommand{\thechapter}{}\hspace*{-1em}
   %\colorbox{blacm}
   {}
-\titlecontents{chapter}
-  [-3.8pc]
-  {{\addvspace{10pt}}}%
+  \titlecontents{chapter}
+  [-3.9pc]
+  {{\addvspace{8pt}}}%
   {\normalsize}
   {\normalsize}
-  {\bfseries\hfill\large\contentspage}%
+  {\hfill\large\contentspage}%
 
 % \setcounter{chapter}{0}
 \getenv[\ADDCONTRIB]{ADDCONTRIB}
@@ -41,8 +41,7 @@
     {} %
     
 
-\chapter{WASM-MUTATE: Fast and Effective Binary Diversification for
-WebAssembly}
+\chapter{\mbox{WASM-MUTATE}:~Fast~and~Effective~Binary~Diversification~for~\mbox{WebAssembly}}
 \textbf{Javier Cabrera-Arteaga}, Nick Fitzgerald, Martin Monperrus, Benoit Baudry\\
 \emph{Submitted to Computers \& Security, under revision}\\\\
 %\url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}\\\\

@@ -93,7 +93,7 @@ Memory alterations, either to the unmanaged or managed memories, have substantia
 This impact bears significant relevance for CROW and MEWE as they do not directly address the \Wasm memory model.
 Nevertheless, the \Wasm code section undergoes significant modifications by CROW and MEWE. 
 These changes substantially alter the managed memory by transforming the layout of the \Wasm binary in memory once JITed.
-For example, the \emph{constant inferring} transformations are "aggresive" since they considerably change the structure of a \Wasm variant.
+For example, the \emph{constant inferring} transformations are ``aggresive'' since they considerably change the structure of a \Wasm variant.
 Thus, they considerably affect unmanaged memory elements such as the returning address of a function.
 Furthermore, WASM-MUTATE not only affects managed memory through changes in the \Wasm program layout as CROW and MEWE.
 WASM-MUTATE also adds explicit rewriting rules to transform unmanaged memory instructions.

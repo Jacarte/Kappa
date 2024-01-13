@@ -34,7 +34,7 @@ The case illustrated in the subsequent sections uses Offensive Software Diversif
 
 
 Considering the previous scenario, several techniques can be directly implemented in browsers to thwart cryptojacking by identifying the malicious \Wasm components. 
-Such a defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm malicious binary is blocked in \step{3}.
+Such a defense scenario is illustrated in \autoref{fig:threat_model}, where the \Wasm malicious binary is blocked in~\step{3}.
 The primary aim of our use case is to investigate the effectiveness of code diversification as a means to circumvent cryptojacking defenses. 
 Specifically, we assess whether the following evasion workflow can successfully bypass existing security measures:
 
@@ -48,14 +48,14 @@ Specifically, we assess whether the following evasion workflow can successfully 
 
 \begin{enumerate}
     
-    \item The user loads a webpage infected with cryptojacking malware, which leverages network resources for execution—corresponding to \step{1} and \step{2} in \autoref{fig:threat_model}. 
+    \item The user loads a webpage infected with cryptojacking malware, which leverages network resources for execution—corresponding to~\step{1} and~\step{2} in \autoref{fig:threat_model}. 
     
-    \item A malware detection mechanism (malware oracle) identifies and blocks malicious WebAssembly binaries at \step{3}. 
+    \item A malware detection mechanism (malware oracle) identifies and blocks malicious WebAssembly binaries at~\step{3}. 
     For example, a network proxy could intercept and forward these resources to an external detection service via its API.
     
-    \item Anticipating that a specific malware detection system is consistently used for defense, the attacker swiftly generates a variant of the WebAssembly cryptojacking malware designed to evade detection at \step{4}.
+    \item Anticipating that a specific malware detection system is consistently used for defense, the attacker swiftly generates a variant of the WebAssembly cryptojacking malware designed to evade detection at~\step{4}.
     
-    \item The attacker delivers the modified binary instead of the original one \step{5}, which initiates the cryptojacking process and compromises the browser \step{6}. The detection method is not capable of detecting the malicious nature of the binary, and the attack is successful.
+    \item The attacker delivers the modified binary instead of the original one~\step{5}, which initiates the cryptojacking process and compromises the browser~\step{6}. The detection method is not capable of detecting the malicious nature of the binary, and the attack is successful.
     
 \end{enumerate}
 
@@ -132,11 +132,11 @@ The final row offers the median number of transformations required for evasion a
 \begin{table}
     \footnotesize
     \centering
-    \begin{tabular}{c | r | r l | r l | t }
+    \begin{tabular}{ c | r | r l | r l | t }
         \hline
         & \multicolumn{5}{|c|}{VirusTotal} & MINOS\cite{MINOS} \\
         \hline
-        Hash & \#D & \multicolumn{2}{c|}{Stochastic diversification} & \multicolumn{2}{c|}{Feedback-guided diversification} & \\
+        Hash & \#D & \multicolumn{2}{c|}{Stochastic div.} & \multicolumn{2}{c|}{Feedback-guided div.} & \\
         \hline
         &  & Max. #evaded & Mean #trans. & Max. #evaded & Mean #trans. & Mean #trans. \\
         \hline\hlined
@@ -203,6 +203,7 @@ The final row offers the median number of transformations required for evasion a
     \label{offensive:results:fast}
 \end{table}
 
+
 \begin{strategy}[Stochastic diversification to evade VirusTotal]
     \label{stochastic_div_vt}
     We execute a stochastic diversification with WASM-MUTATE, setting a limit of 1000 iterations for each binary. 
@@ -242,7 +243,7 @@ The final row offers the median number of transformations required for evasion a
     \label{stochastic_div_minos}
     Relying exclusively on VirusTotal for detection could pose issues, particularly given the existence of specialized solutions for \Wasm, which differ from the general-purpose vendors within VirusTotal. 
     In \autoref{background:wasm:analysis} we highlight several examples of such solutions.
-    Yet, for its simplicity, we extend this experiment by using MINOS\cite{MINOS}, an antivirus specifically designed for \Wasm. 
+    Yet, for its simplicity, we extend this experiment by using MINOS~\cite{MINOS}, an antivirus specifically designed for \Wasm. 
     The results of evading MINOS can be seen in the final column of \autoref{offensive:results:fast}.
     The bottom row of \autoref{offensive:results:fast} highlights that fewer iterations are required to evade MINOS than VirusTotal through WebAssembly diversification, indicating a greater ease in eluding MINOS.
     The stochastic diversification setup requires a median iteration count of 218 to evade VirusTotal. 
@@ -285,7 +286,7 @@ The final row offers the median number of transformations required for evasion a
 
 \begin{tcolorbox}[title=Contribution paper,boxrule=1pt,arc=.2em,boxsep=1.0mm]
     WASM-MUTATE generates correct and performant variants of WebAssembly cryptojacking that successfully evade malware detection.
-    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal "WebAssembly Diversification for Malware Evasion"
+    The case discussed in this section is fully detailed in Cabrera-Arteaga \etal ``WebAssembly Diversification for Malware Evasion''
     \emph{at Computers \& Security, 2023}
     \url{https://www.sciencedirect.com/science/article/pii/S0167404823002067}. 
 \end{tcolorbox}
