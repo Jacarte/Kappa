@@ -60,13 +60,6 @@ The original program includes three functions. \tool generates 43 variants for t
 \tool introduces two dispatcher nodes for the first and third functions. Each dispatcher is connected to the corresponding function variants to invoke one variant randomly at runtime.
 
 
-\begin{figure}[h]
-  \centering
-\includegraphics[width=.75\linewidth]{diagrams/CFG.png}
-\caption{Example of two static call graphs. At the top, is the original call graph, and at the bottom, is the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow).
-}
-\label{multivariant}
-\end{figure}
 
 In \autoref{listing:multivariant_template}, we demonstrate how MEWE constructs the function dispatcher, corresponding to the rightmost green node in \autoref{multivariant}, which handles three created variants including the original. 
 The dispatcher function retains the same signature as the original function. Initially, the dispatcher invokes a random number generator, the output of which is used to select a specific function variant for execution (as seen on line 6 in \autoref{listing:multivariant_template}). 
@@ -84,8 +77,10 @@ Remarkably, we prioritize security over performance, i.e., while using indirect 
     breaklines=true,
     numbers=none,
     stepnumber=1,
+    firstnumber=1,
     float
 }
+
 
 \begin{minipage}[t]{0.9\linewidth}
 \scriptsize
@@ -124,6 +119,14 @@ define internal i32 @foo(i32 %0) {
 \end{minipage}
 
 
+\begin{figure}[h]
+  \centering
+\includegraphics[width=.75\linewidth]{diagrams/CFG.png}
+\caption{Example of two static call graphs. At the top, is the original call graph, and at the bottom, is the multivariant call graph, which includes nodes that represent function variants (in gray), dispatchers (in green), and original functions  (in yellow).
+}
+\label{multivariant}
+\end{figure}
+
 %\msubsection{MEWE's Mixer}
 
 %\todo{Augment the description of the MIXER.}
@@ -135,6 +138,6 @@ define internal i32 @foo(i32 %0) {
   MEWE is fully presented in Cabrera-Arteaga \etal "Multi-Variant Execution at the Edge"
   \emph{Proceedings of Moving Target Defense, 2022, ACM}
  \url{https://dl.acm.org/doi/abs/10.1145/3560828.3564007}
- \\\\
+ \\
  MEWE is also available as an open-source tool at \url{https://github.com/ASSERT-KTH/MEWE}
 \end{tcolorbox}

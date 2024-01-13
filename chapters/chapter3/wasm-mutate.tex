@@ -87,38 +87,38 @@ Within the algorithm, a random e-node is selected from the e-class (as seen in l
 Once the depth parameter reaches zero, the algorithm extracts the most concise expression available within the current e-class (line~3). 
 Following this, the subexpressions are built (line 10) for each child node, culminating in the return of the complete expression (line 11).
 
-
-\algnewcommand\algorithmicforeach{\textbf{for each}}
-\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
-\begin{algorithm}
-    %\footnotesize
-	\begin{algorithmic}[1]
-	%	\Procedure{MyProcedure}{}
-      \Procedure{traverse}{$egraph$, $eclass$, $depth$}
-        \If{depth = 0}
-          \State  \Return \textbf{smallest\_tree\_from}(egraph,\ eclass)
-        \Else
-            \State $nodes \gets egraph[eclass]$
-            \State $node \gets random\_choice(nodes)$
-            \State $expr \gets (node, operands=[])$
-            \ForEach {$child \in node.children $}
-                \State $subexpr \gets \textbf{TRAVERSE}(egraph,\ child,\ depth - 1)$
-                \State $expr.operands \gets expr.operands \cup\ \{subexpr\}$
-            \EndFor
-            \State \Return $expr$
-        \EndIf
-        \EndProcedure
-	\end{algorithmic} 
-	\caption{e-graph traversal algorithm taken from \cite{wasmmutate}.} 
-	\label{peephole:mutator}
-\end{algorithm}
-
+\vspace{0.3cm}
+{
+    \algnewcommand\algorithmicforeach{\textbf{for each}}
+    \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+    \begin{algorithm}
+        %\footnotesize
+      \begin{algorithmic}[1]
+      %	\Procedure{MyProcedure}{}
+          \Procedure{traverse}{$egraph$, $eclass$, $depth$}
+            \If{depth = 0}
+              \State  \Return \textbf{smallest\_tree\_from}(egraph,\ eclass)
+            \Else
+                \State $nodes \gets egraph[eclass]$
+                \State $node \gets random\_choice(nodes)$
+                \State $expr \gets (node, operands=[])$
+                \ForEach {$child \in node.children $}
+                    \State $subexpr \gets \textbf{TRAVERSE}(egraph,\ child,\ depth - 1)$
+                    \State $expr.operands \gets expr.operands \cup\ \{subexpr\}$
+                \EndFor
+                \State \Return $expr$
+            \EndIf
+            \EndProcedure
+      \end{algorithmic} 
+      \caption{e-graph traversal algorithm.} 
+      \label{peephole:mutator}
+    \end{algorithm}
+}
 
 
 \msubsection{Exemplifying \tool}
 
 % \todo{FIX cross refs}
-
 % Example of a random e-graph traversal 
 Let us illustrate how \tool generates variant programs by using the algorithm enunciated previously.
 Here, we use Algorithm \ref{peephole:mutator} with a maximum depth of 1.
@@ -128,13 +128,10 @@ The former rule grants the ability to append a \texttt{nop} instruction to any s
 The latter rule adds zero to any numeric value.
 
 
-\input{snippets/snippets-wasm-mutate/peephole/peep_example}
-
-
 Leveraging the code presented in \autoref{example:peeporig} alongside the defined rewriting rules, we build the e-graph, simplified in \autoref{e-graph3}.
 In the figure, we highlight various stages of Algorithm \ref{peephole:mutator} in the context of the scenario previously described. 
 
-
+\input{snippets/snippets-wasm-mutate/peephole/peep_example1}
 
 The algorithm initiates at the e-class with the instruction \texttt{i64.const 1}, as seen in \autoref{example:peeporig}.
 At \step{2}, it randomly selects an equivalent node within the e-class, in this instance taking the \texttt{i64.add} node, resulting: {\texttt{expr = i64.add l r}}.
@@ -144,6 +141,9 @@ Then, the right operand of the \texttt{i64.add} node is selected, selecting the 
 The algorithm chooses the right operand of the \texttt{container} \step{5}, which correlates to the initial instruction e-node highlighted in \step{6}, culminating in the final expression:
 {\texttt{expr = i64.or (i64.const 0 container( i64.const 1 nop))\ i64.const 1}}.
 As we proceed to the encoding phases, the \texttt{container} operator is ignored as a real Wasm instruction, finally resulting in the program in \autoref{example:peepapplied}.
+
+
+\input{snippets/snippets-wasm-mutate/peephole/peep_example}
 
 \begin{figure}[H]
   \centering
@@ -159,11 +159,11 @@ Consequently, increasing the depth parameter in \autoref{peephole:mutator} would
 %s\todo{Augment this last paragraph.}
 
 
-\begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+\begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=0.5mm]
   \tool uses hand-made rewriting rules and random traversals over e-graphs to provide a binary-based solution for \Wasm diversification. \\
   \tool is fully presented in Cabrera-Arteaga \etal "WASM-MUTATE: Fast and Effective Binary Diversification for WebAssembly"
   \emph{Submitted to Computers \& Security, under revision. }
  \url{https://arxiv.org/pdf/2309.07638.pdf}.
-  \\\\
+  \\
   \tool is available at \url{https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-mutate} as a contribution to the Bytecode Alliance organization \toolcite{https://bytecodealliance.org/}. The Bytecode Alliance is dedicated to creating secure new software foundations, building on standards such as WebAssembly and WASI.
 \end{tcolorbox}

@@ -31,7 +31,6 @@ func $f (param i32) (result i32)
     `i32.mul`
     `local.get 0`
     `i32.add`
-
         \end{lstlisting}
 \begin{lstlisting}[xleftmargin=1em,escapechar=?]
 func $f (param i32) (result i32)
@@ -40,7 +39,6 @@ func $f (param i32) (result i32)
     !i32.add!
     `local.get 0`
     `i32.add`
-
                 \end{lstlisting}
     \end{minipage}\hfill
     \noindent\begin{minipage}[t]{.45\linewidth}
@@ -51,20 +49,18 @@ func $f (param i32) (result i32)
     !i32.shl!
     `local.get 0`
     `i32.add`
-
     \end{lstlisting}
 \begin{lstlisting}[xleftmargin=1em,escapechar=?]
 func $f (param i32) (result i32)
     local.get 0
     !i32.const 3!
     !i32.mul!
-
         \end{lstlisting}
     \end{minipage}
 
     \centering
     \hrule
-    \vspace{2mm}
+    \vspace{1mm}
     \captionof{lstlisting}{Wasm  program variants generated from program \autoref{CExample}.}\label{example:crow:variants:wasm}
 \end{minipage}
 

@@ -155,22 +155,24 @@ Let us illustrate how CROW works with the example code in \autoref{CExample}. Th
 % snippet of code showing the detection of code blocks
 \input{snippets/llvm_code_blocks.tex}
     
+\input{snippets/wasm_codes.tex}
+
+\vspace{-0.15cm}
 
 CROW, detects \texttt{code\_1} and \texttt{code\_2} as the enclosing boxes in the leftmost part of \autoref{example:crow:original:llvm} shows. CROW synthesizes $2 + 1$ candidate code replacements for each code respectively as the green highlighted lines show in the rightmost parts of \autoref{example:crow:original:llvm}.
 The baseline strategy of CROW is to generate variants out of all possible combinations of the candidate code replacements, \ie uses the power set of all candidate code replacements.
 
-In the example, the power set is the cartesian product of the found candidate code replacements for each code block, including the original ones, as \autoref{example:crow:original:combination} shows. The power set size results in $6$ potential function variants. Yet, the generation stage would eventually generate $4$ variants from the original program. CROW generated 4 statically different Wasm files, as \autoref{example:crow:variants:wasm} illustrates. This gap between the potential and the actual number of variants is a consequence of the redundancy among the bitcode variants when composed into one. In other words, if the replaced code removes other code blocks, all possible combinations having it will be in the end the same program. In the example case, replacing \texttt{code\_2} by \texttt{mul nsw \%0, 3}, turns \texttt{code\_1} into dead code, thus, later replacements generate the same program variants. The rightmost part of \autoref{example:crow:original:combination} illustrates how for three different combinations, CROW produces the same variant. We call this phenomenon a \emph{code replacement overlapping}.
+In the example, the power set is the cartesian product of the found candidate code replacements for each code block, including the original ones, as \autoref{example:crow:original:combination} shows. The power set size results in $6$ potential function variants. Yet, the generation stage would eventually generate $4$ variants from the original program. CROW generated 4 statically different Wasm files, as \autoref{example:crow:variants:wasm} illustrates. This gap between the potential and the actual number of variants is a consequence of the redundancy among the bitcode variants when composed into one. In other words, if the replaced code removes other code blocks, all possible combinations having it will be in the end the same program. In the example case, replacing \texttt{code\_2} by \texttt{mul nsw \%0, 3}, turns \texttt{code\_1} into dead code, thus, later replacements generate the same program variants. The rightmost part of \autoref{example:crow:original:combination} illustrates how for three different combinations, CROW produces the same variant. We call this phenomenon \emph{code replacement overlapping}.
 
-\input{snippets/wasm_codes.tex}
 
-\begin{tcolorbox}[title=Contribution paper and artifact,boxrule=1pt,arc=.2em,boxsep=1.0mm]
+\begin{tcolorbox}[title=Contribution paper and artifact,boxrule=0.5pt,arc=.2em,boxsep=0.5mm]
     CROW is a compiler-based approach.
     It leverages enumerative synthesis to generate functionally equivalent code replacements and assembles them into diverse \wasm program variants. 
     CROW uses SMT solvers to guarantee functional equivalence. \\
     CROW is fully presented in Cabrera-Arteaga \etal "CROW: Code Randomization of WebAssembly"
     \emph{at proceedings of Measurements, Attacks, and Defenses for the Web (MADWeb), NDSS 2021}
     \url{https://doi.org/10.14722/madweb.2021.23004}. 
-    \\\\
+    \\
     CROW source code is available at \url{https://github.com/ASSERT-KTH/slumps}
 
 \end{tcolorbox}
