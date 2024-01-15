@@ -5,16 +5,16 @@
 \chapterprecishere{\input{quotes/dn2.tex}\par\raggedleft--- {\small\textup{Donald Knuth}}}
 
 \lettrine[lines=3]{T}{he} growing adoption of \Wasm requires hardening techniques.
-This thesis contributes to this effort with a comprehensive set of methods and tools for Software Diversification in \Wasm.
+This thesis contributes to this effort with a comprehensive set of methods and tools for Software Diversification for \Wasm.
 We introduce three technical contributions in this dissertation: CROW, MEWE, and WASM-MUTATE.
-Additionally, we present specific use cases for exploiting the diversification created for \Wasm programs.
+Additionally, we present two use cases for exploiting the diversification created for \Wasm programs.
 In this chapter, we summarize the technical contributions of this dissertation, including an overview of the empirical findings of our research.
 Finally, we discuss future research directions in \Wasm Software Diversification.
 
 \section{Summary of technical contributions}
 
 
-This thesis expands the field of Software Diversification within \Wasm by implementing two distinct methods: compiler-based and binary-based approaches. 
+This thesis expands the field of Software Diversification for \Wasm by implementing two distinct methods: compiler-based and binary-based approaches. 
 Taking source code and LLVM bitcode as input, the compiler-based method generates \Wasm variants.
 It uses enumerative synthesis and SMT solvers to produce numerous functionally equivalent variants. 
 Importantly, these generated variants can be converted into multivariant binaries, thus enabling execution path randomization. 
@@ -64,7 +64,7 @@ This swift generation of variants is particularly advantageous in highly dynamic
 In this work, we do not discuss this case in depth. 
 Yet, we have empirically tested the effectiveness of moving target defense techniques~\cite{MEWE}. 
 These tests were conducted on the Fastly edge computing platform.
-In this scenario, we incorporate multivariant executions\cite{MEWE}. 
+In this scenario, we incorporate multivariant executions~\cite{MEWE}. 
 Fastly can redeploy a \Wasm binary across its 73 data centers worldwide in 13 seconds on average. 
 This enables the practical deployment of a unique variant per node using our tools. 
 However, a 13-second window may still pose a risk despite each node potentially hosting a distinct \Wasm variant. 
@@ -86,7 +86,7 @@ In the following, we outline three concrete directions.
 Compared to established environments, the \Wasm ecosystem is relatively new. This makes the collection of \Wasm program samples notably expensive \cite{Hilbig2021AnES, 10174194}.
 According to a recent study by Hilbig \etal, the global count of \Wasm binaries is approximately 20,000  \cite{Hilbig2021AnES}. 
 This number is small when contrasted with the massive repositories of 1.5 million and 1.7 million packages in npm and PyPI, respectively. 
-Intriguingly, this study also discloses that half of these \Wasm binaries originated from our tools and public repositories, suggesting that the actual count of unique, real-world \Wasm programs is just over 10000.
+Intriguingly, this study also discloses that half of these \Wasm binaries originated from our tools and public repositories, suggesting that the actual count of unique, real-world \Wasm programs is just over 10,000.
 This scarcity of \Wasm datasets presents considerable obstacles for machine learning analysis tools, which typically need substantial data volumes for effective training and calibration \cite{2023arXiv230519915Z}.
 Software diversification serves as a pivotal strategy to address this limitation by simulating a broad range of potential software behaviors and scenarios. 
 Specifically, the augmentation of the \Wasm dataset can be achieved through it.

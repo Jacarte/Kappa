@@ -210,7 +210,7 @@ Program variants, once generated and verified, may be used in two primary scenar
     They adapt a version of GCC 4.1 to partition a conventional stack into several component parts, termed multistacks. 
     Similarly, Singhal \etal, propose Cornucopia \cite{cornucopia}.
     Cornucopia generates multiple variants of a program by using different compiler flag combinations.
-    Aga \etal propose the generation of program variants through the randomization of its data layout in memory\cite{aga2019smokestack}. 
+    Aga~\etal propose the generation of program variants through the randomization of its data layout in memory \cite{aga2019smokestack}. 
     This method allows each variant to operate on the same data in memory but at different memory offsets. 
     Randomization can also be applied to virtual machines and operating systems. On this note, Kc \etal \cite{Kc03} establish a unique mapping between artificial CPU instructions and actual ones, enabling the assignment of various variants to specific target clients. 
     In a similar vein, Xu \etal \cite{xu2020merr} recompile the Linux Kernel to minimize the exposure time of persistent memory objects, thereby increasing the frequency of address randomization.
@@ -314,7 +314,7 @@ These methods aim to thwart static malware detectors, yet, more advanced techniq
 The term Offensive Software Diversification may seem counterintuitive.
 Yet, such approaches measure the resilience and accuracy of security systems. 
 This is an almost unexplored area in \Wasm, posing a threat to malware detection accuracy. 
-Specifically, only Bhansali \etal's seminal work\cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
+Specifically, only Bhansali \etal's seminal work \cite{10.1145/3507657.3528560} has demonstrated that a cryptomining algorithm's source code can evade pre-existing malware detection methods. 
 More recently, Madvex \cite{madvex} has sought to obfuscate \Wasm binaries to achieve malware evasion, but this approach is limited to altering only the code section of \Wasm binaries.
 
 
