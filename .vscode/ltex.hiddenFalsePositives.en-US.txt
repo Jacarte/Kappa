@@ -1,1 +1,0 @@
-{"rule":"PRP_VB","sentence":"^\\QIn the context of we device two scenarios in which predictability is key concern.\\E$"}
