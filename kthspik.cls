@@ -159,7 +159,7 @@
       \begin{otherlanguage}{swedish}
         \noindent Akademisk avhandling som med tillst\aa nd
         av Kungl Tekniska h\"{o}gskolan framl\"{a}gges till
-        offentlig granskning f\"{o}r avl\"aggande av \theexamen\space \thedisputationsdatum\space.\par
+        offentlig granskning f\"{o}r avl\"aggande av \theexamen\space \thedisputationsdatum\space i \thedisputationslokal.\par
       \end{otherlanguage}
     \else
       \noindent Aka\-de\-misk av\-hand\-ling som med

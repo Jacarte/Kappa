@@ -142,13 +142,27 @@
   \pagestyle{empty}
   \renewcommand*{\thepage}{title-\arabic{page}}
   \noindent
-  \parbox[b][0.6\textheight]{\textwidth}{\noindent
+  \parbox[b][0.4\textheight]{\textwidth}{\noindent
     \scalebox{0.292}{\includegraphics{\thekthlogo}}\par
     \vfill
     \bfseries\fontsize{32}{37}\selectfont\thetitle\par
     \vskip0.2cm
     \large\MakeUppercase{\theauthor}\par
+    
   }\par
+  \vskip1.6cm
+    \if@kthesis@babel
+    \begin{otherlanguage}{swedish}
+      \noindent Akademisk avhandling som med tillst\aa nd
+      av Kungl Tekniska h\"{o}gskolan framl\"{a}gges till
+      offentlig granskning f\"{o}r avl\"aggande av \theexamen\space i \thedisputationslokal.\par
+    \end{otherlanguage}
+  \else
+    \noindent Aka\-de\-misk av\-hand\-ling som med
+    till\-st\aa nd av Kungl Tek\-niska h\"{o}g\-skolan
+    fram\-l\"{a}g\-ges till of\-fent\-lig gransk\-ning
+    f\"{o}r av\-l\"ag\-gande av \theexamen\space \thedisputationsdatum\space i \thedisputationslokal.\par
+  \fi
   \vfill\noindent
   \parbox[b]{\textwidth}{\noindent\large
     \thethesistype\par
@@ -165,22 +179,12 @@
   \end{tabular}
   \hfill
   \noindent\begin{tabular}[b]{@{}r@{}}
-    \theaddress
+  % Uncomment to add the address
+  %  \theaddress
   \end{tabular}
   \par\bigskip
   \if@kthesis@blurb
-    \if@kthesis@babel
-      \begin{otherlanguage}{swedish}
-        \noindent Akademisk avhandling som med tillst\aa nd
-        av Kungl Tekniska h\"{o}gskolan framl\"{a}gges till
-        offentlig granskning f\"{o}r avl\"aggande av \theexamen\space.\par
-      \end{otherlanguage}
-    \else
-      \noindent Aka\-de\-misk av\-hand\-ling som med
-      till\-st\aa nd av Kungl Tek\-niska h\"{o}g\-skolan
-      fram\-l\"{a}g\-ges till of\-fent\-lig gransk\-ning
-      f\"{o}r av\-l\"ag\-gande av \theexamen\space.\par
-    \fi
+    
     \bigskip
   \fi
   \noindent
