@@ -1,5 +1,5 @@
-\Wasm, now the fourth officially recognized web language, enables web browsers to port native applications for the Web. 
-Furthermore, \Wasm has evolved into an essential element for backend scenarios such as cloud computing and edge computing. 
+\Wasm, now the fourth officially recognized web language, enables web browsers to port native applications to the Web. 
+Furthermore, \Wasm has evolved into an essential element for backend scenarios such as cloud and edge computing. 
 Therefore, \Wasm finds use in a plethora of applications, including but not limited to, web browsers, blockchain, and cloud computing. 
 Despite the emphasis on security since its design and specification, \Wasm remains susceptible to various forms of attacks, including memory corruption and side-channels. 
 Furthermore, \Wasm has been manipulated to disseminate malware, particularly in cases of browser cryptojacking. 
@@ -14,10 +14,10 @@ For instance, a flaw in a web browser, triggered by a defective \Wasm program, h
 This work aims to harden the security within the \Wasm ecosystem through the introduction of Software Diversification methods and tools. 
 Software Diversification is a strategy designed to augment the costs of exploiting vulnerabilities by making software less predictable.
 The predictability within ecosystems can be diminished by automatically generating different, yet functionally equivalent, program variants. 
-These variants strengthen observable properties that are typically used to launch attacks, and in many instances, can completely eliminate such vulnerabilities. 
+These variants strengthen observable properties that are typically used to launch attacks, and in many instances, can eliminate such vulnerabilities. 
 
 
-This work introduces three tools: CROW, MEWE, and WASM-MUTATE. 
+This work introduces three tools: CROW, MEWE as compiler-based approaches, and WASM-MUTATE as a binary-based approach. 
 Each tool has been specifically designed to tackle a unique facet of Software Diversification. 
 We present empirical evidence demonstrating the potential application of our Software Diversification methods to \Wasm programs in two distinct ways: Offensive and Defensive Software Diversification. 
 Our research into Offensive Software Diversification in \Wasm unveils potential paths for enhancing the detection of \Wasm malware. 

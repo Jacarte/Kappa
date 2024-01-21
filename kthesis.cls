@@ -173,16 +173,13 @@
       \begin{otherlanguage}{swedish}
         \noindent Akademisk avhandling som med tillst\aa nd
         av Kungl Tekniska h\"{o}gskolan framl\"{a}gges till
-        offentlig granskning f\"{o}r avl\"aggande av
-        \theexamen\space \thedisputationsdatum\space i
-        \thedisputationslokal.\par
+        offentlig granskning f\"{o}r avl\"aggande av \theexamen\space.\par
       \end{otherlanguage}
     \else
       \noindent Aka\-de\-misk av\-hand\-ling som med
       till\-st\aa nd av Kungl Tek\-niska h\"{o}g\-skolan
       fram\-l\"{a}g\-ges till of\-fent\-lig gransk\-ning
-      f\"{o}r av\-l\"ag\-gande av \theexamen\space
-      \thedisputationsdatum\space i \thedisputationslokal.\par
+      f\"{o}r av\-l\"ag\-gande av \theexamen\space.\par
     \fi
     \bigskip
   \fi

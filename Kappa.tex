@@ -1,8 +1,8 @@
-\documentclass[openany,g5paper,electronic]{kthesis}
+\documentclass[twoside,openright,g5paper,electronic]{kthesis}
 \maxtocdepth{section}
 \setsecnumdepth{subsection}
 \input{packages}
-
+\pagestyle{empty}
 \usetikzlibrary{tikzmark,calc,decorations.pathreplacing}
 \newcommand{\Depth}{2}
 \newcommand{\Height}{2}
@@ -327,12 +327,12 @@
 \bibliographystyle{ieeetr}
 %\bibliographystyle{apalike}
 \renewcommand{\bibname}{References}% changes default name Bibliography to References
-\bibliography{Kappa} % References file
+\bibliography{Kappa}
 
 %--------------------------------------------------
 %\addcontentsline{toc}{chapter}{Appended papers} % for template purposes
 \input{Contributions}
-\printindex
+
 
 \end{document}
 \endinput
