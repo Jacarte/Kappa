@@ -1,0 +1,1 @@
+wget -O Lic.pdf https://www.jacarte.me/assets/pdf/thesis/Lic.pdf
